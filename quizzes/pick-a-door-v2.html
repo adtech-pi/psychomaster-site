@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚪 Pick a Door - Visual Psychology Quiz</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 15px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .header { text-align: center; margin-bottom: 25px; }
+        .header h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcb77, #4d96ff, #ff6b6b);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+            margin-bottom: 8px;
+        }
+        @keyframes shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+        .header p { font-size: 0.9rem; opacity: 0.7; letter-spacing: 3px; text-transform: uppercase; }
+        .screen { display: none; width: 100%; animation: fadeIn 0.6s ease; }
+        .screen.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .intro { text-align: center; background: rgba(255,255,255,0.05); border-radius: 24px; padding: 30px 25px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .intro h2 { font-size: 1.4rem; margin-bottom: 15px; color: #ffd93d; }
+        .intro p { line-height: 1.7; margin-bottom: 12px; font-size: 0.95rem; opacity: 0.9; }
+        .intro .tip { background: rgba(255,255,255,0.08); padding: 12px; border-radius: 12px; margin: 15px 0; font-size: 0.85rem; }
+        .intro .tip span { color: #ffd93d; }
+        .intro-stats { display: flex; justify-content: center; gap: 20px; margin: 15px 0; }
+        .intro-stats span { font-size: 0.85rem; opacity: 0.7; }
+        
+        .btn { display: inline-block; padding: 15px 40px; font-size: 1rem; background: linear-gradient(135deg, #ff6b6b, #ee5a5a); color: white; border: none; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; margin-top: 15px; font-weight: bold; letter-spacing: 2px; box-shadow: 0 4px 25px rgba(255,107,107,0.4); }
+        .btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 35px rgba(255,107,107,0.6); }
+        .btn-secondary { background: linear-gradient(135deg, #6bcb77, #4d96ff); box-shadow: 0 4px 25px rgba(107,203,119,0.4); }
+        .btn-secondary:hover { box-shadow: 0 8px 35px rgba(107,203,119,0.6); }
+        
+        .quiz-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 100%; }
+        .quiz-item { position: relative; border-radius: 20px; overflow: hidden; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); aspect-ratio: 4/3; background: rgba(255,255,255,0.05); border: 4px solid transparent; }
+        .quiz-item:hover { transform: scale(1.05); border-color: rgba(255,217,61,0.6); box-shadow: 0 15px 50px rgba(0,0,0,0.4); }
+        .quiz-item.selected { border-color: #ff6b6b; box-shadow: 0 0 50px rgba(255,107,107,0.5); transform: scale(1.08); animation: pulse 0.6s ease; }
+        @keyframes pulse { 0% { transform: scale(1.08); } 50% { transform: scale(1.12); } 100% { transform: scale(1.08); } }
+        .quiz-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .quiz-item .overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.85)); padding: 35px 10px 15px; text-align: center; font-size: 0.8rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
+        .quiz-item .check-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); width: 60px; height: 60px; background: rgba(255,107,107,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; transition: transform 0.3s ease; }
+        .quiz-item.selected .check-icon { transform: translate(-50%, -50%) scale(1); }
+        
+        .progress-container { width: 100%; margin-bottom: 20px; }
+        .progress-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #ff6b6b, #ffd93d); border-radius: 3px; transition: width 0.8s ease; }
+        .step-indicator { text-align: center; margin-bottom: 15px; font-size: 0.85rem; opacity: 0.6; letter-spacing: 2px; }
+        
+        .question-box { text-align: center; margin-bottom: 20px; padding: 0 10px; }
+        .question-box h3 { font-size: 1.2rem; color: #ffd93d; line-height: 1.5; }
+        
+        .result-card { background: rgba(255,255,255,0.05); border-radius: 28px; padding: 35px 25px; text-align: center; backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); width: 100%; }
+        .result-emoji { font-size: 4.5rem; margin-bottom: 12px; animation: bounce 1.5s ease infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+        .result-title { font-size: 1.7rem; color: #ffd93d; margin-bottom: 8px; font-weight: bold; }
+        .result-subtitle { font-size: 0.95rem; opacity: 0.7; margin-bottom: 20px; font-style: italic; }
+        .result-desc { line-height: 1.8; font-size: 0.95rem; text-align: left; background: rgba(0,0,0,0.25); padding: 20px; border-radius: 16px; margin-bottom: 20px; border-left: 4px solid #ff6b6b; }
+        .result-traits { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 20px; }
+        .trait-tag { background: linear-gradient(135deg, #6bcb77, #4d96ff); padding: 7px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+        .share-area { background: rgba(255,255,255,0.05); border-radius: 16px; padding: 18px; margin-top: 15px; }
+        .share-area p { font-size: 0.85rem; opacity: 0.7; margin-bottom: 12px; }
+        .share-btn { background: linear-gradient(135deg, #4d96ff, #6bcb77); padding: 12px 28px; border: none; border-radius: 25px; color: white; font-weight: bold; font-size: 0.85rem; cursor: pointer; transition: all 0.3s; }
+        .share-btn:hover { transform: scale(1.05); }
+        
+        @media (max-width: 400px) {
+            .header h1 { font-size: 1.7rem; }
+            .quiz-grid { gap: 12px; }
+            .question-box h3 { font-size: 1.05rem; }
+            .result-title { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚪 PICK A DOOR</h1>
+            <p>Visual Psychology Quiz</p>
+        </div>
+
+        <!-- Intro Screen -->
+        <div id="intro" class="screen active">
+            <div class="intro">
+                <h2>✨ Discover Your Hidden Self</h2>
+                <p>4 mysterious doors. Each one leads to a different path that reveals who you truly are inside.</p>
+                <div class="tip">
+                    <span>💡 Trust your gut:</span> Don't overthink—just pick what instinctively draws you.
+                </div>
+                <div class="intro-stats">
+                    <span>📊 2.4M+ taken</span>
+                    <span>⭐ 4.8 rating</span>
+                </div>
+                <button class="btn" onclick="startQuiz()">START TEST →</button>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz" class="screen">
+            <div class="progress-container">
+                <div class="step-indicator">QUESTION <span id="currentStep">1</span> OF 4</div>
+                <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:25%"></div></div>
+            </div>
+            <div id="quizContent"></div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result" class="screen">
+            <div class="result-card">
+                <div class="result-emoji" id="resultEmoji">🔮</div>
+                <div class="result-title" id="resultTitle">The Seeker</div>
+                <div class="result-subtitle" id="resultSubtitle">"Your inner truth..."</div>
+                <div class="result-traits" id="resultTraits"></div>
+                <div class="result-desc" id="resultDesc"></div>
+                <div class="share-area">
+                    <p>📱 Share your result with friends!</p>
+                    <button class="share-btn" onclick="shareResult()">⚡ SHARE YOUR RESULT</button>
+                </div>
+                <button class="btn btn-secondary" onclick="restartQuiz()">🔄 TAKE AGAIN</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "You're walking through a dark forest alone. Suddenly, you see four mysterious doors. Which one calls to you?",
+                options: [
+                    { label: "GOLDEN LIGHT", value: "A", img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop" },
+                    { label: "GREEN GARDEN", value: "B", img: "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=400&h=300&fit=crop" },
+                    { label: "ICE BLUE", value: "C", img: "https://images.unsplash.com/photo-1521479695631-5a07d00b92ce?w=400&h=300&fit=crop" },
+                    { label: "BURNING FLAME", value: "D", img: "https://images.unsplash.com/photo-1509114397022-ed747cca3f65?w=400&h=300&fit=crop" }
+                ]
+            },
+            {
+                question: "You step through and find yourself in a beautiful garden. What's the sky like?",
+                options: [
+                    { label: "SUNSET GOLD", value: "A", img: "https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?w=400&h=300&fit=crop" },
+                    { label: "MOONLIGHT", value: "B", img: "https://images.unsplash.com/photo-1532704869696-5dc8f3ed7a37?w=400&h=300&fit=crop" },
+                    { label: "MISTY GREY", value: "C", img: "https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=400&h=300&fit=crop" },
+                    { label: "RAINBOW SKY", value: "D", img: "https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?w=400&h=300&fit=crop" }
+                ]
+            },
+            {
+                question: "A creature appears in the garden. Which one do you see?",
+                options: [
+                    { label: "NOBLE LION", value: "A", img: "https://images.unsplash.com/photo-1546182990-dffeafbe841d?w=400&h=300&fit=crop" },
+                    { label: "WISE FOX", value: "B", img: "https://images.unsplash.com/photo-1474511320723-9a56873867b5?w=400&h=300&fit=crop" },
+                    { label: "ANCIENT OWL", value: "C", img: "https://images.unsplash.com/photo-1543549790-8b5f4a028cfb?w=400&h=300&fit=crop" },
+                    { label: "GENTLE DEER", value: "D", img: "https://images.unsplash.com/photo-1484406566174-9da000bda743?w=400&h=300&fit=crop" }
+                ]
+            },
+            {
+                question: "Finally, you see a mirror. What do you see in the reflection?",
+                options: [
+                    { label: "FUTURE SELF", value: "A", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop&faces" },
+                    { label: "MASKED SELF", value: "B", img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=300&fit=crop&faces" },
+                    { label: "INNER CHILD", value: "C", img: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=400&h=300&fit=crop&faces" },
+                    { label: "BURNING SOUL", value: "D", img: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=400&h=300&fit=crop" }
+                ]
+            }
+        ];
+
+        const results = {
+            "AAAA": { emoji: "🌟", title: "The Natural Leader", subtitle: "Born to inspire", traits: ["Charismatic", "Decisive", "Protective", "Magnetic"], desc: "You're a born leader with an aura that draws people to you. Your presence commands respect, yet you use it to uplift and protect those around you. Deep down, you carry the weight of many, but you never let it break you." },
+            "BBBB": { emoji: "🌿", title: "The Peaceful Sage", subtitle: "Wisdom through stillness", traits: ["Patient", "Intuitive", "Compassionate", "Grounded"], desc: "You possess an ancient wisdom that goes beyond your years. While the world rushes past, you remain rooted in peace. Your empathy is your superpower—you feel what others feel and know exactly what to say." },
+            "CCCC": { emoji: "🌙", title: "The Deep Thinker", subtitle: "Mind without boundaries", traits: ["Analytical", "Observant", "Independent", "Curious"], desc: "Your mind is a labyrinth of endless possibilities. You see patterns where others see chaos. Sometimes you feel like you're from another dimension entirely. Embrace your uniqueness—it's your greatest gift." },
+            "DDDD": { emoji: "🔥", title: "The Passionate Soul", subtitle: "Fire that cannot be dimmed", traits: ["Creative", "Fearless", "Authentic", "Energetic"], desc: "You feel everything DEEPLY. Your passion burns so bright it can intimidate others, but those who truly know you cherish your intensity. You refuse to live a half-hearted life." },
+            "ABCD": { emoji: "🔮", title: "The Mysterious One", subtitle: "An enigma wrapped in layers", traits: ["Adaptable", "Complex", "Perceptive", "Free Spirit"], desc: "You're a beautiful contradiction—strong yet gentle, logical yet intuitive. No one version of you is the 'real' you because you contain multitudes. You flow through life like water, adapting to every vessel." }
+        };
+
+        let currentQuestion = 0;
+        let answers = [];
+
+        function startQuiz() {
+            document.getElementById('intro').classList.remove('active');
+            document.getElementById('quiz').classList.add('active');
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const q = quizData[currentQuestion];
+            document.getElementById('currentStep').textContent = currentQuestion + 1;
+            document.getElementById('progressFill').style.width = ((currentQuestion + 1) / 4 * 100) + '%';
+            
+            const content = document.getElementById('quizContent');
+            content.innerHTML = `
+                <div class="question-box">
+                    <h3>${q.question}</h3>
+                </div>
+                <div class="quiz-grid">
+                    ${q.options.map(opt => `
+                        <div class="quiz-item" onclick="selectOption('${opt.value}', this)" data-value="${opt.value}">
+                            <img src="${opt.img}" alt="${opt.label}" loading="lazy" onerror="this.style.display='none'">
+                            <div class="overlay">${opt.label}</div>
+                            <div class="check-icon">✓</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function selectOption(value, element) {
+            document.querySelectorAll('.quiz-item').forEach(item => item.classList.remove('selected'));
+            element.classList.add('selected');
+            answers[currentQuestion] = value;
+            
+            setTimeout(() => {
+                if (currentQuestion < 3) {
+                    currentQuestion++;
+                    renderQuestion();
+                } else {
+                    showResult();
+                }
+            }, 700);
+        }
+
+        function showResult() {
+            document.getElementById('quiz').classList.remove('active');
+            document.getElementById('result').classList.add('active');
+            
+            const key = answers.join('');
+            let result = results[key] || results["ABCD"];
+            
+            document.getElementById('resultEmoji').textContent = result.emoji;
+            document.getElementById('resultTitle').textContent = result.title;
+            document.getElementById('resultSubtitle').textContent = result.subtitle;
+            document.getElementById('resultDesc').textContent = result.desc;
+            document.getElementById('resultTraits').innerHTML = result.traits.map(t => `<span class="trait-tag">${t}</span>`).join('');
+        }
+
+        function shareResult() {
+            const emoji = document.getElementById('resultEmoji').textContent;
+            const title = document.getElementById('resultTitle').textContent;
+            const text = `${emoji} I got "${title}" on the Pick a Door test! 🚪✨ What's your hidden self?`;
+            if (navigator.share) {
+                navigator.share({ text });
+            } else {
+                navigator.clipboard.writeText(text);
+                alert('Result copied! 📋');
+            }
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            answers = [];
+            document.getElementById('result').classList.remove('active');
+            document.getElementById('intro').classList.add('active');
+        }
+    </script>
+</body>
+</html>
