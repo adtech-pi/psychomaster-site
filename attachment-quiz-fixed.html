@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>你的依恋类型是什么？</title>
+<title>What's Your Attachment Style?</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -124,25 +124,25 @@ body {
   <!-- Disclaimer Screen -->
   <div class="screen disclaimer-screen active" id="disclaimerScreen">
     <div class="disclaimer-icon">🛡️</div>
-    <h1 class="disclaimer-title">你的依恋类型是什么？</h1>
+    <h1 class="disclaimer-title">What's Your Attachment Style?</h1>
     <p class="disclaimer-text">
-      这是一项基于依恋理论的心理学自评量表，旨在帮助你了解自己的依恋风格，以促进自我觉察与个人成长。<br><br>
-      <strong>请注意：</strong>本测验结果仅供参考，不构成医学或心理诊断。如你正在经历严重的情感困扰，建议寻求专业心理咨询师的帮助。
+      This is a self-assessment based on attachment theory, designed to help you understand your attachment style and promote self-awareness and personal growth.<br><br>
+      <strong>Please note:</strong> The results of this quiz are for reference only and do not constitute a medical or psychological diagnosis. If you are experiencing significant emotional distress, please seek help from a qualified mental health professional.
     </p>
-    <button class="btn btn-primary" id="startBtn">开始探索 →</button>
+    <button class="btn btn-primary" id="startBtn">Begin Exploration →</button>
   </div>
 
   <!-- Quiz Screen -->
   <div class="screen quiz-screen" id="quizScreen">
     <div class="progress-wrap">
       <div class="progress-label">
-        <span id="progressText">题目 1 / 15</span>
+        <span id="progressText">Question 1 / 15</span>
         <span id="progressPct">0%</span>
       </div>
       <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
     </div>
     <div class="question-box">
-      <div class="question-number" id="questionNumber">第 1 题</div>
+      <div class="question-number" id="questionNumber">Question 1</div>
       <div class="question-text" id="questionText"></div>
     </div>
     <div class="options" id="options"></div>
@@ -152,16 +152,16 @@ body {
   <div class="screen result-screen" id="resultScreen">
     <div class="result-hero">
       <div class="result-badge" id="resultBadge">🌿</div>
-      <div class="result-label">你的依恋类型是</div>
-      <div class="result-type" id="resultType">安全型</div>
+      <div class="result-label">Your attachment style is</div>
+      <div class="result-type" id="resultType">Secure</div>
     </div>
     <div class="result-desc-box">
       <div class="result-desc-text" id="resultDesc"></div>
       <div class="result-traits" id="resultTraits"></div>
     </div>
     <div class="share-row">
-      <button class="btn btn-primary" id="shareBtn">📋 复制结果</button>
-      <button class="btn btn-secondary" id="retakeBtn">🔄 重新测试</button>
+      <button class="btn btn-primary" id="shareBtn">📋 Copy Results</button>
+      <button class="btn btn-secondary" id="retakeBtn">🔄 Retake Quiz</button>
     </div>
   </div>
 </div>
@@ -170,118 +170,118 @@ body {
 
 <script>
 const questions = [
-  { text: "在一段认真的关系开始前，你通常会先感受到？", options: [
-    { letter: "A", text: "期待和兴奋，同时保持清醒的判断" },
-    { letter: "B", text: "心跳加速、患得患失，害怕对方不够喜欢我" },
-    { letter: "C", text: "有点紧张，想给自己留退路" },
-    { letter: "D", text: "既渴望又害怕，想要靠近又忍不住想逃" }
+  { text: "Before a serious relationship begins, you usually feel…", options: [
+    { letter: "A", text: "Anticipation and excitement, while maintaining clear judgment" },
+    { letter: "B", text: "Heart racing, anxious, worried they might not like me enough" },
+    { letter: "C", text: "A bit nervous, wanting to keep an escape route open" },
+    { letter: "D", text: "Both longing and fear — wanting to get close but instinctively pulling away" }
   ]},
-  { text: "当你非常想念一个人，却联系不上对方时，你会？", options: [
-    { letter: "A", text: "先做自己的事，相信对方忙完会回复" },
-    { letter: "B", text: "反复查看手机，忍不住连发好几条消息" },
-    { letter: "C", text: "算了，反正我也没那么需要他" },
-    { letter: "D", text: "想发消息，手指悬在屏幕上又放下了" }
+  { text: "When you miss someone intensely but can't reach them, you…", options: [
+    { letter: "A", text: "Focus on your own activities, trusting they'll get back to you when they're free" },
+    { letter: "B", text: "Keep checking your phone, tempted to send multiple messages" },
+    { letter: "C", text: "Decide not to bother — after all, you don't really need them" },
+    { letter: "D", text: "Want to reach out, but your fingers hover over the screen and you hold back" }
   ]},
-  { text: "对方没有及时回复你的消息，你会怎么想？", options: [
-    { letter: "A", text: "可能在忙，等一下就好" },
-    { letter: "B", text: "他是不是对我没兴趣了？我是不是做错了什么？" },
-    { letter: "C", text: "无所谓，反正我也有自己的事" },
-    { letter: "D", text: "很焦虑，但假装不在乎，装作很忙" }
+  { text: "When someone doesn't reply to your message right away, you think…", options: [
+    { letter: "A", text: "They're probably busy — I'll wait for a reply" },
+    { letter: "B", text: "Are they losing interest in me? Did I do something wrong?" },
+    { letter: "C", text: "No big deal — I have my own things going on anyway" },
+    { letter: "D", text: "You feel anxious but pretend to be unbothered, acting busy" }
   ]},
-  { text: "你和伴侣发生激烈争吵后，你会怎么做？", options: [
-    { letter: "A", text: "冷静后主动沟通，寻找双方都能接受的解决方案" },
-    { letter: "B", text: "又委屈又生气，等对方来道歉，不然就一直冷战" },
-    { letter: "C", text: "直接走开，不想解释了，过几天假装没发生" },
-    { letter: "D", text: "吵完很后悔，但不知道该怎么收场，怕伤害彼此" }
+  { text: "After a heated argument with your partner, what do you do?", options: [
+    { letter: "A", text: "Take time to cool down, then reach out to communicate and find a solution both can accept" },
+    { letter: "B", text: "Feel wronged and upset — wait for them to apologize, otherwise it's the silent treatment" },
+    { letter: "C", text: "Walk away directly, don't want to explain — pretend nothing happened after a few days" },
+    { letter: "D", text: "Feel regretful after arguing, but unsure how to mend things, worried about hurting each other" }
   ]},
-  { text: "你对「亲密」这个词的第一感受是？", options: [
-    { letter: "A", text: "温暖、安全，是两个人彼此信任的证明" },
-    { letter: "B", text: "渴望，想要和对方越近越好，24小时都不够" },
-    { letter: "C", text: "有点不自在，亲密意味着失去自由" },
-    { letter: "D", text: "复杂，想要但又怕靠太近会受伤" }
+  { text: "What's your immediate feeling when you hear the word 'intimacy'?", options: [
+    { letter: "A", text: "Warmth and safety — a sign of mutual trust between two people" },
+    { letter: "B", text: "Longing — the closer the better, even 24 hours together doesn't feel enough" },
+    { letter: "C", text: "A bit uncomfortable — intimacy means losing freedom" },
+    { letter: "D", text: "Complicated — wanting it but afraid getting too close will hurt" }
   ]},
-  { text: "当你发现伴侣心情不好时，你的反应是？", options: [
-    { letter: "A", text: "主动关心，询问是否需要倾诉，陪伴但不强迫" },
-    { letter: "B", text: "比他更紧张，觉得一定是自己的问题，想立刻解决" },
-    { letter: "C", text: "给他空间，等他主动来找我" },
-    { letter: "D", text: "想关心但又怕被拒绝，小心翼翼地试探" }
+  { text: "When you notice your partner is in a bad mood, your reaction is…", options: [
+    { letter: "A", text: "Show genuine concern, ask if they want to talk, stay陪伴 without pushing" },
+    { letter: "B", text: "Become even more nervous than them — it must be your fault, want to fix it immediately" },
+    { letter: "C", text: "Give them space and wait for them to come to you" },
+    { letter: "D", text: "Want to care but fear rejection, cautiously test the waters" }
   ]},
-  { text: "在关系中，你最害怕的场景是？", options: [
-    { letter: "A", text: "信任被破坏，忠诚被背叛" },
-    { letter: "B", text: "被忽视、被抛弃，对方突然不爱我了" },
-    { letter: "C", text: "被控制、被束缚，失去自我" },
-    { letter: "D", text: "既害怕被抛弃，也害怕被吞没，两种都让我窒息" }
+  { text: "What's the relationship scenario you fear most?", options: [
+    { letter: "A", text: "Trust being destroyed, loyalty betrayed" },
+    { letter: "B", text: "Being ignored and abandoned — suddenly, they don't love you anymore" },
+    { letter: "C", text: "Being controlled and confined, losing yourself" },
+    { letter: "D", text: "Both abandonment and engulfment terrify me — either one feels suffocating" }
   ]},
-  { text: "你更倾向于如何表达对一个人的喜欢？", options: [
-    { letter: "A", text: "用行动和陪伴，让对方感受到踏实的在乎" },
-    { letter: "B", text: "频繁联系、表达想念、确认对方的心意" },
-    { letter: "C", text: "保持一定距离，让关系自然发展，不说太满" },
-    { letter: "D", text: "嘴上说不在意，但做出一些小动作希望对方发现" }
+  { text: "How do you tend to express your feelings for someone?", options: [
+    { letter: "A", text: "Through actions and presence — letting them feel your steady care" },
+    { letter: "B", text: "Frequent contact, expressing longing, constantly seeking confirmation of their feelings" },
+    { letter: "C", text: "Maintain some distance, let things develop naturally, don't overcommit" },
+    { letter: "D", text: "Say you don't care out loud, but drop subtle hints hoping they'll notice" }
   ]},
-  { text: "你身边最亲近的人会怎么形容你？", options: [
-    { letter: "A", text: "可靠、稳定，是朋友的情感港湾" },
-    { letter: "B", text: "很重感情，但有时候会让人感到压力" },
-    { letter: "C", text: "独立、神秘，关系再近也保持一定距离" },
-    { letter: "D", text: "时而热情时而冷淡，让人捉摸不透" }
+  { text: "How would your closest confidants describe you?", options: [
+    { letter: "A", text: "Reliable, steady — an emotional anchor for friends" },
+    { letter: "B", text: "Deeply emotional, but sometimes feel pressured by it" },
+    { letter: "C", text: "Independent and mysterious — even in close relationships, you keep a distance" },
+    { letter: "D", text: "Sometimes warm, sometimes distant — hard to read" }
   ]},
-  { text: "当关系进入需要承诺的阶段（例如确定关系/同居），你会？", options: [
-    { letter: "A", text: "认真考虑，理性评估，合适就坦然接受" },
-    { letter: "B", text: "既开心又焦虑，不停追问对方「真的确定吗」" },
-    { letter: "C", text: "有点抗拒，想办法推迟或逃避这个话题" },
-    { letter: "D", text: "内心极度矛盾，想要承诺但又怕未来会受伤" }
+  { text: "When a relationship reaches a stage requiring commitment (e.g., defining the relationship / moving in together), you…", options: [
+    { letter: "A", text: "Think it through carefully, evaluate rationally, and accept it if it feels right" },
+    { letter: "B", text: "Happy yet anxious — repeatedly asking 'Are you really sure?'" },
+    { letter: "C", text: "Feel resistant, find ways to delay or dodge the topic" },
+    { letter: "D", text: "Deeply conflicted — wanting commitment but terrified of getting hurt" }
   ]},
-  { text: "你对「独处」这件事的感受是？", options: [
-    { letter: "A", text: "需要但不是必需，有伴时享受相伴，独处时也自在" },
-    { letter: "B", text: "独处时会很焦虑，总想找人陪" },
-    { letter: "C", text: "很喜欢独处，一个人才能真正做自己" },
-    { letter: "D", text: "独处时内心很乱，一边想一个人，一边又觉得孤单" }
+  { text: "How do you feel about spending time alone?", options: [
+    { letter: "A", text: "A need, but not a necessity — enjoy company when you have it, comfortable being alone too" },
+    { letter: "B", text: "Feel very anxious alone, always want someone to be with" },
+    { letter: "C", text: "Love it — only when alone can you truly be yourself" },
+    { letter: "D", text: "Feel chaotic when alone — want solitude but also feel lonely" }
   ]},
-  { text: "在过往的感情经历中，你最常见的模式是？", options: [
-    { letter: "A", text: "关系稳定，彼此成长，结束后也能平和放下" },
-    { letter: "B", text: "爱得很用力，结束后久久无法释怀" },
-    { letter: "C", text: "习惯被动，关系总是无疾而终或自己先退出" },
-    { letter: "D", text: "分分合合，每次都像坐过山车，爱恨交织" }
+  { text: "In past relationships, what's your most common pattern?", options: [
+    { letter: "A", text: "Stable relationships, mutual growth, can let go peacefully when it ends" },
+    { letter: "B", text: "Love intensely, struggle to move on long after it ends" },
+    { letter: "C", text: "Usually passive — relationships tend to fade or you exit first" },
+    { letter: "D", text: "On-again, off-again — every time feels like a roller coaster, love-hate entanglement" }
   ]},
-  { text: "当你感受到对方开始疏远时，你会？", options: [
-    { letter: "A", text: "主动沟通，了解原因，表达自己的感受和需求" },
-    { letter: "B", text: "疯狂反思自己哪里做错了，卑微地想挽回" },
-    { letter: "C", text: "既然你要走，那我也不稀罕，率先切断联系" },
-    { letter: "D", text: "既想追问又怕被拒绝，陷入内耗，不知道怎么办" }
+  { text: "When you sense your partner starting to pull away, you…", options: [
+    { letter: "A", text: "Proactively communicate, understand the reason, express your feelings and needs" },
+    { letter: "B", text: "Recklessly反思 what you did wrong, humble attempts to win them back" },
+    { letter: "C", text: "If you're leaving, I don't need you anyway — cut off contact first" },
+    { letter: "D", text: "Want to ask but fear rejection, caught in overthinking, unsure what to do" }
   ]},
-  { text: "你对「安全感」的理解是？", options: [
-    { letter: "A", text: "安全感来自内心，我知道自己的价值，不依赖对方来确认" },
-    { letter: "B", text: "安全感来自对方的反馈——他及时回复、常常表达爱意" },
-    { letter: "C", text: "安全感意味着不被控制，保持距离才能保护自己" },
-    { letter: "D", text: "我渴望安全感，但又不敢相信有人真的能给我" }
+  { text: "What does 'security' mean to you?", options: [
+    { letter: "A", text: "Security comes from within — I know my worth and don't need my partner to confirm it" },
+    { letter: "B", text: "Security comes from their responses — quick replies, frequent expressions of love" },
+    { letter: "C", text: "Security means not being controlled — keeping distance is how I protect myself" },
+    { letter: "D", text: "I crave security, but can't trust that anyone can truly provide it" }
   ]},
-  { text: "如果满分10分代表「完全信任」，你给自己的信任水平打几分？", options: [
-    { letter: "A", text: "7-10分：我相信他人，也相信自己的判断" },
-    { letter: "B", text: "3-6分：我想要信任，但总是忍不住怀疑" },
-    { letter: "C", text: "1-3分：信任别人太冒险，还是靠自己最安全" },
-    { letter: "D", text: "不确定：我分不清自己是真信任还是在逃避面对" }
+  { text: "On a scale of 1 to 10 where 10 means 'completely trusting,' what score would you give your level of trust?", options: [
+    { letter: "A", text: "7-10: I trust others and trust my own judgment" },
+    { letter: "B", text: "3-6: I want to trust, but can't help having doubts" },
+    { letter: "C", text: "1-3: Trusting others is too risky — relying on myself is safest" },
+    { letter: "D", text: "Not sure: I can't tell if I'm genuinely trusting or just avoiding the issue" }
   ]}
 ];
 
 const results = {
   A: {
-    type: "安全型", emoji: "🌿", className: "A",
-    desc: "你拥有安全型依恋风格——这是最健康、最平衡的依恋类型。你在亲密关系中既能够保持自我，也能够放心地依赖对方。你信任自己和伴侣，有能力进行开放的情感沟通。",
-    traits: ["情绪稳定", "善于沟通", "信任伴侣", "建设性处理冲突"]
+    type: "Secure", emoji: "🌿", className: "A",
+    desc: "You have a secure attachment style — the healthiest and most balanced attachment type. You can maintain your sense of self in intimate relationships while comfortably depending on your partner. You trust yourself and your partner, and you're capable of open emotional communication.",
+    traits: ["Emotionally Stable", "Good Communicator", "Trusting Partner", "Constructive Conflict Resolution"]
   },
   B: {
-    type: "焦虑型", emoji: "🌊", className: "B",
-    desc: "你对亲密关系有强烈的渴望，渴望被关注、被回应、被确认。你对伴侣的情感状态非常敏感，容易因害怕被抛弃而过度担忧。",
-    traits: ["情感细腻", "投入度高", "渴望深度连接", "对伴侣敏感"]
+    type: "Anxious", emoji: "🌊", className: "B",
+    desc: "You have a strong longing for intimacy and a deep need to be seen, responded to, and confirmed. You're highly sensitive to your partner's emotional state and can become overly worried about abandonment.",
+    traits: ["Emotionally Sensitive", "Highly Engaged", "Seeks Deep Connection", "Tuned Into Partner"]
   },
   C: {
-    type: "回避型", emoji: "🏜️", className: "C",
-    desc: "你重视独立和自主，在亲密关系中倾向于保持一定的情感距离。你不习惯向伴侣寻求支持，也不太善于表达自己的情感需求。",
-    traits: ["高度独立", "理性冷静", "尊重边界", "情绪调节强"]
+    type: "Avoidant", emoji: "🏜️", className: "C",
+    desc: "You value independence and autonomy, tending to maintain emotional distance in intimate relationships. You're not accustomed to seeking support from your partner and aren't skilled at expressing your emotional needs.",
+    traits: ["Highly Independent", "Calm & Rational", "Respects Boundaries", "Strong Emotional Regulation"]
   },
   D: {
-    type: "恐惧型", emoji: "🌪️", className: "D",
-    desc: "你既渴望亲密又害怕被伤害，既想靠近又想逃离。亲密关系中的不确定感常常让你感到不安，情感体验起伏较大。",
-    traits: ["情感洞察力强", "内心丰富", "适应性强", "体验深刻"]
+    type: "Fearful-Avoidant", emoji: "🌪️", className: "D",
+    desc: "You long for intimacy but fear being hurt — simultaneously wanting to draw close and pull away. Uncertainty in intimate relationships often leaves you feeling unsettled, with significant emotional ups and downs.",
+    traits: ["Strong Emotional Insight", "Rich Inner World", "Highly Adaptive", "Profound Experiences"]
   }
 };
 
@@ -304,10 +304,10 @@ function startQuiz() {
 function showQuestion() {
   const q = questions[currentQuestion];
   const pct = Math.round((currentQuestion / 15) * 100);
-  document.getElementById('progressText').textContent = `题目 ${currentQuestion + 1} / 15`;
+  document.getElementById('progressText').textContent = `Question ${currentQuestion + 1} / 15`;
   document.getElementById('progressPct').textContent = pct + '%';
   document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('questionNumber').textContent = `第 ${currentQuestion + 1} 题`;
+  document.getElementById('questionNumber').textContent = `Question ${currentQuestion + 1}`;
   document.getElementById('questionText').textContent = q.text;
 
   const optionsEl = document.getElementById('options');
@@ -367,8 +367,8 @@ function showResult() {
 function shareResult() {
   const type = document.getElementById('resultType').textContent;
   const desc = document.getElementById('resultDesc').textContent;
-  const text = `🧠 我的依恋类型是「${type}」！\n\n${desc}\n\n——快来测试你的依恋类型吧！`;
-  navigator.clipboard.writeText(text).then(() => showToast('✅ 结果已复制！')).catch(() => showToast('复制失败'));
+  const text = `🧠 My attachment style is "${type}"!\n\n${desc}\n\n— Take the quiz and discover yours!`;
+  navigator.clipboard.writeText(text).then(() => showToast('✅ Results copied!')).catch(() => showToast('Copy failed'));
 }
 
 function retakeQuiz() {
