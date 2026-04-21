@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>你的依恋类型是什么？</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: #0D0D0F;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.app {
+  width: 100%;
+  max-width: 480px;
+  min-height: 580px;
+  position: relative;
+}
+
+.screen {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  animation: fadeUp 0.5s ease forwards;
+}
+.screen.active { display: flex; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Disclaimer Screen */
+.disclaimer-screen { justify-content: center; align-items: center; text-align: center; padding: 20px; }
+.disclaimer-icon { font-size: 56px; margin-bottom: 20px; }
+.disclaimer-title { font-size: 24px; font-weight: 700; margin-bottom: 16px; color: #fff; }
+.disclaimer-text { font-size: 14px; line-height: 1.8; color: #9CA3AF; margin-bottom: 32px; }
+.disclaimer-text strong { color: #F59E0B; }
+
+/* Quiz Screen */
+.quiz-screen { padding: 0; }
+.progress-wrap { padding: 20px 20px 0; }
+.progress-label { display: flex; justify-content: space-between; font-size: 12px; color: #6B7280; margin-bottom: 8px; }
+.progress-bar { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #22C55E, #3B82F6); border-radius: 2px; transition: width 0.5s ease; width: 0%; }
+
+.question-box { padding: 24px 20px 16px; }
+.question-number { font-size: 12px; color: #6B7280; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+.question-text { font-size: 18px; font-weight: 600; line-height: 1.5; color: #fff; }
+
+.options { padding: 0 20px 20px; display: flex; flex-direction: column; gap: 12px; }
+.option-card {
+  background: #1A1A1F;
+  border: 2px solid transparent;
+  border-radius: 14px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 60px;
+}
+.option-card:hover { background: #242430; border-color: rgba(255,255,255,0.1); transform: translateY(-2px); }
+.option-card:active { transform: scale(0.98); }
+.option-card.selected { border-color: #22C55E; background: rgba(34,197,94,0.1); box-shadow: 0 0 20px rgba(34,197,94,0.2); }
+.option-card.dimmed { opacity: 0.35; transform: scale(0.97); }
+.option-letter {
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 14px;
+  flex-shrink: 0;
+  color: #9CA3AF;
+}
+.option-card.selected .option-letter { background: #22C55E; color: #fff; }
+.option-text { font-size: 14px; line-height: 1.5; color: #D1D5DB; text-align: left; }
+
+/* Result Screen */
+.result-screen { padding: 0; align-items: center; text-align: center; }
+.result-hero { padding: 48px 20px 32px; }
+.result-badge { font-size: 72px; margin-bottom: 16px; }
+.result-label { font-size: 13px; color: #9CA3AF; margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; }
+.result-type { font-size: 28px; font-weight: 700; margin-bottom: 16px; }
+.result-type.A { color: #22C55E; }
+.result-type.B { color: #3B82F6; }
+.result-type.C { color: #F59E0B; }
+.result-type.D { color: #A855F7; }
+
+.result-desc-box { background: #1A1A1F; border-radius: 16px; padding: 20px; margin: 0 20px 20px; text-align: left; }
+.result-desc-text { font-size: 14px; line-height: 1.8; color: #D1D5DB; margin-bottom: 16px; }
+.result-traits { display: flex; flex-wrap: wrap; gap: 8px; }
+.trait-tag { background: rgba(255,255,255,0.08); padding: 6px 14px; border-radius: 20px; font-size: 12px; color: #9CA3AF; }
+
+.share-row { padding: 0 20px 24px; display: flex; gap: 12px; }
+.btn { flex: 1; padding: 14px 20px; border: none; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.25s ease; font-family: inherit; }
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: linear-gradient(135deg, #22C55E, #16A34A); color: #fff; }
+.btn-primary:hover { box-shadow: 0 4px 20px rgba(34,197,94,0.3); }
+.btn-secondary { background: rgba(255,255,255,0.06); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
+.btn-secondary:hover { background: rgba(255,255,255,0.1); }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+  background: #22C55E; color: #fff; padding: 12px 24px; border-radius: 8px;
+  font-size: 14px; font-weight: 500; opacity: 0; transition: opacity 0.3s;
+  pointer-events: none; z-index: 100;
+}
+.toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- Disclaimer Screen -->
+  <div class="screen disclaimer-screen active" id="disclaimerScreen">
+    <div class="disclaimer-icon">🛡️</div>
+    <h1 class="disclaimer-title">你的依恋类型是什么？</h1>
+    <p class="disclaimer-text">
+      这是一项基于依恋理论的心理学自评量表，旨在帮助你了解自己的依恋风格，以促进自我觉察与个人成长。<br><br>
+      <strong>请注意：</strong>本测验结果仅供参考，不构成医学或心理诊断。如你正在经历严重的情感困扰，建议寻求专业心理咨询师的帮助。
+    </p>
+    <button class="btn btn-primary" id="startBtn">开始探索 →</button>
+  </div>
+
+  <!-- Quiz Screen -->
+  <div class="screen quiz-screen" id="quizScreen">
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span id="progressText">题目 1 / 15</span>
+        <span id="progressPct">0%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+    <div class="question-box">
+      <div class="question-number" id="questionNumber">第 1 题</div>
+      <div class="question-text" id="questionText"></div>
+    </div>
+    <div class="options" id="options"></div>
+  </div>
+
+  <!-- Result Screen -->
+  <div class="screen result-screen" id="resultScreen">
+    <div class="result-hero">
+      <div class="result-badge" id="resultBadge">🌿</div>
+      <div class="result-label">你的依恋类型是</div>
+      <div class="result-type" id="resultType">安全型</div>
+    </div>
+    <div class="result-desc-box">
+      <div class="result-desc-text" id="resultDesc"></div>
+      <div class="result-traits" id="resultTraits"></div>
+    </div>
+    <div class="share-row">
+      <button class="btn btn-primary" id="shareBtn">📋 复制结果</button>
+      <button class="btn btn-secondary" id="retakeBtn">🔄 重新测试</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const questions = [
+  { text: "在一段认真的关系开始前，你通常会先感受到？", options: [
+    { letter: "A", text: "期待和兴奋，同时保持清醒的判断" },
+    { letter: "B", text: "心跳加速、患得患失，害怕对方不够喜欢我" },
+    { letter: "C", text: "有点紧张，想给自己留退路" },
+    { letter: "D", text: "既渴望又害怕，想要靠近又忍不住想逃" }
+  ]},
+  { text: "当你非常想念一个人，却联系不上对方时，你会？", options: [
+    { letter: "A", text: "先做自己的事，相信对方忙完会回复" },
+    { letter: "B", text: "反复查看手机，忍不住连发好几条消息" },
+    { letter: "C", text: "算了，反正我也没那么需要他" },
+    { letter: "D", text: "想发消息，手指悬在屏幕上又放下了" }
+  ]},
+  { text: "对方没有及时回复你的消息，你会怎么想？", options: [
+    { letter: "A", text: "可能在忙，等一下就好" },
+    { letter: "B", text: "他是不是对我没兴趣了？我是不是做错了什么？" },
+    { letter: "C", text: "无所谓，反正我也有自己的事" },
+    { letter: "D", text: "很焦虑，但假装不在乎，装作很忙" }
+  ]},
+  { text: "你和伴侣发生激烈争吵后，你会怎么做？", options: [
+    { letter: "A", text: "冷静后主动沟通，寻找双方都能接受的解决方案" },
+    { letter: "B", text: "又委屈又生气，等对方来道歉，不然就一直冷战" },
+    { letter: "C", text: "直接走开，不想解释了，过几天假装没发生" },
+    { letter: "D", text: "吵完很后悔，但不知道该怎么收场，怕伤害彼此" }
+  ]},
+  { text: "你对「亲密」这个词的第一感受是？", options: [
+    { letter: "A", text: "温暖、安全，是两个人彼此信任的证明" },
+    { letter: "B", text: "渴望，想要和对方越近越好，24小时都不够" },
+    { letter: "C", text: "有点不自在，亲密意味着失去自由" },
+    { letter: "D", text: "复杂，想要但又怕靠太近会受伤" }
+  ]},
+  { text: "当你发现伴侣心情不好时，你的反应是？", options: [
+    { letter: "A", text: "主动关心，询问是否需要倾诉，陪伴但不强迫" },
+    { letter: "B", text: "比他更紧张，觉得一定是自己的问题，想立刻解决" },
+    { letter: "C", text: "给他空间，等他主动来找我" },
+    { letter: "D", text: "想关心但又怕被拒绝，小心翼翼地试探" }
+  ]},
+  { text: "在关系中，你最害怕的场景是？", options: [
+    { letter: "A", text: "信任被破坏，忠诚被背叛" },
+    { letter: "B", text: "被忽视、被抛弃，对方突然不爱我了" },
+    { letter: "C", text: "被控制、被束缚，失去自我" },
+    { letter: "D", text: "既害怕被抛弃，也害怕被吞没，两种都让我窒息" }
+  ]},
+  { text: "你更倾向于如何表达对一个人的喜欢？", options: [
+    { letter: "A", text: "用行动和陪伴，让对方感受到踏实的在乎" },
+    { letter: "B", text: "频繁联系、表达想念、确认对方的心意" },
+    { letter: "C", text: "保持一定距离，让关系自然发展，不说太满" },
+    { letter: "D", text: "嘴上说不在意，但做出一些小动作希望对方发现" }
+  ]},
+  { text: "你身边最亲近的人会怎么形容你？", options: [
+    { letter: "A", text: "可靠、稳定，是朋友的情感港湾" },
+    { letter: "B", text: "很重感情，但有时候会让人感到压力" },
+    { letter: "C", text: "独立、神秘，关系再近也保持一定距离" },
+    { letter: "D", text: "时而热情时而冷淡，让人捉摸不透" }
+  ]},
+  { text: "当关系进入需要承诺的阶段（例如确定关系/同居），你会？", options: [
+    { letter: "A", text: "认真考虑，理性评估，合适就坦然接受" },
+    { letter: "B", text: "既开心又焦虑，不停追问对方「真的确定吗」" },
+    { letter: "C", text: "有点抗拒，想办法推迟或逃避这个话题" },
+    { letter: "D", text: "内心极度矛盾，想要承诺但又怕未来会受伤" }
+  ]},
+  { text: "你对「独处」这件事的感受是？", options: [
+    { letter: "A", text: "需要但不是必需，有伴时享受相伴，独处时也自在" },
+    { letter: "B", text: "独处时会很焦虑，总想找人陪" },
+    { letter: "C", text: "很喜欢独处，一个人才能真正做自己" },
+    { letter: "D", text: "独处时内心很乱，一边想一个人，一边又觉得孤单" }
+  ]},
+  { text: "在过往的感情经历中，你最常见的模式是？", options: [
+    { letter: "A", text: "关系稳定，彼此成长，结束后也能平和放下" },
+    { letter: "B", text: "爱得很用力，结束后久久无法释怀" },
+    { letter: "C", text: "习惯被动，关系总是无疾而终或自己先退出" },
+    { letter: "D", text: "分分合合，每次都像坐过山车，爱恨交织" }
+  ]},
+  { text: "当你感受到对方开始疏远时，你会？", options: [
+    { letter: "A", text: "主动沟通，了解原因，表达自己的感受和需求" },
+    { letter: "B", text: "疯狂反思自己哪里做错了，卑微地想挽回" },
+    { letter: "C", text: "既然你要走，那我也不稀罕，率先切断联系" },
+    { letter: "D", text: "既想追问又怕被拒绝，陷入内耗，不知道怎么办" }
+  ]},
+  { text: "你对「安全感」的理解是？", options: [
+    { letter: "A", text: "安全感来自内心，我知道自己的价值，不依赖对方来确认" },
+    { letter: "B", text: "安全感来自对方的反馈——他及时回复、常常表达爱意" },
+    { letter: "C", text: "安全感意味着不被控制，保持距离才能保护自己" },
+    { letter: "D", text: "我渴望安全感，但又不敢相信有人真的能给我" }
+  ]},
+  { text: "如果满分10分代表「完全信任」，你给自己的信任水平打几分？", options: [
+    { letter: "A", text: "7-10分：我相信他人，也相信自己的判断" },
+    { letter: "B", text: "3-6分：我想要信任，但总是忍不住怀疑" },
+    { letter: "C", text: "1-3分：信任别人太冒险，还是靠自己最安全" },
+    { letter: "D", text: "不确定：我分不清自己是真信任还是在逃避面对" }
+  ]}
+];
+
+const results = {
+  A: {
+    type: "安全型", emoji: "🌿", className: "A",
+    desc: "你拥有安全型依恋风格——这是最健康、最平衡的依恋类型。你在亲密关系中既能够保持自我，也能够放心地依赖对方。你信任自己和伴侣，有能力进行开放的情感沟通。",
+    traits: ["情绪稳定", "善于沟通", "信任伴侣", "建设性处理冲突"]
+  },
+  B: {
+    type: "焦虑型", emoji: "🌊", className: "B",
+    desc: "你对亲密关系有强烈的渴望，渴望被关注、被回应、被确认。你对伴侣的情感状态非常敏感，容易因害怕被抛弃而过度担忧。",
+    traits: ["情感细腻", "投入度高", "渴望深度连接", "对伴侣敏感"]
+  },
+  C: {
+    type: "回避型", emoji: "🏜️", className: "C",
+    desc: "你重视独立和自主，在亲密关系中倾向于保持一定的情感距离。你不习惯向伴侣寻求支持，也不太善于表达自己的情感需求。",
+    traits: ["高度独立", "理性冷静", "尊重边界", "情绪调节强"]
+  },
+  D: {
+    type: "恐惧型", emoji: "🌪️", className: "D",
+    desc: "你既渴望亲密又害怕被伤害，既想靠近又想逃离。亲密关系中的不确定感常常让你感到不安，情感体验起伏较大。",
+    traits: ["情感洞察力强", "内心丰富", "适应性强", "体验深刻"]
+  }
+};
+
+let currentQuestion = 0;
+let answers = [];
+
+// Event Listeners
+document.getElementById('startBtn').addEventListener('click', startQuiz);
+document.getElementById('shareBtn').addEventListener('click', shareResult);
+document.getElementById('retakeBtn').addEventListener('click', retakeQuiz);
+
+function startQuiz() {
+  currentQuestion = 0;
+  answers = [];
+  document.getElementById('disclaimerScreen').classList.remove('active');
+  document.getElementById('quizScreen').classList.add('active');
+  showQuestion();
+}
+
+function showQuestion() {
+  const q = questions[currentQuestion];
+  const pct = Math.round((currentQuestion / 15) * 100);
+  document.getElementById('progressText').textContent = `题目 ${currentQuestion + 1} / 15`;
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('questionNumber').textContent = `第 ${currentQuestion + 1} 题`;
+  document.getElementById('questionText').textContent = q.text;
+
+  const optionsEl = document.getElementById('options');
+  optionsEl.innerHTML = '';
+
+  q.options.forEach(opt => {
+    const card = document.createElement('div');
+    card.className = 'option-card';
+    card.innerHTML = `<div class="option-letter">${opt.letter}</div><div class="option-text">${opt.text}</div>`;
+    card.addEventListener('click', () => selectOption(card, opt.letter));
+    optionsEl.appendChild(card);
+  });
+}
+
+function selectOption(card, letter) {
+  const allCards = document.querySelectorAll('.option-card');
+  allCards.forEach(c => { c.classList.remove('selected', 'dimmed'); });
+  card.classList.add('selected');
+  allCards.forEach(c => { if (c !== card) c.classList.add('dimmed'); });
+
+  setTimeout(() => {
+    answers.push(letter);
+    currentQuestion++;
+    if (currentQuestion < questions.length) {
+      showQuestion();
+    } else {
+      showResult();
+    }
+  }, 400);
+}
+
+function showResult() {
+  document.getElementById('quizScreen').classList.remove('active');
+  document.getElementById('resultScreen').classList.add('active');
+
+  const tally = { A: 0, B: 0, C: 0, D: 0 };
+  answers.forEach(a => tally[a]++);
+
+  let dominant = 'A';
+  let maxScore = 0;
+  for (const [k, v] of Object.entries(tally)) {
+    if (v > maxScore) { maxScore = v; dominant = k; }
+  }
+
+  // Tie-breaker
+  const sorted = Object.values(tally).sort((a, b) => b - a);
+  if (sorted[0] - sorted[1] <= 2 && tally.D >= 4) dominant = 'D';
+
+  const r = results[dominant];
+  document.getElementById('resultBadge').textContent = r.emoji;
+  document.getElementById('resultType').textContent = r.type;
+  document.getElementById('resultType').className = 'result-type ' + r.className;
+  document.getElementById('resultDesc').textContent = r.desc;
+  document.getElementById('resultTraits').innerHTML = r.traits.map(t => `<span class="trait-tag">${t}</span>`).join('');
+}
+
+function shareResult() {
+  const type = document.getElementById('resultType').textContent;
+  const desc = document.getElementById('resultDesc').textContent;
+  const text = `🧠 我的依恋类型是「${type}」！\n\n${desc}\n\n——快来测试你的依恋类型吧！`;
+  navigator.clipboard.writeText(text).then(() => showToast('✅ 结果已复制！')).catch(() => showToast('复制失败'));
+}
+
+function retakeQuiz() {
+  document.getElementById('resultScreen').classList.remove('active');
+  document.getElementById('disclaimerScreen').classList.add('active');
+  document.getElementById('progressFill').style.width = '0%';
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>

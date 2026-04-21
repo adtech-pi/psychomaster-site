@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PsychoMaster - 发现你的内心世界。专业心理学测试，涵盖依恋类型、人格特质、情绪管理等，让你更了解自己。">
+  <meta name="theme-color" content="#0D0D0F">
+  <meta property="og:title" content="PsychoMaster - 发现你的内心世界">
+  <meta property="og:description" content="专业心理学测试平台，助你深入了解自己">
+  <meta property="og:type" content="website">
+  <title>PsychoMaster - 发现你的内心世界</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="site-wrapper">
+
+    <!-- ====== Navigation ====== -->
+    <nav class="navbar" role="navigation" aria-label="主导航">
+      <div class="navbar-inner">
+        <a href="/" class="navbar-logo" aria-label="PsychoMaster 首页">
+          <div class="navbar-logo-icon">🧠</div>
+          <span class="navbar-logo-text">PsychoMaster</span>
+        </a>
+
+        <ul class="navbar-links" role="list">
+          <li><a href="#quizzes" class="active">心理测试</a></li>
+          <li><a href="#about">关于我们</a></li>
+          <li><a href="#features">特色</a></li>
+        </ul>
+
+        <button class="navbar-share-btn" onclick="shareToTelegram()" aria-label="分享到 Telegram">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.461-1.901-.903-1.056-.692-1.653-1.123-2.678-1.799-1.185-.781-.417-1.21.258-1.911.177-.184 3.247-2.977 3.307-3.23.007-.032.015-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.139-5.062 3.345-.479.329-.913.489-1.302.481-.428-.009-1.252-.242-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.324-.437.893-.663 3.498-1.524 5.831-2.529 6.998-3.015 3.333-1.386 4.025-1.627 4.477-1.635.099-.002.321.023.465.141.121.099.154.232.17.325.015.093.034.305.019.472z"/>
+          </svg>
+          分享
+        </button>
+
+        <button class="nav-toggle" aria-label="菜单" aria-expanded="false">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <!-- ====== Hero Section ====== -->
+    <section class="hero" id="home">
+      <div class="hero-bg"></div>
+      <div class="hero-particles"></div>
+
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          科学心理学 · 免费测试
+        </div>
+
+        <h1 class="hero-title">
+          <span class="accent">PsychoMaster</span><br>
+          发现你的内心世界
+        </h1>
+
+        <p class="hero-subtitle">
+          基于科学心理学理论的专业测试平台，涵盖依恋类型、人格特质、情绪管理等多个维度，助你更深入地了解自己。
+        </p>
+
+        <div class="hero-actions">
+          <a href="#quizzes" class="btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+            开始测试
+          </a>
+          <a href="#about" class="btn-secondary">
+            了解更多
+          </a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-number">10K+</div>
+            <div class="hero-stat-label">已完成测试</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-number">5</div>
+            <div class="hero-stat-label">专业测评维度</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-number">100%</div>
+            <div class="hero-stat-label">免费使用</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Quiz Catalog ====== -->
+    <section class="section quiz-catalog" id="quizzes">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="section-eyebrow">心理测评</p>
+          <h2 class="section-title">精选心理测试</h2>
+          <p class="section-subtitle">每个测试都基于经典心理学理论，帮助你从不同角度认识自己</p>
+        </div>
+
+        <div class="quiz-grid">
+
+          <!-- Quiz Card 1: Attachment Quiz -->
+          <article class="quiz-card reveal" data-href="attachment-quiz-fixed.html" tabindex="0" role="button" aria-label="开始依恋类型测试">
+            <div class="quiz-card-thumb">
+              <div class="quiz-card-thumb-bg" style="background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); display: flex; align-items: center; justify-content: center;">
+                <div style="font-size: 64px; opacity: 0.6;">💜</div>
+              </div>
+              <div class="quiz-card-thumb-overlay"></div>
+              <span class="quiz-card-category">依恋理论</span>
+              <span class="quiz-card-popularity">
+                <span class="quiz-card-popularity-icon">🔥</span>
+                热门
+              </span>
+            </div>
+            <div class="quiz-card-body">
+              <h3 class="quiz-card-title">依恋类型测试</h3>
+              <p class="quiz-card-desc">基于 Bowlby 依恋理论，探索你在亲密关系中的依恋风格——安全型、焦虑型、回避型还是混乱型？</p>
+              <div class="quiz-card-meta">
+                <span class="quiz-card-time">
+                  <span class="quiz-card-time-icon">⏱</span>
+                  约 5 分钟
+                </span>
+                <a href="attachment-quiz-fixed.html" class="quiz-card-btn" onclick="event.stopPropagation()">
+                  开始测试 →
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Quiz Card 2: Coming Soon -->
+          <article class="quiz-card quiz-card-coming reveal" aria-label="更多测试即将推出">
+            <div class="quiz-card-thumb">
+              <div class="quiz-card-thumb-bg" style="background: linear-gradient(135deg, #1a1a2e, #0d0d15); display: flex; align-items: center; justify-content: center;">
+                <div style="font-size: 48px; opacity: 0.4;">🔮</div>
+              </div>
+              <div class="quiz-card-thumb-overlay"></div>
+              <span class="quiz-card-coming-badge">敬请期待</span>
+            </div>
+            <div class="quiz-card-body">
+              <h3 class="quiz-card-title">大五人格测试</h3>
+              <p class="quiz-card-desc">基于大五人格模型（OCEAN），从开放性、尽责性、外向性、宜人性、神经质五个维度全面评估你的性格特质。</p>
+              <div class="quiz-card-meta">
+                <span class="quiz-card-time">
+                  <span class="quiz-card-time-icon">⏱</span>
+                  约 8 分钟
+                </span>
+                <span class="quiz-card-btn" style="background: rgba(255,255,255,0.06); cursor: default;">
+                  即将上线
+                </span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Quiz Card 3: Coming Soon -->
+          <article class="quiz-card quiz-card-coming reveal" aria-label="更多测试即将推出">
+            <div class="quiz-card-thumb">
+              <div class="quiz-card-thumb-bg" style="background: linear-gradient(135deg, #1a1a2e, #0d0d15); display: flex; align-items: center; justify-content: center;">
+                <div style="font-size: 48px; opacity: 0.4;">🌊</div>
+              </div>
+              <div class="quiz-card-thumb-overlay"></div>
+              <span class="quiz-card-coming-badge">敬请期待</span>
+            </div>
+            <div class="quiz-card-body">
+              <h3 class="quiz-card-title">情绪智力评估</h3>
+              <p class="quiz-card-desc">评估你的情绪觉察、自我调节、共情能力和社会关系管理能力，科学提升你的情绪智商（EQ）。</p>
+              <div class="quiz-card-meta">
+                <span class="quiz-card-time">
+                  <span class="quiz-card-time-icon">⏱</span>
+                  约 6 分钟
+                </span>
+                <span class="quiz-card-btn" style="background: rgba(255,255,255,0.06); cursor: default;">
+                  即将上线
+                </span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Quiz Card 4: Coming Soon -->
+          <article class="quiz-card quiz-card-coming reveal" aria-label="更多测试即将推出">
+            <div class="quiz-card-thumb">
+              <div class="quiz-card-thumb-bg" style="background: linear-gradient(135deg, #1a1a2e, #0d0d15); display: flex; align-items: center; justify-content: center;">
+                <div style="font-size: 48px; opacity: 0.4;">🌙</div>
+              </div>
+              <div class="quiz-card-thumb-overlay"></div>
+              <span class="quiz-card-coming-badge">敬请期待</span>
+            </div>
+            <div class="quiz-card-body">
+              <h3 class="quiz-card-title">自我价值感测评</h3>
+              <p class="quiz-card-desc">探索你的自我认同与价值感水平，了解自我接纳程度，帮助你建立更健康的自我认知与内在力量。</p>
+              <div class="quiz-card-meta">
+                <span class="quiz-card-time">
+                  <span class="quiz-card-time-icon">⏱</span>
+                  约 5 分钟
+                </span>
+                <span class="quiz-card-btn" style="background: rgba(255,255,255,0.06); cursor: default;">
+                  即将上线
+                </span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Quiz Card 5: Coming Soon -->
+          <article class="quiz-card quiz-card-coming reveal" aria-label="更多测试即将推出">
+            <div class="quiz-card-thumb">
+              <div class="quiz-card-thumb-bg" style="background: linear-gradient(135deg, #1a1a2e, #0d0d15); display: flex; align-items: center; justify-content: center;">
+                <div style="font-size: 48px; opacity: 0.4;">💡</div>
+              </div>
+              <div class="quiz-card-thumb-overlay"></div>
+              <span class="quiz-card-coming-badge">敬请期待</span>
+            </div>
+            <div class="quiz-card-body">
+              <h3 class="quiz-card-title">认知风格评估</h3>
+              <p class="quiz-card-desc">了解你的思维模式——场依存 vs 场独立、沉思型 vs 冲动型，发现你的认知优势与学习风格。</p>
+              <div class="quiz-card-meta">
+                <span class="quiz-card-time">
+                  <span class="quiz-card-time-icon">⏱</span>
+                  约 7 分钟
+                </span>
+                <span class="quiz-card-btn" style="background: rgba(255,255,255,0.06); cursor: default;">
+                  即将上线
+                </span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Quiz Card 6: Coming Soon -->
+          <article class="quiz-card quiz-card-coming reveal" aria-label="更多测试即将推出">
+            <div class="quiz-card-thumb">
+              <div class="quiz-card-thumb-bg" style="background: linear-gradient(135deg, #1a1a2e, #0d0d15); display: flex; align-items: center; justify-content: center;">
+                <div style="font-size: 48px; opacity: 0.4;">🔥</div>
+              </div>
+              <div class="quiz-card-thumb-overlay"></div>
+              <span class="quiz-card-coming-badge">敬请期待</span>
+            </div>
+            <div class="quiz-card-body">
+              <h3 class="quiz-card-title">压力应对风格测评</h3>
+              <p class="quiz-card-desc">基于 Lazarus 压力应对理论，评估你在面对压力时的主要应对策略，找到提升心理韧性的方向。</p>
+              <div class="quiz-card-meta">
+                <span class="quiz-card-time">
+                  <span class="quiz-card-time-icon">⏱</span>
+                  约 5 分钟
+                </span>
+                <span class="quiz-card-btn" style="background: rgba(255,255,255,0.06); cursor: default;">
+                  即将上线
+                </span>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Features Section ====== -->
+    <section class="section features" id="features">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="section-eyebrow">为什么选择我们</p>
+          <h2 class="section-title">专业 · 科学 · 安全</h2>
+          <p class="section-subtitle">每一个测试都经过精心设计，确保科学性与用户体验的平衡</p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card reveal">
+            <div class="feature-icon feature-icon-blue">📚</div>
+            <h3 class="feature-title">科学理论支撑</h3>
+            <p class="feature-desc">所有测试基于经典心理学理论和经验证的研究量表，确保测评的专业性与有效性。</p>
+          </div>
+
+          <div class="feature-card reveal">
+            <div class="feature-icon feature-icon-purple">🔒</div>
+            <h3 class="feature-title">隐私保护</h3>
+            <p class="feature-desc">测试过程完全在本地浏览器完成，数据不会上传到任何服务器，你的隐私安全无忧。</p>
+          </div>
+
+          <div class="feature-card reveal">
+            <div class="feature-icon feature-icon-green">⚡</div>
+            <h3 class="feature-title">即时反馈</h3>
+            <p class="feature-desc">完成测试后立即获得详细分析报告，深入了解自己的心理特质与行为模式。</p>
+          </div>
+
+          <div class="feature-card reveal">
+            <div class="feature-icon feature-icon-amber">🎯</div>
+            <h3 class="feature-title">实用洞察</h3>
+            <p class="feature-desc">不只是分数，更有基于心理学研究的个性化建议，帮助你在生活中实际应用。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== About Section ====== -->
+    <section class="section" id="about" style="padding-top: 0;">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="section-eyebrow">关于我们</p>
+          <h2 class="section-title">PsychoMaster 是什么？</h2>
+          <p class="section-subtitle">将专业心理学带入每个人的生活</p>
+        </div>
+
+        <div style="max-width: 680px; margin: 0 auto; text-align: center;" class="reveal">
+          <p style="font-size: 1rem; color: var(--text-secondary); line-height: 1.9; margin-bottom: 20px;">
+            PsychoMaster 是一个专注于心理学测评的数字产品平台。我们的使命是将经典心理学理论转化为每个人都能轻松使用的实用工具，帮助你更了解自己、更理解他人。
+          </p>
+          <p style="font-size: 1rem; color: var(--text-secondary); line-height: 1.9;">
+            无论是探索你的依恋类型、发现人格特质，还是提升情绪智力，我们的每一个测试都经过科学设计，旨在提供真实、有价值的自我认知洞察。所有测试均免费使用，无需注册，随时开始。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== CTA Section ====== -->
+    <section class="section" style="padding: 60px 0;">
+      <div class="container">
+        <div class="reveal" style="background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(139,92,246,0.15)); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 48px; text-align: center;">
+          <h2 style="font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 800; margin-bottom: 12px;">准备好探索你的内心了吗？</h2>
+          <p style="color: var(--text-secondary); margin-bottom: 28px; font-size: 1rem;">从依恋类型测试开始，迈出自我探索的第一步</p>
+          <a href="attachment-quiz-fixed.html" class="btn-primary" style="font-size: 1rem; padding: 16px 36px;">
+            🧠 立即开始测试
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Footer ====== -->
+    <footer class="footer" role="contentinfo">
+      <div class="footer-inner">
+        <div class="footer-top">
+          <div class="footer-brand">
+            <div class="navbar-logo" style="margin-bottom: 4px;">
+              <div class="navbar-logo-icon">🧠</div>
+              <span class="navbar-logo-text">PsychoMaster</span>
+            </div>
+            <p class="footer-brand-desc">
+              将专业心理学带入每个人的生活。科学测评，深度洞察，助你成为更了解自己的那个人。
+            </p>
+            <div class="footer-social">
+              <a href="#" class="footer-social-link" aria-label="Telegram" title="Telegram">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.461-1.901-.903-1.056-.692-1.653-1.123-2.678-1.799-1.185-.781-.417-1.21.258-1.911.177-.184 3.247-2.977 3.307-3.23.007-.032.015-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.139-5.062 3.345-.479.329-.913.489-1.302.481-.428-.009-1.252-.242-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.324-.437.893-.663 3.498-1.524 5.831-2.529 6.998-3.015 3.333-1.386 4.025-1.627 4.477-1.635.099-.002.321.023.465.141.121.099.154.232.17.325.015.093.034.305.019.472z"/>
+                </svg>
+              </a>
+              <a href="#" class="footer-social-link" aria-label="分享" title="分享给朋友" onclick="shareToTelegram(); return false;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="footer-col-title">心理测试</h4>
+            <ul class="footer-links">
+              <li><a href="attachment-quiz-fixed.html">依恋类型测试</a></li>
+              <li><a href="#quizzes">大五人格测试</a></li>
+              <li><a href="#quizzes">情绪智力评估</a></li>
+              <li><a href="#quizzes">自我价值感测评</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="footer-col-title">关于</h4>
+            <ul class="footer-links">
+              <li><a href="#about">关于我们</a></li>
+              <li><a href="#features">平台特色</a></li>
+              <li><a href="#">常见问题</a></li>
+              <li><a href="#" onclick="copyLink(); return false;">复制本站链接</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p class="footer-copy">© 2026 PsychoMaster. 基于科学心理学理论构建。</p>
+          <div class="footer-legal">
+            <a href="#">隐私政策</a>
+            <a href="#">使用条款</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
