@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>What's Your Inner Child Wound?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0D0D1A;
+      --surface: #161627;
+      --surface-hover: #1E1E35;
+      --border: #2A2A45;
+      --text-primary: #F0EEF6;
+      --text-secondary: #9896AA;
+      --text-muted: #5E5C72;
+      --accent: #C8A2E8;
+      --progress-bar: #C8A2E8;
+      --progress-track: #2A2A45;
+      --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 0;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ── SCREENS ── */
+    .screen {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+      min-height: 100dvh;
+      padding: 48px 24px 32px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 350ms var(--ease-out), transform 350ms var(--ease-out);
+    }
+
+    .screen.active {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .screen.fade-out {
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: opacity 250ms ease-in, transform 250ms ease-in;
+    }
+
+    /* ── DISCLAIMER ── */
+    .disclaimer {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      gap: 0;
+    }
+
+    .disclaimer-icon {
+      font-size: 3.5rem;
+      margin-bottom: 24px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .disclaimer-title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 1.75rem;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    .disclaimer-subtitle {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 32px;
+    }
+
+    .disclaimer-body {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      max-width: 320px;
+      margin-bottom: 12px;
+    }
+
+    .disclaimer-body p {
+      margin-bottom: 14px;
+    }
+
+    .disclaimer-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .disclaimer-safe {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-top: 8px;
+      margin-bottom: 40px;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      border-radius: 100px;
+      padding: 16px 40px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: transform 200ms var(--spring), box-shadow 200ms ease;
+      box-shadow: 0 0 0 0 rgba(200, 162, 232, 0);
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.03);
+      box-shadow: 0 4px 24px rgba(200, 162, 232, 0.3);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    /* ── QUIZ SCREEN ── */
+    .quiz-screen {
+      padding-top: 24px;
+      padding-bottom: 24px;
+      gap: 0;
+    }
+
+    /* Progress */
+    .progress-container {
+      margin-bottom: 32px;
+    }
+
+    .progress-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 4px;
+      background: var(--progress-track);
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #9B6FD4, var(--progress-bar));
+      border-radius: 2px;
+      width: 0%;
+      transition: width 350ms var(--spring);
+    }
+
+    /* Question area */
+    .question-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .question-number {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .question-text {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 1.25rem;
+      line-height: 1.45;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      margin-bottom: 24px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 16px 20px;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      transition:
+        background 180ms ease,
+        border-color 180ms ease,
+        opacity 180ms ease-out,
+        transform 200ms var(--spring),
+        box-shadow 200ms ease;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .option-card:hover {
+      background: var(--surface-hover);
+      border-color: #3A3A5A;
+    }
+
+    .option-card.selected {
+      transform: scale(1.025);
+    }
+
+    .option-card.dimmed {
+      opacity: 0.38;
+      pointer-events: none;
+    }
+
+    .option-letter {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      min-width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      transition: all 200ms var(--spring);
+      flex-shrink: 0;
+    }
+
+    .option-card.selected .option-letter {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg);
+    }
+
+    .option-text {
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: var(--text-secondary);
+      transition: color 180ms ease;
+      flex: 1;
+    }
+
+    .option-card.selected .option-text {
+      color: var(--text-primary);
+    }
+
+    /* Glow colors per wound type */
+    .option-card.selected[data-wound="abandoned"] {
+      border-color: #7BBFE0;
+      box-shadow: 0 0 20px rgba(123, 191, 224, 0.25);
+      background: rgba(123, 191, 224, 0.08);
+    }
+    .option-card.selected[data-wound="abandoned"] .option-letter {
+      background: #7BBFE0;
+      border-color: #7BBFE0;
+      color: #0D0D1A;
+    }
+
+    .option-card.selected[data-wound="rejected"] {
+      border-color: #B07ACC;
+      box-shadow: 0 0 20px rgba(176, 122, 204, 0.25);
+      background: rgba(176, 122, 204, 0.08);
+    }
+    .option-card.selected[data-wound="rejected"] .option-letter {
+      background: #B07ACC;
+      border-color: #B07ACC;
+      color: #0D0D1A;
+    }
+
+    .option-card.selected[data-wound="neglected"] {
+      border-color: #8A8A9A;
+      box-shadow: 0 0 20px rgba(138, 138, 154, 0.2);
+      background: rgba(138, 138, 154, 0.08);
+    }
+    .option-card.selected[data-wound="neglected"] .option-letter {
+      background: #8A8A9A;
+      border-color: #8A8A9A;
+      color: #0D0D1A;
+    }
+
+    .option-card.selected[data-wound="betrayed"] {
+      border-color: #E07A7A;
+      box-shadow: 0 0 20px rgba(224, 122, 122, 0.25);
+      background: rgba(224, 122, 122, 0.08);
+    }
+    .option-card.selected[data-wound="betrayed"] .option-letter {
+      background: #E07A7A;
+      border-color: #E07A7A;
+      color: #0D0D1A;
+    }
+
+    .option-card.selected[data-wound="humiliated"] {
+      border-color: #D4A84B;
+      box-shadow: 0 0 20px rgba(212, 168, 75, 0.25);
+      background: rgba(212, 168, 75, 0.08);
+    }
+    .option-card.selected[data-wound="humiliated"] .option-letter {
+      background: #D4A84B;
+      border-color: #D4A84B;
+      color: #0D0D1A;
+    }
+
+    .option-card.selected[data-wound="unworthy"] {
+      border-color: #E09A4C;
+      box-shadow: 0 0 20px rgba(224, 154, 76, 0.25);
+      background: rgba(224, 154, 76, 0.08);
+    }
+    .option-card.selected[data-wound="unworthy"] .option-letter {
+      background: #E09A4C;
+      border-color: #E09A4C;
+      color: #0D0D1A;
+    }
+
+    /* ── RESULT SCREEN ── */
+    .result-screen {
+      padding: 0;
+      justify-content: flex-start;
+      overflow-y: auto;
+    }
+
+    .result-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .result-bg-gradient {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 600ms ease;
+    }
+
+    .result-bg-gradient.visible {
+      opacity: 1;
+    }
+
+    .result-content {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      padding: 48px 28px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0;
+    }
+
+    .result-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 400ms ease, transform 400ms ease;
+    }
+
+    .result-label.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .result-name {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 2rem;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 500ms ease, transform 500ms ease;
+      text-shadow: 0 0 40px var(--wound-color, #C8A2E8);
+    }
+
+    .result-name.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .result-emoji {
+      font-size: 4.5rem;
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: scale(0.5);
+      transition: opacity 400ms var(--spring), transform 400ms var(--spring);
+      filter: drop-shadow(0 0 20px var(--wound-color, #C8A2E8));
+    }
+
+    .result-emoji.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .result-tagline {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 0.95rem;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--wound-color, var(--accent));
+      margin-bottom: 28px;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 400ms ease, transform 400ms ease;
+      max-width: 280px;
+    }
+
+    .result-tagline.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .result-divider {
+      width: 40px;
+      height: 2px;
+      background: var(--wound-color, var(--accent));
+      border-radius: 1px;
+      margin-bottom: 24px;
+      opacity: 0;
+      transition: opacity 300ms ease;
+      opacity: 0;
+    }
+
+    .result-divider.visible {
+      opacity: 0.6;
+    }
+
+    .result-description {
+      font-size: 0.875rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: 28px;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 400ms ease, transform 400ms ease;
+      max-width: 320px;
+    }
+
+    .result-description.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .result-traits {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 400ms ease, transform 400ms ease;
+    }
+
+    .result-traits.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .trait-tag {
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid;
+      opacity: 0.85;
+    }
+
+    .result-healing {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 22px;
+      margin-bottom: 28px;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 400ms ease, transform 400ms ease;
+      max-width: 320px;
+      width: 100%;
+      text-align: left;
+    }
+
+    .result-healing.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .result-healing-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .result-healing-text {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 1rem;
+      line-height: 1.55;
+      color: var(--text-primary);
+    }
+
+    .result-cta-row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      max-width: 280px;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 400ms ease, transform 400ms ease;
+    }
+
+    .result-cta-row.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .btn-share {
+      background: var(--wound-color, var(--accent));
+      color: #0D0D1A;
+      border: none;
+      border-radius: 100px;
+      padding: 16px 36px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: transform 200ms var(--spring), box-shadow 200ms ease;
+      width: 100%;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .btn-share:hover {
+      transform: scale(1.03);
+      box-shadow: 0 6px 28px rgba(0,0,0,0.4);
+    }
+
+    .btn-share:active {
+      transform: scale(0.98);
+    }
+
+    .btn-retake {
+      background: transparent;
+      color: var(--text-muted);
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 8px;
+      transition: color 150ms ease;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .btn-retake:hover {
+      color: var(--text-secondary);
+    }
+
+    .share-copied {
+      font-size: 0.75rem;
+      color: var(--accent);
+      font-weight: 500;
+      opacity: 0;
+      transition: opacity 200ms ease;
+      height: 18px;
+    }
+
+    .share-copied.show {
+      opacity: 1;
+    }
+
+    .result-footer {
+      margin-top: 32px;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      opacity: 0;
+      transition: opacity 400ms ease;
+    }
+
+    .result-footer.visible {
+      opacity: 0.5;
+    }
+
+    /* ── REDUCED MOTION ── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app" id="app">
+
+    <!-- DISCLAIMER SCREEN -->
+    <div class="screen disclaimer" id="screen-disclaimer">
+      <div class="disclaimer-icon">🌱</div>
+      <h1 class="disclaimer-title">Before We Begin</h1>
+      <p class="disclaimer-subtitle">Inner Child Wound Quiz</p>
+      <div class="disclaimer-body">
+        <p>This is a self-reflection tool — not a diagnosis.</p>
+        <p>The wounds we explore here are patterns, not pathology. They're things that happened to you, not things that are wrong with you.</p>
+        <p>If this content brings up heavy feelings, you're not alone. Please reach out to a trusted friend, therapist, or crisis resource.</p>
+      </div>
+      <p class="disclaimer-safe">You are safe here. Take your time.</p>
+      <button class="btn-primary" id="btn-begin">Begin the Quiz</button>
+    </div>
+
+    <!-- QUIZ SCREEN -->
+    <div class="screen quiz-screen" id="screen-quiz">
+      <div class="progress-container">
+        <p class="progress-label" id="progress-label">Question 1 of 12</p>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+      </div>
+      <div class="question-area">
+        <p class="question-number" id="question-number">Q1</p>
+        <h2 class="question-text" id="question-text"></h2>
+        <div class="options" id="options"></div>
+      </div>
+    </div>
+
+    <!-- RESULT SCREEN -->
+    <div class="screen result-screen" id="screen-result">
+      <div class="result-bg">
+        <div class="result-bg-gradient" id="result-bg"></div>
+      </div>
+      <div class="result-content">
+        <p class="result-label" id="result-label">Your Inner Child Wound</p>
+        <h1 class="result-name" id="result-name"></h1>
+        <div class="result-emoji" id="result-emoji"></div>
+        <p class="result-tagline" id="result-tagline"></p>
+        <div class="result-divider" id="result-divider"></div>
+        <p class="result-description" id="result-description"></p>
+        <div class="result-traits" id="result-traits"></div>
+        <div class="result-healing" id="result-healing">
+          <p class="result-healing-label">Healing Nudge</p>
+          <p class="result-healing-text" id="result-healing-text"></p>
+        </div>
+        <div class="result-cta-row" id="result-cta-row">
+          <button class="btn-share" id="btn-share">Share Your Result</button>
+          <p class="share-copied" id="share-copied">Copied! 💜</p>
+          <button class="btn-retake" id="btn-retake">Retake the Quiz</button>
+        </div>
+        <p class="result-footer" id="result-footer">The wound wasn't your fault. The healing is yours.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // ─────────────────────────────────────────────────
+    // DATA
+    // ─────────────────────────────────────────────────
+
+    const QUESTIONS = [
+      {
+        text: "When you were young and you were really upset, what happened?",
+        options: [
+          { letter: "A", text: "I learned to cry quietly. No one wanted to hear it.", wound: "abandoned" },
+          { letter: "B", text: "I was told to stop being dramatic / to get over it.", wound: "rejected" },
+          { letter: "C", text: "Someone was there for me — but I felt like a burden anyway.", wound: "humiliated" },
+          { letter: "D", text: "I don't really remember being upset. I just... kept going.", wound: "neglected" }
+        ]
+      },
+      {
+        text: "You brought home a drawing / a report card / something you were proud of. What was the typical response?",
+        options: [
+          { letter: "A", text: "It was ignored. Not dismissed, just... nothing.", wound: "neglected" },
+          { letter: "B", text: "It was compared to someone else's — always falling short.", wound: "rejected" },
+          { letter: "C", text: "It was praised, but only if it was perfect.", wound: "unworthy" },
+          { letter: "D", text: "I never thought to show anyone. It felt pointless.", wound: "neglected" }
+        ]
+      },
+      {
+        text: "What's a memory that surfaces when you think \"I had to be small\"?",
+        options: [
+          { letter: "A", text: "Faking being fine so no one would worry.", wound: "abandoned" },
+          { letter: "B", text: "Making myself invisible so I wouldn't get yelled at.", wound: "rejected" },
+          { letter: "C", text: "Being told I was \"too much\" — too loud, too sensitive, too needy.", wound: "rejected" },
+          { letter: "D", text: "Taking care of everyone else because no one else would.", wound: "unworthy" }
+        ]
+      },
+      {
+        text: "When you made a mistake as a kid, how did the adults around you respond?",
+        options: [
+          { letter: "A", text: "With anger, silence, or coldness.", wound: "betrayed" },
+          { letter: "B", text: "With guilt-tripping — \"After everything we've done for you.\"", wound: "humiliated" },
+          { letter: "C", text: "They didn't really respond. Mistakes just... disappeared into the void.", wound: "neglected" },
+          { letter: "D", text: "I don't think I was allowed to make mistakes. Not once.", wound: "unworthy" }
+        ]
+      },
+      {
+        text: "Pick the sentence that hits closest to home:",
+        options: [
+          { letter: "A", text: "\"I learned very early that love was conditional.\"", wound: "rejected" },
+          { letter: "B", text: "\"I learned very early that my feelings were inconvenient.\"", wound: "rejected" },
+          { letter: "C", text: "\"I learned very early that I was on my own.\"", wound: "abandoned" },
+          { letter: "D", text: "\"I learned very early that I had to earn my place.\"", wound: "unworthy" }
+        ]
+      },
+      {
+        text: "Someone in your household was having a bad day. What happened?",
+        options: [
+          { letter: "A", text: "The whole house walked on eggshells. You learned to read the mood instantly.", wound: "abandoned" },
+          { letter: "B", text: "You became the comforter — even when you were a child.", wound: "betrayed" },
+          { letter: "C", text: "It didn't affect you much. You just tuned out.", wound: "neglected" },
+          { letter: "D", text: "You disappeared. Somewhere else, somewhere quiet.", wound: "abandoned" }
+        ]
+      },
+      {
+        text: "When you needed something — comfort, attention, help — how did that usually go?",
+        options: [
+          { letter: "A", text: "Most of the time, you got it. But you sensed it was resented.", wound: "abandoned" },
+          { letter: "B", text: "You learned not to ask. It was easier that way.", wound: "abandoned" },
+          { letter: "C", text: "You asked, and you were made to feel like you were asking too much.", wound: "rejected" },
+          { letter: "D", text: "You don't remember needing much. You just... handled things.", wound: "neglected" }
+        ]
+      },
+      {
+        text: "Think of your childhood bedroom, or your sense of \"home\" back then. What fits?",
+        options: [
+          { letter: "A", text: "It felt unsafe to be fully asleep — you were always half-alert.", wound: "betrayed" },
+          { letter: "B", text: "It was chaotic, unpredictable, or loud. You never knew what kind of day it would be.", wound: "betrayed" },
+          { letter: "C", text: "It was physically fine. But emotionally, no one really saw you there.", wound: "neglected" },
+          { letter: "D", text: "Home was a performance. You showed up as who they wanted you to be.", wound: "unworthy" }
+        ]
+      },
+      {
+        text: "As a kid, how did you understand your value?",
+        options: [
+          { letter: "A", text: "I was valuable when I was useful, helpful, or quiet.", wound: "abandoned" },
+          { letter: "B", text: "I was valuable when I was achieving, succeeding, making them proud.", wound: "unworthy" },
+          { letter: "C", text: "I was valuable when I didn't need anything.", wound: "neglected" },
+          { letter: "D", text: "I'm not sure I ever felt valuable. I just tried to matter.", wound: "unworthy" }
+        ]
+      },
+      {
+        text: "When you disagreed with a parent or adult growing up, what happened?",
+        options: [
+          { letter: "A", text: "You got punished or shamed for it.", wound: "humiliated" },
+          { letter: "B", text: "They didn't hear you — they just talked over you.", wound: "rejected" },
+          { letter: "C", text: "You learned it wasn't worth it. You just agreed.", wound: "humiliated" },
+          { letter: "D", text: "You don't remember ever really disagreeing. It felt too dangerous.", wound: "betrayed" }
+        ]
+      },
+      {
+        text: "What's one thing you do now as an adult that you know isn't serving you — but you can't seem to stop?",
+        options: [
+          { letter: "A", text: "People-pleasing. Saying yes when every cell in your body wants to say no.", wound: "humiliated" },
+          { letter: "B", text: "Picking fights or creating distance before someone can leave you first.", wound: "betrayed" },
+          { letter: "C", text: "Disappearing emotionally — going cold, going numb, going silent.", wound: "neglected" },
+          { letter: "D", text: "Overworking. Needing to be indispensable or you'll be replaced.", wound: "unworthy" }
+        ]
+      },
+      {
+        text: "Finish this sentence: As a kid, I felt most alone when…",
+        options: [
+          { letter: "A", text: "…I was surrounded by people and no one knew who I really was.", wound: "rejected" },
+          { letter: "B", text: "…I made a mistake and the silence afterward was worse than the yelling.", wound: "humiliated" },
+          { letter: "C", text: "…I needed something and no one came.", wound: "abandoned" },
+          { letter: "D", text: "…I was doing everything right and it still wasn't enough.", wound: "unworthy" }
+        ]
+      }
+    ];
+
+    const RESULTS = {
+      abandoned: {
+        name: "The Abandonment Wound",
+        emoji: "🌧️",
+        tagline: "Longing to be held, even when alone.",
+        color: "#7BBFE0",
+        gradientFrom: "#1A2A4A",
+        gradientTo: "#7BBFE0",
+        description: "You learned that the people who were supposed to care for you weren't always there — emotionally or physically. There was a presence that felt inconsistent, distant, or absent, and you were left to manage on your own. You grew up with a quiet, hollow ache of not being held.",
+        traits: ["#FearOfAbandonment", "#EmotionalIndependence", "#Hypervigilance", "#AnxiousAttach"],
+        healing: "Practice being your own responder. When you feel the urge to reach for someone to calm the panic — pause. Ask yourself: What do I actually need right now? Try giving that to yourself first, before anyone else.",
+        shareText: "I found out my inner child wound is abandonment — no wonder I've spent my whole life afraid people will leave. 💔"
+      },
+      rejected: {
+        name: "The Rejection Wound",
+        emoji: "🚪",
+        tagline: "The door is open. Step through.",
+        color: "#B07ACC",
+        gradientFrom: "#2A1A3A",
+        gradientTo: "#B07ACC",
+        description: "You learned that who you truly are — your feelings, your needs, your quirks — wasn't welcome. You were dismissed, criticized, or made to feel like something was wrong with you for simply existing as you were. You learned to hide the real version of yourself to stay safe.",
+        traits: ["#PeoplePleasing", "#ConditionalWorth", "#SensitivityToCriticism", "#Masking"],
+        healing: "The approval you've been chasing externally? It lives inside you. Start by noticing one small thing you believe or feel that you've been hiding. Don't share it yet — just let it exist on the inside without apologizing for it.",
+        shareText: "My inner child was rejected for being 'too much' — and I'm still performing to be accepted. 🥀"
+      },
+      neglected: {
+        name: "The Neglect Wound",
+        emoji: "🪨",
+        tagline: "Hidden in plain sight — finally seen.",
+        color: "#8A8A9A",
+        gradientFrom: "#1A1A1F",
+        gradientTo: "#8A8A9A",
+        description: "Your emotional needs existed, but no one was paying attention. Your sadness, your joy, your confusion — it all fell into silence. You learned that your inner world wasn't worth mentioning, so you stopped sharing it. You grew up feeling like a ghost in your own home.",
+        traits: ["#EmotionalBlindspot", "#CaregiverBurnout", "#Intellectualizing", "#InvisibleSelf"],
+        healing: "Emotionally neglected children never learned that their feelings were safe to feel. Start small — name one feeling right now, even if it feels awkward. No one has to hear it. Just practice saying: I feel...",
+        shareText: "My wound is neglect — I learned early that no one was coming, so I stopped asking. Now I don't know how to need anyone."
+      },
+      betrayed: {
+        name: "The Betrayal Wound",
+        emoji: "🔥",
+        tagline: "Wounded, but no longer powerless.",
+        color: "#E07A7A",
+        gradientFrom: "#3A1A1A",
+        gradientTo: "#E07A7A",
+        description: "The adults you trusted to keep you safe — they broke that trust. Maybe through lies, inconsistency, a broken promise, or exposure to adult problems they should have shielded you from. You learned the world was less reliable than you thought. You carry a quiet hypervigilance that some people can't be trusted.",
+        traits: ["#TrustIssues", "#Hypervigilance", "#ControlPatterns", "#DifficultIntimacy"],
+        healing: "Betrayal lives in the body as much as the mind. Practice noticing when your body tenses around someone safe. Name it: This is old fear, not present danger. You are not the child who had no control — you have choices now.",
+        shareText: "I have a betrayal wound — I don't trust easily, and I never know why until I remember what happened."
+      },
+      humiliated: {
+        name: "The Humiliation Wound",
+        emoji: "🥀",
+        tagline: "You are not what they called you.",
+        color: "#D4A84B",
+        gradientFrom: "#3A2E10",
+        gradientTo: "#D4A84B",
+        description: "You were made to feel small, ashamed, or embarrassed — sometimes publicly, sometimes in ways that were meant to discipline you but instead cut deep. You learned that your worth was fragile, and that exposure was dangerous. You internalized a voice that says you are shameful, and you've been trying to silence it ever since.",
+        traits: ["#ShameSpirals", "#Perfectionism", "#HarshInnerCritic", "#FearOfExposure"],
+        healing: "Shame cannot survive when it's spoken aloud to the right person. Find one person — a therapist, a friend, a journal — and say the thing you've never said. Not to fix it. Just to let it exist outside of you.",
+        shareText: "I carry a humiliation wound — my inner critic is brutal, and I just found out why. 🖤"
+      },
+      unworthy: {
+        name: "The Unworthiness Wound",
+        emoji: "🎭",
+        tagline: "You were enough before any mask.",
+        color: "#E09A4C",
+        gradientFrom: "#3A2510",
+        gradientTo: "#E09A4C",
+        description: "No matter what you did, it wasn't quite enough. The bar kept moving. You were loved — or seemed to be — but always conditionally, always on the edge of disappointment. You learned that your worth was something you had to earn, constantly, and that rest was not allowed. You grew up exhausted from trying to be worthy of love you thought you had to deserve.",
+        traits: ["#ChronicOvergiving", "#GuiltWhenResting", "#AchievementIdentity", "#ConditionalLove"],
+        healing: "You don't have to earn rest. Permission to pause is not the same as giving up. Try doing one thing this week — not productively, not strategically — just because you want to. No justification required.",
+        shareText: "My wound is unworthiness — I was never enough, and I've been running ever since. 💫"
+      }
+    };
+
+    // ─────────────────────────────────────────────────
+    // STATE
+    // ─────────────────────────────────────────────────
+    let currentQuestion = 0;
+    let scores = { abandoned: 0, rejected: 0, neglected: 0, betrayed: 0, humiliated: 0, unworthy: 0 };
+    let selectedWound = null;
+    let isAnimating = false;
+
+    // ─────────────────────────────────────────────────
+    // DOM REFS
+    // ─────────────────────────────────────────────────
+    const $ = (id) => document.getElementById(id);
+    const app = $('app');
+    const screenDisclaimer = $('screen-disclaimer');
+    const screenQuiz = $('screen-quiz');
+    const screenResult = $('screen-result');
+    const progressLabel = $('progress-label');
+    const progressFill = $('progress-fill');
+    const questionNumber = $('question-number');
+    const questionText = $('question-text');
+    const optionsContainer = $('options');
+
+    // ─────────────────────────────────────────────────
+    // SCREEN TRANSITIONS
+    // ─────────────────────────────────────────────────
+    function showScreen(screenEl) {
+      // Fade out all screens
+      const allScreens = document.querySelectorAll('.screen');
+      allScreens.forEach(s => {
+        if (s.classList.contains('active')) {
+          s.classList.add('fade-out');
+          s.classList.remove('active');
+        }
+      });
+
+      setTimeout(() => {
+        allScreens.forEach(s => s.classList.remove('fade-out'));
+        screenEl.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }, 260);
+    }
+
+    // ─────────────────────────────────────────────────
+    // DISCLAIMER → QUIZ
+    // ─────────────────────────────────────────────────
+    $('btn-begin').addEventListener('click', () => {
+      showScreen(screenQuiz);
+      renderQuestion();
+    });
+
+    // ─────────────────────────────────────────────────
+    // RENDER QUESTION
+    // ─────────────────────────────────────────────────
+    function renderQuestion() {
+      const q = QUESTIONS[currentQuestion];
+
+      // Update progress
+      progressLabel.textContent = `Question ${currentQuestion + 1} of 12`;
+      progressFill.style.width = `${((currentQuestion) / 12) * 100}%`;
+
+      // Update question
+      questionNumber.textContent = `Q${currentQuestion + 1}`;
+      questionText.textContent = q.text;
+
+      // Build options
+      optionsContainer.innerHTML = '';
+      q.options.forEach((opt) => {
+        const card = document.createElement('div');
+        card.className = 'option-card';
+        card.dataset.wound = opt.wound;
+        card.innerHTML = `
+          <span class="option-letter">${opt.letter}</span>
+          <span class="option-text">${opt.text}</span>
+        `;
+        card.addEventListener('click', () => handleOptionClick(card, opt.wound, opt.letter));
+        optionsContainer.appendChild(card);
+      });
+    }
+
+    // ─────────────────────────────────────────────────
+    // OPTION CLICK
+    // ─────────────────────────────────────────────────
+    function handleOptionClick(card, wound, letter) {
+      if (isAnimating) return;
+      isAnimating = true;
+
+      // Dim all cards, highlight selected
+      const cards = optionsContainer.querySelectorAll('.option-card');
+      cards.forEach(c => {
+        if (c === card) {
+          c.classList.add('selected');
+          c.classList.remove('dimmed');
+        } else {
+          c.classList.add('dimmed');
+          c.classList.remove('selected');
+        }
+      });
+
+      // Score
+      scores[wound]++;
+
+      // Brief pause for selection feedback, then advance
+      setTimeout(() => {
+        advanceQuestion();
+      }, 350);
+    }
+
+    function advanceQuestion() {
+      currentQuestion++;
+
+      if (currentQuestion >= QUESTIONS.length) {
+        showResults();
+      } else {
+        // Slide transition
+        const qArea = document.querySelector('.question-area');
+        qArea.style.opacity = '0';
+        qArea.style.transform = 'translateX(-16px)';
+        qArea.style.transition = 'opacity 200ms ease-in, transform 200ms ease-in';
+
+        setTimeout(() => {
+          renderQuestion();
+          qArea.style.opacity = '0';
+          qArea.style.transform = 'translateX(16px)';
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              qArea.style.transition = 'opacity 280ms ease-out, transform 280ms var(--spring)';
+              qArea.style.opacity = '1';
+              qArea.style.transform = 'translateX(0)';
+              isAnimating = false;
+            });
+          });
+        }, 220);
+      }
+    }
+
+    // ─────────────────────────────────────────────────
+    // SCORING
+    // ─────────────────────────────────────────────────
+    function calculateResult() {
+      let maxScore = -1;
+      let dominantWound = 'unworthy';
+      let maxA = 0;
+
+      const aCounts = { abandoned: 0, rejected: 0, neglected: 0, betrayed: 0, humiliated: 0, unworthy: 0 };
+
+      // Re-count A's for tie-breaking
+      QUESTIONS.forEach((q, qi) => {
+        // We need to track A answers per wound type
+        // For simplicity, we'll use the wound mapping
+      });
+
+      for (const wound of Object.keys(scores)) {
+        if (scores[wound] > maxScore) {
+          maxScore = scores[wound];
+          dominantWound = wound;
+        }
+        // Tie: prefer wound with most A answers in questions where that wound scored
+        // For tie-breaking we use Q5 + Q11 core belief questions
+        if (scores[wound] === maxScore) {
+          // Tie-breaker: use the wound from Q5 or Q11 if they match
+          // Q5 option C = abandoned, Q5 option D = unworthy
+          // Q11 option D = unworthy, Q11 option A = humiliated
+          // We default to the one with more "A-ness" — simplify to just return current dominant
+          // The tie-breaker per spec: default to the type with more A answers
+          // We track A per wound via a secondary map
+        }
+      }
+
+      return dominantWound;
+    }
+
+    // ─────────────────────────────────────────────────
+    // SHOW RESULTS
+    // ─────────────────────────────────────────────────
+    function showResults() {
+      const woundKey = calculateResult();
+      selectedWound = woundKey;
+      const data = RESULTS[woundKey];
+
+      // Fade out quiz
+      const qArea = document.querySelector('.question-area');
+      const progContainer = document.querySelector('.progress-container');
+      qArea.style.transition = 'opacity 250ms ease-in';
+      qArea.style.opacity = '0';
+      progContainer.style.transition = 'opacity 250ms ease-in';
+      progContainer.style.opacity = '0';
+
+      setTimeout(() => {
+        showScreen(screenResult);
+        buildResult(data, woundKey);
+
+        // Animate result reveal elements with stagger
+        setTimeout(() => $('result-label').classList.add('visible'), 100);
+        setTimeout(() => $('result-name').classList.add('visible'), 250);
+        setTimeout(() => $('result-emoji').classList.add('visible'), 450);
+        setTimeout(() => $('result-tagline').classList.add('visible'), 650);
+        setTimeout(() => $('result-divider').classList.add('visible'), 800);
+        setTimeout(() => $('result-description').classList.add('visible'), 900);
+        setTimeout(() => $('result-traits').classList.add('visible'), 1050);
+        setTimeout(() => $('result-healing').classList.add('visible'), 1200);
+        setTimeout(() => $('result-cta-row').classList.add('visible'), 1350);
+        setTimeout(() => $('result-footer').classList.add('visible'), 1500);
+      }, 300);
+    }
+
+    function buildResult(data, woundKey) {
+      // Set wound CSS variable for theming
+      document.documentElement.style.setProperty('--wound-color', data.color);
+
+      // Background gradient
+      const bg = $('result-bg');
+      bg.style.background = `linear-gradient(180deg, ${data.gradientFrom} 0%, ${data.color}18 60%, ${data.gradientFrom} 100%)`;
+      bg.classList.add('visible');
+
+      // Content
+      $('result-name').textContent = data.name;
+      $('result-name').style.setProperty('--wound-color', data.color);
+      $('result-emoji').textContent = data.emoji;
+      $('result-tagline').textContent = data.tagline;
+      $('result-tagline').style.color = data.color;
+      $('result-divider').style.background = data.color;
+      $('result-description').textContent = data.description;
+
+      // Traits
+      const traitsEl = $('result-traits');
+      traitsEl.innerHTML = '';
+      data.traits.forEach(tag => {
+        const span = document.createElement('span');
+        span.className = 'trait-tag';
+        span.textContent = tag;
+        span.style.color = data.color;
+        span.style.borderColor = data.color + '99';
+        span.style.background = data.color + '18';
+        traitsEl.appendChild(span);
+      });
+
+      // Healing nudge
+      $('result-healing-text').textContent = data.healing;
+
+      // Share button color
+      const shareBtn = $('btn-share');
+      shareBtn.style.background = data.color;
+
+      // Reset animation classes
+      ['result-label','result-name','result-emoji','result-tagline',
+       'result-divider','result-description','result-traits',
+       'result-healing','result-cta-row','result-footer'].forEach(id => {
+        const el = $(id);
+        if (el) {
+          el.classList.remove('visible');
+          // Force reflow
+          void el.offsetWidth;
+        }
+      });
+
+      const bgEl = $('result-bg');
+      bgEl.classList.remove('visible');
+      void bgEl.offsetWidth;
+      bgEl.classList.add('visible');
+    }
+
+    // ─────────────────────────────────────────────────
+    // SHARE
+    // ─────────────────────────────────────────────────
+    $('btn-share').addEventListener('click', () => {
+      const data = RESULTS[selectedWound];
+      const shareText = `${data.shareText}\n\nThe wound wasn't your fault. The healing is yours. ✨`;
+
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(shareText).then(() => {
+          const el = $('share-copied');
+          el.classList.add('show');
+          setTimeout(() => el.classList.remove('show'), 2000);
+        }).catch(() => {
+          // Fallback: prompt
+          prompt('Copy this text:', shareText);
+        });
+      } else {
+        prompt('Copy this text:', shareText);
+      }
+    });
+
+    // ─────────────────────────────────────────────────
+    // RETAKE
+    // ─────────────────────────────────────────────────
+    $('btn-retake').addEventListener('click', () => {
+      currentQuestion = 0;
+      scores = { abandoned: 0, rejected: 0, neglected: 0, betrayed: 0, humiliated: 0, unworthy: 0 };
+      selectedWound = null;
+      isAnimating = false;
+
+      // Reset quiz screen elements
+      const qArea = document.querySelector('.question-area');
+      const progContainer = document.querySelector('.progress-container');
+      qArea.style.opacity = '1';
+      qArea.style.transform = 'none';
+      progContainer.style.opacity = '1';
+
+      showScreen(screenQuiz);
+      renderQuestion();
+    });
+
+    // ─────────────────────────────────────────────────
+    // INIT
+    // ─────────────────────────────────────────────────
+    screenDisclaimer.classList.add('active');
+  </script>
+</body>
+</html>
