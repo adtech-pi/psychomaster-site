@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>你的荣格阴影原型是什么？</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0D0D0F;
+      --surface: #1A1A1F;
+      --surface-elevated: #252530;
+      --text-primary: #F5F5F7;
+      --text-secondary: #8E8E93;
+      --text-tertiary: #636366;
+      --border: #2C2C35;
+      --archetype-color: #C8A96E;
+      --archetype-glow: rgba(200, 169, 110, 0.35);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ─── SCREENS ─── */
+    .screen {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      width: 100%;
+      min-height: 100dvh;
+      animation: fadeIn 0.4s ease-out;
+    }
+    .screen.active { display: flex; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── DISCLAIMER SCREEN ─── */
+    .disclaimer-screen {
+      justify-content: center;
+      align-items: center;
+      padding: 40px 24px;
+      text-align: center;
+      gap: 0;
+    }
+
+    .disclaimer-icon {
+      font-size: 3.2rem;
+      margin-bottom: 24px;
+      animation: breathe 3s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); opacity: 0.85; }
+      50% { transform: scale(1.06); opacity: 1; }
+    }
+
+    .disclaimer-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.85rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .disclaimer-subtitle {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 0.95rem;
+      font-style: italic;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+
+    .disclaimer-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 32px;
+      text-align: left;
+    }
+
+    .disclaimer-card-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--archetype-color);
+      margin-bottom: 10px;
+    }
+
+    .disclaimer-card p {
+      font-size: 0.82rem;
+      line-height: 1.65;
+      color: var(--text-secondary);
+    }
+
+    .disclaimer-card p + p { margin-top: 10px; }
+
+    .btn-begin {
+      width: 100%;
+      max-width: 320px;
+      height: 54px;
+      background: var(--archetype-color);
+      color: #0D0D0F;
+      border: none;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: 0 4px 24px rgba(200, 169, 110, 0.25);
+    }
+
+    .btn-begin:active {
+      transform: scale(0.96);
+      box-shadow: 0 2px 12px rgba(200, 169, 110, 0.2);
+    }
+
+    /* ─── QUIZ SCREEN ─── */
+    .quiz-screen {
+      padding: 0;
+    }
+
+    .progress-container {
+      padding: 16px 24px 0;
+      flex-shrink: 0;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .progress-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .progress-count {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-tertiary);
+    }
+
+    .progress-track {
+      height: 4px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--archetype-color), #E8C88A);
+      transition: width 0.4s ease-in-out;
+      width: 0%;
+    }
+
+    .quiz-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 28px 24px 24px;
+      overflow: hidden;
+    }
+
+    .question-text {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      line-height: 1.4;
+      margin-bottom: 24px;
+      letter-spacing: -0.01em;
+      min-height: 70px;
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .option-card {
+      width: 100%;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 18px;
+      text-align: left;
+      cursor: pointer;
+      transition: transform 0.15s ease, border-color 0.15s ease, opacity 0.25s ease, box-shadow 0.2s ease, background 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-height: 58px;
+      -webkit-user-select: none;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .option-card .opt-letter {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      flex-shrink: 0;
+      width: 22px;
+      transition: color 0.15s ease;
+    }
+
+    .option-card .opt-text {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--text-primary);
+      transition: color 0.15s ease;
+    }
+
+    .option-card .opt-check {
+      margin-left: auto;
+      font-size: 1rem;
+      opacity: 0;
+      transform: translateX(6px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .option-card.selected {
+      border-color: var(--archetype-color);
+      box-shadow: 0 0 0 1px var(--archetype-color), 0 0 20px var(--archetype-glow);
+      background: var(--surface-elevated);
+      transform: scale(1.02);
+      animation: selectSpring 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes selectSpring {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.04); }
+      100% { transform: scale(1.02); }
+    }
+
+    .option-card.selected .opt-letter { color: var(--archetype-color); }
+    .option-card.selected .opt-check {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .option-card.dimmed {
+      opacity: 0.35;
+      transform: scale(0.99);
+    }
+
+    .option-card:not(.selected):not(.dimmed):active {
+      transform: scale(0.98);
+      background: var(--surface-elevated);
+    }
+
+    /* ─── PROCESSING SCREEN ─── */
+    .processing-screen {
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      text-align: center;
+      padding: 24px;
+    }
+
+    .processing-ring {
+      width: 60px;
+      height: 60px;
+      border: 3px solid var(--border);
+      border-top-color: var(--archetype-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .processing-text {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--text-secondary);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    /* ─── RESULT SCREEN ─── */
+    .result-screen {
+      align-items: center;
+      padding: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .result-card {
+      width: 100%;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 28px 120px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .result-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 50% at 50% 30%, var(--card-glow-rgb, rgba(200,169,110,0.15)) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .result-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: revealUp 0.5s ease-out 0.2s forwards;
+    }
+
+    .result-emoji {
+      font-size: 4.5rem;
+      line-height: 1;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: revealBounce 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s forwards;
+    }
+
+    @keyframes revealBounce {
+      0% { opacity: 0; transform: scale(0.4) rotate(-10deg); }
+      60% { transform: scale(1.1) rotate(3deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0); }
+    }
+
+    .result-name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2.4rem;
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 6px;
+      opacity: 0;
+      animation: revealUp 0.5s ease-out 0.65s forwards;
+    }
+
+    .result-name-sub {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--text-secondary);
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: revealUp 0.5s ease-out 0.8s forwards;
+    }
+
+    .result-divider {
+      width: 50px;
+      height: 2px;
+      background: var(--archetype-color);
+      border-radius: 2px;
+      margin: 0 auto 28px;
+      opacity: 0;
+      animation: expandWidth 0.5s ease-out 0.95s forwards;
+    }
+
+    @keyframes expandWidth {
+      from { width: 0; opacity: 0; }
+      to { width: 50px; opacity: 1; }
+    }
+
+    @keyframes revealUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-tagline {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.05rem;
+      font-style: italic;
+      line-height: 1.5;
+      color: rgba(245, 245, 247, 0.8);
+      max-width: 340px;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: revealUp 0.5s ease-out 1.05s forwards;
+    }
+
+    .result-desc {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      max-width: 340px;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: revealUp 0.5s ease-out 1.2s forwards;
+    }
+
+    .result-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 40px;
+      opacity: 0;
+      animation: revealUp 0.5s ease-out 1.35s forwards;
+    }
+
+    .tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--tag-bg, rgba(200,169,110,0.2));
+      border: 1px solid var(--tag-border, rgba(200,169,110,0.4));
+      border-radius: 8px;
+      padding: 6px 12px;
+      backdrop-filter: blur(8px);
+    }
+
+    .share-bar {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      padding: 16px 24px calc(16px + env(safe-area-inset-bottom));
+      background: rgba(13, 13, 15, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+      z-index: 100;
+      opacity: 0;
+      animation: revealUp 0.5s ease-out 1.6s forwards;
+    }
+
+    .btn-share {
+      flex: 1;
+      height: 48px;
+      border-radius: 50px;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    .btn-share:active { transform: scale(0.95); }
+
+    .btn-copy {
+      background: var(--surface);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-copy.copied {
+      background: var(--archetype-color);
+      color: #0D0D0F;
+      border-color: var(--archetype-color);
+    }
+
+    .btn-retake {
+      background: transparent;
+      color: var(--text-tertiary);
+      border: 1px solid var(--border);
+      font-size: 0.75rem;
+    }
+
+    /* ─── REDUCED MOTION ─── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+
+    <!-- DISCLAIMER SCREEN -->
+    <div class="screen disclaimer-screen active" id="screen-disclaimer">
+      <div class="disclaimer-icon">🔮</div>
+      <h1 class="disclaimer-title">你的荣格阴影原型是什么？</h1>
+      <p class="disclaimer-subtitle">The part of you that you've never met… is running the show.</p>
+      <div class="disclaimer-card">
+        <div class="disclaimer-card-title">⚠️ Before You Begin</div>
+        <p>这是一次自我探索工具，<strong>不是临床诊断</strong>。题目涉及深层心理主题，可能引发强烈情绪反应。</p>
+        <p>如果你正处于心理困境中，强烈建议寻求专业心理支持，而非仅依赖本测验。</p>
+        <p style="margin-top:12px;color:var(--text-tertiary);font-size:0.78rem;">No sign-up required · Anonymous · For awareness only</p>
+      </div>
+      <button class="btn-begin" id="btn-begin">Begin the Descent →</button>
+    </div>
+
+    <!-- QUIZ SCREEN -->
+    <div class="screen quiz-screen" id="screen-quiz">
+      <div class="progress-container">
+        <div class="progress-meta">
+          <span class="progress-label">Shadow Archetype Quiz</span>
+          <span class="progress-count" id="progress-count">Q 1 / 15</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+      </div>
+      <div class="quiz-body">
+        <p class="question-text" id="question-text"></p>
+        <div class="options-list" id="options-list"></div>
+      </div>
+    </div>
+
+    <!-- PROCESSING SCREEN -->
+    <div class="screen processing-screen" id="screen-processing">
+      <div class="processing-ring"></div>
+      <p class="processing-text">Descending into your unconscious...</p>
+    </div>
+
+    <!-- RESULT SCREEN -->
+    <div class="screen result-screen" id="screen-result">
+      <div class="result-card" id="result-card">
+        <p class="result-eyebrow">Your Jungian Shadow Archetype</p>
+        <div class="result-emoji" id="result-emoji"></div>
+        <h2 class="result-name" id="result-name"></h2>
+        <p class="result-name-sub" id="result-name-sub"></p>
+        <div class="result-divider"></div>
+        <p class="result-tagline" id="result-tagline"></p>
+        <p class="result-desc" id="result-desc"></p>
+        <div class="result-tags" id="result-tags"></div>
+      </div>
+      <div class="share-bar">
+        <button class="btn-share btn-copy" id="btn-copy">
+          <span id="copy-icon">📋</span>
+          <span id="copy-label">Copy</span>
+        </button>
+        <button class="btn-share btn-retake" id="btn-retake">🔄 Retake</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // ─── QUIZ DATA ───────────────────────────────────────────────────────────
+    const ARCHETYPES = {
+      wounded_child: {
+        id: 'wounded_child',
+        name: 'The Wounded Child',
+        nameCn: '受伤的孩子',
+        emoji: '🧒',
+        tagline: '那个你试图保护的脆弱灵魂',
+        desc: '你努力表现得成熟、坚强，却在某些深夜被一股莫名的悲伤击中——像一个被独自留在房间里的孩子，在等待一个永远不会回来的人。这个孩子从未消失，他只是被你藏进了内心最深的角落。',
+        tags: ['深层不配得感', '被抛弃恐惧', '独立伪装', '渴望无条件接纳'],
+        color: '#52BE80',
+        glowRgb: 'rgba(82, 190, 128, 0.18)',
+        gradientStart: '#52BE80',
+        gradientEnd: '#1E8449',
+        tagBg: 'rgba(82, 190, 128, 0.2)',
+        tagBorder: 'rgba(82, 190, 128, 0.4)'
+      },
+      destroyer: {
+        id: 'destroyer',
+        name: 'The Destroyer',
+        nameCn: '毁灭者',
+        emoji: '🔥',
+        tagline: '那团想烧掉一切的内在火焰',
+        desc: '你蔑视权威，反感一切"应该"和"必须"。你内心深处有一团火，想要摧毁这个虚伪的世界。但问题是——这团火烧完之后，你得到的是什么？你的叛逆是你的燃料，也可能是你的牢笼。',
+        tags: ['反对既定秩序', '愤怒为燃料', '渴望颠覆', '蔑视妥协'],
+        color: '#C0392B',
+        glowRgb: 'rgba(192, 57, 43, 0.22)',
+        gradientStart: '#C0392B',
+        gradientEnd: '#7B241C',
+        tagBg: 'rgba(192, 57, 43, 0.2)',
+        tagBorder: 'rgba(192, 57, 43, 0.4)'
+      },
+      false_self: {
+        id: 'false_self',
+        name: 'The False Self',
+        nameCn: '虚假之我',
+        emoji: '🎭',
+        tagline: '那个用完美面具掩盖空洞的灵魂',
+        desc: '你构建了一个无懈可击的公众形象——友善、乐观、永远得体。但这个完美的面具背后，是一个害怕被看穿的空洞灵魂。你消耗大量心理能量维持这个假象，却越来越远离真实的自己。',
+        tags: ['完美人设', '害怕被看穿', '空洞表演', '情感隔离'],
+        color: '#7D3C98',
+        glowRgb: 'rgba(125, 60, 152, 0.22)',
+        gradientStart: '#7D3C98',
+        gradientEnd: '#4A235A',
+        tagBg: 'rgba(125, 60, 152, 0.2)',
+        tagBorder: 'rgba(125, 60, 152, 0.4)'
+      },
+      rival: {
+        id: 'rival',
+        name: 'The Rival',
+        nameCn: '对抗者',
+        emoji: '⚔️',
+        tagline: '那个永远在战斗、永远在证明的自己',
+        desc: '你把软弱视为耻辱，拼命变强，用战斗力来定义自己的价值。因为战士不会被抛弃——至少你是这么相信的。但你最强的盔甲，也是你最深的牢笼。你不知道如何停下来，因为停止战斗意味着失去身份。',
+        tags: ['用强掩弱', '无法接受失败', '永无止境的战场', '成就定义自我'],
+        color: '#D4AC0D',
+        glowRgb: 'rgba(212, 172, 13, 0.2)',
+        gradientStart: '#D4AC0D',
+        gradientEnd: '#9A7D0A',
+        tagBg: 'rgba(212, 172, 13, 0.2)',
+        tagBorder: 'rgba(212, 172, 13, 0.4)'
+      }
+    };
+
+    // A→wounded_child, B→destroyer, C→false_self, D→rival
+    const LETTER_MAP = { A: 'wounded_child', B: 'destroyer', C: 'false_self', D: 'rival' };
+    const LETTERS = ['A', 'B', 'C', 'D'];
+
+    const QUESTIONS = [
+      {
+        text: '深夜独处时，你的思绪最常飘向哪里？',
+        options: [
+          { letter: 'A', text: '那些我伤害过的人，那些无法弥补的愧疚' },
+          { letter: 'B', text: '还有多少潜力没有挖掘，人生是否就这样了' },
+          { letter: 'C', text: '为什么我总感到空虚，好像缺了点什么' },
+          { letter: 'D', text: '那些还没被我摧毁的障碍，到底在等什么' }
+        ]
+      },
+      {
+        text: '你最无法忍受别人身上的哪种特质？',
+        options: [
+          { letter: 'A', text: '软弱、依赖、总是需要别人照顾' },
+          { letter: 'B', text: '虚伪、做作、假装无辜的样子' },
+          { letter: 'C', text: '表里不一，总是戴着面具讨好所有人' },
+          { letter: 'D', text: '自以为是、好为人师，总觉得自己最正确' }
+        ]
+      },
+      {
+        text: '如果你是一部小说里的角色，你更愿意自己是：',
+        options: [
+          { letter: 'A', text: '一个历经磨难、内心破碎的孤儿' },
+          { letter: 'B', text: '一个为了复仇而不惜代价的反英雄' },
+          { letter: 'C', text: '一个用完美面具操控所有人的谋士' },
+          { letter: 'D', text: '一个挑战一切秩序的革命者' }
+        ]
+      },
+      {
+        text: '你的亲密关系中，最反复出现的痛苦模式是什么？',
+        options: [
+          { letter: 'A', text: '我总是爱上无法在一起的人，或者害怕真正被爱' },
+          { letter: 'B', text: '我在关系中付出一切，最后却被掏空' },
+          { letter: 'C', text: '我在伴侣面前扮演完美的形象，不敢展露真实情绪' },
+          { letter: 'D', text: '我渴望自由，却又害怕被抛弃，在拉扯中消耗彼此' }
+        ]
+      },
+      {
+        text: '当你真正愤怒时，你更倾向于：',
+        options: [
+          { letter: 'A', text: '把愤怒压下去，用微笑和体贴来掩饰' },
+          { letter: 'B', text: '直接爆发，说出最伤人的话' },
+          { letter: 'C', text: '冷静地、冷酷地反击，让对方知道自己错了' },
+          { letter: 'D', text: '突然沉默，把自己关进一个无人能进入的世界' }
+        ]
+      },
+      {
+        text: '你最害怕别人看穿你什么？',
+        options: [
+          { letter: 'A', text: '我其实根本没有表面看起来那么坚强' },
+          { letter: 'B', text: '我内心深处其实渴望混乱和破坏' },
+          { letter: 'C', text: '我的"完美"只是一层薄薄的面具' },
+          { letter: 'D', text: '我所有的"强大"只是恐惧伪装的盔甲' }
+        ]
+      },
+      {
+        text: '哪种梦境主题最让你感到熟悉？',
+        options: [
+          { letter: 'A', text: '被追赶，却怎么也跑不快、跑不动' },
+          { letter: 'B', text: '站在废墟上，一切化为灰烬' },
+          { letter: 'C', text: '在一个房间里，我必须同时扮演多个角色' },
+          { letter: 'D', text: '不断坠落，周围一片虚空' }
+        ]
+      },
+      {
+        text: '如果你拥有绝对的权力，你最可能用它来：',
+        options: [
+          { letter: 'A', text: '保护那些无法保护自己的人' },
+          { letter: 'B', text: '打破现有的规则，创造一个全新的世界' },
+          { letter: 'C', text: '控制所有人，让他们按照我的剧本行事' },
+          { letter: 'D', text: '证明我是对的，让他们为曾经质疑我而后悔' }
+        ]
+      },
+      {
+        text: '你的生活中，"准时"和"规则"对你来说意味着什么？',
+        options: [
+          { letter: 'A', text: '安全感的来源，没有它们我会恐慌' },
+          { letter: 'B', text: '无聊的枷锁，我总想找借口打破它们' },
+          { letter: 'C', text: '维持体面的工具，让别人觉得我可靠' },
+          { letter: 'D', text: '我遵守，但内心暗暗渴望失控和越界' }
+        ]
+      },
+      {
+        text: '你最害怕失去什么？',
+        options: [
+          { letter: 'A', text: '被爱的资格和机会' },
+          { letter: 'B', text: '别人对我的尊重和认可' },
+          { letter: 'C', text: '我精心维护的形象和社会地位' },
+          { letter: 'D', text: '我对生活的掌控感和安全感' }
+        ]
+      },
+      {
+        text: '回想一件你做过的"坏事"——你的第一反应是：',
+        options: [
+          { letter: 'A', text: '我不该那样，我是个糟糕的人' },
+          { letter: 'B', text: '那是为了保护自己，不后悔' },
+          { letter: 'C', text: '这是我计划的一部分，效果不错' },
+          { letter: 'D', text: '我当时失控了，但那不像"我"' }
+        ]
+      },
+      {
+        text: '在一个陌生社交场合，你通常会：',
+        options: [
+          { letter: 'A', text: '安静观察，确保自己不会出丑' },
+          { letter: 'B', text: '挑战现有观点，成为讨论的焦点' },
+          { letter: 'C', text: '扮演最讨人喜欢的角色，让所有人喜欢我' },
+          { letter: 'D', text: '独自站在角落，内心觉得自己不属于这里' }
+        ]
+      },
+      {
+        text: '你最容易被哪种类型的人吸引？',
+        options: [
+          { letter: 'A', text: '神秘、危险、让人捉摸不透的' },
+          { letter: 'B', text: '自由、不羁、不被任何事物定义的' },
+          { letter: 'C', text: '温柔、包容、像家一样温暖的' },
+          { letter: 'D', text: '智慧、深沉、能和我进行灵魂对话的' }
+        ]
+      },
+      {
+        text: '如果你必须选择一个"人生主题"，你会选：',
+        options: [
+          { letter: 'A', text: '救赎 —— 修复过去的创伤，找到意义' },
+          { letter: 'B', text: '自由 —— 打破所有束缚，成为真正的自己' },
+          { letter: 'C', text: '掌控 —— 理解规则，利用规则，主导游戏' },
+          { letter: 'D', text: '真相 —— 揭开表象，理解深层本质' }
+        ]
+      },
+      {
+        text: '你身边最让你看不顺眼的人，他们最大的"罪过"是什么？',
+        options: [
+          { letter: 'A', text: '他们总是利用别人的善良，把人当工具' },
+          { letter: 'B', text: '他们狂妄自大，蔑视一切规则和权威' },
+          { letter: 'C', text: '他们永远在表演，永远说正确的话' },
+          { letter: 'D', text: '他们用柔弱操控他人，让我愤怒却无法反驳' }
+        ]
+      }
+    ];
+
+    // ─── STATE ───────────────────────────────────────────────────────────────
+    let currentQ = 0;
+    let answers = [];       // answers[i] = letter string 'A'|'B'|'C'|'D'
+    let selectedArchetype = null;
+
+    // ─── DOM REFS ────────────────────────────────────────────────────────────
+    const $disclaimer = document.getElementById('screen-disclaimer');
+    const $quiz      = document.getElementById('screen-quiz');
+    const $processing = document.getElementById('screen-processing');
+    const $result    = document.getElementById('screen-result');
+
+    const $progressCount = document.getElementById('progress-count');
+    const $progressFill  = document.getElementById('progress-fill');
+    const $questionText  = document.getElementById('question-text');
+    const $optionsList   = document.getElementById('options-list');
+
+    const $resultCard  = document.getElementById('result-card');
+    const $resultEmoji = document.getElementById('result-emoji');
+    const $resultName  = document.getElementById('result-name');
+    const $resultNameSub = document.getElementById('result-name-sub');
+    const $resultTagline = document.getElementById('result-tagline');
+    const $resultDesc  = document.getElementById('result-desc');
+    const $resultTags   = document.getElementById('result-tags');
+    const $btnCopy      = document.getElementById('btn-copy');
+    const $copyIcon     = document.getElementById('copy-icon');
+    const $copyLabel    = document.getElementById('copy-label');
+    const $btnRetake    = document.getElementById('btn-retake');
+
+    // ─── SCREEN MANAGEMENT ──────────────────────────────────────────────────
+    function showScreen(screen) {
+      [$disclaimer, $quiz, $processing, $result].forEach(s => s.classList.remove('active'));
+      screen.classList.add('active');
+    }
+
+    // ─── DISCLAIMER → QUIZ ─────────────────────────────────────────────────
+    document.getElementById('btn-begin').addEventListener('click', () => {
+      showScreen($quiz);
+      renderQuestion(0);
+    });
+
+    // ─── RENDER QUESTION ───────────────────────────────────────────────────
+    function renderQuestion(index) {
+      currentQ = index;
+      const q = QUESTIONS[index];
+
+      $progressCount.textContent = `Q ${index + 1} / ${QUESTIONS.length}`;
+      $progressFill.style.width  = `${((index) / QUESTIONS.length) * 100}%`;
+      $questionText.textContent  = q.text;
+
+      $optionsList.innerHTML = '';
+
+      q.options.forEach(opt => {
+        const wasSelected = answers[index] === opt.letter;
+        const card = document.createElement('button');
+        card.className = 'option-card' + (wasSelected ? ' selected' : '');
+        card.setAttribute('aria-label', `Option ${opt.letter}: ${opt.text}`);
+        card.setAttribute('aria-pressed', wasSelected ? 'true' : 'false');
+        card.innerHTML = `
+          <span class="opt-letter">${opt.letter}</span>
+          <span class="opt-text">${opt.text}</span>
+          <span class="opt-check">✓</span>
+        `;
+        card.addEventListener('click', () => selectOption(index, opt.letter, card));
+        $optionsList.appendChild(card);
+      });
+    }
+
+    function selectOption(qIndex, letter, card) {
+      // Update answer
+      answers[qIndex] = letter;
+
+      // Update archetype color accent for progress bar
+      const archId = LETTER_MAP[letter];
+      const arch   = ARCHETYPES[archId];
+      document.documentElement.style.setProperty('--archetype-color', arch.color);
+      document.documentElement.style.setProperty('--archetype-glow', arch.glowRgb);
+
+      // Dim others, select this
+      const cards = $optionsList.querySelectorAll('.option-card');
+      cards.forEach(c => {
+        const isThis = c === card;
+        c.classList.toggle('selected', isThis);
+        c.classList.toggle('dimmed', !isThis);
+        c.setAttribute('aria-pressed', isThis ? 'true' : 'false');
+      });
+
+      // Advance after brief moment
+      setTimeout(() => {
+        if (qIndex < QUESTIONS.length - 1) {
+          renderQuestion(qIndex + 1);
+        } else {
+          goToProcessing();
+        }
+      }, 420);
+    }
+
+    // ─── PROCESSING ─────────────────────────────────────────────────────────
+    function goToProcessing() {
+      showScreen($processing);
+      setTimeout(() => {
+        const result = computeResult();
+        showResult(result);
+      }, 2500);
+    }
+
+    // ─── SCORING ────────────────────────────────────────────────────────────
+    function computeResult() {
+      const scores = { wounded_child: 0, destroyer: 0, false_self: 0, rival: 0 };
+      const dCount = { wounded_child: 0, destroyer: 0, false_self: 0, rival: 0 };
+
+      answers.forEach(letter => {
+        const archId = LETTER_MAP[letter];
+        scores[archId]++;
+        if (letter === 'D') dCount[archId]++;
+      });
+
+      // Find winner
+      let maxScore = 0;
+      let winner   = 'wounded_child';
+
+      Object.keys(scores).forEach(id => {
+        if (scores[id] > maxScore) {
+          maxScore = scores[id];
+          winner   = id;
+        } else if (scores[id] === maxScore) {
+          // Tie-breaker: more D answers
+          if (dCount[id] > dCount[winner]) {
+            winner = id;
+          }
+        }
+      });
+
+      return winner;
+    }
+
+    // ─── SHOW RESULT ─────────────────────────────────────────────────────────
+    function showResult(archId) {
+      const arch = ARCHETYPES[archId];
+      selectedArchetype = arch;
+
+      // Set CSS variables
+      document.documentElement.style.setProperty('--archetype-color', arch.color);
+      document.documentElement.style.setProperty('--archetype-glow', arch.glowRgb);
+
+      // Apply to result card
+      $resultCard.style.setProperty('--card-glow-rgb', arch.glowRgb);
+      $resultCard.style.background = `linear-gradient(160deg, ${arch.gradientEnd} 0%, #0D0D0F 60%)`;
+
+      // Fill content
+      $resultEmoji.textContent  = arch.emoji;
+      $resultName.textContent   = arch.name;
+      $resultNameSub.textContent = arch.nameCn;
+      $resultTagline.textContent = arch.tagline;
+      $resultDesc.textContent   = arch.desc;
+
+      $resultTags.innerHTML = '';
+      arch.tags.forEach(tag => {
+        const el = document.createElement('span');
+        el.className = 'tag';
+        el.textContent = tag;
+        el.style.setProperty('--tag-bg', arch.tagBg);
+        el.style.setProperty('--tag-border', arch.tagBorder);
+        $resultTags.appendChild(el);
+      });
+
+      showScreen($result);
+    }
+
+    // ─── COPY TO CLIPBOARD ──────────────────────────────────────────────────
+    $btnCopy.addEventListener('click', async () => {
+      if (!selectedArchetype) return;
+
+      const text = `🧠 My Jungian Shadow Archetype: ${selectedArchetype.name} / ${selectedArchetype.nameCn}
+
+${selectedArchetype.tagline}
+
+${selectedArchetype.tags.join(' · ')}
+
+✨ Take the quiz: https://psychomaster.app/shadow`;
+
+      try {
+        await navigator.clipboard.writeText(text);
+        $btnCopy.classList.add('copied');
+        $copyIcon.textContent = '✓';
+        $copyLabel.textContent = 'Copied!';
+        setTimeout(() => {
+          $btnCopy.classList.remove('copied');
+          $copyIcon.textContent = '📋';
+          $copyLabel.textContent = 'Copy';
+        }, 2000);
+      } catch {
+        // Fallback for older browsers
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        $copyLabel.textContent = 'Copied!';
+        setTimeout(() => { $copyLabel.textContent = 'Copy'; }, 2000);
+      }
+    });
+
+    // ─── RETAKE ────────────────────────────────────────────────────────────
+    $btnRetake.addEventListener('click', () => {
+      answers = [];
+      currentQ = 0;
+      selectedArchetype = null;
+      document.documentElement.style.setProperty('--archetype-color', '#C8A96E');
+      document.documentElement.style.setProperty('--archetype-glow', 'rgba(200,169,110,0.35)');
+      showScreen($quiz);
+      renderQuestion(0);
+    });
+  </script>
+</body>
+</html>
