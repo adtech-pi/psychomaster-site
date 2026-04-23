@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>The Aesthetic Shadow Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+--bg:#0B0B0F;
+--surface:#14141A;
+--surface-el:#1E1E26;
+--border:#2A2A35;
+--text:#F0EBE3;
+--text-sec:#8A8799;
+--text-ter:#55545E;
+--gold:#C9A87C;
+--font-display:'Cormorant Garamond',Georgia,serif;
+--font-heading:'Playfair Display',Georgia,serif;
+--font-body:'DM Sans',system-ui,sans-serif;
+--font-mono:'Space Mono',monospace;
+}
+
+html,body{height:100%;}
+body{
+font-family:var(--font-body);
+background:var(--bg);
+color:var(--text);
+min-height:100vh;
+min-height:100dvh;
+overflow-x:hidden;
+-webkit-font-smoothing:antialiased;
+}
+
+.app{
+max-width:480px;
+margin:0 auto;
+min-height:100vh;
+min-height:100dvh;
+position:relative;
+overflow:hidden;
+}
+
+/* Screens */
+.screen{
+position:absolute;
+inset:0;
+display:flex;
+flex-direction:column;
+opacity:0;
+pointer-events:none;
+transition:opacity 0.4s ease;
+}
+.screen.active{
+position:relative;
+opacity:1;
+pointer-events:auto;
+}
+
+/* Progress Bar */
+.progress-wrap{
+position:fixed;
+top:0;
+left:50%;
+transform:translateX(-50%);
+width:100%;
+max-width:480px;
+z-index:100;
+padding:0 24px;
+padding-top:env(safe-area-inset-top,16px);
+}
+.progress-bar-bg{
+width:100%;
+height:3px;
+background:var(--surface-el);
+border-radius:99px;
+overflow:hidden;
+}
+.progress-bar-fill{
+height:100%;
+width:0%;
+border-radius:99px;
+transition:width 0.4s cubic-bezier(0.34,1.2,0.64,1);
+}
+.progress-label{
+text-align:right;
+font-family:var(--font-mono);
+font-size:0.65rem;
+letter-spacing:0.15em;
+color:var(--text-ter);
+margin-top:8px;
+text-transform:uppercase;
+}
+
+/* Gentle Mode Toggle */
+.gentle-toggle{
+display:flex;
+align-items:center;
+gap:10px;
+cursor:pointer;
+user-select:none;
+margin-top:12px;
+}
+.gentle-toggle input{display:none;}
+.toggle-track{
+width:36px;
+height:20px;
+background:var(--border);
+border-radius:99px;
+position:relative;
+transition:background 0.2s;
+}
+.toggle-track::after{
+content:'';
+position:absolute;
+top:2px;
+left:2px;
+width:16px;
+height:16px;
+background:var(--text-sec);
+border-radius:50%;
+transition:transform 0.2s,background 0.2s;
+}
+.gentle-toggle input:checked + .toggle-track{background:var(--gold);}
+.gentle-toggle input:checked + .toggle-track::after{
+transform:translateX(16px);
+background:var(--text);
+}
+.toggle-label{
+font-family:var(--font-body);
+font-size:0.7rem;
+color:var(--text-ter);
+letter-spacing:0.05em;
+}
+
+/* ===== DISCLAIMER SCREEN ===== */
+.disclaimer-screen{
+justify-content:center;
+align-items:center;
+padding:48px 32px;
+text-align:center;
+}
+.disclaimer-inner{
+max-width:380px;
+}
+.disclaimer-icon{
+font-size:2.5rem;
+margin-bottom:24px;
+opacity:0.8;
+}
+.disclaimer-title{
+font-family:var(--font-display);
+font-size:2.2rem;
+font-weight:600;
+line-height:1.1;
+letter-spacing:-0.02em;
+margin-bottom:8px;
+color:var(--text);
+}
+.disclaimer-subtitle{
+font-family:var(--font-mono);
+font-size:0.65rem;
+letter-spacing:0.2em;
+text-transform:uppercase;
+color:var(--gold);
+margin-bottom:40px;
+opacity:0.8;
+}
+.disclaimer-text{
+font-family:var(--font-body);
+font-size:0.85rem;
+line-height:1.7;
+color:var(--text-sec);
+font-weight:300;
+margin-bottom:16px;
+}
+.disclaimer-note{
+font-family:var(--font-display);
+font-style:italic;
+font-size:0.95rem;
+line-height:1.6;
+color:var(--text-ter);
+margin-bottom:48px;
+}
+.begin-btn{
+display:inline-flex;
+align-items:center;
+gap:12px;
+padding:16px 40px;
+background:linear-gradient(135deg,#C9A87C,#A8895A);
+color:var(--bg);
+font-family:var(--font-body);
+font-size:0.8rem;
+font-weight:500;
+letter-spacing:0.15em;
+text-transform:uppercase;
+border:none;
+border-radius:99px;
+cursor:pointer;
+transition:transform 0.15s,box-shadow 0.15s;
+box-shadow:0 4px 24px rgba(201,168,124,0.25);
+}
+.begin-btn:hover{
+transform:scale(1.04);
+box-shadow:0 6px 32px rgba(201,168,124,0.4);
+}
+.begin-btn:active{transform:scale(0.98);}
+
+/* ===== QUESTION SCREEN ===== */
+.question-screen{
+padding-top:calc(env(safe-area-inset-top,16px) + 52px);
+padding-bottom:env(safe-area-inset-bottom,24px);
+}
+.question-inner{
+flex:1;
+display:flex;
+flex-direction:column;
+padding:0 16px;
+}
+/* Mood visual */
+.mood-visual{
+height:180px;
+position:relative;
+overflow:hidden;
+border-radius:16px;
+margin-bottom:24px;
+flex-shrink:0;
+}
+.mood-orb{
+position:absolute;
+border-radius:50%;
+filter:blur(60px);
+pointer-events:none;
+}
+.mood-orb-1{
+width:200px;height:200px;
+top:-40px;left:-40px;
+opacity:0.35;
+animation:drift1 12s ease-in-out infinite alternate;
+}
+.mood-orb-2{
+width:160px;height:160px;
+bottom:-30px;right:-20px;
+opacity:0.25;
+animation:drift2 15s ease-in-out infinite alternate;
+}
+@keyframes drift1{
+from{transform:translate(0,0) scale(1);}
+to{transform:translate(30px,20px) scale(1.1);}
+}
+@keyframes drift2{
+from{transform:translate(0,0) scale(1);}
+to{transform:translate(-25px,-15px) scale(1.08);}
+}
+.mood-emoji{
+position:absolute;
+font-size:2.5rem;
+opacity:0.2;
+animation:float 8s ease-in-out infinite;
+}
+.mood-emoji:nth-child(3){top:15%;left:15%;font-size:2rem;animation-delay:-2s;}
+.mood-emoji:nth-child(4){top:10%;right:18%;font-size:3rem;animation-delay:-5s;}
+.mood-emoji:nth-child(5){bottom:20%;left:50%;font-size:2.2rem;animation-delay:-3s;}
+@keyframes float{
+0%,100%{transform:translateY(0) rotate(0deg);}
+50%{transform:translateY(-12px) rotate(5deg);}
+}
+/* Geometric accent */
+.mood-geo{
+position:absolute;
+border:1px solid rgba(201,168,124,0.15);
+border-radius:50% 30% 70% 20%;
+pointer-events:none;
+}
+.mood-geo-1{width:100px;height:100px;top:10%;right:10%;transform:rotate(20deg);animation:drift1 14s ease-in-out infinite alternate-reverse;}
+.mood-geo-2{width:60px;height:60px;bottom:15%;left:8%;border-radius:30% 70% 20% 50%;animation:drift2 10s ease-in-out infinite alternate;}
+
+/* Noise overlay */
+.noise-overlay{
+position:absolute;
+inset:0;
+opacity:0.03;
+pointer-events:none;
+background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+background-size:200px 200px;
+mix-blend-mode:overlay;
+}
+
+/* Question text area */
+.question-text-wrap{
+margin-bottom:8px;
+}
+.question-num{
+font-family:var(--font-mono);
+font-size:0.65rem;
+letter-spacing:0.2em;
+text-transform:uppercase;
+color:var(--text-ter);
+margin-bottom:8px;
+}
+.question-text{
+font-family:var(--font-display);
+font-size:1.35rem;
+font-weight:400;
+line-height:1.35;
+color:var(--text);
+margin-bottom:6px;
+}
+.question-subtext{
+font-family:var(--font-mono);
+font-size:0.7rem;
+letter-spacing:0.08em;
+text-transform:uppercase;
+color:var(--text-ter);
+font-weight:300;
+}
+
+/* Options grid */
+.options-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin-top:auto;
+padding-bottom:8px;
+}
+.option-card{
+background:var(--surface-el);
+border:1px solid var(--border);
+border-radius:16px;
+overflow:hidden;
+cursor:pointer;
+transition:transform 0.15s ease-in,box-shadow 0.15s,opacity 0.15s;
+position:relative;
+}
+.option-card:active{transform:scale(0.96);}
+.option-card.selected{
+transform:scale(1.03);
+z-index:2;
+box-shadow:0 0 0 2px var(--option-accent,var(--gold)),0 8px 32px rgba(0,0,0,0.4);
+border-color:var(--option-accent,var(--gold));
+}
+.option-card.dimmed{
+opacity:0.45;
+transform:scale(0.97);
+}
+.option-visual{
+height:80px;
+position:relative;
+overflow:hidden;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:2rem;
+}
+.option-label{
+padding:10px 12px 12px;
+font-family:var(--font-body);
+font-size:0.8rem;
+line-height:1.35;
+color:var(--text-sec);
+text-align:center;
+letter-spacing:0.02em;
+}
+.option-letter{
+position:absolute;
+top:8px;left:8px;
+font-family:var(--font-mono);
+font-size:0.6rem;
+letter-spacing:0.1em;
+color:var(--text-ter);
+opacity:0.6;
+}
+
+/* ===== RESULT SCREEN ===== */
+.result-screen{
+min-height:100vh;
+min-height:100dvh;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:flex-start;
+padding-top:env(safe-area-inset-top,24px);
+padding-bottom:env(safe-area-inset-bottom,24px);
+padding:env(safe-area-inset-top,24px) 0 env(safe-area-inset-bottom,24px);
+}
+.result-reveal{
+width:100%;
+max-width:430px;
+margin:0 auto;
+padding:0 16px;
+opacity:0;
+transform:translateY(30px);
+transition:opacity 0.6s ease,transform 0.6s cubic-bezier(0.34,1.2,0.64,1);
+}
+.result-reveal.visible{
+opacity:1;
+transform:translateY(0);
+}
+.result-card{
+aspect-ratio:9/16;
+width:100%;
+border-radius:24px;
+overflow:hidden;
+position:relative;
+display:flex;
+flex-direction:column;
+}
+.result-card-inner{
+position:absolute;
+inset:0;
+display:flex;
+flex-direction:column;
+overflow:hidden;
+}
+/* Ambient zone */
+.ambient-zone{
+height:42%;
+position:relative;
+display:flex;
+align-items:flex-start;
+justify-content:space-between;
+padding:32px 28px 0;
+}
+.ambient-orb{
+position:absolute;
+width:280px;
+height:280px;
+border-radius:50%;
+top:-60px;
+left:50%;
+transform:translateX(-50%);
+filter:blur(80px);
+opacity:0.5;
+pointer-events:none;
+}
+.ambient-geo{
+position:absolute;
+border:1px solid rgba(255,255,255,0.12);
+border-radius:50% 30% 70% 20%;
+}
+.ambient-geo-1{width:80px;height:80px;top:20%;left:10%;transform:rotate(15deg);}
+.ambient-geo-2{width:50px;height:50px;top:35%;right:12%;border-radius:30% 70% 20% 50%;}
+.watermark{
+font-family:var(--font-mono);
+font-size:0.55rem;
+letter-spacing:0.15em;
+text-transform:uppercase;
+color:var(--text);
+opacity:0.2;
+margin-top:4px;
+}
+/* Identity zone */
+.identity-zone{
+flex:1;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+padding:0 28px;
+text-align:center;
+}
+.public-label{
+font-family:var(--font-body);
+font-size:0.7rem;
+letter-spacing:0.15em;
+text-transform:uppercase;
+margin-bottom:6px;
+}
+.shadow-label{
+font-family:var(--font-body);
+font-size:0.7rem;
+letter-spacing:0.15em;
+text-transform:uppercase;
+margin-top:12px;
+margin-bottom:4px;
+}
+.aesthetic-names{
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:2px;
+}
+.aesthetic-name{
+font-family:var(--font-display);
+font-size:1.15rem;
+font-style:italic;
+letter-spacing:0.06em;
+color:var(--text);
+}
+.and-sep{
+font-family:var(--font-mono);
+font-size:0.6rem;
+letter-spacing:0.1em;
+color:var(--text-ter);
+margin:4px 0;
+}
+.divider-line{
+width:80px;
+height:1px;
+margin:16px auto;
+background:linear-gradient(90deg,var(--pub-color,var(--gold)),var(--shad-color,#2D1B4E));
+border:none;
+border-radius:1px;
+}
+.result-type-name{
+font-family:var(--font-heading);
+font-size:2.2rem;
+font-weight:600;
+line-height:1.05;
+letter-spacing:-0.01em;
+margin:8px 0 16px;
+}
+.poetic-desc{
+font-family:var(--font-display);
+font-size:0.85rem;
+line-height:1.65;
+font-weight:300;
+font-style:italic;
+color:var(--text-sec);
+max-width:280px;
+}
+/* Traits zone */
+.traits-zone{
+padding:0 28px;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:12px;
+flex:1;
+justify-content:center;
+}
+.trait-tags{
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+justify-content:center;
+}
+.trait-tag{
+padding:6px 14px;
+border:1px solid var(--accent-color,var(--gold));
+border-radius:99px;
+font-family:var(--font-body);
+font-size:0.65rem;
+letter-spacing:0.1em;
+text-transform:uppercase;
+color:var(--accent-color,var(--gold));
+background:transparent;
+}
+/* CTA zone */
+.cta-zone{
+padding:20px 28px 32px;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:16px;
+}
+.share-btn{
+width:100%;
+padding:16px 24px;
+background:var(--pub-grad,linear-gradient(135deg,#C9A87C,#A8895A));
+color:var(--text);
+font-family:var(--font-body);
+font-size:0.75rem;
+font-weight:500;
+letter-spacing:0.15em;
+text-transform:uppercase;
+border:none;
+border-radius:12px;
+cursor:pointer;
+transition:transform 0.15s,box-shadow 0.15s;
+box-shadow:0 4px 20px rgba(0,0,0,0.3),0 0 30px rgba(201,168,124,0.15);
+}
+.share-btn:hover{
+transform:scale(1.02);
+box-shadow:0 6px 28px rgba(0,0,0,0.4),0 0 40px rgba(201,168,124,0.25);
+}
+.share-btn:active{transform:scale(0.98);}
+.retake-btn{
+font-family:var(--font-body);
+font-size:0.7rem;
+letter-spacing:0.08em;
+color:var(--text-ter);
+cursor:pointer;
+text-decoration:none;
+transition:color 0.2s;
+background:none;
+border:none;
+padding:4px 8px;
+}
+.retake-btn:hover{color:var(--text-sec);}
+
+/* Vignette */
+.vignette{
+position:absolute;
+inset:0;
+background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,0.4) 100%);
+pointer-events:none;
+}
+
+/* Screen reader / accessibility */
+.sr-only{
+position:absolute;
+width:1px;height:1px;
+padding:0;margin:-1px;
+overflow:hidden;
+clip:rect(0,0,0,0);
+white-space:nowrap;
+border:0;
+}
+
+/* Focus styles */
+:focus-visible{
+outline:2px solid var(--gold);
+outline-offset:3px;
+border-radius:4px;
+}
+
+/* Transitions */
+.gentle .option-card{
+transition:none;
+}
+.gentle .mood-orb{animation:none !important;}
+.gentle .mood-emoji{animation:none !important;}
+.gentle .mood-geo{animation:none !important;}
+.gentle .progress-bar-fill{transition:none !important;}
+
+/* Share toast */
+.toast{
+position:fixed;
+bottom:40px;
+left:50%;
+transform:translateX(-50%) translateY(20px);
+background:var(--surface-el);
+border:1px solid var(--border);
+color:var(--text);
+font-family:var(--font-body);
+font-size:0.75rem;
+letter-spacing:0.05em;
+padding:10px 20px;
+border-radius:99px;
+opacity:0;
+transition:opacity 0.3s,transform 0.3s;
+pointer-events:none;
+z-index:1000;
+white-space:nowrap;
+}
+.toast.show{
+opacity:1;
+transform:translateX(-50%) translateY(0);
+}
+
+/* Back button */
+.back-btn{
+position:absolute;
+top:env(safe-area-inset-top,16px);
+left:16px;
+z-index:50;
+background:var(--surface);
+border:1px solid var(--border);
+color:var(--text-sec);
+font-family:var(--font-body);
+font-size:0.7rem;
+letter-spacing:0.08em;
+padding:6px 14px;
+border-radius:99px;
+cursor:pointer;
+transition:color 0.2s,border-color 0.2s;
+}
+.back-btn:hover{color:var(--text);border-color:var(--text-ter);}
+
+@media(prefers-reduced-motion:reduce){
+.mood-orb,.mood-emoji,.mood-geo{animation:none !important;}
+.progress-bar-fill{transition:none !important;}
+*{transition-duration:0.01ms !important;animation-duration:0.01ms !important;}
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+<!-- Progress -->
+<div class="progress-wrap" id="progressWrap" style="display:none;">
+<div class="progress-bar-bg">
+<div class="progress-bar-fill" id="progressFill"></div>
+</div>
+<div class="progress-label" id="progressLabel">0 / 10</div>
+<div class="gentle-toggle">
+<label>
+<input type="checkbox" id="gentleMode">
+<span class="toggle-track"></span>
+<span class="toggle-label">Gentle mode</span>
+</label>
+</div>
+</div>
+
+<!-- Disclaimer Screen -->
+<div class="screen active" id="disclaimerScreen">
+<div class="disclaimer-screen">
+<div class="disclaimer-inner">
+<div class="disclaimer-icon">🖤</div>
+<div class="disclaimer-title">The Aesthetic<br>Shadow Quiz</div>
+<div class="disclaimer-subtitle">a Jungian mirror for your style</div>
+<div class="disclaimer-text">
+This quiz is a self-reflection tool inspired by Jungian shadow work — not a clinical diagnosis or professional assessment.
+</div>
+<div class="disclaimer-note">
+"Think of it as a mirror dressed up for a party.<br>There are no wrong answers, only honest ones."
+</div>
+<button class="begin-btn" id="beginBtn">Begin the Quiz</button>
+</div>
+</div>
+</div>
+
+<!-- Question Screen -->
+<div class="screen" id="questionScreen">
+<button class="back-btn" id="backBtn" style="display:none;">← Back</button>
+<div class="question-inner">
+<div class="mood-visual" id="moodVisual">
+<div class="mood-orb mood-orb-1" id="moodOrb1"></div>
+<div class="mood-orb mood-orb-2" id="moodOrb2"></div>
+<div class="mood-geo mood-geo-1" id="moodGeo1"></div>
+<div class="mood-geo mood-geo-2" id="moodGeo2"></div>
+<div class="mood-emoji" id="moodEmoji1"></div>
+<div class="mood-emoji" id="moodEmoji2"></div>
+<div class="mood-emoji" id="moodEmoji3"></div>
+<div class="noise-overlay"></div>
+</div>
+<div class="question-text-wrap">
+<div class="question-num" id="questionNum">Question 1 of 10</div>
+<div class="question-text" id="questionText"></div>
+<div class="question-subtext" id="questionSubtext"></div>
+</div>
+<div class="options-grid" id="optionsGrid"></div>
+</div>
+</div>
+
+<!-- Result Screen -->
+<div class="screen" id="resultScreen">
+<div class="result-reveal" id="resultReveal">
+<div class="result-card" id="resultCard">
+<div class="result-card-inner" id="resultCardInner">
+<!-- Ambient zone -->
+<div class="ambient-zone">
+<div class="ambient-orb" id="ambientOrb"></div>
+<div class="ambient-geo ambient-geo-1"></div>
+<div class="ambient-geo ambient-geo-2"></div>
+<div class="watermark">◇ aesthetic shadow quiz</div>
+</div>
+<!-- Identity zone -->
+<div class="identity-zone">
+<div class="public-label" id="publicLabel">PUBLIC</div>
+<div class="aesthetic-names">
+<div class="aesthetic-name" id="publicName"></div>
+<div class="and-sep">×</div>
+<div class="aesthetic-name" id="shadowName"></div>
+</div>
+<div class="shadow-label" id="shadowLabel">SHADOW</div>
+<hr class="divider-line" id="dividerLine">
+<div class="result-type-name" id="resultTypeName"></div>
+<div class="poetic-desc" id="poeticDesc"></div>
+</div>
+<!-- Traits zone -->
+<div class="traits-zone">
+<div class="trait-tags" id="traitTags"></div>
+</div>
+<!-- CTA zone -->
+<div class="cta-zone">
+<button class="share-btn" id="shareBtn">◇ Screenshot & Share</button>
+<button class="retake-btn" id="retakeBtn">retake the quiz →</button>
+</div>
+</div>
+<div class="vignette"></div>
+</div>
+</div>
+</div>
+
+<div class="toast" id="toast">Copied! Add to your story ✨</div>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+// ===== DATA =====
+const RESULT_TYPES = [
+  {
+    id:'preppy_dreamer',
+    name:'The Preppy Dreamer',
+    publicAesthetic:'Polished Preppy',
+    shadowAesthetic:'Bohemian Wanderer',
+    publicColor:'#E8D5B7',
+    shadowColor:'#8B7355',
+    publicGrad:'linear-gradient(135deg, #E8D5B7 0%, #C9A87C 100%)',
+    shadowGrad:'linear-gradient(135deg, #8B7355 0%, #4A3728 100%)',
+    accent:'#C9A87C',
+    pubLabel:'#D4B896',
+    shadLabel:'#9B8A70',
+    publicDesc:'You are the person who looks like they have a five-year plan and a trust fund, even when your bank account is a group chat with your friends called "Emergency Noodle Fund." Your aesthetic is immaculate — pressed linen, clean lines, the kind of wardrobe that photographs like a catalog and functions like armor.',
+    shadowDesc:'Behind the color-coded calendar is someone who feels most alive in places without WiFi — in gardens at dusk, in used bookshops, on trains to cities you\'ve never planned to visit. Your shadow is a wanderer who trades efficiency for wonder.',
+    traits:['#StrategicRomantic','#PolishedWanderer','#ControlledChaos','#ArmoredSoftness'],
+    shareText:'I have a five-year plan and a secret desire to disappear into a vineyard with no WiFi and a stack of poetry books. ◇ aesthetic shadow quiz'
+  },
+  {
+    id:'soft_romantic',
+    name:"The Soft Romantic's Dark Twin",
+    publicAesthetic:'Cottagecore Soft',
+    shadowAesthetic:'Gothic Industrialist',
+    publicColor:'#E8B4B8',
+    shadowColor:'#3D1A1E',
+    publicGrad:'linear-gradient(135deg, #E8B4B8 0%, #C97B84 100%)',
+    shadowGrad:'linear-gradient(135deg, #3D1A1E 0%, #1A0A0C 100%)',
+    accent:'#C97B84',
+    pubLabel:'#E8B4B8',
+    shadLabel:'#8B3A42',
+    publicDesc:'You are soft — not in the way that means weak, but in the way that means you have chosen tenderness as a radical act in a world that rewards hardness. Your aesthetic is lace and linen, wildflowers in mismatched jars, the smell of bread baking.',
+    shadowDesc:'But the person who loves you most knows that you have a dark streak — a fascination with ruin and Gothic architecture, with old churches and old griefs, with the beauty of things that are broken in interesting ways.',
+    traits:['#LaceAndStone','#SoftSaboteur','#GardenGoth','#TenderDepth'],
+    shareText:'My aesthetic is wildflowers in a chipped porcelain vase and my soul is a Gothic cathedral at midnight. Both things are true. ◇ aesthetic shadow quiz'
+  },
+  {
+    id:'minimal_opulent',
+    name:"The Minimalist's Secret Opulence",
+    publicAesthetic:'Clean Minimalist',
+    shadowAesthetic:'Maximalist Baroque',
+    publicColor:'#E8E8EC',
+    shadowColor:'#1A1A20',
+    publicGrad:'linear-gradient(135deg, #E8E8EC 0%, #BDBDC5 100%)',
+    shadowGrad:'linear-gradient(135deg, #1A1A20 0%, #0B0B0F 100%)',
+    accent:'#A0A0B0',
+    pubLabel:'#E8E8EC',
+    shadLabel:'#707080',
+    publicDesc:'You have mastered the art of restraint. Your space is a lesson in what you don\'t need: white walls, clean sightlines, the objects you keep chosen for function and beauty in equal measure. You have learned that clarity is a form of luxury.',
+    shadowDesc:'And yet — there is a version of you that wants to drown in velvet and gilt, that stares at Baroque paintings and feels something crack open in the chest, that wants to wear seventeen rings and a crown and a cape and call it a Tuesday.',
+    traits:['#QuietlyOpulent','#LessIsALie','#ControlledExcess','#TheEmptyRoom'],
+    shareText:'I own twelve white shirts and I dream in color so intense it almost hurts. Minimalism is a performance. Opulence is my secret language. ◇ aesthetic shadow quiz'
+  },
+  {
+    id:'y2k_mystic',
+    name:"The Y2K Icon's Hidden Mystic",
+    publicAesthetic:'Y2K',
+    shadowAesthetic:'Dark Folklore Witchy',
+    publicColor:'#A8D8F0',
+    shadowColor:'#020A14',
+    publicGrad:'linear-gradient(135deg, #A8D8F0 0%, #7BB8D4 100%)',
+    shadowGrad:'linear-gradient(135deg, #020A14 0%, #010507 100%)',
+    accent:'#5BC0EB',
+    pubLabel:'#A8D8F0',
+    shadLabel:'#4A9BB5',
+    publicDesc:'You are dial-up internet speed, baby blue chrome, butterfly clips and low-rise jeans and the specific optimism of a generation that thought technology would save us. Your aesthetic is early-aughts revival — the visual language of your childhood, filtered through adult irony and genuine fondness.',
+    shadowDesc:'But under the shimmer and the butterfly clips is someone who reads tarot by candlelight, who knows the folklore of a country they\'ve never visited, who feels most themselves in the three days around a new moon. Your shadow aesthetic is dark and ancient: sigils, dried herbs, old stories.',
+    traits:['#CyberMystic','#ButterflyClipsAndBones','#DigitalFolklore','#GlitterSpell'],
+    shareText:'My phone is full of skincare tutorials and my soul is a dark forest where I commune with things that don\'t have WiFi. ◇ aesthetic shadow quiz'
+  },
+  {
+    id:'athletic_melancholy',
+    name:"The Athletic Optimist's Quiet Melancholy",
+    publicAesthetic:'Athleisure',
+    shadowAesthetic:'Dark Academia Intellectual',
+    publicColor:'#A8C8A0',
+    shadowColor:'#1A1C10',
+    publicGrad:'linear-gradient(135deg, #A8C8A0 0%, #7BA35A 100%)',
+    shadowGrad:'linear-gradient(135deg, #1A1C10 0%, #0E1008 100%)',
+    accent:'#8DB34A',
+    pubLabel:'#A8C8A0',
+    shadLabel:'#7BA35A',
+    publicDesc:'You look like wellness. You look like the 6AM run and the green smoothie and the posture corrector and the foam roller that you actually use. Your aesthetic is functional, optimistic, the visual language of someone who has decided to be healthy in a world that makes it an act of rebellion.',
+    shadowDesc:'But the person who knows you knows you have a reading problem — as in, you read too much, think too much, and have a deep interior life that your athleisure wardrobe is actively concealing. Your shadow aesthetic is Dark Academia: tweed in autumn, books stacked on every surface.',
+    traits:['#SweatAndSyllogism','#WiredForMotion','#MelancholyRunner','#TheThinkingAthlete'],
+    shareText:'I own seventeen matching athleisure sets and I stay up until 3AM reading Dostoevsky and pretending I don\'t have feelings about it. ◇ aesthetic shadow quiz'
+  },
+  {
+    id:'corporate_goblin',
+    name:"The Corporate Survivor's Wild Heart",
+    publicAesthetic:'Business Chic',
+    shadowAesthetic:'Goblincore Forest Spirit',
+    publicColor:'#D4C5B0',
+    shadowColor:'#0E1008',
+    publicGrad:'linear-gradient(135deg, #D4C5B0 0%, #B8A890 100%)',
+    shadowGrad:'linear-gradient(135deg, #0E1008 0%, #0B0F07 100%)',
+    accent:'#A89070',
+    pubLabel:'#D4C5B0',
+    shadLabel:'#8B7355',
+    publicDesc:'You walk into rooms and the room changes. You have mastered the codes of professionalism — the structured blazer, the intentional accessory, the version of yourself that knows how to close a deal and make it look effortless. Your aesthetic is power dressed in good taste.',
+    shadowDesc:'And then you go home. You take off the blazer and you put on the oversized cardigan and you water the plant that is definitely dying and you put on a podcast about mycorrhizal networks and you lie on the floor feeling profound tenderness for a mushroom identification guide.',
+    traits:['#SuitAndSoil','#PowerSurvivor','#TheGentleGoblin','#BoardroomForest'],
+    shareText:'I can pitch a client in Louboutins and identify twenty-seven mushrooms by sight. Both of these facts are essential to understanding me. ◇ aesthetic shadow quiz'
+  },
+  {
+    id:'clean_storm',
+    name:"The Clean Girl's Inner Storm",
+    publicAesthetic:'Clean Girl',
+    shadowAesthetic:'Dark Romantic Provocateur',
+    publicColor:'#F0EBE3',
+    shadowColor:'#1A0A14',
+    publicGrad:'linear-gradient(135deg, #F0EBE3 0%, #D4CEC5 100%)',
+    shadowGrad:'linear-gradient(135deg, #1A0A14 0%, #0B0508 100%)',
+    accent:'#C9A87C',
+    pubLabel:'#F0EBE3',
+    shadLabel:'#B8A090',
+    publicDesc:'Your aesthetic is the visual equivalent of a deep breath. Everything is considered, effortless, glowing — the slicked hair, the dewy skin, the quiet luxury of looking like you woke up like this. You are the mood board that made the phrase "quiet luxury" mean something.',
+    shadowDesc:'But the person who has seen you in the dark knows that restraint is a performance you are incredibly good at. Your shadow aesthetic is Dark Romantic — the other half of beauty, the half that includes grief and thorns and the deliberate seduction of things that aren\'t good for you.',
+    traits:['#GlowAndGoth','#EarnedCalm','#TheCuratedStorm','#PolishedRuin'],
+    shareText:'My hair is always effortless and my interior life is a gothic novel and I am equally serious about both. ◇ aesthetic shadow quiz'
+  }
+];
+
+const QUESTIONS = [
+  {
+    text:"It's 3AM on a Tuesday. The world is asleep. You are:",
+    subtext:"the hour of honesty",
+    options:[
+      { letter:'A', label:'Lighting a candle in your perfectly organized desk nook, reviewing tomorrow\'s planner in silk pajamas, feeling deeply at peace with your color-coded life.', moodEmoji:'🕯️', accent:'#E8D5B7' },
+      { letter:'B', label:'Walking barefoot across cold kitchen tile, opening the window to let the night air in, humming something half-remembered, wondering when you became someone who needs silence this badly.', moodEmoji:'🌙', accent:'#B8C5D0' },
+      { letter:'C', label:'On your third espresso, deep in a Pinterest board called "ruins but make it fashion," surrounded by crumpled fabric samples and half-read poetry books you can\'t stop buying.', moodEmoji:'☕', accent:'#3D1A1E' },
+      { letter:'D', label:'Staring at the ceiling in a room that\'s too clean, too quiet, too everything, scrolling through old photos of yourself wondering which version was real.', moodEmoji:'🖤', accent:'#1A0A2E' }
+    ]
+  },
+  {
+    text:"You're moving to a new city with just one suitcase. You pack:",
+    subtext:"the art of leaving",
+    options:[
+      { letter:'A', label:'Seven linen outfits in neutral tones, a pressed stack of silk shirts, the hardcover journal your grandmother gave you, and a small vase that always fits perfectly on any windowsill.', moodEmoji:'🧳', accent:'#E8D5B7' },
+      { letter:'B', label:'Four oversized sweaters that smell like the last city you loved, a Polaroid camera with half a roll left, one boot, and a scarf you stole from someone whose name you\'ve forgotten.', moodEmoji:'🎞️', accent:'#8B7355' },
+      { letter:'C', label:'A hardcover of Baudelaire you\'ll definitely not read, three rings that don\'t match, a dried flower from a cemetery, and a bottle of wine you promised yourself you\'d open on the first bad day.', moodEmoji:'🥀', accent:'#3D1A1E' },
+      { letter:'D', label:'Everything in compression bags, alphabetized. You have a list. You made a list before you made the list. The list is color-coded. You are fine.', moodEmoji:'📋', accent:'#1A1A20' }
+    ]
+  },
+  {
+    text:"Your ideal morning ritual looks like:",
+    subtext:"the ceremony of self",
+    options:[
+      { letter:'A', label:'A slow pour-over coffee ceremony, skin care applied in seven precise layers, ten minutes of journaling by an open window, the kind of quiet that feels like a luxury.', moodEmoji:'☕', accent:'#E8D5B7' },
+      { letter:'B', label:'A chaotic scramble for anything with caffeine, but — the light through the blinds is doing something devastating to your walls and you stop, just for a second, to feel it.', moodEmoji:'✨', accent:'#B8C5D0' },
+      { letter:'C', label:'Waking up to no alarm, immediately putting on music that sounds like a film score for a movie that doesn\'t exist yet, making breakfast that takes two hours because cooking is a performance.', moodEmoji:'🎬', accent:'#C9A87C' },
+      { letter:'D', label:'A cold shower, a ten-minute meditation you found on an app, a protein shake that tastes like chalk and discipline, and twenty minutes of stretching that keeps you functional for another day.', moodEmoji:'🏃', accent:'#1A1C10' }
+    ]
+  },
+  {
+    text:"You're scrolling at midnight and land on a mood board titled \"my whole personality.\" It contains:",
+    subtext:"the visual self",
+    options:[
+      { letter:'A', label:'A Scandinavian apartment with curved furniture and nothing on the walls. A single stem of dried pampas grass. The word calm written in a serif font over a cloud photograph.', moodEmoji:'🌤️', accent:'#E8E8EC' },
+      { letter:'B', label:'A meadow at dawn after rain, the kind of dew that looks like tiny crystals. A girl in a lace dress reading Neruda. Fairy lights strung through overgrown ivy.', moodEmoji:'🌿', accent:'#B8C5D0' },
+      { letter:'C', label:'A cathedral at noon. Stained glass throwing color onto stone floors. Baroque sculpture. An antique mirror in an empty room. Patterns that hurt your eyes in the best way.', moodEmoji:'⛪', accent:'#3D1A1E' },
+      { letter:'D', label:'A forest floor covered in bioluminescent mushrooms. A deer standing perfectly still in fog. An old book of folklore left open in the rain. Something ancient watching from the trees.', moodEmoji:'🍄', accent:'#1A0A2E' }
+    ]
+  },
+  {
+    text:"You're getting dressed for a night out and the outfit is:",
+    subtext:"armor made beautiful",
+    options:[
+      { letter:'A', label:'Tailored. Immaculate. The kind of clean that costs money to maintain. You look like you have your life in order even if you\'re held together with caffeine and anxiety after 9PM.', moodEmoji:'👔', accent:'#E8D5B7' },
+      { letter:'B', label:'Layered in a way that tells a story — maybe you added a vintage scarf over a dress you found at a market, and now the whole thing looks like a memory you want to keep.', moodEmoji:'🌸', accent:'#C9A87C' },
+      { letter:'C', label:'A lot. Deliberately, unapologetically a lot. You saw the word "more" and you said "yes." Velvet, gold, silk, texture, layers, something that catches every light in the room.', moodEmoji:'✨', accent:'#C9A87C' },
+      { letter:'D', label:'You actually planned three versions. You stood in front of the mirror for forty minutes. You are going to look so interesting that people will wonder what your life looks like from the inside.', moodEmoji:'🖤', accent:'#1A0A2E' }
+    ]
+  },
+  {
+    text:"A stranger at a party asks you what you do for fun. You say:",
+    subtext:"the public confession",
+    options:[
+      { letter:'A', label:'"I\'ve been really into pottery classes, actually. And I\'ve been reading a lot. It\'s been very grounding." (You mean: your soul is held together by the word "grounding.")', moodEmoji:'🏺', accent:'#E8D5B7' },
+      { letter:'B', label:'"I don\'t know, honestly. I walk a lot. I think in gardens. I have a very active inner world." (You mean: your inner world is a cathedral.)', moodEmoji:'🌿', accent:'#B8C5D0' },
+      { letter:'C', label:'"I\'ve been curating this playlist — it\'s called \'grief but make it September\'." (You mean: you process everything through aestheticizing your pain and you know it.)', moodEmoji:'🎧', accent:'#3D1A1E' },
+      { letter:'D', label:'"I work out a lot." (You mean: you run from your feelings on a treadmill and it is deeply, profoundly working for you, actually.)', moodEmoji:'🏃', accent:'#1A1C10' }
+    ]
+  },
+  {
+    text:"You walk into someone's home for the first time. You immediately notice:",
+    subtext:"the space we make",
+    options:[
+      { letter:'A', label:'The organization. The whitespace. The deliberate absence of clutter. The books are standing upright with a bookend. You feel a physical sense of relief.', moodEmoji:'📚', accent:'#E8E8EC' },
+      { letter:'B', label:'The things that are clearly loved — the worn spine of a favorite novel left open, the dried flowers, the art on the walls that someone clearly chose with their whole chest.', moodEmoji:'🌾', accent:'#B8C5D0' },
+      { letter:'C', label:'The excess done beautifully — the velvet, the gilt, the layered textiles, the sense that every surface has been considered by someone who believes in beauty as a form of living.', moodEmoji:'🏛️', accent:'#3D1A1E' },
+      { letter:'D', label:'The shadows. The corners. The books stacked on the floor. The sense that someone in this room has a rich interior life they\'re not performing for anyone.', moodEmoji:'🕯️', accent:'#1A0A2E' }
+    ]
+  },
+  {
+    text:"Your comfort film / show / album is:",
+    subtext:"where we retreat",
+    options:[
+      { letter:'A', label:'A quiet indie film where nothing happens except someone learns to be okay. Dressed in oat and sand. You watch it when you need to believe that stillness is a skill.', moodEmoji:'🎞️', accent:'#E8E8EC' },
+      { letter:'B', label:'Something lush and romantic where people feel things very deeply and beautifully and the flowers are always overgrown and everyone is wearing linen and suffering exquisitely.', moodEmoji:'🌸', accent:'#B8C5D0' },
+      { letter:'C', label:'A dark period drama where the corsets are historically accurate and someone makes a choice they can\'t take back and the soundtrack is a requiem mass. You feel Things.', moodEmoji:'🎭', accent:'#3D1A1E' },
+      { letter:'D', label:'A thriller where you\'re not sure what\'s real by the end, or a show about a person who has reinvented themselves so many times they\'ve lost track of who they started as.', moodEmoji:'🎬', accent:'#1A0A2E' }
+    ]
+  },
+  {
+    text:"If your aesthetic were a weather pattern, it would be:",
+    subtext:"the atmosphere you carry",
+    options:[
+      { letter:'A', label:'A clear autumn morning. Crisp. Uncluttered. The kind of air that makes you want to be a better person. Light hitting a glass of water on a marble counter.', moodEmoji:'🍂', accent:'#E8D5B7' },
+      { letter:'B', label:'Golden hour in a garden that hasn\'t been tended in years. Warm. Overgrown. Lush with the kind of beauty that happens when you stop trying to control it.', moodEmoji:'🌻', accent:'#B8C5D0' },
+      { letter:'C', label:'A thunderstorm inside a cathedral. Dramatic. Unavoidable. Beautiful in a way that borders on threatening. Lightning illuminating centuries of ornament.', moodEmoji:'⛈️', accent:'#3D1A1E' },
+      { letter:'D', label:'Dense fog at the edge of a forest. Something could be watching. You can\'t see the edges of anything. It\'s quiet but it doesn\'t feel safe and that is exactly why you\'re still standing here.', moodEmoji:'🌫️', accent:'#1A0A2E' }
+    ]
+  },
+  {
+    text:"You look in the mirror and see someone who is:",
+    subtext:"the final reflection",
+    options:[
+      { letter:'A', label:'Put-together, presentable, the kind of person who looks like they have a skincare routine and a 5-year plan and some savings. Good hair. Clean nails. A calm expression.', moodEmoji:'✨', accent:'#E8D5B7' },
+      { letter:'B', label:'A little rumpled in the best way. Hair that looks like it was styled to look like it wasn\'t styled. An outfit that suggests you were definitely thinking about it. Soft hands. Attentive eyes.', moodEmoji:'🌿', accent:'#B8C5D0' },
+      { letter:'C', label:'Wearing something interesting. Something with a story. Something that the eye needs to travel across to understand. You are a visual sentence and you know it.', moodEmoji:'👁️', accent:'#3D1A1E' },
+      { letter:'D', label:'Someone who has been thinking. Someone who has been reading. Someone who has been through some things and has the slightly haunted, very compelling look to show for it.', moodEmoji:'📖', accent:'#1A0A2E' }
+    ]
+  }
+];
+
+// Scoring: A→Polished/Aesthetic1, B→Soft/Aesthetic2, C→Maximalist/Dramatic, D→Dark/Contemplative
+// Result determination: count dominant letter → determine result type
+// A-dominant: mixed → look at which specific aesthetics score highest
+// For simplicity: dominant letter determines the aesthetic axis winner
+// A/B wins → public aesthetic is "polished/put-together" type
+// C/D wins → public aesthetic is "dramatic/dark" type
+// Then we pick result type based on overall scoring pattern
+
+// Mapping: letter to result type via aesthetic profile
+// Each question option maps to a result type profile:
+// - A: A-dominant results (Preppy Dreamer, Minimal Opulent, Y2K Mystic, Corporate Goblin, Clean Storm)
+// - B: B-dominant results (Soft Romantic, Athletic Melancholy)
+// - C: C-dominant results (Soft Romantic)
+// - D: D-dominant results (Y2K Mystic, Athletic Melancholy, Corporate Goblin, Clean Storm)
+
+// Scoring approach: For each question, the letter chosen maps to an aesthetic profile.
+// Count letters per aesthetic category:
+// Category A: A-dominant results (letter A chosen maps to Preppy/Minimal/Y2K/Corporate/Clean)
+// Category B: B-dominant results (letter B maps to Soft Romantic, Athletic)
+// Category C: C-dominant (maps to Soft Romantic's shadow side)
+// Category D: D-dominant (maps to Dark Academia, Goblincore, Dark Romantic shadows)
+
+// Result = the result type whose aesthetic category has the highest score.
+// Since each result type has specific letter preferences, we tally by result type directly.
+
+const RESULT_LETTER_PREFERENCES = [
+  // For each result type, which letters are preferred (weight 2 = primary, 1 = secondary)
+  // Format: { letter: 'A'/'B'/'C'/'D', weight: 2 or 1 }
+  // Result determined by which result type accumulates highest weighted score
+
+  // Q1 options: A→polished, B→soft, C→maximalist, D→dark contemplative
+  // Q2: A→minimal/preppy, B→bohemian, C→baroque, D→organized
+  // Q3: A→minimal, B→chaotic soft, C→performative, D→disciplined
+  // Q4: A→minimal, B→cottagecore, C→baroque/gothic, D→dark forest
+  // Q5: A→polished, B→romantic layering, C→maximal, D→curated intentional
+  // Q6: A→grounded/preppy, B→inner world/cottagecore, C→aestheticize pain/baroque, D→athletic/functional
+  // Q7: A→minimal, B→loved/soft, C→excess/baroque, D→shadowy/dark
+  // Q8: A→minimal calm, B→romantic/lush, C→dark drama, D→thriller/unknown
+  // Q9: A→crisp/clean, B→overgrown/warm, C→dramatic/gothic, D→fog/mysterious
+  // Q10: A→polished, B→rumpled soft, C→interesting/statement, D→haunted/intellectual
+];
+
+// Simple scoring: for each question, each option maps to a result type
+// The letter pattern across questions determines the result
+// We use a simpler approach: score each answer by which result type it's associated with
+
+// Q->result associations (letter → likely result type IDs):
+// Q1: A→preppy_dreamer, B→soft_romantic, C→minimal_opulent, D→y2k_mystic
+// Q2: A→preppy_dreamer, B→corporate_goblin, C→soft_romantic, D→minimal_opulent
+// Q3: A→minimal_opulent, B→athletic_melancholy, C→y2k_mystic, D→clean_storm
+// Q4: A→minimal_opulent, B→soft_romantic, C→soft_romantic, D→y2k_mystic
+// Q5: A→preppy_dreamer, B→clean_storm, C→minimal_opulent, D→corporate_goblin
+// Q6: A→preppy_dreamer, B→soft_romantic, C→athletic_melancholy, D→athletic_melancholy
+// Q7: A→minimal_opulent, B→corporate_goblin, C→soft_romantic, D→y2k_mystic
+// Q8: A→clean_storm, B→soft_romantic, C→y2k_mystic, D→corporate_goblin
+// Q9: A→preppy_dreamer, B→athletic_melancholy, C→soft_romantic, D→y2k_mystic
+// Q10: A→clean_storm, B→corporate_goblin, C→soft_romantic, D→athletic_melancholy
+
+// Scoring by result type
+const Q_ANSWERS = [
+  { A:['preppy_dreamer'], B:['soft_romantic'], C:['minimal_opulent'], D:['y2k_mystic'] },
+  { A:['preppy_dreamer'], B:['corporate_goblin'], C:['soft_romantic'], D:['minimal_opulent'] },
+  { A:['minimal_opulent'], B:['athletic_melancholy'], C:['y2k_mystic'], D:['clean_storm'] },
+  { A:['minimal_opulent'], B:['soft_romantic'], C:['soft_romantic'], D:['y2k_mystic'] },
+  { A:['preppy_dreamer'], B:['clean_storm'], C:['minimal_opulent'], D:['corporate_goblin'] },
+  { A:['preppy_dreamer'], B:['soft_romantic'], C:['athletic_melancholy'], D:['athletic_melancholy'] },
+  { A:['minimal_opulent'], B:['corporate_goblin'], C:['soft_romantic'], D:['y2k_mystic'] },
+  { A:['clean_storm'], B:['soft_romantic'], C:['y2k_mystic'], D:['corporate_goblin'] },
+  { A:['preppy_dreamer'], B:['athletic_melancholy'], C:['soft_romantic'], D:['y2k_mystic'] },
+  { A:['clean_storm'], B:['corporate_goblin'], C:['soft_romantic'], D:['athletic_melancholy'] }
+];
+
+// ===== STATE =====
+let currentQuestion = 0;
+let answers = [];
+let gentleMode = false;
+let resultScores = {};
+
+// ===== DOM =====
+const app = document.getElementById('app');
+const progressWrap = document.getElementById('progressWrap');
+const progressFill = document.getElementById('progressFill');
+const progressLabel = document.getElementById('progressLabel');
+const gentleModeToggle = document.getElementById('gentleMode');
+const disclaimerScreen = document.getElementById('disclaimerScreen');
+const questionScreen = document.getElementById('questionScreen');
+const resultScreen = document.getElementById('resultScreen');
+const beginBtn = document.getElementById('beginBtn');
+const backBtn = document.getElementById('backBtn');
+const moodVisual = document.getElementById('moodVisual');
+const moodOrb1 = document.getElementById('moodOrb1');
+const moodOrb2 = document.getElementById('moodOrb2');
+const moodGeo1 = document.getElementById('moodGeo1');
+const moodGeo2 = document.getElementById('moodGeo2');
+const moodEmoji1 = document.getElementById('moodEmoji1');
+const moodEmoji2 = document.getElementById('moodEmoji2');
+const moodEmoji3 = document.getElementById('moodEmoji3');
+const questionNum = document.getElementById('questionNum');
+const questionText = document.getElementById('questionText');
+const questionSubtext = document.getElementById('questionSubtext');
+const optionsGrid = document.getElementById('optionsGrid');
+const resultReveal = document.getElementById('resultReveal');
+const shareBtn = document.getElementById('shareBtn');
+const retakeBtn = document.getElementById('retakeBtn');
+const toast = document.getElementById('toast');
+
+// ===== INIT =====
+function init(){
+  gentleMode = localStorage.getItem('shadow-quiz-gentle-mode') === 'true';
+  if(gentleMode){
+    gentleModeToggle.checked = true;
+    app.classList.add('gentle');
+  }
+  gentleModeToggle.addEventListener('change',()=>{
+    gentleMode = gentleModeToggle.checked;
+    localStorage.setItem('shadow-quiz-gentle-mode', gentleMode);
+    app.classList.toggle('gentle', gentleMode);
+  });
+  beginBtn.addEventListener('click', startQuiz);
+  backBtn.addEventListener('click', goBack);
+  shareBtn.addEventListener('click', copyShareText);
+  retakeBtn.addEventListener('click', retake);
+}
+
+function showScreen(screen){
+  [disclaimerScreen, questionScreen, resultScreen].forEach(s=>s.classList.remove('active'));
+  screen.classList.add('active');
+}
+
+function startQuiz(){
+  currentQuestion = 0;
+  answers = [];
+  resultScores = {};
+  RESULT_TYPES.forEach(r=>resultScores[r.id]=0);
+  showScreen(questionScreen);
+  progressWrap.style.display = 'block';
+  updateProgress();
+  renderQuestion();
+}
+
+function updateProgress(){
+  const pct = (currentQuestion / 10) * 100;
+  progressFill.style.width = pct + '%';
+  progressLabel.textContent = `${currentQuestion} / 10`;
+  backBtn.style.display = currentQuestion > 0 ? 'block' : 'none';
+}
+
+function renderQuestion(){
+  const q = QUESTIONS[currentQuestion];
+  questionNum.textContent = `Question ${currentQuestion + 1} of 10`;
+  questionText.textContent = q.text;
+  questionSubtext.textContent = q.subtext;
+
+  // Set mood visuals based on current question's accent or random
+  const accent = q.options[Math.floor(Math.random()*4)].accent;
+  const accent2 = q.options[Math.floor(Math.random()*4)].accent;
+  moodOrb1.style.background = `radial-gradient(circle, ${accent}88 0%, transparent 70%)`;
+  moodOrb2.style.background = `radial-gradient(circle, ${accent2}66 0%, transparent 70%)`;
+  moodGeo1.style.borderColor = `${accent}30`;
+  moodGeo2.style.borderColor = `${accent2}25`;
+
+  // Set emojis for this question
+  const emojis = q.options.map(o=>o.moodEmoji);
+  moodEmoji1.textContent = emojis[0];
+  moodEmoji2.textContent = emojis[1];
+  moodEmoji3.textContent = emojis[2];
+
+  optionsGrid.innerHTML = '';
+  q.options.forEach((opt, idx)=>{
+    const card = document.createElement('div');
+    card.className = 'option-card';
+    card.setAttribute('role','button');
+    card.setAttribute('aria-label',`Option ${opt.letter}: ${opt.label.substring(0,50)}...`);
+    card.setAttribute('tabindex','0');
+    card.dataset.letter = opt.letter;
+    card.dataset.idx = idx;
+    card.style.setProperty('--option-accent', opt.accent);
+
+    const visual = document.createElement('div');
+    visual.className = 'option-visual';
+    visual.style.background = `linear-gradient(135deg, ${opt.accent}22 0%, ${opt.accent}11 100%)`;
+    visual.textContent = opt.moodEmoji;
+
+    const label = document.createElement('div');
+    label.className = 'option-label';
+    label.textContent = opt.label.length > 80 ? opt.label.substring(0,77)+'…' : opt.label;
+
+    const letter = document.createElement('div');
+    letter.className = 'option-letter';
+    letter.textContent = opt.letter;
+
+    card.appendChild(letter);
+    card.appendChild(visual);
+    card.appendChild(label);
+    optionsGrid.appendChild(card);
+
+    card.addEventListener('click',()=>selectOption(card, opt.letter));
+    card.addEventListener('keydown',(e)=>{
+      if(e.key==='Enter'||e.key===' '){e.preventDefault();selectOption(card,opt.letter);}
+    });
+  });
+}
+
+function selectOption(card, letter){
+  // Haptic feedback
+  if(navigator.vibrate) navigator.vibrate(10);
+
+  // Visual feedback
+  document.querySelectorAll('.option-card').forEach(c=>{
+    c.classList.remove('selected');
+    if(c!==card) c.classList.add('dimmed');
+  });
+  card.classList.add('selected');
+
+  // Score the answer
+  answers.push(letter);
+  const qAns = Q_ANSWERS[currentQuestion];
+  if(qAns[letter]){
+    qAns[letter].forEach(rt=>{
+      resultScores[rt] = (resultScores[rt]||0) + 1;
+    });
+  }
+
+  // Auto-advance after delay
+  setTimeout(()=>{
+    if(currentQuestion < 9){
+      currentQuestion++;
+      updateProgress();
+      // Crossfade
+      questionScreen.style.opacity = '0';
+      questionScreen.style.transform = 'translateX(-20px)';
+      setTimeout(()=>{
+        renderQuestion();
+        questionScreen.style.opacity = '1';
+        questionScreen.style.transform = 'translateX(0)';
+      }, gentleMode ? 50 : 250);
+    } else {
+      showResult();
+    }
+  }, gentleMode ? 100 : 350);
+}
+
+function goBack(){
+  if(currentQuestion > 0){
+    currentQuestion--;
+    answers.pop();
+    updateProgress();
+    renderQuestion();
+  }
+}
+
+function showResult(){
+  progressWrap.style.display = 'none';
+
+  // Determine result: highest scoring result type
+  let maxScore = 0;
+  let resultId = 'preppy_dreamer';
+  Object.entries(resultScores).forEach(([id, score])=>{
+    if(score > maxScore){
+      maxScore = score;
+      resultId = id;
+    }
+  });
+
+  const result = RESULT_TYPES.find(r=>r.id===resultId) || RESULT_TYPES[0];
+
+  // Render result card
+  const card = document.getElementById('resultCard');
+  const inner = document.getElementById('resultCardInner');
+
+  // Set background gradient
+  inner.style.background = `linear-gradient(180deg, ${result.publicColor}18 0%, ${result.shadowColor}30 40%, #0B0B0F 100%)`;
+
+  // Ambient orb
+  document.getElementById('ambientOrb').style.background =
+    `radial-gradient(circle, ${result.publicColor}99 0%, transparent 70%)`;
+
+  // Text content
+  document.getElementById('publicLabel').style.color = result.pubLabel;
+  document.getElementById('shadowLabel').style.color = result.shadLabel;
+  document.getElementById('publicName').textContent = result.publicAesthetic;
+  document.getElementById('shadowName').textContent = result.shadowAesthetic;
+  document.getElementById('resultTypeName').textContent = result.name;
+  document.getElementById('resultTypeName').style.color = result.publicColor;
+  document.getElementById('poeticDesc').textContent = result.publicDesc.substring(0,120)+'…';
+
+  // Divider gradient
+  document.getElementById('dividerLine').style.background =
+    `linear-gradient(90deg, ${result.publicColor}, ${result.shadowColor})`;
+
+  // Traits
+  const tagsContainer = document.getElementById('traitTags');
+  tagsContainer.innerHTML = '';
+  result.traits.forEach(tag=>{
+    const el = document.createElement('span');
+    el.className = 'trait-tag';
+    el.textContent = tag;
+    el.style.setProperty('--accent-color', result.accent);
+    tagsContainer.appendChild(el);
+  });
+
+  // Share button gradient
+  shareBtn.style.background = result.publicGrad;
+  shareBtn.style.boxShadow = `0 4px 20px rgba(0,0,0,0.3), 0 0 30px ${result.publicColor}30`;
+
+  // Card accent for option highlighting
+  card.style.setProperty('--card-accent', result.accent);
+
+  showScreen(resultScreen);
+
+  // Cinematic reveal
+  resultReveal.classList.remove('visible');
+  if(!gentleMode){
+    setTimeout(()=>{
+      resultReveal.classList.add('visible');
+    },100);
+  } else {
+    resultReveal.classList.add('visible');
+  }
+
+  // Animate trait tags staggered
+  if(!gentleMode){
+    const tags = tagsContainer.querySelectorAll('.trait-tag');
+    tags.forEach((tag,i)=>{
+      tag.style.opacity='0';
+      tag.style.transform='translateY(10px)';
+      setTimeout(()=>{
+        tag.style.transition='opacity 0.4s, transform 0.4s';
+        tag.style.opacity='1';
+        tag.style.transform='translateY(0)';
+      }, 600 + i * 100);
+    });
+  }
+
+  // Store result for sharing
+  window._currentResult = result;
+}
+
+function copyShareText(){
+  const result = window._currentResult;
+  if(!result) return;
+  const text = result.shareText;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(()=>{
+      showToast('Copied! Add to your story ✨');
+    }).catch(()=>{
+      showToast('Long-press to copy!');
+    });
+  } else {
+    showToast('Long-press to copy!');
+  }
+}
+
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'),2500);
+}
+
+function retake(){
+  resultReveal.classList.remove('visible');
+  showScreen(disclaimerScreen);
+  currentQuestion = 0;
+  answers = [];
+  resultScores = {};
+}
+
+init();
+})();
+</script>
+</body>
+</html>
