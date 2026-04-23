@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>你的荣格阴影原型是什么？</title>
+  <title>What's Your Jungian Shadow Archetype?</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -53,980 +53,513 @@
       display: none;
       flex-direction: column;
       flex: 1;
-      width: 100%;
       min-height: 100dvh;
-      animation: fadeIn 0.4s ease-out;
+      animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     .screen.active { display: flex; }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ─── DISCLAIMER SCREEN ─── */
-    .disclaimer-screen {
-      justify-content: center;
-      align-items: center;
-      padding: 40px 24px;
-      text-align: center;
-      gap: 0;
-    }
+    /* ─── DISCLAIMER ─── */
+    .screen-disclaimer { justify-content: center; align-items: center; text-align: center; padding: 32px 24px; }
+    .disclaimer-icon { font-size: 56px; margin-bottom: 24px; animation: pulse 2.5s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
+    .disclaimer-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; margin-bottom: 16px; line-height: 1.25; }
+    .disclaimer-text { font-size: 14px; line-height: 1.75; color: var(--text-secondary); margin-bottom: 32px; max-width: 360px; }
+    .disclaimer-text strong { color: #e8a87c; }
 
-    .disclaimer-icon {
-      font-size: 3.2rem;
-      margin-bottom: 24px;
-      animation: breathe 3s ease-in-out infinite;
-    }
+    /* ─── PROGRESS ─── */
+    .progress-bar-wrap { padding: 20px 24px 0; }
+    .progress-meta { display: flex; justify-content: space-between; font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--text-tertiary); margin-bottom: 8px; }
+    .progress-track { height: 4px; background: var(--surface); border-radius: 4px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--archetype-color), color-mix(in srgb, var(--archetype-color) 60%, #fff)); border-radius: 4px; transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); width: 0%; }
 
-    @keyframes breathe {
-      0%, 100% { transform: scale(1); opacity: 0.85; }
-      50% { transform: scale(1.06); opacity: 1; }
-    }
+    /* ─── QUESTION ─── */
+    .question-wrap { padding: 28px 24px 0; flex: 1; display: flex; flex-direction: column; }
+    .question-label { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 12px; }
+    .question-text { font-family: 'Playfair Display', serif; font-size: 21px; font-weight: 600; line-height: 1.4; margin-bottom: 28px; }
 
-    .disclaimer-title {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.85rem;
-      font-weight: 800;
-      line-height: 1.2;
-      margin-bottom: 10px;
-      letter-spacing: -0.02em;
-    }
-
-    .disclaimer-subtitle {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 0.95rem;
-      font-style: italic;
-      color: var(--text-secondary);
-      margin-bottom: 32px;
-      line-height: 1.5;
-    }
-
-    .disclaimer-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 32px;
-      text-align: left;
-    }
-
-    .disclaimer-card-title {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--archetype-color);
-      margin-bottom: 10px;
-    }
-
-    .disclaimer-card p {
-      font-size: 0.82rem;
-      line-height: 1.65;
-      color: var(--text-secondary);
-    }
-
-    .disclaimer-card p + p { margin-top: 10px; }
-
-    .btn-begin {
-      width: 100%;
-      max-width: 320px;
-      height: 54px;
-      background: var(--archetype-color);
-      color: #0D0D0F;
-      border: none;
-      border-radius: 50px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-      box-shadow: 0 4px 24px rgba(200, 169, 110, 0.25);
-    }
-
-    .btn-begin:active {
-      transform: scale(0.96);
-      box-shadow: 0 2px 12px rgba(200, 169, 110, 0.2);
-    }
-
-    /* ─── QUIZ SCREEN ─── */
-    .quiz-screen {
-      padding: 0;
-    }
-
-    .progress-container {
-      padding: 16px 24px 0;
-      flex-shrink: 0;
-    }
-
-    .progress-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .progress-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-    }
-
-    .progress-count {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.65rem;
-      color: var(--text-tertiary);
-    }
-
-    .progress-track {
-      height: 4px;
-      background: var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      border-radius: 4px;
-      background: linear-gradient(90deg, var(--archetype-color), #E8C88A);
-      transition: width 0.4s ease-in-out;
-      width: 0%;
-    }
-
-    .quiz-body {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      padding: 28px 24px 24px;
-      overflow: hidden;
-    }
-
-    .question-text {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.25rem;
-      font-weight: 600;
-      line-height: 1.4;
-      margin-bottom: 24px;
-      letter-spacing: -0.01em;
-      min-height: 70px;
-    }
-
-    .options-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      flex: 1;
-    }
-
-    .option-card {
-      width: 100%;
+    /* ─── OPTIONS ─── */
+    .options { display: flex; flex-direction: column; gap: 12px; padding-bottom: 24px; }
+    .option {
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px;
       background: var(--surface);
       border: 1.5px solid var(--border);
       border-radius: 14px;
-      padding: 16px 18px;
-      text-align: left;
       cursor: pointer;
-      transition: transform 0.15s ease, border-color 0.15s ease, opacity 0.25s ease, box-shadow 0.2s ease, background 0.2s ease;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      min-height: 58px;
-      -webkit-user-select: none;
-      user-select: none;
-      position: relative;
-      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative; overflow: hidden;
     }
-
-    .option-card .opt-letter {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      color: var(--text-tertiary);
-      flex-shrink: 0;
-      width: 22px;
-      transition: color 0.15s ease;
-    }
-
-    .option-card .opt-text {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.92rem;
-      font-weight: 500;
-      line-height: 1.4;
-      color: var(--text-primary);
-      transition: color 0.15s ease;
-    }
-
-    .option-card .opt-check {
-      margin-left: auto;
-      font-size: 1rem;
-      opacity: 0;
-      transform: translateX(6px);
-      transition: opacity 0.2s ease, transform 0.2s ease;
-      flex-shrink: 0;
-    }
-
-    .option-card.selected {
+    .option:hover { background: var(--surface-elevated); border-color: rgba(255,255,255,0.12); transform: translateX(4px); }
+    .option:active { transform: scale(0.97); }
+    .option.selected {
       border-color: var(--archetype-color);
-      box-shadow: 0 0 0 1px var(--archetype-color), 0 0 20px var(--archetype-glow);
       background: var(--surface-elevated);
-      transform: scale(1.02);
-      animation: selectSpring 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform: scale(1.03);
+      box-shadow: 0 0 28px var(--archetype-glow), 0 0 0 1px var(--archetype-color);
     }
-
-    @keyframes selectSpring {
-      0% { transform: scale(1); }
-      40% { transform: scale(1.04); }
-      100% { transform: scale(1.02); }
-    }
-
-    .option-card.selected .opt-letter { color: var(--archetype-color); }
-    .option-card.selected .opt-check {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    .option-card.dimmed {
-      opacity: 0.35;
-      transform: scale(0.99);
-    }
-
-    .option-card:not(.selected):not(.dimmed):active {
-      transform: scale(0.98);
-      background: var(--surface-elevated);
-    }
-
-    /* ─── PROCESSING SCREEN ─── */
-    .processing-screen {
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-      text-align: center;
-      padding: 24px;
-    }
-
-    .processing-ring {
-      width: 60px;
-      height: 60px;
-      border: 3px solid var(--border);
-      border-top-color: var(--archetype-color);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .processing-text {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.1rem;
-      font-style: italic;
+    .option.dimmed { opacity: 0.35; transform: scale(0.97); }
+    .option-letter {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: rgba(255,255,255,0.07);
       color: var(--text-secondary);
-      animation: pulse 2s ease-in-out infinite;
+      font-weight: 700; font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
+    .option.selected .option-letter { background: var(--archetype-color); color: #fff; }
+    .option-text { font-size: 14px; line-height: 1.55; color: var(--text-primary); }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 0.5; }
-      50% { opacity: 1; }
-    }
+    /* ─── PROCESSING ─── */
+    .screen-processing { justify-content: center; align-items: center; gap: 20px; }
+    .processing-spinner { width: 48px; height: 48px; border: 3px solid var(--surface); border-top-color: var(--archetype-color); border-radius: 50%; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to{transform:rotate(360deg)} }
+    .processing-text { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.1em; color: var(--text-tertiary); text-transform: uppercase; }
 
-    /* ─── RESULT SCREEN ─── */
-    .result-screen {
-      align-items: center;
-      padding: 0;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-    }
+    /* ─── RESULT ─── */
+    .screen-result { align-items: center; padding-top: 48px; }
+    .result-emoji-wrap { margin-bottom: 16px; animation: badgeIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+    @keyframes badgeIn { from{opacity:0;transform:scale(0.3) rotate(-15deg)} to{opacity:1;transform:scale(1) rotate(0deg)} }
+    .result-emoji { font-size: 72px; line-height: 1; }
+    .result-label { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px; animation: fadeUp 0.5s 0.15s both; }
+    .result-name { font-family: 'Playfair Display', serif; font-size: 34px; font-weight: 900; color: var(--archetype-color); margin-bottom: 4px; text-align: center; animation: fadeUp 0.5s 0.25s both; }
+    .result-name-sub { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 400; font-style: italic; color: var(--text-secondary); margin-bottom: 20px; animation: fadeUp 0.5s 0.3s both; }
+    .result-tagline { font-family: 'Playfair Display', serif; font-size: 15px; font-style: italic; color: var(--text-secondary); text-align: center; max-width: 320px; margin: 0 auto 24px; line-height: 1.5; animation: fadeUp 0.5s 0.35s both; }
 
     .result-card {
-      width: 100%;
-      min-height: 100dvh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 60px 28px 120px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .result-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 70% 50% at 50% 30%, var(--card-glow-rgb, rgba(200,169,110,0.15)) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .result-eyebrow {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.62rem;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--text-tertiary);
-      margin-bottom: 20px;
-      opacity: 0;
-      animation: revealUp 0.5s ease-out 0.2s forwards;
-    }
-
-    .result-emoji {
-      font-size: 4.5rem;
-      line-height: 1;
-      margin-bottom: 20px;
-      opacity: 0;
-      animation: revealBounce 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s forwards;
-    }
-
-    @keyframes revealBounce {
-      0% { opacity: 0; transform: scale(0.4) rotate(-10deg); }
-      60% { transform: scale(1.1) rotate(3deg); }
-      100% { opacity: 1; transform: scale(1) rotate(0); }
-    }
-
-    .result-name {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 2.4rem;
-      font-weight: 900;
-      line-height: 1.1;
-      letter-spacing: -0.03em;
-      margin-bottom: 6px;
-      opacity: 0;
-      animation: revealUp 0.5s ease-out 0.65s forwards;
-    }
-
-    .result-name-sub {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1rem;
-      font-style: italic;
-      color: var(--text-secondary);
-      margin-bottom: 28px;
-      opacity: 0;
-      animation: revealUp 0.5s ease-out 0.8s forwards;
-    }
-
-    .result-divider {
-      width: 50px;
-      height: 2px;
-      background: var(--archetype-color);
-      border-radius: 2px;
-      margin: 0 auto 28px;
-      opacity: 0;
-      animation: expandWidth 0.5s ease-out 0.95s forwards;
-    }
-
-    @keyframes expandWidth {
-      from { width: 0; opacity: 0; }
-      to { width: 50px; opacity: 1; }
-    }
-
-    @keyframes revealUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .result-tagline {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.05rem;
-      font-style: italic;
-      line-height: 1.5;
-      color: rgba(245, 245, 247, 0.8);
-      max-width: 340px;
-      margin-bottom: 28px;
-      opacity: 0;
-      animation: revealUp 0.5s ease-out 1.05s forwards;
-    }
-
-    .result-desc {
-      font-size: 0.85rem;
-      line-height: 1.7;
-      color: var(--text-secondary);
-      max-width: 340px;
-      margin-bottom: 28px;
-      opacity: 0;
-      animation: revealUp 0.5s ease-out 1.2s forwards;
-    }
-
-    .result-tags {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 40px;
-      opacity: 0;
-      animation: revealUp 0.5s ease-out 1.35s forwards;
-    }
-
-    .tag {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.6rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #fff;
-      background: var(--tag-bg, rgba(200,169,110,0.2));
-      border: 1px solid var(--tag-border, rgba(200,169,110,0.4));
-      border-radius: 8px;
-      padding: 6px 12px;
-      backdrop-filter: blur(8px);
-    }
-
-    .share-bar {
-      position: fixed;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 480px;
-      padding: 16px 24px calc(16px + env(safe-area-inset-bottom));
-      background: rgba(13, 13, 15, 0.92);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-top: 1px solid var(--border);
-      display: flex;
-      gap: 10px;
-      z-index: 100;
-      opacity: 0;
-      animation: revealUp 0.5s ease-out 1.6s forwards;
-    }
-
-    .btn-share {
-      flex: 1;
-      height: 48px;
-      border-radius: 50px;
-      border: none;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: transform 0.15s ease, opacity 0.15s ease;
-    }
-
-    .btn-share:active { transform: scale(0.95); }
-
-    .btn-copy {
+      width: calc(100% - 48px);
       background: var(--surface);
-      color: var(--text-primary);
       border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 24px;
+      animation: fadeUp 0.5s 0.45s both;
     }
+    .result-card-title { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 12px; }
+    .result-card-text { font-size: 14px; line-height: 1.75; color: var(--text-secondary); }
 
-    .btn-copy.copied {
-      background: var(--archetype-color);
-      color: #0D0D0F;
-      border-color: var(--archetype-color);
-    }
+    .result-tags { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 28px; animation: fadeUp 0.5s 0.55s both; }
+    .result-tag { padding: 5px 12px; border-radius: 20px; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; background: color-mix(in srgb, var(--archetype-color) 15%, transparent); color: var(--archetype-color); border: 1px solid color-mix(in srgb, var(--archetype-color) 30%, transparent); }
 
-    .btn-retake {
-      background: transparent;
-      color: var(--text-tertiary);
-      border: 1px solid var(--border);
-      font-size: 0.75rem;
-    }
+    .result-actions { display: flex; gap: 12px; padding: 0 24px 40px; width: 100%; animation: fadeUp 0.5s 0.65s both; }
+    .btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 15px 20px; border: none; border-radius: 14px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); letter-spacing: 0.02em; }
+    .btn:active { transform: scale(0.96); }
+    .btn-primary { background: var(--archetype-color); color: #fff; }
+    .btn-primary:hover { filter: brightness(1.1); box-shadow: 0 4px 20px var(--archetype-glow); }
+    .btn-secondary { background: var(--surface); color: var(--text-primary); border: 1.5px solid var(--border); }
+    .btn-secondary:hover { background: var(--surface-elevated); }
 
-    /* ─── REDUCED MOTION ─── */
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
+    /* ─── TOAST ─── */
+    .toast { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--surface-elevated); border: 1px solid var(--border); color: var(--text-primary); padding: 10px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; opacity: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none; z-index: 100; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   </style>
 </head>
 <body>
-  <div class="app">
+<div class="app">
 
-    <!-- DISCLAIMER SCREEN -->
-    <div class="screen disclaimer-screen active" id="screen-disclaimer">
-      <div class="disclaimer-icon">🔮</div>
-      <h1 class="disclaimer-title">你的荣格阴影原型是什么？</h1>
-      <p class="disclaimer-subtitle">The part of you that you've never met… is running the show.</p>
-      <div class="disclaimer-card">
-        <div class="disclaimer-card-title">⚠️ Before You Begin</div>
-        <p>这是一次自我探索工具，<strong>不是临床诊断</strong>。题目涉及深层心理主题，可能引发强烈情绪反应。</p>
-        <p>如果你正处于心理困境中，强烈建议寻求专业心理支持，而非仅依赖本测验。</p>
-        <p style="margin-top:12px;color:var(--text-tertiary);font-size:0.78rem;">No sign-up required · Anonymous · For awareness only</p>
-      </div>
-      <button class="btn-begin" id="btn-begin">Begin the Descent →</button>
-    </div>
-
-    <!-- QUIZ SCREEN -->
-    <div class="screen quiz-screen" id="screen-quiz">
-      <div class="progress-container">
-        <div class="progress-meta">
-          <span class="progress-label">Shadow Archetype Quiz</span>
-          <span class="progress-count" id="progress-count">Q 1 / 15</span>
-        </div>
-        <div class="progress-track">
-          <div class="progress-fill" id="progress-fill"></div>
-        </div>
-      </div>
-      <div class="quiz-body">
-        <p class="question-text" id="question-text"></p>
-        <div class="options-list" id="options-list"></div>
-      </div>
-    </div>
-
-    <!-- PROCESSING SCREEN -->
-    <div class="screen processing-screen" id="screen-processing">
-      <div class="processing-ring"></div>
-      <p class="processing-text">Descending into your unconscious...</p>
-    </div>
-
-    <!-- RESULT SCREEN -->
-    <div class="screen result-screen" id="screen-result">
-      <div class="result-card" id="result-card">
-        <p class="result-eyebrow">Your Jungian Shadow Archetype</p>
-        <div class="result-emoji" id="result-emoji"></div>
-        <h2 class="result-name" id="result-name"></h2>
-        <p class="result-name-sub" id="result-name-sub"></p>
-        <div class="result-divider"></div>
-        <p class="result-tagline" id="result-tagline"></p>
-        <p class="result-desc" id="result-desc"></p>
-        <div class="result-tags" id="result-tags"></div>
-      </div>
-      <div class="share-bar">
-        <button class="btn-share btn-copy" id="btn-copy">
-          <span id="copy-icon">📋</span>
-          <span id="copy-label">Copy</span>
-        </button>
-        <button class="btn-share btn-retake" id="btn-retake">🔄 Retake</button>
-      </div>
-    </div>
-
+  <!-- DISCLAIMER -->
+  <div class="screen screen-disclaimer active" id="screen-disclaimer">
+    <div class="disclaimer-icon">🔮</div>
+    <h1 class="disclaimer-title">What's Your Jungian Shadow Archetype?</h1>
+    <p class="disclaimer-text">
+      This quiz is for self-reflection and entertainment — <strong>not a diagnosis</strong>.<br><br>
+      Shadow work can bring up real emotions. If you feel distressed, please reach out to a mental health professional. You don't have to do this alone.
+    </p>
+    <button class="btn btn-primary" id="btn-begin" style="width:100%;max-width:320px;">Begin the Dive →</button>
   </div>
 
-  <script>
-    // ─── QUIZ DATA ───────────────────────────────────────────────────────────
-    const ARCHETYPES = {
-      wounded_child: {
-        id: 'wounded_child',
-        name: 'The Wounded Child',
-        nameCn: '受伤的孩子',
-        emoji: '🧒',
-        tagline: '那个你试图保护的脆弱灵魂',
-        desc: '你努力表现得成熟、坚强，却在某些深夜被一股莫名的悲伤击中——像一个被独自留在房间里的孩子，在等待一个永远不会回来的人。这个孩子从未消失，他只是被你藏进了内心最深的角落。',
-        tags: ['深层不配得感', '被抛弃恐惧', '独立伪装', '渴望无条件接纳'],
-        color: '#52BE80',
-        glowRgb: 'rgba(82, 190, 128, 0.18)',
-        gradientStart: '#52BE80',
-        gradientEnd: '#1E8449',
-        tagBg: 'rgba(82, 190, 128, 0.2)',
-        tagBorder: 'rgba(82, 190, 128, 0.4)'
-      },
-      destroyer: {
-        id: 'destroyer',
-        name: 'The Destroyer',
-        nameCn: '毁灭者',
-        emoji: '🔥',
-        tagline: '那团想烧掉一切的内在火焰',
-        desc: '你蔑视权威，反感一切"应该"和"必须"。你内心深处有一团火，想要摧毁这个虚伪的世界。但问题是——这团火烧完之后，你得到的是什么？你的叛逆是你的燃料，也可能是你的牢笼。',
-        tags: ['反对既定秩序', '愤怒为燃料', '渴望颠覆', '蔑视妥协'],
-        color: '#C0392B',
-        glowRgb: 'rgba(192, 57, 43, 0.22)',
-        gradientStart: '#C0392B',
-        gradientEnd: '#7B241C',
-        tagBg: 'rgba(192, 57, 43, 0.2)',
-        tagBorder: 'rgba(192, 57, 43, 0.4)'
-      },
-      false_self: {
-        id: 'false_self',
-        name: 'The False Self',
-        nameCn: '虚假之我',
-        emoji: '🎭',
-        tagline: '那个用完美面具掩盖空洞的灵魂',
-        desc: '你构建了一个无懈可击的公众形象——友善、乐观、永远得体。但这个完美的面具背后，是一个害怕被看穿的空洞灵魂。你消耗大量心理能量维持这个假象，却越来越远离真实的自己。',
-        tags: ['完美人设', '害怕被看穿', '空洞表演', '情感隔离'],
-        color: '#7D3C98',
-        glowRgb: 'rgba(125, 60, 152, 0.22)',
-        gradientStart: '#7D3C98',
-        gradientEnd: '#4A235A',
-        tagBg: 'rgba(125, 60, 152, 0.2)',
-        tagBorder: 'rgba(125, 60, 152, 0.4)'
-      },
-      rival: {
-        id: 'rival',
-        name: 'The Rival',
-        nameCn: '对抗者',
-        emoji: '⚔️',
-        tagline: '那个永远在战斗、永远在证明的自己',
-        desc: '你把软弱视为耻辱，拼命变强，用战斗力来定义自己的价值。因为战士不会被抛弃——至少你是这么相信的。但你最强的盔甲，也是你最深的牢笼。你不知道如何停下来，因为停止战斗意味着失去身份。',
-        tags: ['用强掩弱', '无法接受失败', '永无止境的战场', '成就定义自我'],
-        color: '#D4AC0D',
-        glowRgb: 'rgba(212, 172, 13, 0.2)',
-        gradientStart: '#D4AC0D',
-        gradientEnd: '#9A7D0A',
-        tagBg: 'rgba(212, 172, 13, 0.2)',
-        tagBorder: 'rgba(212, 172, 13, 0.4)'
-      }
-    };
+  <!-- QUIZ -->
+  <div class="screen screen-quiz" id="screen-quiz">
+    <div class="progress-bar-wrap">
+      <div class="progress-meta">
+        <span id="progress-count">Q 1 / 15</span>
+        <span id="progress-pct">0%</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+    <div class="question-wrap">
+      <div class="question-label" id="question-label">Question 1</div>
+      <div class="question-text" id="question-text"></div>
+      <div class="options" id="options-list"></div>
+    </div>
+  </div>
 
-    // A→wounded_child, B→destroyer, C→false_self, D→rival
-    const LETTER_MAP = { A: 'wounded_child', B: 'destroyer', C: 'false_self', D: 'rival' };
-    const LETTERS = ['A', 'B', 'C', 'D'];
+  <!-- PROCESSING -->
+  <div class="screen screen-processing" id="screen-processing">
+    <div class="processing-spinner"></div>
+    <div class="processing-text">Revealing your archetype...</div>
+  </div>
 
-    const QUESTIONS = [
-      {
-        text: '深夜独处时，你的思绪最常飘向哪里？',
-        options: [
-          { letter: 'A', text: '那些我伤害过的人，那些无法弥补的愧疚' },
-          { letter: 'B', text: '还有多少潜力没有挖掘，人生是否就这样了' },
-          { letter: 'C', text: '为什么我总感到空虚，好像缺了点什么' },
-          { letter: 'D', text: '那些还没被我摧毁的障碍，到底在等什么' }
-        ]
-      },
-      {
-        text: '你最无法忍受别人身上的哪种特质？',
-        options: [
-          { letter: 'A', text: '软弱、依赖、总是需要别人照顾' },
-          { letter: 'B', text: '虚伪、做作、假装无辜的样子' },
-          { letter: 'C', text: '表里不一，总是戴着面具讨好所有人' },
-          { letter: 'D', text: '自以为是、好为人师，总觉得自己最正确' }
-        ]
-      },
-      {
-        text: '如果你是一部小说里的角色，你更愿意自己是：',
-        options: [
-          { letter: 'A', text: '一个历经磨难、内心破碎的孤儿' },
-          { letter: 'B', text: '一个为了复仇而不惜代价的反英雄' },
-          { letter: 'C', text: '一个用完美面具操控所有人的谋士' },
-          { letter: 'D', text: '一个挑战一切秩序的革命者' }
-        ]
-      },
-      {
-        text: '你的亲密关系中，最反复出现的痛苦模式是什么？',
-        options: [
-          { letter: 'A', text: '我总是爱上无法在一起的人，或者害怕真正被爱' },
-          { letter: 'B', text: '我在关系中付出一切，最后却被掏空' },
-          { letter: 'C', text: '我在伴侣面前扮演完美的形象，不敢展露真实情绪' },
-          { letter: 'D', text: '我渴望自由，却又害怕被抛弃，在拉扯中消耗彼此' }
-        ]
-      },
-      {
-        text: '当你真正愤怒时，你更倾向于：',
-        options: [
-          { letter: 'A', text: '把愤怒压下去，用微笑和体贴来掩饰' },
-          { letter: 'B', text: '直接爆发，说出最伤人的话' },
-          { letter: 'C', text: '冷静地、冷酷地反击，让对方知道自己错了' },
-          { letter: 'D', text: '突然沉默，把自己关进一个无人能进入的世界' }
-        ]
-      },
-      {
-        text: '你最害怕别人看穿你什么？',
-        options: [
-          { letter: 'A', text: '我其实根本没有表面看起来那么坚强' },
-          { letter: 'B', text: '我内心深处其实渴望混乱和破坏' },
-          { letter: 'C', text: '我的"完美"只是一层薄薄的面具' },
-          { letter: 'D', text: '我所有的"强大"只是恐惧伪装的盔甲' }
-        ]
-      },
-      {
-        text: '哪种梦境主题最让你感到熟悉？',
-        options: [
-          { letter: 'A', text: '被追赶，却怎么也跑不快、跑不动' },
-          { letter: 'B', text: '站在废墟上，一切化为灰烬' },
-          { letter: 'C', text: '在一个房间里，我必须同时扮演多个角色' },
-          { letter: 'D', text: '不断坠落，周围一片虚空' }
-        ]
-      },
-      {
-        text: '如果你拥有绝对的权力，你最可能用它来：',
-        options: [
-          { letter: 'A', text: '保护那些无法保护自己的人' },
-          { letter: 'B', text: '打破现有的规则，创造一个全新的世界' },
-          { letter: 'C', text: '控制所有人，让他们按照我的剧本行事' },
-          { letter: 'D', text: '证明我是对的，让他们为曾经质疑我而后悔' }
-        ]
-      },
-      {
-        text: '你的生活中，"准时"和"规则"对你来说意味着什么？',
-        options: [
-          { letter: 'A', text: '安全感的来源，没有它们我会恐慌' },
-          { letter: 'B', text: '无聊的枷锁，我总想找借口打破它们' },
-          { letter: 'C', text: '维持体面的工具，让别人觉得我可靠' },
-          { letter: 'D', text: '我遵守，但内心暗暗渴望失控和越界' }
-        ]
-      },
-      {
-        text: '你最害怕失去什么？',
-        options: [
-          { letter: 'A', text: '被爱的资格和机会' },
-          { letter: 'B', text: '别人对我的尊重和认可' },
-          { letter: 'C', text: '我精心维护的形象和社会地位' },
-          { letter: 'D', text: '我对生活的掌控感和安全感' }
-        ]
-      },
-      {
-        text: '回想一件你做过的"坏事"——你的第一反应是：',
-        options: [
-          { letter: 'A', text: '我不该那样，我是个糟糕的人' },
-          { letter: 'B', text: '那是为了保护自己，不后悔' },
-          { letter: 'C', text: '这是我计划的一部分，效果不错' },
-          { letter: 'D', text: '我当时失控了，但那不像"我"' }
-        ]
-      },
-      {
-        text: '在一个陌生社交场合，你通常会：',
-        options: [
-          { letter: 'A', text: '安静观察，确保自己不会出丑' },
-          { letter: 'B', text: '挑战现有观点，成为讨论的焦点' },
-          { letter: 'C', text: '扮演最讨人喜欢的角色，让所有人喜欢我' },
-          { letter: 'D', text: '独自站在角落，内心觉得自己不属于这里' }
-        ]
-      },
-      {
-        text: '你最容易被哪种类型的人吸引？',
-        options: [
-          { letter: 'A', text: '神秘、危险、让人捉摸不透的' },
-          { letter: 'B', text: '自由、不羁、不被任何事物定义的' },
-          { letter: 'C', text: '温柔、包容、像家一样温暖的' },
-          { letter: 'D', text: '智慧、深沉、能和我进行灵魂对话的' }
-        ]
-      },
-      {
-        text: '如果你必须选择一个"人生主题"，你会选：',
-        options: [
-          { letter: 'A', text: '救赎 —— 修复过去的创伤，找到意义' },
-          { letter: 'B', text: '自由 —— 打破所有束缚，成为真正的自己' },
-          { letter: 'C', text: '掌控 —— 理解规则，利用规则，主导游戏' },
-          { letter: 'D', text: '真相 —— 揭开表象，理解深层本质' }
-        ]
-      },
-      {
-        text: '你身边最让你看不顺眼的人，他们最大的"罪过"是什么？',
-        options: [
-          { letter: 'A', text: '他们总是利用别人的善良，把人当工具' },
-          { letter: 'B', text: '他们狂妄自大，蔑视一切规则和权威' },
-          { letter: 'C', text: '他们永远在表演，永远说正确的话' },
-          { letter: 'D', text: '他们用柔弱操控他人，让我愤怒却无法反驳' }
-        ]
-      }
-    ];
+  <!-- RESULT -->
+  <div class="screen screen-result" id="screen-result">
+    <div class="result-emoji-wrap"><div class="result-emoji" id="result-emoji">🔥</div></div>
+    <div class="result-label">Your Shadow Archetype Is</div>
+    <div class="result-name" id="result-name">The Destroyer</div>
+    <div class="result-name-sub" id="result-name-sub"></div>
+    <div class="result-tagline" id="result-tagline"></div>
+    <div class="result-card">
+      <div class="result-card-title">What This Means About You</div>
+      <div class="result-card-text" id="result-desc"></div>
+    </div>
+    <div class="result-tags" id="result-tags"></div>
+    <div class="result-actions">
+      <button class="btn btn-primary" id="btn-copy">
+        <span id="copy-icon">📋</span> <span id="copy-label">Copy Results</span>
+      </button>
+      <button class="btn btn-secondary" id="btn-retake">🔄 Retake</button>
+    </div>
+  </div>
 
-    // ─── STATE ───────────────────────────────────────────────────────────────
-    let currentQ = 0;
-    let answers = [];       // answers[i] = letter string 'A'|'B'|'C'|'D'
-    let selectedArchetype = null;
+</div>
+<div class="toast" id="toast"></div>
 
-    // ─── DOM REFS ────────────────────────────────────────────────────────────
-    const $disclaimer = document.getElementById('screen-disclaimer');
-    const $quiz      = document.getElementById('screen-quiz');
-    const $processing = document.getElementById('screen-processing');
-    const $result    = document.getElementById('screen-result');
+<script>
+const ARCHETYPES = {
+  wounded_child: {
+    id: 'wounded_child',
+    name: 'The Wounded Child',
+    nameSub: '受伤的孩子',
+    emoji: '🧒',
+    tagline: 'The part of you that learned to need quietly — and never stopped waiting.',
+    desc: 'You learned early that your needs were inconvenient. That love had conditions. That showing what you actually felt got you dismissed. So you learned to need quietly, to want small, to be fine. The wound isn\'t that you were hurt — it\'s that you made yourself smaller to survive. That child never disappeared. You just hid them in the deepest part of yourself.',
+    tags: ['Deep Unworthiness', 'Fear of Abandonment', 'Independence Armor', 'Craves Unconditional Acceptance'],
+    color: '#52BE80',
+    tagBg: 'rgba(82, 190, 128, 0.15)',
+    tagBorder: 'rgba(82, 190, 128, 0.35)'
+  },
+  destroyer: {
+    id: 'destroyer',
+    name: 'The Destroyer',
+    nameSub: '毁灭者',
+    emoji: '🔥',
+    tagline: 'The fire in you that you\'re most afraid to name.',
+    desc: 'You despise authority. You resent every "should" and "must." There\'s a fire inside you that wants to burn this false world down. But here\'s the problem — after the fire consumes everything, what\'s left? Your rebellion is your fuel. It might also be your cage.',
+    tags: ['Anti-Authority', 'Rage as Fuel', 'Yearns to Uproot', 'Despises Compromise'],
+    color: '#C0392B',
+    tagBg: 'rgba(192, 57, 43, 0.15)',
+    tagBorder: 'rgba(192, 57, 43, 0.35)'
+  },
+  false_self: {
+    id: 'false_self',
+    name: 'The False Self',
+    nameSub: '虚假之我',
+    emoji: '🎭',
+    tagline: 'The performance is perfect. The actor is missing.',
+    desc: 'You\'ve constructed an airtight public image — friendly, optimistic, perpetually composed. But behind this flawless mask is a hollow soul afraid of being seen through. You spend enormous psychological energy maintaining the illusion while growing more estranged from who you actually are.',
+    tags: ['Perfect Persona', 'Fear of Being Seen', ' hollow Performance', 'Emotional Isolation'],
+    color: '#7D3C98',
+    tagBg: 'rgba(125, 60, 152, 0.15)',
+    tagBorder: 'rgba(125, 60, 152, 0.35)'
+  },
+  rival: {
+    id: 'rival',
+    name: 'The Rival',
+    nameSub: '对抗者',
+    emoji: '⚔️',
+    tagline: 'Someone else\'s win feels like your loss.',
+    desc: 'You see weakness as shameful. You fight desperately to grow stronger, defining your worth by your capacity to compete. Because warriors don\'t get abandoned — or so you believe. But your strongest armor is also your deepest prison. You don\'t know how to stop, because stopping means losing your identity.',
+    tags: ['Strength Masks Weakness', 'Cant Accept Failure', 'Endless Battlefield', 'Achievement Defines Self'],
+    color: '#D4AC0D',
+    tagBg: 'rgba(212, 172, 13, 0.15)',
+    tagBorder: 'rgba(212, 172, 13, 0.35)'
+  }
+};
 
-    const $progressCount = document.getElementById('progress-count');
-    const $progressFill  = document.getElementById('progress-fill');
-    const $questionText  = document.getElementById('question-text');
-    const $optionsList   = document.getElementById('options-list');
+// Q#: A→wounded_child, B→destroyer, C→false_self, D→rival
+const LETTER_MAP = { A: 'wounded_child', B: 'destroyer', C: 'false_self', D: 'rival' };
 
-    const $resultCard  = document.getElementById('result-card');
-    const $resultEmoji = document.getElementById('result-emoji');
-    const $resultName  = document.getElementById('result-name');
-    const $resultNameSub = document.getElementById('result-name-sub');
-    const $resultTagline = document.getElementById('result-tagline');
-    const $resultDesc  = document.getElementById('result-desc');
-    const $resultTags   = document.getElementById('result-tags');
-    const $btnCopy      = document.getElementById('btn-copy');
-    const $copyIcon     = document.getElementById('copy-icon');
-    const $copyLabel    = document.getElementById('copy-label');
-    const $btnRetake    = document.getElementById('btn-retake');
+const QUESTIONS = [
+  {
+    text: "You're at a dinner party and someone takes credit for an idea you shared with them earlier. You:",
+    options: [
+      { letter: 'A', text: 'Laugh it off publicly, then ghost them for six months.' },
+      { letter: 'B', text: 'Correct them mid-sentence, matter-of-factly.' },
+      { letter: 'C', text: 'Let it go — ideas are free, you tell yourself. But you feel it for days.' },
+      { letter: 'D', text: "Make a mental note to bring it up later when they need a favor." }
+    ]
+  },
+  {
+    text: 'Your friend texts you at 11pm: "I\'ve been thinking about us." Your gut reaction is:',
+    options: [
+      { letter: 'A', text: 'Full dread — what did I do wrong?' },
+      { letter: 'B', text: 'Curious — but already drafting your exit strategy.' },
+      { letter: 'C', text: "Excited — maybe they finally see how great I am." },
+      { letter: 'D', text: "Irritated — I don't have the bandwidth for their emotional labor tonight." }
+    ]
+  },
+  {
+    text: "You look at someone else's highlight reel — their relationship, their career, their glow-up — and you feel:",
+    options: [
+      { letter: 'A', text: 'Genuinely happy for them. Rare, but it happens.' },
+      { letter: 'B', text: "A sick pull to compete. Like something in you just tightened." },
+      { letter: 'C', text: "Nothing. Scroll past. Why does their life make me feel nothing?" },
+      { letter: 'D', text: 'Resentment. The kind that surprises you with its heat.' }
+    ]
+  },
+  {
+    text: "You're asked to describe your biggest weakness in a job interview. You:",
+    options: [
+      { letter: 'A', text: 'Give the polished "I\'m a perfectionist / work too hard" non-answer.' },
+      { letter: 'B', text: "Go blank. You'd rather say nothing than risk being truly seen." },
+      { letter: 'C', text: "Overshare something real and watch their face for whether it was a mistake." },
+      { letter: 'D', text: "Redirect to a strength disguised as a weakness. You're good at this game." }
+    ]
+  },
+  {
+    text: 'When someone close to you apologizes sincerely, you:',
+    options: [
+      { letter: 'A', text: 'Accept it immediately — holding onto things feels too heavy.' },
+      { letter: 'B', text: "Accept it verbally but feel nothing inside. You're still keeping score." },
+      { letter: 'C', text: "Feel suspicious. What's the angle? Why now?" },
+      { letter: 'D', text: "Mellt. You didn't realize how much you needed to hear that." }
+    ]
+  },
+  {
+    text: 'Your shadow shows up most when you:',
+    options: [
+      { letter: 'A', text: 'Are around people who are "too much" — loud, emotional, needy. It triggers something unwieldy in you.' },
+      { letter: 'B', text: "Are around people who seem to have it all together. You want to knock them down." },
+      { letter: 'C', text: "Are alone. No one to perform for, no one to impress. That's when the really honest thoughts come." },
+      { letter: 'D', text: "Are in conflict. Not because you want to fight — but because clarity only comes through confrontation." }
+    ]
+  },
+  {
+    text: 'You find out a close friend has been talking about you behind your back. You:',
+    options: [
+      { letter: 'A', text: 'Feel physically ill. The betrayal sits in your chest for weeks.' },
+      { letter: 'B', text: "Feel liberated — now you have permission to stop pretending you liked them anyway." },
+      { letter: 'C', text: "Confront them immediately. You need the truth from their mouth." },
+      { letter: 'D', text: "Pretend you don't know. But you start gathering information, quietly." }
+    ]
+  },
+  {
+    text: 'You catch yourself lying. Not a big one — a small, unnecessary one. You:',
+    options: [
+      { letter: 'A', text: 'Feel disgusting. Who am I becoming?' },
+      { letter: 'B', text: "Justify it immediately. It protected me. It was necessary." },
+      { letter: 'C', text: "Don't even notice until later. And then you barely register it." },
+      { letter: 'D', text: "Use it as evidence of your inadequacy. See, you're exactly the kind of person you feared." }
+    ]
+  },
+  {
+    text: 'Your relationship with your parents is:',
+    options: [
+      { letter: 'A', text: "Complicated in ways I've never fully unpacked." },
+      { letter: 'B', text: "Fine. We get along. I just don't tell them things." },
+      { letter: 'C', text: "Something I'm still angry about and probably always will be." },
+      { letter: 'D', text: "Something I've forgiven, and I mean it. Mostly." }
+    ]
+  },
+  {
+    text: "You're at a party. You don't know anyone. You:",
+    options: [
+      { letter: 'A', text: "Work the room like a host. If I'm not creating energy, what's the point?" },
+      { letter: 'B', text: "Find the one person who looks equally uncomfortable and bond in the corner." },
+      { letter: 'C', text: "Leave within 30 minutes. This was a mistake." },
+      { letter: 'D', text: "Observe. Watch how people really are when they think no one's paying attention." }
+    ]
+  },
+  {
+    text: 'When someone says "you\'re too sensitive," you:',
+    options: [
+      { letter: 'A', text: "Pretend it doesn't sting. Then replay it for three days." },
+      { letter: 'B', text: "Snap. You're not sensitive — you're paying attention in a world that's half-asleep." },
+      { letter: 'C', text: "Wonder if they're right. Maybe I am the problem." },
+      { letter: 'D', text: "Tell them that's their projection. Turn it around effortlessly." }
+    ]
+  },
+  {
+    text: 'Think about the version of yourself you would never show anyone. That self is:',
+    options: [
+      { letter: 'A', text: 'Rageful. Cold. Capable of destruction.' },
+      { letter: 'B', text: "Desperate. Needy. Pathetically hungry for approval." },
+      { letter: 'C', text: "Superior. Better. Smarter. Alone on an island where no one can reach me." },
+      { letter: 'D', text: "Numb. Hollow. Going through the motions while feeling almost nothing." }
+    ]
+  },
+  {
+    text: 'Your guilt tells you:',
+    options: [
+      { letter: 'A', text: "You're a fraud and everyone will figure it out eventually." },
+      { letter: 'B', text: "You should have done more. Been more. Given more." },
+      { letter: 'C', text: "You've already lost something and didn't even notice." },
+      { letter: 'D', text: "You're not allowed to want things. Wanting is dangerous." }
+    ]
+  },
+  {
+    text: 'When someone disappoints you, you:',
+    options: [
+      { letter: 'A', text: "Withdraw. Not dramatically — just quietly. They won't get another chance to do that." },
+      { letter: 'B', text: "Tell them, clearly and directly. You believe in the conversation." },
+      { letter: 'C', text: "Ruminate. Play the whole scenario back, rewrite their motives, re-litigate it internally." },
+      { letter: 'D', text: "Forgive fast. Too fast. Almost like you skipped a step you didn't want to take." }
+    ]
+  },
+  {
+    text: "At your core, the fear you least want to admit is:",
+    options: [
+      { letter: 'A', text: "That I'm not special. That I'm ordinary. That all of this was for nothing." },
+      { letter: 'B', text: "That I'm dangerous. That the depth of my anger or desire would scare people away." },
+      { letter: 'C', text: "That I'm unlovable without the performance. Strip away the charm and there's nothing underneath." },
+      { letter: 'D', text: "That I've already lost something I'll never get back — time, a person, a version of myself." }
+    ]
+  }
+];
 
-    // ─── SCREEN MANAGEMENT ──────────────────────────────────────────────────
-    function showScreen(screen) {
-      [$disclaimer, $quiz, $processing, $result].forEach(s => s.classList.remove('active'));
-      screen.classList.add('active');
-    }
+// ─── STATE ───
+let currentQ = 0;
+let answers = [];
+let selectedArchetype = null;
 
-    // ─── DISCLAIMER → QUIZ ─────────────────────────────────────────────────
-    document.getElementById('btn-begin').addEventListener('click', () => {
-      showScreen($quiz);
-      renderQuestion(0);
-    });
+// ─── DOM REFS ───
+const $disclaimer = document.getElementById('screen-disclaimer');
+const $quiz       = document.getElementById('screen-quiz');
+const $processing = document.getElementById('screen-processing');
+const $result     = document.getElementById('screen-result');
+const $progressCount = document.getElementById('progress-count');
+const $progressFill  = document.getElementById('progress-fill');
+const $questionLabel = document.getElementById('question-label');
+const $questionText  = document.getElementById('question-text');
+const $optionsList   = document.getElementById('options-list');
+const $resultEmoji   = document.getElementById('result-emoji');
+const $resultName    = document.getElementById('result-name');
+const $resultNameSub = document.getElementById('result-name-sub');
+const $resultTagline = document.getElementById('result-tagline');
+const $resultDesc   = document.getElementById('result-desc');
+const $resultTags   = document.getElementById('result-tags');
+const $btnCopy       = document.getElementById('btn-copy');
+const $copyIcon      = document.getElementById('copy-icon');
+const $copyLabel     = document.getElementById('copy-label');
+const $btnRetake     = document.getElementById('btn-retake');
 
-    // ─── RENDER QUESTION ───────────────────────────────────────────────────
-    function renderQuestion(index) {
-      currentQ = index;
-      const q = QUESTIONS[index];
+// ─── SCREEN MANAGEMENT ───
+function showScreen(screen) {
+  [$disclaimer, $quiz, $processing, $result].forEach(s => s.classList.remove('active'));
+  screen.classList.add('active');
+}
 
-      $progressCount.textContent = `Q ${index + 1} / ${QUESTIONS.length}`;
-      $progressFill.style.width  = `${((index) / QUESTIONS.length) * 100}%`;
-      $questionText.textContent  = q.text;
+// ─── DISCLAIMER → QUIZ ───
+document.getElementById('btn-begin').addEventListener('click', () => {
+  showScreen($quiz);
+  renderQuestion(0);
+});
 
-      $optionsList.innerHTML = '';
+// ─── RENDER QUESTION ───
+function renderQuestion(index) {
+  currentQ = index;
+  const q = QUESTIONS[index];
+  const pct = Math.round((index / QUESTIONS.length) * 100);
 
-      q.options.forEach(opt => {
-        const wasSelected = answers[index] === opt.letter;
-        const card = document.createElement('button');
-        card.className = 'option-card' + (wasSelected ? ' selected' : '');
-        card.setAttribute('aria-label', `Option ${opt.letter}: ${opt.text}`);
-        card.setAttribute('aria-pressed', wasSelected ? 'true' : 'false');
-        card.innerHTML = `
-          <span class="opt-letter">${opt.letter}</span>
-          <span class="opt-text">${opt.text}</span>
-          <span class="opt-check">✓</span>
-        `;
-        card.addEventListener('click', () => selectOption(index, opt.letter, card));
-        $optionsList.appendChild(card);
-      });
-    }
+  document.getElementById('progress-count').textContent = `Q ${index + 1} / ${QUESTIONS.length}`;
+  document.getElementById('progress-pct').textContent = `${pct}%`;
+  document.getElementById('progress-fill').style.width = `${pct}%`;
+  document.getElementById('question-label').textContent = `Question ${index + 1}`;
+  document.getElementById('question-text').textContent = q.text;
 
-    function selectOption(qIndex, letter, card) {
-      // Update answer
-      answers[qIndex] = letter;
+  const list = document.getElementById('options-list');
+  list.innerHTML = '';
 
-      // Update archetype color accent for progress bar
-      const archId = LETTER_MAP[letter];
-      const arch   = ARCHETYPES[archId];
-      document.documentElement.style.setProperty('--archetype-color', arch.color);
-      document.documentElement.style.setProperty('--archetype-glow', arch.glowRgb);
+  q.options.forEach(opt => {
+    const card = document.createElement('div');
+    card.className = 'option';
+    card.dataset.letter = opt.letter;
+    card.innerHTML = `<div class="option-letter">${opt.letter}</div><div class="option-text">${opt.text}</div>`;
+    card.addEventListener('click', () => selectOption(card, opt.letter));
+    list.appendChild(card);
+  });
+}
 
-      // Dim others, select this
-      const cards = $optionsList.querySelectorAll('.option-card');
-      cards.forEach(c => {
-        const isThis = c === card;
-        c.classList.toggle('selected', isThis);
-        c.classList.toggle('dimmed', !isThis);
-        c.setAttribute('aria-pressed', isThis ? 'true' : 'false');
-      });
+// ─── SELECT OPTION ───
+function selectOption(card, letter) {
+  const all = document.querySelectorAll('.option');
+  all.forEach(c => { c.classList.remove('selected', 'dimmed'); });
+  card.classList.add('selected');
+  all.forEach(c => { if (c !== card) c.classList.add('dimmed'); });
 
-      // Advance after brief moment
-      setTimeout(() => {
-        if (qIndex < QUESTIONS.length - 1) {
-          renderQuestion(qIndex + 1);
-        } else {
-          goToProcessing();
-        }
-      }, 420);
-    }
+  // Update CSS variable to archetype color
+  const archId = LETTER_MAP[letter];
+  const arch = ARCHETYPES[archId];
+  document.documentElement.style.setProperty('--archetype-color', arch.color);
+  document.documentElement.style.setProperty('--archetype-glow', arch.tagBg.replace('0.15', '0.35'));
 
-    // ─── PROCESSING ─────────────────────────────────────────────────────────
-    function goToProcessing() {
+  setTimeout(() => {
+    answers.push(letter);
+    if (currentQ < QUESTIONS.length - 1) {
+      renderQuestion(currentQ + 1);
+    } else {
       showScreen($processing);
-      setTimeout(() => {
-        const result = computeResult();
-        showResult(result);
-      }, 2500);
+      setTimeout(showResult, 1400);
     }
+  }, 380);
+}
 
-    // ─── SCORING ────────────────────────────────────────────────────────────
-    function computeResult() {
-      const scores = { wounded_child: 0, destroyer: 0, false_self: 0, rival: 0 };
-      const dCount = { wounded_child: 0, destroyer: 0, false_self: 0, rival: 0 };
+// ─── SHOW RESULT ───
+function showResult() {
+  const tally = { wounded_child: 0, destroyer: 0, false_self: 0, rival: 0 };
+  answers.forEach(a => { const archId = LETTER_MAP[a]; if (archId) tally[archId]++; });
 
-      answers.forEach(letter => {
-        const archId = LETTER_MAP[letter];
-        scores[archId]++;
-        if (letter === 'D') dCount[archId]++;
-      });
+  let dominant = 'wounded_child';
+  let maxScore = 0;
+  for (const [k, v] of Object.entries(tally)) {
+    if (v > maxScore) { maxScore = v; dominant = k; }
+  }
 
-      // Find winner
-      let maxScore = 0;
-      let winner   = 'wounded_child';
+  const arch = ARCHETYPES[dominant];
+  document.documentElement.style.setProperty('--archetype-color', arch.color);
+  document.documentElement.style.setProperty('--archetype-glow', arch.tagBg.replace('0.15', '0.35'));
 
-      Object.keys(scores).forEach(id => {
-        if (scores[id] > maxScore) {
-          maxScore = scores[id];
-          winner   = id;
-        } else if (scores[id] === maxScore) {
-          // Tie-breaker: more D answers
-          if (dCount[id] > dCount[winner]) {
-            winner = id;
-          }
-        }
-      });
+  document.getElementById('result-emoji').textContent = arch.emoji;
+  document.getElementById('result-name').textContent = arch.name;
+  document.getElementById('result-name').style.color = arch.color;
+  document.getElementById('result-name-sub').textContent = arch.nameSub;
+  document.getElementById('result-tagline').textContent = arch.tagline;
+  document.getElementById('result-desc').textContent = arch.desc;
 
-      return winner;
-    }
+  const tagsEl = document.getElementById('result-tags');
+  tagsEl.innerHTML = arch.tags.map(t => `<span class="result-tag">${t}</span>`).join('');
 
-    // ─── SHOW RESULT ─────────────────────────────────────────────────────────
-    function showResult(archId) {
-      const arch = ARCHETYPES[archId];
-      selectedArchetype = arch;
+  showScreen($result);
+}
 
-      // Set CSS variables
-      document.documentElement.style.setProperty('--archetype-color', arch.color);
-      document.documentElement.style.setProperty('--archetype-glow', arch.glowRgb);
+// ─── COPY ───
+$btnCopy.addEventListener('click', () => {
+  const arch = ARCHETYPES[Object.entries({ wounded_child: 0, destroyer: 0, false_self: 0, rival: 0 }).reduce((acc, [k]) => {
+    const tally = { wounded_child: 0, destroyer: 0, false_self: 0, rival: 0 };
+    answers.forEach(a => { const archId = LETTER_MAP[a]; if (archId) tally[archId]++; });
+    return Object.entries(tally).sort((a, b) => b[1] - a[1])[0][0];
+  }, null)] || ARCHETYPES.wounded_child;
 
-      // Apply to result card
-      $resultCard.style.setProperty('--card-glow-rgb', arch.glowRgb);
-      $resultCard.style.background = `linear-gradient(160deg, ${arch.gradientEnd} 0%, #0D0D0F 60%)`;
+  const text = `My Jungian Shadow Archetype is "${arch.name}" ${arch.emoji}\n\n"${arch.tagline}"\n\n— Take the quiz at PsychoMaster`;
+  navigator.clipboard.writeText(text).then(() => {
+    $copyIcon.textContent = '✅';
+    $copyLabel.textContent = 'Copied!';
+    setTimeout(() => { $copyIcon.textContent = '📋'; $copyLabel.textContent = 'Copy Results'; }, 2000);
+  }).catch(() => {
+    showToast('Copy failed — try manually');
+  });
+});
 
-      // Fill content
-      $resultEmoji.textContent  = arch.emoji;
-      $resultName.textContent   = arch.name;
-      $resultNameSub.textContent = arch.nameCn;
-      $resultTagline.textContent = arch.tagline;
-      $resultDesc.textContent   = arch.desc;
+// ─── RETAKE ───
+$btnRetake.addEventListener('click', () => {
+  answers = [];
+  currentQ = 0;
+  document.documentElement.style.setProperty('--archetype-color', '#C8A96E');
+  document.documentElement.style.setProperty('--archetype-glow', 'rgba(200, 169, 110, 0.35)');
+  showScreen($quiz);
+  renderQuestion(0);
+});
 
-      $resultTags.innerHTML = '';
-      arch.tags.forEach(tag => {
-        const el = document.createElement('span');
-        el.className = 'tag';
-        el.textContent = tag;
-        el.style.setProperty('--tag-bg', arch.tagBg);
-        el.style.setProperty('--tag-border', arch.tagBorder);
-        $resultTags.appendChild(el);
-      });
-
-      showScreen($result);
-    }
-
-    // ─── COPY TO CLIPBOARD ──────────────────────────────────────────────────
-    $btnCopy.addEventListener('click', async () => {
-      if (!selectedArchetype) return;
-
-      const text = `🧠 My Jungian Shadow Archetype: ${selectedArchetype.name} / ${selectedArchetype.nameCn}
-
-${selectedArchetype.tagline}
-
-${selectedArchetype.tags.join(' · ')}
-
-✨ Take the quiz: https://psychomaster.app/shadow`;
-
-      try {
-        await navigator.clipboard.writeText(text);
-        $btnCopy.classList.add('copied');
-        $copyIcon.textContent = '✓';
-        $copyLabel.textContent = 'Copied!';
-        setTimeout(() => {
-          $btnCopy.classList.remove('copied');
-          $copyIcon.textContent = '📋';
-          $copyLabel.textContent = 'Copy';
-        }, 2000);
-      } catch {
-        // Fallback for older browsers
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        $copyLabel.textContent = 'Copied!';
-        setTimeout(() => { $copyLabel.textContent = 'Copy'; }, 2000);
-      }
-    });
-
-    // ─── RETAKE ────────────────────────────────────────────────────────────
-    $btnRetake.addEventListener('click', () => {
-      answers = [];
-      currentQ = 0;
-      selectedArchetype = null;
-      document.documentElement.style.setProperty('--archetype-color', '#C8A96E');
-      document.documentElement.style.setProperty('--archetype-glow', 'rgba(200,169,110,0.35)');
-      showScreen($quiz);
-      renderQuestion(0);
-    });
-  </script>
+// ─── TOAST ───
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+</script>
 </body>
 </html>
