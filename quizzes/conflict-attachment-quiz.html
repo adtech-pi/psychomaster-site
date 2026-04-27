@@ -1,0 +1,1762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Discover your conflict attachment pattern — why your fights always go the same way. Based on attachment theory and Gottman conflict research.">
+  <title>How Do You Fight in Relationships? — Conflict Attachment Pattern Quiz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES — WARM INTIMATE THEME
+    ============================================ */
+    :root {
+      --base: #141010;
+      --primary: #8B2635;
+      --primary-light: #B84A5A;
+      --secondary: #C47A5A;
+      --tertiary: #D4A373;
+      --accent: #E8B4B8;
+      --accent-gold: #C9A96E;
+      --surface: #1E1414;
+      --surface-elevated: #2A1C1C;
+      --text-primary: #F5E6E8;
+      --text-secondary: #C4A0A5;
+      --text-muted: #8B6B72;
+      --border-subtle: #3A2428;
+      --border-warm: #5C3535;
+      --glow-warm: #D4706A;
+      --glow-rose: #E8A0A8;
+      --font-heading: 'Playfair Display', Georgia, 'Times New Roman', serif;
+      --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-pill: 999px;
+      --ease-entrance: cubic-bezier(0.25, 0.1, 0.25, 1);
+      --ease-exit: cubic-bezier(0.4, 0, 0.6, 1);
+      --ease-deliberate: cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    /* ============================================
+       RESET & BASE
+    ============================================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--base);
+      color: var(--text-primary);
+      line-height: 1.65;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ============================================
+       AMBIENT BACKGROUND
+    ============================================ */
+    .ambient-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .ambient-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.18;
+      animation: orbDrift 18s ease-in-out infinite alternate;
+    }
+
+    .ambient-orb--1 {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation-duration: 20s;
+    }
+
+    .ambient-orb--2 {
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
+      bottom: 10%;
+      right: -80px;
+      animation-duration: 14s;
+      animation-delay: -5s;
+    }
+
+    .ambient-orb--3 {
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, var(--glow-rose) 0%, transparent 70%);
+      bottom: 30%;
+      left: -60px;
+      animation-duration: 16s;
+      animation-delay: -8s;
+      opacity: 0.1;
+    }
+
+    @keyframes orbDrift {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(12px, 8px) scale(1.05); }
+    }
+
+    .grain-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 200px 200px;
+    }
+
+    .vignette-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(10, 8, 8, 0.65) 100%);
+    }
+
+    /* ============================================
+       LAYOUT
+    ============================================ */
+    .app-container {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 24px 48px;
+    }
+
+    .quiz-wrapper {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ============================================
+       SCREENS — COMMON
+    ============================================ */
+    .screen {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    .screen.fade-out {
+      animation: screenFadeOut 400ms var(--ease-exit) forwards;
+    }
+
+    .screen.fade-in {
+      animation: screenFadeIn 500ms var(--ease-entrance) forwards;
+    }
+
+    @keyframes screenFadeOut {
+      from { opacity: 1; transform: translateY(-8px); }
+      to { opacity: 0; transform: translateY(-8px); }
+    }
+
+    @keyframes screenFadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ============================================
+       DISCLAIMER SCREEN
+    ============================================ */
+    .disclaimer-screen {
+      gap: 0;
+      padding-top: 20px;
+    }
+
+    .disclaimer-icon {
+      width: 52px;
+      height: 52px;
+      margin-bottom: 28px;
+      opacity: 0.85;
+    }
+
+    .disclaimer-heading {
+      font-family: var(--font-heading);
+      font-size: 1.625rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 24px;
+      line-height: 1.25;
+    }
+
+    .disclaimer-body {
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      max-width: 400px;
+      margin-bottom: 20px;
+    }
+
+    .disclaimer-body p {
+      margin-bottom: 14px;
+    }
+
+    .disclaimer-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .disclaimer-privacy {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin: 20px 0 32px;
+      padding: 12px 16px;
+      background: rgba(30, 20, 20, 0.6);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+    }
+
+    .disclaimer-privacy svg {
+      flex-shrink: 0;
+      opacity: 0.6;
+    }
+
+    .disclaimer-cta {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-bottom: 32px;
+    }
+
+    /* ============================================
+       INTRO SCREEN
+    ============================================ */
+    .intro-screen {
+      padding-top: 40px;
+      gap: 0;
+    }
+
+    .intro-tagline {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .intro-title {
+      font-family: var(--font-heading);
+      font-size: 2.25rem;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      max-width: 400px;
+    }
+
+    .intro-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .intro-subtitle {
+      font-family: var(--font-heading);
+      font-size: 1.0625rem;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--text-muted);
+      margin-bottom: 36px;
+    }
+
+    .intro-hook {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      max-width: 420px;
+    }
+
+    .intro-hook strong {
+      color: var(--accent-gold);
+      font-weight: 600;
+    }
+
+    .intro-body {
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      max-width: 400px;
+      margin-bottom: 40px;
+      text-align: left;
+    }
+
+    .intro-body p {
+      margin-bottom: 14px;
+    }
+
+    .intro-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* ============================================
+       BUTTONS
+    ============================================ */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 16px 40px;
+      background: linear-gradient(135deg, var(--primary) 0%, #7A1F2E 100%);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 500;
+      line-height: 1;
+      border: none;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(139, 38, 53, 0.35), 0 0 40px rgba(139, 38, 53, 0.1);
+      transition: box-shadow 200ms var(--ease-entrance), transform 200ms var(--ease-entrance);
+      min-height: 52px;
+      min-width: 160px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 6px 28px rgba(139, 38, 53, 0.5), 0 0 60px rgba(139, 38, 53, 0.15);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0) scale(0.98);
+      box-shadow: 0 2px 10px rgba(139, 38, 53, 0.25);
+    }
+
+    .btn-primary:focus-visible {
+      outline: 2px solid var(--glow-rose);
+      outline-offset: 3px;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 32px;
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      font-weight: 400;
+      line-height: 1;
+      border: 1px solid var(--border-warm);
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      box-shadow: none;
+      transition: border-color 200ms, color 200ms, box-shadow 200ms, transform 200ms;
+      min-height: 48px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+      box-shadow: 0 0 20px rgba(232, 160, 168, 0.1);
+    }
+
+    .btn-secondary:active {
+      transform: scale(0.98);
+    }
+
+    .btn-secondary:focus-visible {
+      outline: 2px solid var(--glow-rose);
+      outline-offset: 3px;
+    }
+
+    .btn-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    /* ============================================
+       PROGRESS BAR
+    ============================================ */
+    .progress-bar-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 0 24px 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 400ms;
+    }
+
+    .progress-bar-container.visible {
+      opacity: 1;
+    }
+
+    .progress-bar-track {
+      height: 3px;
+      background: rgba(58, 36, 40, 0.6);
+      border-radius: 2px;
+      overflow: visible;
+      position: relative;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 50%, var(--tertiary) 100%);
+      border-radius: 2px;
+      width: 0%;
+      transition: width 600ms var(--ease-deliberate);
+      position: relative;
+    }
+
+    .progress-bar-fill::after {
+      content: '';
+      position: absolute;
+      right: -3px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--glow-warm);
+      box-shadow: 0 0 8px rgba(212, 112, 106, 0.6);
+    }
+
+    /* ============================================
+       QUESTION SCREEN
+    ============================================ */
+    .question-screen {
+      padding-top: 60px;
+      gap: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      justify-content: flex-start;
+      padding-bottom: 80px;
+    }
+
+    .question-counter {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeInUp 400ms var(--ease-entrance) 100ms forwards;
+    }
+
+    .question-text {
+      font-family: var(--font-heading);
+      font-size: 1.3125rem;
+      font-weight: 600;
+      line-height: 1.35;
+      color: var(--text-primary);
+      margin-bottom: 36px;
+      max-width: 440px;
+      text-align: center;
+      opacity: 0;
+      animation: fadeInUp 500ms var(--ease-entrance) 200ms forwards;
+    }
+
+    .answers-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      opacity: 0;
+      animation: fadeInUp 500ms var(--ease-entrance) 300ms forwards;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ============================================
+       ANSWER OPTIONS
+    ============================================ */
+    .answer-option {
+      width: 100%;
+      padding: 16px 20px;
+      background: rgba(30, 20, 20, 0.6);
+      border: 1px solid var(--border-warm);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      text-align: left;
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      transition:
+        border-color 200ms var(--ease-entrance),
+        background 200ms var(--ease-entrance),
+        box-shadow 200ms var(--ease-entrance),
+        transform 100ms;
+      position: relative;
+      overflow: hidden;
+      min-height: 52px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .answer-option::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(139, 38, 53, 0.08) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 200ms;
+    }
+
+    .answer-option:hover {
+      border-color: rgba(232, 160, 168, 0.35);
+      background: rgba(42, 28, 28, 0.8);
+    }
+
+    .answer-option:hover::before {
+      opacity: 1;
+    }
+
+    .answer-option:active {
+      transform: scale(0.99);
+    }
+
+    .answer-option:focus-visible {
+      outline: 2px solid var(--glow-rose);
+      outline-offset: 2px;
+    }
+
+    .answer-option.selected {
+      border-color: rgba(232, 160, 168, 0.6);
+      background: rgba(50, 30, 32, 0.9);
+      box-shadow: 0 0 0 1px rgba(232, 160, 168, 0.25), 0 0 24px rgba(232, 160, 168, 0.08);
+      color: var(--text-primary);
+    }
+
+    .answer-option.selected::before {
+      opacity: 1;
+    }
+
+    .answer-letter {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--border-warm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: border-color 200ms, background 200ms, color 200ms;
+      margin-top: 1px;
+    }
+
+    .answer-option.selected .answer-letter {
+      border-color: var(--accent);
+      background: rgba(232, 160, 168, 0.15);
+      color: var(--accent);
+    }
+
+    .answer-text {
+      flex: 1;
+      padding-top: 3px;
+    }
+
+    /* ============================================
+       RESULT SCREEN
+    ============================================ */
+    .result-screen {
+      padding-top: 48px;
+      padding-bottom: 60px;
+      gap: 0;
+      overflow-y: auto;
+      max-height: 100vh;
+      max-height: 100dvh;
+      justify-content: flex-start;
+    }
+
+    .result-badge {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      opacity: 0;
+      animation: fadeInUp 500ms var(--ease-entrance) 100ms forwards;
+    }
+
+    .result-pattern-number {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      opacity: 0;
+      animation: fadeInUp 500ms var(--ease-entrance) 150ms forwards;
+    }
+
+    .result-pattern-name {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      opacity: 0;
+      animation: fadeInUp 500ms var(--ease-entrance) 200ms forwards;
+    }
+
+    .result-pattern-subtitle {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--accent-gold);
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeInUp 500ms var(--ease-entrance) 250ms forwards;
+    }
+
+    .result-divider {
+      width: 120px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--secondary), transparent);
+      margin: 0 auto 28px;
+      opacity: 0;
+      animation: fadeInUp 500ms var(--ease-entrance) 300ms forwards;
+    }
+
+    .result-gutpunch {
+      font-family: var(--font-heading);
+      font-size: 1.1875rem;
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--text-primary);
+      max-width: 420px;
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeInUp 500ms var(--ease-entrance) 350ms forwards;
+      position: relative;
+      padding: 0 16px;
+    }
+
+    .result-gutpunch::before {
+      content: '\201C';
+      font-family: var(--font-heading);
+      font-size: 3rem;
+      color: var(--primary);
+      opacity: 0.4;
+      position: absolute;
+      top: -12px;
+      left: -4px;
+      line-height: 1;
+    }
+
+    .result-section {
+      width: 100%;
+      text-align: left;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeInUp 500ms var(--ease-entrance) forwards;
+    }
+
+    .result-section:nth-child(7) { animation-delay: 450ms; }
+    .result-section:nth-child(8) { animation-delay: 520ms; }
+    .result-section:nth-child(9) { animation-delay: 590ms; }
+    .result-section:nth-child(10) { animation-delay: 660ms; }
+
+    .result-section-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .result-section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-subtle);
+    }
+
+    .result-section p {
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    .result-section ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .result-section li {
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .result-section li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--secondary);
+      opacity: 0.7;
+    }
+
+    .result-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .result-tag {
+      padding: 6px 14px;
+      border: 1px solid var(--border-warm);
+      border-radius: var(--radius-pill);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: rgba(30, 20, 20, 0.6);
+    }
+
+    .result-context-note {
+      font-size: 0.875rem;
+      font-style: italic;
+      color: var(--text-muted);
+      text-align: center;
+      margin: 8px 0 32px;
+      opacity: 0;
+      animation: fadeInUp 500ms var(--ease-entrance) 750ms forwards;
+    }
+
+    .result-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      margin-top: 8px;
+      opacity: 0;
+      animation: fadeInUp 500ms var(--ease-entrance) 820ms forwards;
+    }
+
+    .result-actions .btn-primary {
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .result-actions .btn-secondary {
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .share-copied-toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--surface-elevated);
+      border: 1px solid var(--border-warm);
+      color: var(--text-primary);
+      font-size: 0.875rem;
+      padding: 12px 24px;
+      border-radius: var(--radius-pill);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      transition: opacity 300ms, transform 300ms var(--ease-entrance);
+      pointer-events: none;
+      z-index: 200;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .share-copied-toast.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ============================================
+       DIVIDER DECORATION
+    ============================================ */
+    .section-divider {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-warm), transparent);
+      margin: 8px auto 0;
+    }
+
+    /* ============================================
+       FOOTER NOTE
+    ============================================ */
+    .footer-note {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 40px;
+      opacity: 0;
+      animation: fadeInUp 500ms var(--ease-entrance) 900ms forwards;
+      font-style: italic;
+    }
+
+    /* ============================================
+       RESPONSIVE
+    ============================================ */
+    @media (min-width: 520px) {
+      .app-container {
+        padding: 48px 32px 64px;
+      }
+
+      .intro-title {
+        font-size: 2.75rem;
+      }
+
+      .question-text {
+        font-size: 1.4375rem;
+      }
+
+      .answer-option {
+        padding: 18px 24px;
+        font-size: 1rem;
+      }
+
+      .result-pattern-name {
+        font-size: 2.5rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+    ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .ambient-orb {
+        animation: none;
+      }
+
+      .progress-bar-fill {
+        transition: none;
+      }
+    }
+
+    /* ============================================
+       SKIP LINK (Accessibility)
+    ============================================ */
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 16px;
+      background: var(--primary);
+      color: var(--text-primary);
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      z-index: 9999;
+      text-decoration: none;
+      transition: top 200ms;
+    }
+
+    .skip-link:focus {
+      top: 16px;
+    }
+
+    /* ============================================
+       LOADING STATE
+    ============================================ */
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: var(--base);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .loading-screen.hidden {
+      display: none;
+    }
+
+    .loading-dots {
+      display: flex;
+      gap: 8px;
+    }
+
+    .loading-dots span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      animation: loadingPulse 1.2s ease-in-out infinite;
+    }
+
+    .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes loadingPulse {
+      0%, 100% { opacity: 0.3; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Skip Link -->
+  <a href="#quiz-question" class="skip-link">Skip to quiz question</a>
+
+  <!-- Loading Screen -->
+  <div class="loading-screen" id="loadingScreen" aria-hidden="true">
+    <div class="loading-dots">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+
+  <!-- Ambient Background -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-orb ambient-orb--1"></div>
+    <div class="ambient-orb ambient-orb--2"></div>
+    <div class="ambient-orb ambient-orb--3"></div>
+  </div>
+  <div class="grain-overlay" aria-hidden="true"></div>
+  <div class="vignette-overlay" aria-hidden="true"></div>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar-container" id="progressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Quiz progress">
+    <div class="progress-bar-track">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <!-- App Container -->
+  <main class="app-container" id="appContainer">
+
+    <!-- ========================================
+         SCREEN 1: DISCLAIMER
+    ======================================== -->
+    <div class="screen disclaimer-screen active" id="disclaimerScreen" role="article" aria-label="Quiz disclaimer">
+      <div class="quiz-wrapper">
+        <!-- Shield Icon -->
+        <svg class="disclaimer-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M26 4L6 12V24C6 35.1 14.6 45.4 26 48C37.4 45.4 46 35.1 46 24V12L26 4Z" stroke="#C47A5A" stroke-width="2" fill="none" stroke-linejoin="round"/>
+          <path d="M20 26L24 30L33 21" stroke="#E8B4B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+
+        <h1 class="disclaimer-heading">Before You Begin</h1>
+
+        <div class="disclaimer-body">
+          <p>This quiz is a self-reflection tool, not couples therapy. It is designed to help you understand your instinctive patterns in conflict — not to diagnose, pathologize, or replace professional support.</p>
+          <p>If you are in a relationship that feels unsafe, if conflict is causing you real harm, or if you find yourself constantly walking on eggshells — please reach out to a licensed therapist or counselor. You deserve professional, personalized support.</p>
+          <p>Take this quiz because you're curious. Stay because you want to understand yourself better. That's enough.</p>
+        </div>
+
+        <div class="disclaimer-privacy">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <rect x="1" y="7" width="14" height="8" rx="2" stroke="#8B6B72" stroke-width="1.2"/>
+            <path d="M4 7V5C4 2.79 5.79 1 8 1C10.21 1 12 2.79 12 5V7" stroke="#8B6B72" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+          <span>No personal data is stored. Your answers stay private.</span>
+        </div>
+
+        <p class="disclaimer-cta">Go at your own pace.</p>
+
+        <button class="btn-primary" id="disclaimerBtn" type="button" aria-label="Begin the quiz">
+          <span>I Understand</span>
+          <svg class="btn-icon" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <path d="M4 9H14M14 9L10 5M14 9L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ========================================
+         SCREEN 2: INTRO
+    ======================================== -->
+    <div class="screen intro-screen" id="introScreen" role="article" aria-label="Quiz introduction">
+      <div class="quiz-wrapper">
+        <p class="intro-tagline">PsychoMaster Quiz Series</p>
+
+        <h1 class="intro-title">How Do You <em>Fight</em> in Relationships?</h1>
+        <p class="intro-subtitle">The way you argue tells you everything about how you love.</p>
+
+        <div class="intro-hook">
+          Most fights aren't about the thing you think they're about.
+        </div>
+
+        <div class="intro-body">
+          <p>That argument about the dishes? It's not really about the dishes.</p>
+          <p>The fight about whose family to spend holidays with? It's not really about holidays.</p>
+          <p>The silent treatment that lasted three days? It's not really about whatever started it.</p>
+          <p>The way you fight — your instinctive, automatic response when things go wrong — is one of the most revealing patterns in your relationships. It comes from somewhere deep: your attachment style, your nervous system, the family you grew up in, the wounding you don't talk about.</p>
+          <p>This quiz reveals your <strong>Conflict Attachment Pattern</strong> — the specific way you show up when connection is threatened or conflict erupts.</p>
+          <p>It's not about fixing you. It's about helping you see the pattern you've been running on autopilot — so you can finally choose something different.</p>
+        </div>
+
+        <button class="btn-primary" id="startQuizBtn" type="button" aria-label="Start the quiz">
+          <span>Begin — 3 minutes</span>
+          <svg class="btn-icon" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <path d="M4 9H14M14 9L10 5M14 9L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
+        <p class="footer-note">Be honest with yourself. There are no correct answers.</p>
+      </div>
+    </div>
+
+    <!-- ========================================
+         SCREEN 3: QUESTION
+    ======================================== -->
+    <div class="screen question-screen" id="questionScreen" role="group" aria-label="Quiz question" aria-live="polite">
+      <div class="quiz-wrapper" id="quiz-question" tabindex="-1">
+        <p class="question-counter" id="questionCounter" aria-atomic="true">Question 1 of 12</p>
+        <h2 class="question-text" id="questionText"></h2>
+        <div class="answers-container" id="answersContainer" role="radiogroup" aria-label="Answer options">
+          <!-- Answer options injected by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================
+         SCREEN 4: RESULT
+    ======================================== -->
+    <div class="screen result-screen" id="resultScreen" role="article" aria-label="Your result">
+      <div class="quiz-wrapper">
+        <p class="result-badge">Your Conflict Attachment Pattern</p>
+        <p class="result-pattern-number" id="resultPatternNumber"></p>
+        <h1 class="result-pattern-name" id="resultPatternName"></h1>
+        <p class="result-pattern-subtitle" id="resultPatternSubtitle"></p>
+        <div class="result-divider"></div>
+        <p class="result-gutpunch" id="resultGutpunch"></p>
+
+        <div class="result-section" id="resultSectionWhat">
+          <p class="result-section-label">What This Looks Like</p>
+          <p id="resultWhatText"></p>
+        </div>
+
+        <div class="result-section" id="resultSectionStrengths">
+          <p class="result-section-label">Your Strengths</p>
+          <ul id="resultStrengthsList"></ul>
+        </div>
+
+        <div class="result-section" id="resultSectionTags">
+          <p class="result-section-label">Your Traits</p>
+          <div class="result-tags" id="resultTags"></div>
+        </div>
+
+        <div class="result-section" id="resultSectionGrowth">
+          <p class="result-section-label">Your Growth Edge</p>
+          <p id="resultGrowthText"></p>
+        </div>
+
+        <p class="result-context-note">This is your pattern, not your prison. Patterns can shift.</p>
+
+        <div class="result-actions">
+          <button class="btn-primary" id="shareBtn" type="button">
+            <svg class="btn-icon" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+              <circle cx="14" cy="3" r="2" stroke="currentColor" stroke-width="1.3"/>
+              <circle cx="4" cy="9" r="2" stroke="currentColor" stroke-width="1.3"/>
+              <circle cx="14" cy="15" r="2" stroke="currentColor" stroke-width="1.3"/>
+              <path d="M6 8L12 4M6 10L12 14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+            <span>Share Your Pattern</span>
+          </button>
+          <button class="btn-secondary" id="retakeBtn" type="button">
+            <svg class="btn-icon" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+              <path d="M3 9C3 5.69 5.69 3 9 3C11.21 3 13.12 4.18 14.1 6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+              <path d="M15 9C15 12.31 12.31 15 9 15C6.79 15 4.88 13.82 3.9 12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+              <path d="M13.5 3V6H10.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4.5 15V12H7.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Take It Again</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Share Copied Toast -->
+  <div class="share-copied-toast" id="shareToast" role="status" aria-live="polite">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M3 8L6.5 11.5L13 5" stroke="#C47A5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span>Copied to clipboard!</span>
+  </div>
+
+  <script>
+    'use strict';
+
+    // ============================================
+    // QUIZ DATA — 12 QUESTIONS
+    // ============================================
+    const QUESTIONS = [
+      {
+        text: "Your partner comes home late from work without texting. You had plans. Dinner's cold, the evening's ruined. You feel:",
+        answers: [
+          { letter: "A", text: "Heat rising in your chest. You need to talk about this *now* — you'll bring it up the second they walk in, full force." },
+          { letter: "B", text: "Irritated, but you'd rather swallow it than make a scene. You stay quiet, give short answers, and hope they notice." },
+          { letter: "C", text: "Abandoned and furious — but also terrified of being seen as \"too much.\" You snap at them about something random and small instead." },
+          { letter: "D", text: "Something you can't quite name. You go quiet. Not silent treatment quiet — more like you've just… left the room mentally. You need time before you can even think about talking." }
+        ]
+      },
+      {
+        text: "A disagreement escalates. Your partner says something that stings — maybe it's not what they meant, but it landed wrong. You:",
+        answers: [
+          { letter: "A", text: "Push back immediately. \"No, that's not okay. We're talking about this right now.\" You can't let it slide." },
+          { letter: "B", text: "Go quiet. Not because you're trying to punish them — but because you genuinely need to disappear for a while before you can respond without making it worse." },
+          { letter: "C", text: "Flip between rage and numbness so fast it's dizzying. One minute you're yelling, the next you feel completely disconnected from everything." },
+          { letter: "D", text: "Your heart is pounding. Your chest feels tight. You've stopped being able to think clearly. You need to step away — not to punish, but because you're genuinely flooded." }
+        ]
+      },
+      {
+        text: "You're in a conflict and you realize you're wrong. The other person has a point you don't want to admit. You:",
+        answers: [
+          { letter: "A", text: "Say it. Even if it stings. \"You're right, I didn't handle that well.\" You can take it." },
+          { letter: "B", text: "Stay silent rather than admit it out loud — but you'll show through your actions that you've heard them." },
+          { letter: "C", text: "Admit it bitterly, then immediately pivot to something they did wrong. \"Fine, I messed up — but what about the time you…\"" },
+          { letter: "D", text: "Want to admit it, but the thought of saying it aloud feels impossible. Your mouth just won't do it. So you say nothing." }
+        ]
+      },
+      {
+        text: "Your partner does something that hurt you — again. This is the third time this month. You:",
+        answers: [
+          { letter: "A", text: "Bring it up. Every time. You can't let it build up or you'll explode. You need to talk it through, even if it turns into a bigger fight." },
+          { letter: "B", text: "Let it go. You've learned that bringing things up only makes things worse. You adjust your expectations and move on." },
+          { letter: "C", text: "Explode in a way that surprises even you — then immediately regret it and swing into self-loathing or numb withdrawal." },
+          { letter: "D", text: "Feel yourself going inward. The overwhelm is too much. You'd rather shut down and wait for the storm to pass than risk saying something you can't take back." }
+        ]
+      },
+      {
+        text: "You can sense a conflict brewing. Your partner seems off, the energy has shifted. You:",
+        answers: [
+          { letter: "A", text: "Address it head-on. \"Hey, what's going on? Something feels off.\" You move toward the tension." },
+          { letter: "B", text: "Give them space. Don't push. If they want to talk, they'll come to you. You'd rather wait it out than make it worse." },
+          { letter: "C", text: "Panic internally. Are they mad at you? Did you do something? You can't tell — and that ambiguity makes you spiral between reaching out desperately and pulling away coldly." },
+          { letter: "D", text: "Go on high alert. Your nervous system is already bracing. You monitor the situation carefully, waiting for the explosion that feels inevitable." }
+        ]
+      },
+      {
+        text: "After a fight, what's your internal state for the next few hours — or days?",
+        answers: [
+          { letter: "A", text: "Restless. You want resolution *now*. The unresolved tension sits in your body like static electricity. You might text, bring it up again, or keep circling back." },
+          { letter: "B", text: "Relieved — now that the acute part is over. You've retreated to your inner fortress and you're staying there until you feel safe again." },
+          { letter: "C", text: "Like you're on a rollercoaster with no seatbelt. One moment you're replaying every injustice, the next you're dissociating from the whole thing." },
+          { letter: "D", text: "Numb. Empty. Like you've been through a hurricane and there's just… silence now. The fight is \"over\" but you're not okay." }
+        ]
+      },
+      {
+        text: "Your partner tries to make up after a fight. They reach out, say something kind, try to reconnect. You:",
+        answers: [
+          { letter: "A", text: "Open up fast. Relief floods in. You want to move forward. You've probably already been mentally working on the solution for the last hour." },
+          { letter: "B", text: "Want to accept it, but you're still not ready. You need a bit more time before you can soften. You respond politely but guardedly." },
+          { letter: "C", text: "Don't trust it. When they pull away, you panic. When they come close, you distrust it. You're waiting for the other shoe to drop." },
+          { letter: "D", text: "Want to receive it, but you feel frozen. Your body hasn't caught up with the de-escalation. It might take hours — or longer — before you can genuinely soften." }
+        ]
+      },
+      {
+        text: "You and your partner are in a public setting — friends' dinner, family event — and they do or say something that embarrasses or upsets you. You:",
+        answers: [
+          { letter: "A", text: "Pull them aside immediately and address it. You don't make a scene, but you're handling it. You can't just let it sit." },
+          { letter: "B", text: "Say nothing in the moment. It's not worth a scene in front of others. You'll deal with it privately — or decide it's not worth dealing with at all." },
+          { letter: "C", text: "Feel humiliated and unseen. You either make a passive-aggressive comment right back or go silent and withdrawn — punishing them subtly in the room." },
+          { letter: "D", text: "Dissociate. Smile, go through the motions, say the right things. Inside you're checked out. You'll deal with this alone, later, if at all." }
+        ]
+      },
+      {
+        text: "Your partner says: \"I feel like we keep having the same argument.\" How do you respond?",
+        answers: [
+          { letter: "A", text: "\"You're right. Let's actually figure this out this time.\" You're ready to dig in and solve it — even if it takes all night." },
+          { letter: "B", text: "\"Maybe we just need to let some things go.\" You don't think every bump in the road needs a full excavation." },
+          { letter: "C", text: "\"Well, maybe if you actually listened instead of defending yourself…\" — and you're already off to the races." },
+          { letter: "D", text: "Say nothing. Because honestly? You're exhausted. You've had this exact fight so many times you've lost count, and you don't know if this one will be any different." }
+        ]
+      },
+      {
+        text: "Think about the last time you cried in front of a partner (or close relationship partner). What happened?",
+        answers: [
+          { letter: "A", text: "You cried — and then immediately tried to explain and fix the emotional moment. Tears made you feel vulnerable, and vulnerability makes you want to regain control." },
+          { letter: "B", text: "You held it back. You might have cried in the bathroom alone later, but not in front of them. Tears feel too exposed." },
+          { letter: "C", text: "You cried — and then felt ashamed of crying. Or you cried and then got angry at yourself for being so \"weak.\" The emotions don't stay orderly." },
+          { letter: "D", text: "You went quiet. The tears might come — or they might not. But either way, something inside just… closes." }
+        ]
+      },
+      {
+        text: "Your partner comes to you with a complaint about something you did. The tone is frustrated, maybe accusatory. You:",
+        answers: [
+          { letter: "A", text: "Answer back. If they're going to come at you, you're going to defend yourself. You have a right to explain your side." },
+          { letter: "B", text: "Feel the shutters come down. You'll listen — politely — but internally you've already retreated. You'll agree just to end the conversation." },
+          { letter: "C", text: "React big. The tone set you off. You escalate immediately — \"Oh, so I'm the problem? Let me tell YOU something…\"" },
+          { letter: "D", text: "Flood. Your heart races, your thinking gets cloudy. You might say \"I need a minute\" — and then you're gone, not just from the room but from your own body for a while." }
+        ]
+      },
+      {
+        text: "What's your earliest memory of conflict feeling *dangerous* — either because someone in your family yelled, withdrew, or made you feel like your emotions were too much?",
+        answers: [
+          { letter: "A", text: "I learned early that if I wanted things to be okay, I had to be the one to fix it. The responsibility was mine." },
+          { letter: "B", text: "I learned that silence was survival. If I stayed quiet, things would pass. Fighting back only made it worse." },
+          { letter: "C", text: "I don't think anyone was ever really safe. The conflict was unpredictable — sometimes it was cold, sometimes explosive." },
+          { letter: "D", text: "I learned to go away. When things got bad, I'd leave in my head. My body stayed, but I didn't." }
+        ]
+      }
+    ];
+
+    // ============================================
+    // RESULT DATA — 7 PATTERNS
+    // ============================================
+    const RESULTS = {
+      A: {
+        number: "Pattern I",
+        name: "The Calm Pursuer",
+        subtitle: "High Anxiety, Low Avoidance",
+        gutpunch: "When conflict hits, you move toward it. You want to talk, fix, understand — even when it makes things worse.",
+        description: "You are the one who brings things up. You text first after a fight. You want to talk it through — deeply, thoroughly, until 2am if necessary. When your partner withdraws, you pursue harder. The silence feels unbearable, not because you're codependent, but because your nervous system reads withdrawal as danger.",
+        strengths: [
+          "You're brave. Not everyone can sit in the fire of conflict. You can.",
+          "You don't let things rot. Issues that others would sweep under the rug get addressed by you.",
+          "You care about the relationship enough to fight for it. That persistence is a form of love.",
+          "You bring things into the light. Whatever you're processing, you tend to want it out in the open."
+        ],
+        traits: ["Brave", "Persistent", "Direct", "Intense"],
+        growth: "Your work is learning to give space without taking it personally. Not every withdrawal is rejection. Sometimes your partner needs to process alone — and that's not a threat to the relationship, it's just how they're wired. The other person isn't a project. Learning to sit with your own discomfort in the pause — without interpreting it as catastrophe — is the edge that changes everything.",
+        shareText: "I learned I'm a Calm Pursuer — I move toward conflict instead of away from it. Turns out my instinct to 'talk about it' can feel like pressure when someone needs space. Self-awareness is the whole game. [Take the quiz →]"
+      },
+      B: {
+        number: "Pattern II",
+        name: "The Noble Witherer",
+        subtitle: "Low Anxiety, High Avoidance",
+        gutpunch: "Conflict makes you want to disappear. You've mastered the art of the strategic withdrawal — not out of pettiness, but because your nervous system genuinely needs the stillness.",
+        description: "You don't bring things up. Not because you don't notice — you notice everything — but because addressing it feels like it would make things worse. You'd rather adjust your expectations than have a confrontation. Your partner might not even know something bothered you until it's already been processed and filed away. This looks noble from the outside. But underneath, there's a version of you that's disappearing — quietly, consistently — in order to keep the peace.",
+        strengths: [
+          "You create space. Not everyone can hold silence without it becoming hostile. You can.",
+          "You're not reactive. Before you speak, you think. That's a rare and valuable thing.",
+          "You choose your battles. You intuitively understand that not every friction needs to become a war.",
+          "You protect the people around you from the full force of your discontent — even if that means you carry more than your share of the weight."
+        ],
+        traits: ["Considerate", "Measured", "Perceptive", "Self-Sufficient"],
+        growth: "Your work is learning that withdrawal is not the same as peace. Real peace isn't the absence of conflict — it's the presence of safety, including the safety to say 'that hurt me.' Bottling things up doesn't make them go away. It makes them come out sideways — as resentment, as distance, as a slow erosion of intimacy that neither of you can quite name. Finding one trusted way to express what you need before it builds is the edge that changes everything. You are allowed to need things. You are allowed to ask.",
+        shareText: "Turns out I'm a Noble Witherer — I go quiet in conflict instead of speaking up. 'Easy-going' was actually me disappearing. Soft, honest communication is the muscle I'm building. [Take the quiz →]"
+      },
+      C: {
+        number: "Pattern III",
+        name: "The Escalating Critic",
+        subtitle: "High Anxiety + High Avoidance — Fearful Pattern",
+        gutpunch: "You oscillate between attacking and withdrawing. One moment you're furious, the next you're numb. You feel everything and nothing at the same time.",
+        description: "You're the one who can't win for losing. You want to reach out and you want to run away. You criticize because you need to feel heard, then immediately regret it. You push because you're terrified of abandonment, then retreat because you feel ashamed. This is the fearful-avoidant pattern — attachment research calls it disorganized. You want intimacy desperately but experience it as unsafe. Your nervous system can't decide: approach or protect?",
+        strengths: [
+          "You're deeply emotionally alive. You feel things at 100 miles an hour. That intensity — when channeled — is a superpower.",
+          "You can't be dismissed. When you show up, you show ALL the way up. You don't do lukewarm.",
+          "You understand complexity. You know that people can be both victim and perpetrator, both tender and cruel.",
+          "Your desire for connection is real. You wouldn't oscillate if you didn't care. The care is the engine."
+        ],
+        traits: ["Intense", "Passionate", "Perceptive", "Unpredictable"],
+        growth: "Your work is learning to tolerate the middle ground — not the all-or-nothing swing between attacking and withdrawing. That space — where you can feel something without acting on it immediately, where you can be angry without abandoning the relationship — is the growth edge that changes everything. Stabilizing your internal experience — with support, ideally a therapist who understands attachment — is the single highest-leverage thing you can do for your relationships.",
+        shareText: "I got: The Escalating Critic — I swing between attacking and withdrawing in conflict. Turns out my 'intensity' is my nervous system trying to protect me. Healing is not dramatic — it's quiet and consistent. [Take the quiz →]"
+      },
+      D: {
+        number: "Pattern IV",
+        name: "The Stonewalling Anchor",
+        subtitle: "High Avoidance + Emotional Flooding",
+        gutpunch: "When things get heated, you go inside. It's not that you don't care — it's that you care so much your body can't handle the intensity.",
+        description: "You've been called 'emotionally unavailable.' You've been told your partner feels alone even when you're in the room. What they don't see is that inside, you're in a full-blown nervous system crisis. Your heart is racing. You can't think straight. Your body has decided — without consulting you — that the only option is to go offline. This is called 'flooding' in Gottman's research — a physiological state where the body is so overwhelmed that logical processing shuts down. It's not a choice. It's a biological event.",
+        strengths: [
+          "You are the king or queen of self-regulation. When everyone else is dysregulated, you're the one who eventually goes inward to find calm.",
+          "You don't act out destructively. Even when you're overwhelmed, you shut down rather than lash out.",
+          "You are deeply internal. You process things slowly, thoroughly, in your own inner world. That depth is real.",
+          "You can survive a lot. Whatever you've been through, you've survived it by going inside. That's resilience."
+        ],
+        traits: ["Resilient", "Internal", "Self-Regulating", "Steady"],
+        growth: "Your work is learning to return sooner — not because you should, but because the longer you're gone, the more damage the silence does to the relationship. The trick is to build a bridge back: 'I'm overwhelmed. I need 20 minutes. I'm not leaving you, I just can't be here right now.' That small act of communication — even minimal — can change everything for your partner. And underneath all of it: you learned somewhere that there was no safe person to be upset in front of. That belief kept you alive. But you're not a child in that environment anymore.",
+        shareText: "I'm a Stonewalling Anchor — I go quiet when conflict gets too intense, and my partner feels abandoned. It's not that I don't care. It's that I care so much my body just… stops. [Take the quiz →]"
+      },
+      E: {
+        number: "Pattern V",
+        name: "The Demand-Withdraw Cycle",
+        subtitle: "Classic Pursue / Withdraw Dynamic",
+        gutpunch: "You chase, they retreat. They approach, you retreat. You've been doing this dance so long you don't know any other steps.",
+        description: "This isn't about *you* — it's about the system you've created with your partner. One of you pursues, one withdraws, and then the positions flip. When the Withdrawer finally approaches for fear of losing the relationship, the Pursuer has become the new Withdrawer. Gottman Institute calls this 'the pursue-withdraw pattern' and it's one of the most damaging dynamics in long-term relationships. Not because either person is bad — but because the rhythm is self-reinforcing and almost impossible to break without awareness.",
+        strengths: [
+          "You keep reaching for connection. Even when it doesn't work, you reach. That persistence is the foundation of deep intimacy.",
+          "You're aware something isn't working. If you've taken this quiz, you're already doing the inner work most people avoid.",
+          "You have a partner. Even if the dynamic is hard, you're in relationship — and that means you're capable of attachment.",
+          "You can feel the pattern. Most people in this cycle are oblivious. You feel it. That's the first crack in the wheel."
+        ],
+        traits: ["Persistent", "Aware", "Connected", "Longing"],
+        growth: "Your work is understanding that the solution to pursuit is not withdrawal — it's interruption. You need to break the pattern at the moment it's happening, not in a conversation after the fact. That means: when you feel the urge to pursue (chase, text again, demand a conversation), do the opposite. Go inside. And when you withdraw, name it. 'I'm pulling away. Not because I'm leaving you. But because I'm overwhelmed and I need to come back before I can be present.' That one sentence can stop the cycle mid-rotation. Consider couples therapy if the cycle feels entrenched.",
+        shareText: "I got caught in the Demand-Withdraw Cycle — I chase, my partner retreats, and somehow we switched positions without either of us noticing. The pattern is the problem, not the person. [Take the quiz →]"
+      },
+      F: {
+        number: "Pattern VI",
+        name: "The Repair Navigator",
+        subtitle: "Secure Conflict Pattern",
+        gutpunch: "You argue badly but well. You've learned that conflict isn't the enemy — it's data. And somehow, despite everything, you come back to each other.",
+        description: "You fight. Of course you do — no one has a perfect relationship. But something is different about yours. You argue, you get frustrated, you say things you don't mean — and then, somehow, you find your way back. Often, you come back stronger. This is the secure conflict pattern. It doesn't mean you're perfect. It means you have the internal stability to tolerate conflict without losing yourself or losing the relationship. You're able to repair — not perfectly, but consistently.",
+        strengths: [
+          "You're emotionally regulated. Not perfect, not always — but generally, you can stay in the conversation even when it's hard.",
+          "You know how to repair. Not avoid, not suppress — actually repair. 'I'm sorry' isn't weakness in your vocabulary. It's the glue.",
+          "You can hold two things at once. I can be angry at you *and* love you. That complexity is the mark of emotional maturity.",
+          "You make conflict safe for your partner. People who grew up in chaotic homes often find you the first person who made a fight feel survivable."
+        ],
+        traits: ["Aware", "Connected", "Resilient", "Honest"],
+        growth: "Even Repair Navigators have edges. Yours might be comfort — you may default to 'this is fine' when something is actually not fine, because you're so good at repairing that you can paper over issues instead of fully resolving them. Another edge: you might assume your skills are innate when they're actually earned. Keep growing your repair vocabulary. There's always a deeper layer. And: your growth is less about you and more about modeling. The more secure people in a relational ecosystem, the more everyone else stabilizes too.",
+        shareText: "I'm a Repair Navigator — I argue badly but come back well. Turns out conflict is data, not destruction. The goal was never to win; it was to understand. Grateful for that skill. [Take the quiz →]"
+      },
+      G: {
+        number: "Pattern VII",
+        name: "The Competitive Combatant",
+        subtitle: "High Involvement, Win-Lose Orientation",
+        gutpunch: "Conflict is a sport. You've got to win. Even when you win, you lose something — usually the point of the conversation, sometimes the relationship.",
+        description: "You fight to win. Maybe you didn't always — but somewhere along the way, conflict became a zero-sum game, and losing felt unbearable. So you learned to come out on top. Sharp points, solid logic, devastating comebacks. You don't go down without a fight — in the truest sense. This pattern often comes from environments where being right was survival. Maybe you grew up with a parent who could never admit fault. Maybe losing an argument meant something dangerous. So you made sure you'd never lose again.",
+        strengths: [
+          "You fight for what you believe in. You won't be steamrolled. Your voice matters in the relationship and you make sure of it.",
+          "You're clear about your position. You don't leave your partner guessing about where you stand. There's no ambiguity with you.",
+          "You're intellectually sharp. Your arguments are well-constructed, your points are real.",
+          "Underneath the combativeness is something real. You fight this hard because you care — and because somewhere, losing felt like disappearing."
+        ],
+        traits: ["Sharp", "Direct", "Passionate", "Bold"],
+        growth: "Your work is learning that winning is not the same as being right — and being right is not the same as being loved. Every fight you win, you lose something: trust, intimacy, the chance to actually be known. The shift isn't from combatant to pushover. It's from combatant to collaborator. The question in conflict isn't 'who is right?' — it's 'what does each of us need, and how do we get there?' Learning to lose on purpose — to let your partner be right about small things — is the hardest thing a Competitive Combatant can do, and it's the thing that changes everything.",
+        shareText: "I'm a Competitive Combatant — I fight to win, not to understand. Turns out I was defending against something long before this argument started. Soft power is the skill I'm building. [Take the quiz →]"
+      }
+    };
+
+    // ============================================
+    // STATE
+    // ============================================
+    const state = {
+      currentScreen: 'disclaimer',
+      currentQuestion: 0,
+      answers: new Array(QUESTIONS.length).fill(null),
+      scores: { A: 0, B: 0, C: 0, D: 0 }
+    };
+
+    // ============================================
+    // DOM REFS
+    // ============================================
+    const $ = id => document.getElementById(id);
+    const loadingScreen = $('loadingScreen');
+    const disclaimerScreen = $('disclaimerScreen');
+    const introScreen = $('introScreen');
+    const questionScreen = $('questionScreen');
+    const resultScreen = $('resultScreen');
+    const progressBar = $('progressBar');
+    const progressFill = $('progressFill');
+    const questionCounter = $('questionCounter');
+    const questionText = $('questionText');
+    const answersContainer = $('answersContainer');
+    const shareToast = $('shareToast');
+    const appContainer = $('appContainer');
+
+    // ============================================
+    // SCREEN TRANSITIONS
+    // ============================================
+    function showScreen(screenId, callback) {
+      const currentEl = document.querySelector('.screen.active');
+      const nextEl = $(screenId + 'Screen');
+
+      if (currentEl) {
+        currentEl.classList.add('fade-out');
+        currentEl.classList.remove('active');
+        setTimeout(() => {
+          currentEl.classList.remove('fade-out');
+          transitionToScreen(nextEl, callback);
+        }, 400);
+      } else {
+        transitionToScreen(nextEl, callback);
+      }
+    }
+
+    function transitionToScreen(nextEl, callback) {
+      nextEl.classList.add('active', 'fade-in');
+      state.currentScreen = nextEl.id.replace('Screen', '');
+
+      // Show/hide progress bar
+      if (state.currentScreen === 'question') {
+        progressBar.classList.add('visible');
+      } else {
+        progressBar.classList.remove('visible');
+      }
+
+      if (callback) callback();
+
+      setTimeout(() => {
+        nextEl.classList.remove('fade-in');
+      }, 500);
+    }
+
+    // ============================================
+    // PROGRESS BAR
+    // ============================================
+    function updateProgress() {
+      const pct = Math.round((state.currentQuestion / QUESTIONS.length) * 100);
+      progressFill.style.width = pct + '%';
+      progressBar.setAttribute('aria-valuenow', pct);
+    }
+
+    // ============================================
+    // DISCLAIMER BUTTON
+    // ============================================
+    $('disclaimerBtn').addEventListener('click', () => {
+      showScreen('intro');
+    });
+
+    // ============================================
+    // START QUIZ BUTTON
+    // ============================================
+    $('startQuizBtn').addEventListener('click', () => {
+      state.currentQuestion = 0;
+      state.answers.fill(null);
+      state.scores = { A: 0, B: 0, C: 0, D: 0 };
+      showScreen('question', () => {
+        renderQuestion();
+      });
+    });
+
+    // ============================================
+    // RENDER QUESTION
+    // ============================================
+    function renderQuestion() {
+      const q = QUESTIONS[state.currentQuestion];
+      const qNum = state.currentQuestion + 1;
+
+      questionCounter.textContent = `Question ${qNum} of ${QUESTIONS.length}`;
+      questionText.textContent = q.text;
+
+      // Reset animations
+      questionCounter.style.animation = 'none';
+      questionText.style.animation = 'none';
+      answersContainer.style.animation = 'none';
+      // Force reflow
+      void questionCounter.offsetWidth;
+      questionCounter.style.animation = '';
+      questionText.style.animation = '';
+      answersContainer.style.animation = '';
+
+      answersContainer.innerHTML = '';
+
+      q.answers.forEach((ans, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'answer-option';
+        btn.type = 'button';
+        btn.setAttribute('role', 'radio');
+        btn.setAttribute('aria-checked', 'false');
+        btn.setAttribute('aria-label', `Option ${ans.letter}: ${ans.text.replace(/[*]/g, '')}`);
+        btn.dataset.letter = ans.letter;
+
+        btn.innerHTML = `
+          <span class="answer-letter" aria-hidden="true">${ans.letter}</span>
+          <span class="answer-text">${ans.text.replace(/\*/g, '')}</span>
+        `;
+
+        btn.style.animationDelay = `${400 + idx * 60}ms`;
+        btn.style.animation = `fadeInUp 400ms var(--ease-entrance) ${400 + idx * 60}ms forwards`;
+        btn.style.opacity = '0';
+
+        btn.addEventListener('click', () => selectAnswer(ans.letter, btn));
+        answersContainer.appendChild(btn);
+      });
+
+      // If already answered, reflect selection
+      if (state.answers[state.currentQuestion] !== null) {
+        const prevLetter = state.answers[state.currentQuestion];
+        const prevBtn = answersContainer.querySelector(`[data-letter="${prevLetter}"]`);
+        if (prevBtn) {
+          prevBtn.classList.add('selected');
+          prevBtn.setAttribute('aria-checked', 'true');
+        }
+      }
+
+      updateProgress();
+
+      // Focus the question area for screen readers
+      $('quiz-question').focus();
+    }
+
+    // ============================================
+    // SELECT ANSWER
+    // ============================================
+    function selectAnswer(letter, btnEl) {
+      // Already selected — don't re-trigger
+      if (btnEl.classList.contains('selected')) return;
+
+      // Remove previous selection on this question
+      answersContainer.querySelectorAll('.answer-option').forEach(b => {
+        b.classList.remove('selected');
+        b.setAttribute('aria-checked', 'false');
+      });
+
+      btnEl.classList.add('selected');
+      btnEl.setAttribute('aria-checked', 'true');
+
+      // Record answer
+      const prevAnswer = state.answers[state.currentQuestion];
+      state.answers[state.currentQuestion] = letter;
+
+      // Update score
+      if (prevAnswer) {
+        state.scores[prevAnswer]--;
+      }
+      state.scores[letter]++;
+
+      // Auto-advance after brief contemplation pause
+      setTimeout(() => {
+        advanceQuestion();
+      }, 480);
+    }
+
+    // ============================================
+    // ADVANCE QUESTION
+    // ============================================
+    function advanceQuestion() {
+      if (state.currentQuestion < QUESTIONS.length - 1) {
+        // Fade out current question
+        questionScreen.classList.add('fade-out');
+        setTimeout(() => {
+          questionScreen.classList.remove('fade-out');
+          state.currentQuestion++;
+          renderQuestion();
+          questionScreen.classList.add('fade-in');
+          setTimeout(() => questionScreen.classList.remove('fade-in'), 500);
+        }, 350);
+      } else {
+        // Quiz complete — show result
+        showResult();
+      }
+    }
+
+    // ============================================
+    // COMPUTE RESULT
+    // ============================================
+    function computeResult() {
+      const { A, B, C, D } = state.scores;
+      const total = A + B + C + D;
+      const max = Math.max(A, B, C, D);
+
+      // Find primary letter
+      let primary = 'A';
+      if (B === max) primary = 'B';
+      else if (C === max) primary = 'C';
+      else if (D === max) primary = 'D';
+
+      // Tie-breaking logic
+      const counts = [['A', A], ['B', B], ['C', C], ['D', D]];
+      const maxCount = Math.max(...counts.map(c => c[1]));
+      const tied = counts.filter(c => c[1] === maxCount).map(c => c[0]);
+
+      if (tied.length === 1) {
+        primary = tied[0];
+      } else if (tied.length === 2) {
+        // A+C or A+D → Escalating Critic
+        if (tied.includes('A') && tied.includes('C')) return 'C';
+        if (tied.includes('A') && tied.includes('D')) return 'C'; // anxious features
+        // B+D → Stonewalling
+        if (tied.includes('B') && tied.includes('D')) return 'D';
+        // A+B → Demand-Withdraw Cycle
+        if (tied.includes('A') && tied.includes('B')) return 'E';
+        // A+F or B+F not possible since only A-D options
+        // C+D → Escalating Critic
+        if (tied.includes('C') && tied.includes('D')) return 'C';
+      } else if (tied.length === 3) {
+        // A+B+C or A+B+D → Demand-Withdraw Cycle
+        if (!tied.includes('C') || !tied.includes('D')) return 'E';
+        return 'C';
+      } else if (tied.length === 4) {
+        // Perfect tie → Secure pattern
+        return 'F';
+      }
+
+      // Default: primary (highest count)
+      return primary;
+    }
+
+    // ============================================
+    // SHOW RESULT
+    // ============================================
+    function showResult() {
+      const resultKey = computeResult();
+      const result = RESULTS[resultKey];
+
+      // Populate result screen
+      $('resultPatternNumber').textContent = result.number;
+      $('resultPatternName').textContent = result.name;
+      $('resultPatternSubtitle').textContent = result.subtitle;
+      $('resultGutpunch').textContent = result.gutpunch;
+      $('resultWhatText').textContent = result.description;
+      $('resultGrowthText').textContent = result.growth;
+
+      // Strengths list
+      const strengthsList = $('resultStrengthsList');
+      strengthsList.innerHTML = '';
+      result.strengths.forEach(s => {
+        const li = document.createElement('li');
+        li.textContent = s;
+        strengthsList.appendChild(li);
+      });
+
+      // Tags
+      const tagsContainer = $('resultTags');
+      tagsContainer.innerHTML = '';
+      result.traits.forEach(t => {
+        const span = document.createElement('span');
+        span.className = 'result-tag';
+        span.textContent = t;
+        tagsContainer.appendChild(span);
+      });
+
+      // Store share text
+      resultScreen.dataset.shareText = result.shareText;
+
+      showScreen('result');
+    }
+
+    // ============================================
+    // SHARE BUTTON
+    // ============================================
+    $('shareBtn').addEventListener('click', () => {
+      const shareText = resultScreen.dataset.shareText || RESULTS.F.shareText;
+      navigator.clipboard.writeText(shareText).then(() => {
+        showToast();
+      }).catch(() => {
+        // Fallback: select text
+        const ta = document.createElement('textarea');
+        ta.value = shareText;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast();
+      });
+    });
+
+    function showToast() {
+      shareToast.classList.add('visible');
+      setTimeout(() => {
+        shareToast.classList.remove('visible');
+      }, 2500);
+    }
+
+    // ============================================
+    // RETAKE BUTTON
+    // ============================================
+    $('retakeBtn').addEventListener('click', () => {
+      state.currentQuestion = 0;
+      state.answers.fill(null);
+      state.scores = { A: 0, B: 0, C: 0, D: 0 };
+      progressFill.style.width = '0%';
+      progressBar.setAttribute('aria-valuenow', 0);
+      showScreen('disclaimer');
+    });
+
+    // ============================================
+    // INIT — hide loading after fonts load
+    // ============================================
+    document.fonts.ready.then(() => {
+      setTimeout(() => {
+        loadingScreen.classList.add('hidden');
+      }, 300);
+    });
+
+    // Fallback: hide loading after 1.5s max
+    setTimeout(() => {
+      loadingScreen.classList.add('hidden');
+    }, 1500);
+
+    // ============================================
+    // KEYBOARD NAVIGATION (Accessibility)
+    // ============================================
+    answersContainer.addEventListener('keydown', (e) => {
+      const options = Array.from(answersContainer.querySelectorAll('.answer-option'));
+      const currentIndex = options.indexOf(document.activeElement);
+
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        const next = options[(currentIndex + 1) % options.length];
+        if (next) next.focus();
+      } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const prev = options[(currentIndex - 1 + options.length) % options.length];
+        if (prev) prev.focus();
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const focused = document.activeElement;
+        if (focused.classList.contains('answer-option')) {
+          focused.click();
+        }
+      }
+    });
+  </script>
+</body>
+</html>
