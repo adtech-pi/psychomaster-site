@@ -1,0 +1,2000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>What's Your Enneagram Subtype? | Free Personality Quiz</title>
+  <meta name="description" content="Discover your Enneagram subtype — the instinct that actually drives your life. This free, science-grounded personality quiz goes beyond your main type to reveal whether Self-Preservation, Social, or Sexual energy is running the show. Take 3 minutes. Know yourself better.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* =============================================
+       CSS CUSTOM PROPERTIES & RESET
+    ============================================= */
+    :root {
+      /* Base palette */
+      --bg-base: #121018;
+      --bg-surface: #1E1A27;
+      --bg-card: #2A2438;
+      --bg-elevated: #362E45;
+
+      /* Neutral text */
+      --text-primary: #F0EBE8;
+      --text-secondary: #B8AEB8;
+      --text-muted: #786E82;
+
+      /* Borders */
+      --border-subtle: #3A3248;
+      --border-active: #5A4E68;
+
+      /* 9 Enneagram type colors */
+      --type1: #E8B84B;
+      --type2: #E0789A;
+      --type3: #56C278;
+      --type4: #E05C7A;
+      --type5: #4AB8B8;
+      --type6: #6B8FD4;
+      --type7: #F08040;
+      --type8: #C05030;
+      --type9: #9880D0;
+
+      /* Dominant type — set dynamically */
+      --type-primary: var(--type9);
+      --type-light: #B8A8E8;
+      --type-dark: #6858A0;
+
+      /* Gradient system */
+      --gradient-angle: 135deg;
+      --gradient-opacity: 0.12;
+
+      /* Spacing scale (8pt) */
+      --sp2: 2px; --sp4: 4px; --sp8: 8px; --sp12: 12px; --sp16: 16px;
+      --sp20: 20px; --sp24: 24px; --sp32: 32px; --sp40: 40px;
+      --sp48: 48px; --sp56: 56px; --sp64: 64px; --sp80: 80px; --sp96: 96px;
+
+      /* Easing */
+      --ease-enter: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-exit: cubic-bezier(0.55, 0, 1, 0.45);
+      --ease-continuous: cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-color: cubic-bezier(0.25, 0.1, 0.25, 1);
+
+      /* Typography */
+      --font-display: 'Instrument Serif', Georgia, serif;
+      --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+
+      /* Container */
+      --container-max: 480px;
+      --content-max: 360px;
+      --screen-pad: var(--sp24);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      min-height: 100dvh;
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* =============================================
+       BACKGROUND SYSTEM
+    ============================================= */
+    .bg-gradient {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 20%, rgba(232,184,75,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 80% 80%, rgba(152,128,208,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 100% 100% at 50% 50%, rgba(30,26,39,0.9) 0%, var(--bg-base) 100%);
+      transition: background 2000ms var(--ease-color);
+    }
+
+    .bg-gradient::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: conic-gradient(
+        from 0deg at 50% 50%,
+        var(--type1) 0deg,
+        var(--type2) 40deg,
+        var(--type3) 80deg,
+        var(--type4) 120deg,
+        var(--type5) 160deg,
+        var(--type6) 200deg,
+        var(--type7) 240deg,
+        var(--type8) 280deg,
+        var(--type9) 320deg,
+        var(--type1) 360deg
+      );
+      opacity: var(--gradient-opacity);
+      filter: blur(80px);
+      animation: gradientRotate 120s linear infinite;
+    }
+
+    @keyframes gradientRotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Floating orbs */
+    .orbs {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.04;
+    }
+
+    .orb-1 {
+      width: 400px; height: 400px;
+      background: var(--type1);
+      top: -100px; left: -100px;
+      animation: orbDrift1 35s ease-in-out infinite alternate;
+    }
+
+    .orb-2 {
+      width: 300px; height: 300px;
+      background: var(--type2);
+      top: 20%; right: -80px;
+      animation: orbDrift2 28s ease-in-out infinite alternate;
+    }
+
+    .orb-3 {
+      width: 350px; height: 350px;
+      background: var(--type7);
+      bottom: 10%; left: -60px;
+      animation: orbDrift3 40s ease-in-out infinite alternate;
+    }
+
+    .orb-4 {
+      width: 250px; height: 250px;
+      background: var(--type9);
+      bottom: -50px; right: 20%;
+      animation: orbDrift4 32s ease-in-out infinite alternate;
+    }
+
+    @keyframes orbDrift1 {
+      from { transform: translate(0, 0); }
+      to { transform: translate(60px, 40px); }
+    }
+    @keyframes orbDrift2 {
+      from { transform: translate(0, 0); }
+      to { transform: translate(-50px, 30px); }
+    }
+    @keyframes orbDrift3 {
+      from { transform: translate(0, 0); }
+      to { transform: translate(40px, -50px); }
+    }
+    @keyframes orbDrift4 {
+      from { transform: translate(0, 0); }
+      to { transform: translate(-40px, -30px); }
+    }
+
+    /* Noise texture overlay */
+    .noise {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+    }
+
+    /* =============================================
+       APP CONTAINER
+    ============================================= */
+    .app {
+      position: relative;
+      z-index: 2;
+      min-height: 100dvh;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--sp24) var(--sp16);
+      padding-top: calc(var(--sp24) + env(safe-area-inset-top));
+      padding-bottom: calc(var(--sp24) + env(safe-area-inset-bottom));
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--container-max);
+    }
+
+    /* =============================================
+       SCREENS
+    ============================================= */
+    .screen {
+      display: none;
+      width: 100%;
+      animation: screenEnter 500ms var(--ease-enter) both;
+    }
+
+    .screen.active {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    @keyframes screenEnter {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* =============================================
+       CSS ENNEAGRAM SYMBOL
+    ============================================= */
+    .enneagram-symbol {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      flex-shrink: 0;
+    }
+
+    .enneagram-outer {
+      position: absolute;
+      inset: 0;
+      clip-path: polygon(
+        50% 0%,
+        63% 35%,
+        98% 35%,
+        68% 57%,
+        79% 91%,
+        50% 70%,
+        21% 91%,
+        32% 57%,
+        2% 35%,
+        37% 35%
+      );
+      background: conic-gradient(
+        from 0deg,
+        var(--type1) 0deg, var(--type2) 40deg, var(--type3) 80deg,
+        var(--type4) 120deg, var(--type5) 160deg, var(--type6) 200deg,
+        var(--type7) 240deg, var(--type8) 280deg, var(--type9) 320deg,
+        var(--type1) 360deg
+      );
+      opacity: 0.15;
+    }
+
+    .enneagram-inner-triangle {
+      position: absolute;
+      inset: 0;
+      clip-path: polygon(
+        50% 15%, 85% 85%, 15% 85%
+      );
+      border: 2px solid var(--type-primary);
+      opacity: 0.2;
+      background: transparent;
+    }
+
+    .enneagram-inner-triangle-2 {
+      position: absolute;
+      inset: 0;
+      clip-path: polygon(
+        15% 15%, 85% 15%, 50% 85%
+      );
+      border: 2px solid var(--type-primary);
+      opacity: 0.12;
+      background: transparent;
+    }
+
+    /* Large decorative symbol for intro/result */
+    .enneagram-symbol.large {
+      width: 280px;
+      height: 280px;
+    }
+
+    .enneagram-symbol.large .enneagram-outer {
+      animation: symbolRotate 120s linear infinite;
+    }
+
+    @keyframes symbolRotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .enneagram-symbol.glowing .enneagram-outer {
+      opacity: 0.25;
+      filter: blur(4px);
+    }
+
+    .enneagram-symbol.calculating .enneagram-outer {
+      animation: symbolRotate 8s linear infinite, symbolPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes symbolPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.7; }
+    }
+
+    /* Small footer symbol */
+    .enneagram-symbol.small {
+      width: 40px;
+      height: 40px;
+    }
+
+    /* =============================================
+       DISLAIMER SCREEN
+    ============================================= */
+    .disclaimer-screen {
+      text-align: center;
+      gap: var(--sp32);
+    }
+
+    .disclaimer-emoji {
+      font-size: 3rem;
+      margin-bottom: var(--sp8);
+      animation: floatIn 800ms var(--ease-enter) 200ms both;
+    }
+
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .disclaimer-title {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      animation: floatIn 800ms var(--ease-enter) 300ms both;
+    }
+
+    .disclaimer-body {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      max-width: 340px;
+      animation: floatIn 800ms var(--ease-enter) 400ms both;
+    }
+
+    .disclaimer-body em {
+      font-family: var(--font-display);
+      font-style: italic;
+      color: var(--text-primary);
+    }
+
+    .disclaimer-body p + p {
+      margin-top: var(--sp16);
+    }
+
+    .disclaimer-note {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      padding: var(--sp16);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      background: var(--bg-card);
+      max-width: 340px;
+      animation: floatIn 800ms var(--ease-enter) 500ms both;
+    }
+
+    /* =============================================
+       INTRO SCREEN
+    ============================================= */
+    .intro-screen {
+      text-align: center;
+      gap: var(--sp32);
+    }
+
+    .intro-symbol {
+      animation: floatIn 600ms var(--ease-enter) 100ms both;
+    }
+
+    .intro-title {
+      font-family: var(--font-display);
+      font-size: 2.25rem;
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      animation: floatIn 600ms var(--ease-enter) 200ms both;
+    }
+
+    .intro-subtitle {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.125rem;
+      color: var(--type-primary);
+      margin-top: var(--sp8);
+      animation: floatIn 600ms var(--ease-enter) 300ms both;
+    }
+
+    .intro-body {
+      font-size: 0.9375rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      max-width: 340px;
+      animation: floatIn 600ms var(--ease-enter) 400ms both;
+    }
+
+    .intro-body p + p {
+      margin-top: var(--sp16);
+    }
+
+    .instinct-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp12);
+      text-align: left;
+      width: 100%;
+      max-width: 340px;
+      animation: floatIn 600ms var(--ease-enter) 500ms both;
+    }
+
+    .instinct-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--sp12);
+      padding: var(--sp16);
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      transition: border-color 300ms var(--ease-continuous);
+    }
+
+    .instinct-item:hover {
+      border-color: var(--border-active);
+    }
+
+    .instinct-badge {
+      flex-shrink: 0;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: var(--sp4) var(--sp8);
+      border-radius: 100px;
+      background: var(--type-primary);
+      color: var(--bg-base);
+    }
+
+    .instinct-text strong {
+      display: block;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: var(--sp4);
+    }
+
+    .instinct-text span {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    /* =============================================
+       PROGRESS RING
+    ============================================= */
+    .progress-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: var(--sp32);
+      animation: floatIn 500ms var(--ease-enter) both;
+    }
+
+    .progress-ring {
+      position: relative;
+      width: 64px;
+      height: 64px;
+    }
+
+    .progress-ring svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .progress-ring-track {
+      fill: none;
+      stroke: var(--border-subtle);
+      stroke-width: 4;
+    }
+
+    .progress-ring-segment {
+      fill: none;
+      stroke: var(--type-primary);
+      stroke-width: 4;
+      stroke-linecap: round;
+      opacity: 0;
+      transition: opacity 400ms var(--ease-enter), stroke 800ms var(--ease-color);
+    }
+
+    .progress-ring-segment.active {
+      opacity: 1;
+    }
+
+    .progress-ring-segment.completed {
+      opacity: 0.8;
+    }
+
+    .progress-label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      font-family: var(--font-body);
+    }
+
+    /* =============================================
+       QUIZ SCREEN
+    ============================================= */
+    .quiz-screen {
+      gap: var(--sp24);
+    }
+
+    .question-meta {
+      text-align: center;
+      width: 100%;
+      animation: floatIn 400ms var(--ease-enter) both;
+    }
+
+    .question-number {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--type-primary);
+      margin-bottom: var(--sp12);
+    }
+
+    .question-text {
+      font-family: var(--font-display);
+      font-size: 1.375rem;
+      font-weight: 400;
+      line-height: 1.35;
+      color: var(--text-primary);
+      max-width: 380px;
+    }
+
+    .answers-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp12);
+      width: 100%;
+      animation: floatIn 400ms var(--ease-enter) 100ms both;
+    }
+
+    .answer-card {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      gap: var(--sp16);
+      padding: var(--sp16) var(--sp20);
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-subtle);
+      border-radius: 16px;
+      cursor: pointer;
+      transition:
+        border-color 200ms var(--ease-continuous),
+        background 200ms var(--ease-continuous),
+        transform 200ms var(--ease-enter),
+        box-shadow 200ms var(--ease-continuous);
+      text-align: left;
+      width: 100%;
+      min-height: 60px;
+    }
+
+    .answer-card:hover {
+      border-color: var(--border-active);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+
+    .answer-card:active {
+      transform: translateY(0);
+    }
+
+    .answer-card:focus-visible {
+      outline: 3px solid var(--type-primary);
+      outline-offset: 2px;
+    }
+
+    .answer-card.selected {
+      border-color: var(--type-primary);
+      background: var(--bg-elevated);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--type-primary) 35%, transparent);
+    }
+
+    .answer-letter {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border-active);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      transition: border-color 200ms, background 200ms, color 200ms;
+    }
+
+    .answer-card.selected .answer-letter {
+      border-color: var(--type-primary);
+      background: var(--type-primary);
+      color: var(--bg-base);
+    }
+
+    .answer-text {
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      transition: color 200ms;
+      padding-top: var(--sp4);
+    }
+
+    .answer-card.selected .answer-text {
+      color: var(--text-primary);
+    }
+
+    /* =============================================
+       CALCULATING SCREEN
+    ============================================= */
+    .calculating-screen {
+      text-align: center;
+      gap: var(--sp32);
+    }
+
+    .calculating-symbol {
+      animation: floatIn 600ms var(--ease-enter) both;
+    }
+
+    .calculating-text {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      animation: floatIn 600ms var(--ease-enter) 200ms both;
+    }
+
+    .calculating-dots {
+      display: flex;
+      justify-content: center;
+      gap: var(--sp8);
+      margin-top: var(--sp16);
+    }
+
+    .calculating-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--type-primary);
+      animation: dotPulse 1.4s ease-in-out infinite;
+      opacity: 0.4;
+    }
+
+    .calculating-dot:nth-child(2) { animation-delay: 0.2s; }
+    .calculating-dot:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes dotPulse {
+      0%, 80%, 100% { opacity: 0.4; transform: scale(1); }
+      40% { opacity: 1; transform: scale(1.2); }
+    }
+
+    /* =============================================
+       RESULT SCREEN
+    ============================================= */
+    .result-screen {
+      text-align: center;
+      gap: var(--sp24);
+    }
+
+    .result-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--sp16);
+      animation: floatIn 800ms var(--ease-enter) 100ms both;
+    }
+
+    .result-type-number {
+      font-family: var(--font-display);
+      font-size: 4.5rem;
+      font-weight: 400;
+      line-height: 1;
+      color: var(--type-primary);
+      text-shadow: 0 0 40px color-mix(in srgb, var(--type-primary) 40%, transparent);
+      letter-spacing: -0.03em;
+    }
+
+    .result-type-name {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--text-primary);
+    }
+
+    .result-subtype-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp8);
+      padding: var(--sp8) var(--sp16);
+      background: color-mix(in srgb, var(--type-primary) 12%, transparent);
+      border: 1px solid color-mix(in srgb, var(--type-primary) 30%, transparent);
+      border-radius: 100px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--type-primary);
+      letter-spacing: 0.04em;
+    }
+
+    .result-type-symbol {
+      opacity: 0.1;
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .result-divider {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-active), transparent);
+      margin: var(--sp8) 0;
+    }
+
+    .result-description {
+      max-width: 360px;
+      animation: floatIn 800ms var(--ease-enter) 300ms both;
+    }
+
+    .result-description-label {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: var(--sp12);
+    }
+
+    .result-description-public {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: var(--sp24);
+    }
+
+    .result-description-shadow {
+      font-size: 0.9375rem;
+      line-height: 1.65;
+      color: var(--text-muted);
+      font-style: italic;
+      padding: var(--sp16);
+      background: var(--bg-card);
+      border-radius: 12px;
+      border-left: 3px solid color-mix(in srgb, var(--type-primary) 40%, transparent);
+      text-align: left;
+    }
+
+    .result-shadow-label {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: var(--sp8);
+      font-style: normal;
+    }
+
+    .result-traits {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: var(--sp8);
+      animation: floatIn 800ms var(--ease-enter) 500ms both;
+    }
+
+    .trait-tag {
+      padding: var(--sp8) var(--sp16);
+      background: color-mix(in srgb, var(--type-primary) 10%, transparent);
+      border: 1px solid color-mix(in srgb, var(--type-primary) 25%, transparent);
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--type-light);
+      letter-spacing: 0.02em;
+    }
+
+    .result-actions {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp12);
+      width: 100%;
+      max-width: 340px;
+      animation: floatIn 800ms var(--ease-enter) 700ms both;
+      margin-top: var(--sp8);
+    }
+
+    /* =============================================
+       BUTTONS
+    ============================================= */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--sp8);
+      padding: var(--sp16) var(--sp32);
+      border-radius: 100px;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1;
+      cursor: pointer;
+      border: none;
+      transition:
+        transform 200ms var(--ease-enter),
+        box-shadow 200ms var(--ease-continuous),
+        background 200ms var(--ease-continuous),
+        opacity 200ms;
+      text-decoration: none;
+      min-height: 52px;
+      min-width: 44px;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn:focus-visible {
+      outline: 3px solid var(--type-primary);
+      outline-offset: 2px;
+    }
+
+    .btn-primary {
+      background: var(--type-primary);
+      color: var(--bg-base);
+      box-shadow: 0 4px 20px color-mix(in srgb, var(--type-primary) 30%, transparent);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 8px 32px color-mix(in srgb, var(--type-primary) 45%, transparent);
+    }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border: 1.5px solid var(--border-subtle);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--border-active);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    }
+
+    .btn-full {
+      width: 100%;
+    }
+
+    .btn-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    /* Share toast */
+    .share-toast {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-active);
+      color: var(--text-primary);
+      padding: var(--sp12) var(--sp24);
+      border-radius: 100px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 300ms var(--ease-continuous), transform 300ms var(--ease-enter);
+      z-index: 100;
+      white-space: nowrap;
+    }
+
+    .share-toast.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* =============================================
+       TYPOGRAPHY UTILITIES
+    ============================================= */
+    .label-upper {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* =============================================
+       RESPONSIVE
+    ============================================= */
+    @media (max-width: 400px) {
+      .question-text {
+        font-size: 1.25rem;
+      }
+
+      .result-type-number {
+        font-size: 3.5rem;
+      }
+
+      .intro-title {
+        font-size: 1.875rem;
+      }
+
+      .progress-ring {
+        width: 52px;
+        height: 52px;
+      }
+    }
+
+    @media (min-width: 640px) {
+      .result-type-number {
+        font-size: 6rem;
+      }
+    }
+
+    /* =============================================
+       REDUCED MOTION
+    ============================================= */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .bg-gradient::before {
+        animation: none !important;
+      }
+
+      .orb { display: none; }
+
+      .enneagram-symbol.large .enneagram-outer,
+      .enneagram-symbol.calculating .enneagram-outer {
+        animation: none !important;
+      }
+
+      .progress-ring-segment {
+        transition: none !important;
+      }
+    }
+
+    /* =============================================
+       SCREEN READER ONLY
+    ============================================= */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Skip link */
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: var(--sp16);
+      background: var(--type-primary);
+      color: var(--bg-base);
+      padding: var(--sp12) var(--sp24);
+      border-radius: 8px;
+      font-weight: 600;
+      z-index: 1000;
+      text-decoration: none;
+      transition: top 200ms;
+    }
+
+    .skip-link:focus {
+      top: var(--sp16);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background layers -->
+  <div class="bg-gradient" aria-hidden="true"></div>
+  <div class="orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="orb orb-4"></div>
+  </div>
+  <div class="noise" aria-hidden="true"></div>
+
+  <!-- Skip link -->
+  <a href="#quiz-start" class="skip-link">Skip to quiz</a>
+
+  <!-- App -->
+  <main class="app" id="quiz-start">
+    <div class="container">
+
+      <!-- ===========================================
+           DISCLAIMER SCREEN
+      =========================================== -->
+      <section class="screen disclaimer-screen active" id="screen-disclaimer" aria-label="Quiz disclaimer">
+        <div>
+          <div class="disclaimer-emoji" aria-hidden="true">💛</div>
+          <h1 class="disclaimer-title">A Note Before We Begin</h1>
+        </div>
+
+        <div class="disclaimer-body">
+          <p>This quiz is a self-reflection tool rooted in the Enneagram tradition — a personality framework with deep roots in wisdom psychology. It's not a clinical diagnosis, and it's not the final word on who you are.</p>
+          <p><em>Think of it more like a mirror:</em> it reflects what you show it, and the more honestly you answer, the more you'll see.</p>
+          <p>Trust your gut. There's no right or wrong answer — only your answer.</p>
+        </div>
+
+        <div class="disclaimer-note">
+          This quiz is for self-awareness and reflection only. No personal data is stored or shared.
+        </div>
+
+        <button class="btn btn-primary btn-full" id="btn-disclaimer-start" aria-label="Begin the Enneagram subtype quiz">
+          I'm Ready to Explore
+        </button>
+      </section>
+
+      <!-- ===========================================
+           INTRO SCREEN
+      =========================================== -->
+      <section class="screen intro-screen" id="screen-intro" aria-label="Quiz introduction" hidden>
+        <div class="intro-symbol" aria-hidden="true">
+          <div class="enneagram-symbol large glowing">
+            <div class="enneagram-outer"></div>
+            <div class="enneagram-inner-triangle"></div>
+            <div class="enneagram-inner-triangle-2"></div>
+          </div>
+        </div>
+
+        <div>
+          <h1 class="intro-title">What's Your Enneagram Subtype?</h1>
+          <p class="intro-subtitle">Beyond your main type — discover the instinct that drives you.</p>
+        </div>
+
+        <div class="intro-body">
+          <p>You probably already know your Enneagram type. But here's the plot twist most people miss: your <em>instinct</em> — the part of you that guards, connects, and desires — might be running the show in ways you haven't noticed.</p>
+          <p>This quiz isn't about finding your main type again. It's about discovering which <strong>instinct</strong> sits at the wheel of your life:</p>
+        </div>
+
+        <ul class="instinct-list" role="list">
+          <li class="instinct-item">
+            <span class="instinct-badge" aria-hidden="true">sp</span>
+            <div class="instinct-text">
+              <strong>Self-Preservation</strong>
+              <span>The instinct to secure your safety, stability, and personal well-being</span>
+            </div>
+          </li>
+          <li class="instinct-item">
+            <span class="instinct-badge" aria-hidden="true">so</span>
+            <div class="instinct-text">
+              <strong>Social</strong>
+              <span>The instinct to belong, contribute, and find your place in the group</span>
+            </div>
+          </li>
+          <li class="instinct-item">
+            <span class="instinct-badge" aria-hidden="true">sx</span>
+            <div class="instinct-text">
+              <strong>Sexual</strong>
+              <span>The instinct to connect deeply, merge, and experience intensity with others</span>
+            </div>
+          </li>
+        </ul>
+
+        <button class="btn btn-primary btn-full" id="btn-intro-start" aria-label="Start the quiz">
+          Start the Quiz
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </section>
+
+      <!-- ===========================================
+           QUIZ SCREEN
+      =========================================== -->
+      <section class="screen quiz-screen" id="screen-quiz" aria-label="Quiz questions" hidden>
+        <div class="progress-container" aria-label="Quiz progress">
+          <div class="progress-ring" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="15" aria-label="Question 0 of 15">
+            <svg viewBox="0 0 64 64">
+              <defs>
+                <linearGradient id="ring-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="var(--type-primary)" stop-opacity="0.6"/>
+                  <stop offset="100%" stop-color="var(--type-primary)"/>
+                </linearGradient>
+              </defs>
+              <circle class="progress-ring-track" cx="32" cy="32" r="28"/>
+              <!-- Segments will be drawn by JS -->
+            </svg>
+            <div class="progress-label" id="progress-label">0 / 15</div>
+          </div>
+        </div>
+
+        <div class="question-meta">
+          <p class="question-number" id="question-number" aria-live="polite">Question 1 of 15</p>
+          <h2 class="question-text" id="question-text"></h2>
+        </div>
+
+        <div class="answers-list" id="answers-list" role="list">
+          <!-- Generated by JS -->
+        </div>
+      </section>
+
+      <!-- ===========================================
+           CALCULATING SCREEN
+      =========================================== -->
+      <section class="screen calculating-screen" id="screen-calculating" aria-label="Calculating results" hidden>
+        <div class="calculating-symbol" aria-hidden="true">
+          <div class="enneagram-symbol large calculating">
+            <div class="enneagram-outer"></div>
+            <div class="enneagram-inner-triangle"></div>
+            <div class="enneagram-inner-triangle-2"></div>
+          </div>
+        </div>
+
+        <div>
+          <p class="calculating-text">Weaving your subtype together&hellip;</p>
+          <div class="calculating-dots" aria-hidden="true">
+            <div class="calculating-dot"></div>
+            <div class="calculating-dot"></div>
+            <div class="calculating-dot"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===========================================
+           RESULT SCREEN
+      =========================================== -->
+      <section class="screen result-screen" id="screen-result" aria-label="Your result" hidden>
+        <div class="result-header">
+          <div class="result-type-number" id="result-number" aria-hidden="true"></div>
+          <h1 class="result-type-name" id="result-name"></h1>
+          <div class="result-subtype-badge" id="result-badge">
+            <span id="result-subtype-label"></span>
+          </div>
+        </div>
+
+        <div class="result-divider" aria-hidden="true"></div>
+
+        <div class="result-description">
+          <p class="result-description-label">How This Subtype Moves Through the World</p>
+          <p class="result-description-public" id="result-public"></p>
+
+          <div class="result-description-shadow" id="result-shadow-container">
+            <p class="result-shadow-label">The Hidden Side</p>
+            <p id="result-shadow"></p>
+          </div>
+        </div>
+
+        <div class="result-traits" id="result-traits" role="list" aria-label="Trait tags">
+          <!-- Generated by JS -->
+        </div>
+
+        <div class="result-actions">
+          <button class="btn btn-primary btn-full" id="btn-share" aria-label="Share your result">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+            </svg>
+            Share My Result
+          </button>
+          <button class="btn btn-secondary btn-full" id="btn-retake" aria-label="Take the quiz again">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="1 4 1 10 7 10"/>
+              <path d="M3.51 15a9 9 0 1 0 .49-4.5"/>
+            </svg>
+            Take Again
+          </button>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Share toast -->
+  <div class="share-toast" id="share-toast" role="status" aria-live="polite">
+    Copied! Share it anywhere 💛
+  </div>
+
+  <script>
+    'use strict';
+
+    /* =============================================
+       QUIZ DATA
+    ============================================= */
+
+    const QUESTIONS = [
+      {
+        id: 1,
+        text: "You're at a dinner party and the host's new partner says something that doesn't sit right with you — a values thing, not a fact thing.",
+        answers: [
+          { letter: 'A', text: "You let it slide. It's not worth the drama, and honestly, you didn't come here to fight.", instinct: 'sp' },
+          { letter: 'B', text: "You steer the conversation somewhere else — redirect without making anyone uncomfortable.", instinct: 'so' },
+          { letter: 'C', text: "You push back, gently but honestly. You can't help it — you said it, and now it's out.", instinct: 'sx' },
+          { letter: 'D', text: "You excuse yourself and check in with the host later, privately.", instinct: 'sp' }
+        ]
+      },
+      {
+        id: 2,
+        text: "Your friend calls you at 11pm, clearly upset. You're exhausted. The next day is brutal.",
+        answers: [
+          { letter: 'A', text: "You answer. Always. Something in you can't rest if someone you care about is hurting.", instinct: 'sx' },
+          { letter: 'B', text: "You text: \"Hey, everything okay? I'm wiped — can we talk tomorrow?\"", instinct: 'so' },
+          { letter: 'C', text: "You let it go to voicemail and feel guilty about it for three days.", instinct: 'sp' },
+          { letter: 'D', text: "You answer, but you find yourself half-listening, already thinking about your own problems.", instinct: 'sx' }
+        ]
+      },
+      {
+        id: 3,
+        text: "You're scrolling job listings and you see one that looks almost perfect — good pay, good mission, but the team vibe feels off in the photos.",
+        answers: [
+          { letter: 'A', text: "You apply anyway. Logic says it's the smart move. Your gut can be wrong.", instinct: 'sp' },
+          { letter: 'B', text: "You ask people in your network what they know about the company culture before you decide anything.", instinct: 'so' },
+          { letter: 'C', text: "You close the tab. If it doesn't feel right in your body, it's not right.", instinct: 'sx' },
+          { letter: 'D', text: "You bookmark it and keep looking — no rush. Something will click.", instinct: 'sp' }
+        ]
+      },
+      {
+        id: 4,
+        text: "A colleague takes credit for your idea in a big meeting. Your manager is there.",
+        answers: [
+          { letter: 'A', text: "You stay silent in the room, then pull the colleague aside later to sort it out.", instinct: 'sp' },
+          { letter: 'B', text: "You mention it casually to your manager after — framed as a \"quick clarification,\" not an accusation.", instinct: 'so' },
+          { letter: 'C', text: "You speak up in the moment. Not aggressively, but clearly: \"Actually, I developed that idea — happy to share more.\"", instinct: 'sx' },
+          { letter: 'D', text: "You let it go. The idea spoke for itself, and making a scene won't help your reputation.", instinct: 'sp' }
+        ]
+      },
+      {
+        id: 5,
+        text: "You're three drinks in at a wedding and someone asks you what you actually do for work. You start talking, and they seem genuinely interested...",
+        answers: [
+          { letter: 'A', text: "You keep going. When someone's actually listening, something opens up in you — you can't help yourself.", instinct: 'sx' },
+          { letter: 'B', text: "You give the polished version. You've told this story a hundred times, and the crowd seems to like it.", instinct: 'so' },
+          { letter: 'C', text: "You get self-conscious. Are you being too much? You pull back and turn it around on them.", instinct: 'sp' },
+          { letter: 'D', text: "You make a joke and deflect. Work talk is boring — let's talk about the DJ.", instinct: 'so' }
+        ]
+      },
+      {
+        id: 6,
+        text: "Your best friend starts dating someone you have a bad feeling about. Not a logical bad feeling — a gut one.",
+        answers: [
+          { letter: 'A', text: "You say something. You can't watch them walk into something you saw coming.", instinct: 'sx' },
+          { letter: 'B', text: "You wait. Let them figure it out. People need to learn their own lessons — you've learned that the hard way.", instinct: 'sp' },
+          { letter: 'C', text: "You bring it up carefully, in a \"I'm-not-saying-anything-but-here's-something\" kind of way.", instinct: 'so' },
+          { letter: 'D', text: "You actually spiral — you lose sleep over it, replaying scenarios, feeling responsible.", instinct: 'sp' }
+        ]
+      },
+      {
+        id: 7,
+        text: "You've been single for a while. You actually kind of like it. But your family keeps asking, and you're starting to feel the pressure.",
+        answers: [
+          { letter: 'A', text: "You lean into it — being single has its perks, and you're genuinely fine. Mostly.", instinct: 'sp' },
+          { letter: 'B', text: "You throw yourself into friend groups and social events. If you're going to be single, you're going to be surrounded.", instinct: 'so' },
+          { letter: 'C', text: "You meet someone and suddenly you're all in. When you fall, you fall hard and fast.", instinct: 'sx' },
+          { letter: 'D', text: "You tell your family you're \"focusing on yourself\" — which is true, but also convenient.", instinct: 'so' }
+        ]
+      },
+      {
+        id: 8,
+        text: "You're planning a trip — solo this time. No partner, no friends, just you.",
+        answers: [
+          { letter: 'A', text: "You've already mapped out the hostels, the transit passes, and the backup plans. The spreadsheet is real.", instinct: 'sp' },
+          { letter: 'B', text: "You're going somewhere with a strong community vibe — a retreat, a co-living situation, somewhere you'll meet people.", instinct: 'so' },
+          { letter: 'C', text: "You're going somewhere remote and a little wild. No itinerary. You want to be surprised by life.", instinct: 'sx' },
+          { letter: 'D', text: "You're actually nervous about going alone. Maybe you should ask someone to come?", instinct: 'sp' }
+        ]
+      },
+      {
+        id: 9,
+        text: "A close friend is going through a breakup. They're a mess. It's been three weeks.",
+        answers: [
+          { letter: 'A', text: "You keep showing up. Dinner delivered. Podcasts sent. You don't need them to fix it — you just need them to know they're not alone.", instinct: 'sx' },
+          { letter: 'B', text: "You organize a group thing — a movie night, a hike — so they have community without the pressure of one-on-one.", instinct: 'so' },
+          { letter: 'C', text: "You start setting a boundary. You love them, but this is draining you.", instinct: 'sp' },
+          { letter: 'D', text: "You feel helpless. You want to fix it for them but you can't, so you pull back.", instinct: 'sp' }
+        ]
+      },
+      {
+        id: 10,
+        text: "You're in a heated argument with someone you love. They're making some points that are actually landing.",
+        answers: [
+          { letter: 'A', text: "You hold your ground. Admitting you're wrong feels like losing a part of yourself.", instinct: 'sx' },
+          { letter: 'B', text: "You genuinely listen. You pause, you reflect, and if they're right, you say so.", instinct: 'so' },
+          { letter: 'C', text: "You shut down. Not out of pride — out of overwhelm. You need to process before you can respond.", instinct: 'sp' },
+          { letter: 'D', text: "You escalate. When you're pressed, you press back harder.", instinct: 'sx' }
+        ]
+      },
+      {
+        id: 11,
+        text: "You're at a networking event. You know almost no one there.",
+        answers: [
+          { letter: 'A', text: "You work the room. You find the quiet person in the corner — they usually turn out to be the most interesting.", instinct: 'so' },
+          { letter: 'B', text: "You find one or two solid conversations and invest in them. Quality over quantity.", instinct: 'sx' },
+          { letter: 'C', text: "You scan for the snacks, find a good spot by the wall, and observe. You'll engage when you spot someone worth engaging.", instinct: 'sp' },
+          { letter: 'D', text: "You already regret coming. But you're here, so you might as well make the most of it.", instinct: 'sp' }
+        ]
+      },
+      {
+        id: 12,
+        text: "You're dating someone new and things are getting more serious. You start to notice they have a habit that genuinely bothers you.",
+        answers: [
+          { letter: 'A', text: "You raise it. You can't build something real on top of unspoken things.", instinct: 'sx' },
+          { letter: 'B', text: "You think about whether it's a real problem or just a difference. You try to let it go.", instinct: 'sp' },
+          { letter: 'C', text: "You look at the whole picture — their values, their friends, their community — before deciding how much this habit matters.", instinct: 'so' },
+          { letter: 'D', text: "You get quiet and pull away slightly. You're already mentally preparing for this not to work out.", instinct: 'sp' }
+        ]
+      },
+      {
+        id: 13,
+        text: "You finally get a weekend completely alone. No obligations, no plans, no one needing anything from you.",
+        answers: [
+          { letter: 'A', text: "You immediately text someone. The silence feels too loud.", instinct: 'so' },
+          { letter: 'B', text: "You make it sacred — a real reset. You sleep in, cook something good, go for a long walk.", instinct: 'sp' },
+          { letter: 'C', text: "You dive into a project you've been obsessed with. Time alone is project time.", instinct: 'sx' },
+          { letter: 'D', text: "You actually don't know what to do with it. You default to work.", instinct: 'sp' }
+        ]
+      },
+      {
+        id: 14,
+        text: "You see someone across the room at a party — a total stranger — and something about them is magnetic.",
+        answers: [
+          { letter: 'A', text: "You walk over. Not to flirt necessarily, but because something pulled you there.", instinct: 'sx' },
+          { letter: 'B', text: "You ask a friend who they are. You want to know the context before you approach.", instinct: 'so' },
+          { letter: 'C', text: "You keep an eye on them from across the room, gathering intel, trying to figure them out.", instinct: 'sp' },
+          { letter: 'D', text: "You tell yourself you won't approach. You'll probably never see them again anyway.", instinct: 'sp' }
+        ]
+      },
+      {
+        id: 15,
+        text: "You're at a crossroads. Big decision, lots of variables. The kind of choice that will shape the next few years.",
+        answers: [
+          { letter: 'A', text: "You make a pro-con list, research everything, and decide based on security and long-term stability.", instinct: 'sp' },
+          { letter: 'B', text: "You ask the people you trust most — what do they think? Their feedback is part of your decision.", instinct: 'so' },
+          { letter: 'C', text: "You close your eyes and ask yourself: which path makes me feel most alive? You follow that.", instinct: 'sx' },
+          { letter: 'D', text: "You stall. Maybe the answer will become clear on its own.", instinct: 'sp' }
+        ]
+      }
+    ];
+
+    // 9 Results
+    const RESULTS = {
+      'sp1': {
+        typeNumber: '1',
+        typeName: 'The Ethical Perfectionist',
+        subtypeLabel: 'Self-Preservation 1 — The Responsible Reformer',
+        publicDesc: 'You have an internal compass that never stops pointing north — and you hold yourself to it even when no one else is watching. You care deeply about doing things right, not just looking right, and that quiet integrity is the thing people respect most about you.',
+        shadowDesc: "Behind the composed exterior, you can be brutally hard on yourself — one perceived failure can unravel a whole day of wins. You sometimes use \"being right\" as a shield against the messiness of being human, yours and everyone else's.",
+        traits: ['#Conscientious', '#Principled', '#Self-Directed', '#InnerCritic'],
+        shareText: "I'm a Type 1 who holds myself to a standard most people only wish they could meet — and honestly? Most days it exhausts me. 🔑",
+        colorVar: '--type1',
+        colorName: 'Gold'
+      },
+      'so2': {
+        typeNumber: '2',
+        typeName: 'The Boundary-Crossing Helper',
+        subtypeLabel: 'Social 2 — The Generous Host',
+        publicDesc: 'You show up for people in ways that feel almost instinctive — anticipating what they need before they ask, making space for them, making them feel seen. Your love language is acts of service, and you\'re genuinely happiest when you\'ve made someone\'s day a little easier.',
+        shadowDesc: "Here's the part you don't love admitting: sometimes you keep score, even when you swear you don't. Acts of kindness can become an unspoken transaction — and when your giving isn't reciprocated or acknowledged, the resentment hits harder than you'd ever let anyone see.",
+        traits: ['#Generous', '#Attentive', '#CommunityBuilder', '#QuietScorekeeper'],
+        shareText: "I will drop everything for the people I love — but what I really need to learn is that my worth isn't a ledger. 💛",
+        colorVar: '--type2',
+        colorName: 'Rose'
+      },
+      'so3': {
+        typeNumber: '3',
+        typeName: 'The Achievement Machine',
+        subtypeLabel: 'Social 3 — The Hero',
+        publicDesc: 'You are wired for impact. When you set your sights on a goal, you become unstoppable — adaptable, charismatic, and laser-focused on delivering results. People want to be on your team because you make things happen, and you make them feel like they\'re part of something bigger.',
+        shadowDesc: "But here's the cost of the highlight reel: you've sometimes been so focused on the outcome that you've lost track of who you actually are beneath the roles you play. You can look in the mirror and realize you've been performing for so long, you're not sure what your own voice sounds like anymore.",
+        traits: ['#Driven', '#Charismatic', '#Adaptive', '#RolePlayer'],
+        shareText: "I've built a life people envy — and some days I'm terrified that if I stop being \"successful,\" I'll have nothing left. 🏆",
+        colorVar: '--type3',
+        colorName: 'Emerald'
+      },
+      'sx4': {
+        typeNumber: '4',
+        typeName: 'The Uniqueness Seeker',
+        subtypeLabel: 'Sexual 4 — The Iconoclast',
+        publicDesc: 'You see the world through a lens no one else is quite using — and that lens is your gift. You feel things deeply and originally, and you have an uncanny ability to name emotions that other people can\'t quite articulate. You are drawn to what\'s authentic and repelled by what\'s generic.',
+        shadowDesc: "Your depth can tip into a private drama you don't always let people see — comparing yourself, feeling like everyone else has a manual for life that you never got. You can romanticize the past or an imagined future while missing the present moment that's right in front of you.",
+        traits: ['#DeeplyFeeling', '#Creative', '#AuthenticToAFault', '#EmotionallyProfound'],
+        shareText: "I feel everything more than everyone else — it's my greatest gift and my loneliest curse. 🎭",
+        colorVar: '--type4',
+        colorName: 'Coral'
+      },
+      'sp5': {
+        typeNumber: '5',
+        typeName: 'The Conceptual Fortress',
+        subtypeLabel: 'Self-Preservation 5 — The Gray Pebble',
+        publicDesc: 'You are a quiet collector of knowledge — not to show off, but because understanding the world feels like a form of safety. You value depth over breadth, and you\'d rather know one thing completely than know a little about many things. Your mind is a fascinating place to be invited into.',
+        shadowDesc: "But that mental fortress has walls for a reason. You've learned to retreat inward when the world feels too demanding, and sometimes that retreat becomes its own kind of prison — leaving you isolated even as your inner world grows richer and richer.",
+        traits: ['#IntellectuallyCurious', '#Observant', '#EnergyConservers', '#PrivatelyComplex'],
+        shareText: "I'd rather understand the universe than figure out how to make small talk at a party. 🧠",
+        colorVar: '--type5',
+        colorName: 'Teal'
+      },
+      'so6': {
+        typeNumber: '6',
+        typeName: 'The Loyal Skeptic',
+        subtypeLabel: 'Social 6 — The Team Player',
+        publicDesc: 'You are the person people call when they need someone they can truly rely on — because you\'ve already thought through the worst-case scenario and have a plan for it. Your loyalty is earned, not given, but once you commit to a person or a cause, it\'s ironclad. You bring a rare combination of critical thinking and wholehearted dedication.',
+        shadowDesc: "That vigilance that makes you such a good ally can also keep you up at night — replaying conversations, looking for hidden threats, second-guessing decisions you've already made. You've spent more mental energy worrying about things that never happened than most people spend worrying about things that do.",
+        traits: ['#LoyalToAFault', '#CriticalThinker', '#PreparedForTheWorst', '#InnerWorrier'],
+        shareText: "I will have your back before you even know you need it — but I'll also have anxiety about it for three days afterward. 🛡️",
+        colorVar: '--type6',
+        colorName: 'Sapphire'
+      },
+      'so7': {
+        typeNumber: '7',
+        typeName: 'The Freedom Optimist',
+        subtypeLabel: 'Social 7 — The Enthusiast',
+        publicDesc: 'You are a walking spark of possibility — the person who makes plans feel exciting and who\'s always four steps ahead onto the next adventure. You have an infectious enthusiasm for life and a genuine gift for helping other people see the bright side, even on gray days.',
+        shadowDesc: "But you've also got a finely-tuned avoidance system, and when things get too heavy or too painful, your instinct is to reframe, distract, or run. You've gotten so good at keeping your life full that you've never had to sit still long enough to really process the harder things.",
+        traits: ['#Adventurous', '#HighEnergy', '#JoySpreader', '#PainAvoider'],
+        shareText: "I collect experiences like some people collect stamps — because each new adventure means I don't have to feel the one I'm running from. ✨",
+        colorVar: '--type7',
+        colorName: 'Amber'
+      },
+      'sx8': {
+        typeNumber: '8',
+        typeName: 'The Protective Challenger',
+        subtypeLabel: 'Sexual 8 — The Dominator',
+        publicDesc: 'You walk into rooms with a presence that people feel before you say a word — and that\'s not an accident. You protect the people you care about with a fierceness that borders on devotion, and you have zero patience for injustice, manipulation, or weakness. You are a force of nature dressed in human skin.',
+        shadowDesc: "But that strength can also be a cage — for you. You've spent so long being the one who doesn't need help that you've accidentally pushed away the very intimacy you're secretly starving for. And beneath all that control is a vulnerability you've worked incredibly hard to never let anyone see.",
+        traits: ['#Fierce', '#Protective', '#Direct', '#SecretlyVulnerable'],
+        shareText: "I'll fight for anyone I love harder than I'll fight for myself — and I never, ever let anyone see me bleed. 🔥",
+        colorVar: '--type8',
+        colorName: 'Rust'
+      },
+      'sp9': {
+        typeNumber: '9',
+        typeName: 'The Peacemaking Mediator',
+        subtypeLabel: 'Self-Preservation 9 — The Apathetic',
+        publicDesc: 'You are the calm in the room — the person others gravitate toward when everything feels like chaos, because you somehow manage to stay grounded when everyone else is spiraling. You have a rare gift for seeing all sides, and your presence is genuinely healing to the people around you.',
+        shadowDesc: "But your peace-keeping can tip into self-erasure. You've said \"yes\" when you meant \"no\" so many times that sometimes you genuinely lose track of what you want — and the biggest thing you don't want to admit is that your biggest fear is being a burden.",
+        traits: ['#Easygoing', '#EmotionallySteady', '#ConflictAverse', '#SelfErasing'],
+        shareText: "I'm the person everyone comes to for peace — but I've forgotten what my own wants and needs feel like. 🕊️",
+        colorVar: '--type9',
+        colorName: 'Amethyst'
+      }
+    };
+
+    // Center mapping for tiebreakers
+    // Heart: 2,3,4 | Head: 5,6,7 | Body: 8,9,1
+    const CENTER_WEIGHTS = {
+      heart: [2, 5, 9, 10, 12, 14],  // Q indices
+      head:  [3, 6, 11, 13],         // Q indices
+      body:  [1, 4, 7, 8, 15]         // Q indices
+    };
+
+    const INSTINCT_LETTER_MAP = { A: 'sp', B: 'so', C: 'sx', D: 'sp' };
+
+    // Which instinct each letter maps to (for scoring)
+    const LETTER_INSTINCT = {
+      A: 'sp', B: 'so', C: 'sx', D: 'sp'
+    };
+
+    /* =============================================
+       STATE
+    ============================================= */
+    const state = {
+      currentScreen: 'disclaimer',
+      currentQuestionIndex: 0,
+      answers: [],           // { letter, instinct } per question
+      spScore: 0,
+      soScore: 0,
+      sxScore: 0,
+      dominantInstinct: null,
+      result: null,
+      gradientProgress: 0    // 0–100
+    };
+
+    /* =============================================
+       DOM REFERENCES
+    ============================================= */
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    const screens = {
+      disclaimer: $('#screen-disclaimer'),
+      intro:      $('#screen-intro'),
+      quiz:       $('#screen-quiz'),
+      calculating:$('#screen-calculating'),
+      result:     $('#screen-result')
+    };
+
+    const progressLabel  = $('#progress-label');
+    const progressRing   = $('.progress-ring');
+    const questionNumber = $('#question-number');
+    const questionText   = $('#question-text');
+    const answersList    = $('#answers-list');
+
+    const resultNumber   = $('#result-number');
+    const resultName     = $('#result-name');
+    const resultBadge    = $('#result-badge');
+    const resultSubtypeLabel = $('#result-subtype-label');
+    const resultPublic   = $('#result-public');
+    const resultShadow   = $('#result-shadow');
+    const resultTraits   = $('#result-traits');
+    const shareToast      = $('#share-toast');
+
+    /* =============================================
+       SCREEN TRANSITIONS
+    ============================================= */
+    function showScreen(name) {
+      Object.entries(screens).forEach(([key, el]) => {
+        if (key === name) {
+          el.removeAttribute('hidden');
+          el.classList.add('active');
+          // Focus first focusable element
+          const focusable = el.querySelector('button, [tabindex="0"]');
+          if (focusable) setTimeout(() => focusable.focus(), 100);
+        } else {
+          el.classList.remove('active');
+          el.setAttribute('hidden', '');
+        }
+      });
+      state.currentScreen = name;
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    /* =============================================
+       PROGRESS RING
+    ============================================= */
+    function buildProgressRing() {
+      const svg = progressRing.querySelector('svg');
+      // Clear existing segments
+      svg.querySelectorAll('.progress-ring-segment').forEach(s => s.remove());
+
+      const cx = 32, cy = 32, r = 28;
+      const totalSegments = 15;
+      const segmentAngleDeg = 360 / totalSegments;
+      const gapDeg = 6;
+      const arcDeg = segmentAngleDeg - gapDeg;
+
+      for (let i = 0; i < totalSegments; i++) {
+        const startAngle = i * segmentAngleDeg - 90; // start from top
+        const endAngle = startAngle + arcDeg;
+
+        const x1 = cx + r * Math.cos((startAngle * Math.PI) / 180);
+        const y1 = cy + r * Math.sin((startAngle * Math.PI) / 180);
+        const x2 = cx + r * Math.cos((endAngle * Math.PI) / 180);
+        const y2 = cy + r * Math.sin((endAngle * Math.PI) / 180);
+
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        const d = `M ${x1} ${y1} A ${r} ${r} 0 ${arcDeg > 180 ? 1 : 0} 1 ${x2} ${y2}`;
+        path.setAttribute('d', d);
+        path.setAttribute('class', 'progress-ring-segment');
+        path.dataset.index = i;
+        svg.appendChild(path);
+      }
+    }
+
+    function updateProgressRing(completed) {
+      const segments = progressRing.querySelectorAll('.progress-ring-segment');
+      segments.forEach((seg, i) => {
+        seg.classList.remove('active', 'completed');
+        if (i < completed) {
+          seg.classList.add('completed');
+        } else if (i === completed) {
+          seg.classList.add('active');
+        }
+      });
+      progressLabel.textContent = `${completed} / ${QUESTIONS.length}`;
+
+      // Update ARIA
+      progressRing.setAttribute('aria-valuenow', completed);
+      progressRing.setAttribute('aria-label', `Question ${completed} of ${QUESTIONS.length}`);
+    }
+
+    /* =============================================
+       GRADIENT / COLOR SYSTEM
+    ============================================= */
+    const TYPE_COLORS = {
+      1: { primary: '#E8B84B', light: '#F5D98A', dark: '#B8891E' },
+      2: { primary: '#E0789A', light: '#F0A8C0', dark: '#A84E72' },
+      3: { primary: '#56C278', light: '#8FDCA8', dark: '#2E8A4A' },
+      4: { primary: '#E05C7A', light: '#F08CA8', dark: '#A83255' },
+      5: { primary: '#4AB8B8', light: '#88D8D8', dark: '#288080' },
+      6: { primary: '#6B8FD4', light: '#9AB8EC', dark: '#4060A0' },
+      7: { primary: '#F08040', light: '#F8B080', dark: '#B85820' },
+      8: { primary: '#C05030', light: '#D88060', dark: '#883018' },
+      9: { primary: '#9880D0', light: '#B8A8E8', dark: '#6858A0' }
+    };
+
+    function setDominantType(typeNum) {
+      const colors = TYPE_COLORS[typeNum];
+      if (!colors) return;
+
+      const root = document.documentElement;
+      root.style.setProperty('--type-primary', colors.primary);
+      root.style.setProperty('--type-light', colors.light);
+      root.style.setProperty('--type-dark', colors.dark);
+    }
+
+    function updateGradientProgress(answeredCount) {
+      // Background opacity increases as quiz progresses
+      const baseOpacity = 0.12;
+      const maxOpacity = 0.22;
+      const progress = answeredCount / QUESTIONS.length;
+      const opacity = baseOpacity + (maxOpacity - baseOpacity) * progress;
+      document.documentElement.style.setProperty('--gradient-opacity', opacity.toFixed(3));
+    }
+
+    /* =============================================
+       QUIZ LOGIC
+    ============================================= */
+    function calculateResult() {
+      const { spScore, soScore, sxScore, answers } = state;
+
+      // Find dominant instinct
+      const scores = { sp: spScore, so: soScore, sx: sxScore };
+      const maxScore = Math.max(spScore, soScore, sxScore);
+
+      // Count how many answers match each letter pattern
+      const letterCounts = { A: 0, B: 0, C: 0, D: 0 };
+      answers.forEach(a => { if (a && a.letter) letterCounts[a.letter]++; });
+      const maxLetterCount = Math.max(letterCounts.A, letterCounts.B, letterCounts.C);
+
+      let dominantInstinct = null;
+      let dominantType = null;
+
+      if (maxScore >= 6) {
+        // Clear dominant instinct
+        dominantInstinct = Object.entries(scores).find(([, v]) => v === maxScore)[0];
+      } else {
+        // Tiebreaker: use center signals
+        // Determine which center has most weight based on heart/head/body question answers
+        const heartQIndices = [1, 4, 8, 9, 11, 13]; // 0-indexed: Q2, Q5, Q10, Q12, Q14
+        const headQIndices  = [2, 5, 10, 12];        // Q3, Q6, Q11, Q13
+        const bodyQIndices  = [0, 3, 6, 7, 14];      // Q1, Q4, Q7, Q8, Q15
+
+        let heartSignals = 0, headSignals = 0, bodySignals = 0;
+
+        answers.forEach((a, idx) => {
+          if (!a) return;
+          const letter = a.letter;
+          if (heartQIndices.includes(idx)) {
+            // Heart center questions: B → so, C → sx, A/D → sp
+            if (letter === 'B') heartSignals += 2;
+            else if (letter === 'C') heartSignals += 2;
+          }
+          if (headQIndices.includes(idx)) {
+            // Head center: A → sp, B → so, C → sx
+            if (letter === 'A') headSignals += 2;
+            else if (letter === 'B') headSignals += 2;
+          }
+          if (bodyQIndices.includes(idx)) {
+            // Body center: A → sp, D → sp
+            if (letter === 'A' || letter === 'D') bodySignals += 2;
+          }
+        });
+
+        // Also factor in sp/so/sx scores
+        const centerMap = {
+          heart: { instinct: scores.so >= scores.sx ? 'so' : 'sx', signals: heartSignals },
+          head:  { instinct: scores.sp >= scores.so ? 'sp' : 'so', signals: headSignals },
+          body:  { instinct: 'sp', signals: bodySignals }
+        };
+
+        const sortedCenters = Object.entries(centerMap).sort((a, b) => b[1].signals - a[1].signals);
+        const dominantCenter = sortedCenters[0][0];
+
+        // Determine dominant instinct from center + instinct scores
+        if (dominantCenter === 'heart') {
+          dominantInstinct = scores.so >= scores.sx ? 'so' : 'sx';
+        } else if (dominantCenter === 'head') {
+          dominantInstinct = scores.sp >= scores.so ? 'sp' : 'so';
+        } else {
+          dominantInstinct = 'sp';
+        }
+      }
+
+      // Map to result key
+      // The 9 results: sp1, so2, so3, sx4, sp5, so6, so7, sx8, sp9
+      const resultKeys = {
+        sp: { heart: 'sp1', head: 'sp5', body: 'sp9' },
+        so: { heart: 'so2', head: 'so6', body: 'so7' },
+        sx: { heart: 'sx4', head: 'sx4', body: 'sx8' }
+      };
+
+      // Determine center from answer patterns
+      const heartIndices = [1, 4, 8, 9, 11, 13];
+      const headIndices  = [2, 5, 10, 12];
+      const bodyIndices  = [0, 3, 6, 7, 14];
+
+      let hCount = 0, hdCount = 0, bCount = 0;
+      answers.forEach((a, idx) => {
+        if (!a) return;
+        const inst = a.instinct;
+        if (heartIndices.includes(idx) && (inst === 'so' || inst === 'sx')) hCount += 2;
+        if (headIndices.includes(idx) && (inst === 'sp' || inst === 'so')) hdCount += 2;
+        if (bodyIndices.includes(idx) && inst === 'sp') bCount += 2;
+      });
+
+      let centerType;
+      if (hCount >= hdCount && hCount >= bCount) centerType = 'heart';
+      else if (hdCount >= hCount && hdCount >= bCount) centerType = 'head';
+      else centerType = 'body';
+
+      const resultKey = resultKeys[dominantInstinct]?.[centerType] || 'sp9';
+      return RESULTS[resultKey] || RESULTS['sp9'];
+    }
+
+    /* =============================================
+       RENDER QUESTION
+    ============================================= */
+    function renderQuestion() {
+      const q = QUESTIONS[state.currentQuestionIndex];
+      const answered = state.currentQuestionIndex;
+
+      questionNumber.textContent = `Question ${q.id} of ${QUESTIONS.length}`;
+      questionText.textContent = q.text;
+
+      // Build answer cards
+      answersList.innerHTML = '';
+      q.answers.forEach((ans) => {
+        const card = document.createElement('button');
+        card.className = 'answer-card';
+        card.setAttribute('role', 'listitem');
+        card.setAttribute('aria-pressed', 'false');
+        card.dataset.letter = ans.letter;
+        card.dataset.instinct = ans.instinct;
+
+        card.innerHTML = `
+          <span class="answer-letter" aria-hidden="true">${ans.letter}</span>
+          <span class="answer-text">${ans.text}</span>
+        `;
+
+        card.addEventListener('click', () => selectAnswer(card, ans));
+        answersList.appendChild(card);
+      });
+
+      updateProgressRing(answered);
+    }
+
+    function selectAnswer(cardEl, answer) {
+      // Prevent double selection
+      if (cardEl.classList.contains('selected')) return;
+
+      // Deselect siblings
+      cardEl.parentElement.querySelectorAll('.answer-card').forEach(c => {
+        c.classList.remove('selected');
+        c.setAttribute('aria-pressed', 'false');
+      });
+
+      // Select this one
+      cardEl.classList.add('selected');
+      cardEl.setAttribute('aria-pressed', 'true');
+
+      // Record answer
+      state.answers[state.currentQuestionIndex] = { letter: answer.letter, instinct: answer.instinct };
+
+      // Update scores
+      const inst = answer.instinct;
+      if (inst === 'sp') state.spScore++;
+      else if (inst === 'so') state.soScore++;
+      else if (inst === 'sx') state.sxScore++;
+
+      // Update gradient based on which instinct was chosen
+      updateGradientProgress(state.currentQuestionIndex + 1);
+
+      // Auto-advance after brief pause
+      setTimeout(() => {
+        if (state.currentQuestionIndex < QUESTIONS.length - 1) {
+          state.currentQuestionIndex++;
+          renderQuestion();
+        } else {
+          // Last question — go to calculating
+          goToCalculating();
+        }
+      }, 450);
+    }
+
+    /* =============================================
+       CALCULATING SCREEN
+    ============================================= */
+    function goToCalculating() {
+      showScreen('calculating');
+
+      // Animate gradient toward dominant
+      const scores = { sp: state.spScore, so: state.soScore, sx: state.sxScore };
+      const maxInstinct = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
+
+      // Pick a representative type number based on instinct
+      const instinctTypeMap = { sp: [1, 5, 9], so: [2, 3, 6, 7], sx: [4, 8] };
+      const possibleTypes = instinctTypeMap[maxInstinct] || [9];
+      // Pick the one with highest "center" alignment
+      setDominantType(possibleTypes[0]);
+
+      setTimeout(() => {
+        const result = calculateResult();
+        state.result = result;
+        showResult(result);
+      }, 3500);
+    }
+
+    /* =============================================
+       RESULT SCREEN
+    ============================================= */
+    function showResult(result) {
+      // Set the correct type color
+      const typeNum = parseInt(result.typeNumber);
+      setDominantType(typeNum);
+
+      // Update result elements
+      resultNumber.textContent = result.typeNumber;
+      resultName.textContent = result.typeName;
+      resultSubtypeLabel.textContent = result.subtypeLabel;
+      resultPublic.textContent = result.publicDesc;
+      resultShadow.textContent = result.shadowDesc;
+
+      // Build trait tags
+      resultTraits.innerHTML = '';
+      result.traits.forEach(tag => {
+        const el = document.createElement('span');
+        el.className = 'trait-tag';
+        el.textContent = tag;
+        el.setAttribute('role', 'listitem');
+        resultTraits.appendChild(el);
+      });
+
+      showScreen('result');
+    }
+
+    /* =============================================
+       SHARE
+    ============================================= */
+    function copyShareText() {
+      const text = state.result ? state.result.shareText : '';
+      const full = `${text}\n\nWhat's Your Enneagram Subtype? — Take the quiz:`;
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(full).then(() => {
+          showShareToast();
+        }).catch(() => {
+          // Fallback
+          const ta = document.createElement('textarea');
+          ta.value = full;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          showShareToast();
+        });
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = full;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showShareToast();
+      }
+    }
+
+    function showShareToast() {
+      shareToast.classList.add('visible');
+      setTimeout(() => shareToast.classList.remove('visible'), 2500);
+    }
+
+    /* =============================================
+       RESET / RETAKE
+    ============================================= */
+    function resetQuiz() {
+      state.currentQuestionIndex = 0;
+      state.answers = [];
+      state.spScore = 0;
+      state.soScore = 0;
+      state.sxScore = 0;
+      state.dominantInstinct = null;
+      state.result = null;
+
+      // Reset gradient
+      updateGradientProgress(0);
+      document.documentElement.style.setProperty('--type-primary', TYPE_COLORS[9].primary);
+      document.documentElement.style.setProperty('--type-light', TYPE_COLORS[9].light);
+      document.documentElement.style.setProperty('--type-dark', TYPE_COLORS[9].dark);
+
+      buildProgressRing();
+      renderQuestion();
+      showScreen('quiz');
+    }
+
+    /* =============================================
+       EVENT LISTENERS
+    ============================================= */
+    $('#btn-disclaimer-start').addEventListener('click', () => {
+      showScreen('intro');
+    });
+
+    $('#btn-intro-start').addEventListener('click', () => {
+      buildProgressRing();
+      renderQuestion();
+      showScreen('quiz');
+    });
+
+    $('#btn-share').addEventListener('click', copyShareText);
+
+    $('#btn-retake').addEventListener('click', resetQuiz);
+
+    // Keyboard nav for answer cards
+    answersList.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        const card = document.activeElement;
+        if (card.classList.contains('answer-card') && !card.classList.contains('selected')) {
+          e.preventDefault();
+          const letter = card.dataset.letter;
+          const instinct = card.dataset.instinct;
+          selectAnswer(card, { letter, instinct });
+        }
+      }
+    });
+
+    /* =============================================
+       INIT
+    ============================================= */
+    function init() {
+      buildProgressRing();
+      // Set default type color (9 / Amethyst)
+      setDominantType(9);
+    }
+
+    init();
+
+  </script>
+</body>
+</html>
