@@ -1,0 +1,2020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Discover your nervous system state in 2 minutes. Based on Polyvagal Theory, this quiz reveals whether you're a Social Engager, Hypervigilant Protector, Calm Dissociator, or another pattern.">
+  <title>What's Your Nervous System State? | PsychoMaster</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garabold:wght@400;500;600&family=Nunito+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+    ============================================ */
+    :root {
+      /* Base palette */
+      --bg-base: #1A1412;
+      --bg-surface: #2A2019;
+      --bg-elevated: #3A2E22;
+      --text-primary: #F5EDE4;
+      --text-secondary: #C4B5A5;
+      --text-muted: #8A7A6A;
+      --border: #4A3A2A;
+
+      /* Accent palette */
+      --warm-sand: #D4B896;
+      --terracotta: #C47A5A;
+      --amber: #D4A854;
+      --sage: #7A9A7A;
+      --slate-blue: #6A8A9A;
+
+      /* Result type colors */
+      --ventral-primary: #D4A854;
+      --ventral-light: #E8C888;
+      --ventral-dark: #A07830;
+
+      --sympathetic-primary: #C45A3A;
+      --sympathetic-light: #E88060;
+      --sympathetic-dark: #8A3A1A;
+
+      --dorsal-primary: #5A7A8A;
+      --dorsal-light: #8AAABB;
+      --dorsal-dark: #3A5A6A;
+
+      --ventral-sympathetic-primary: #C48A3A;
+      --ventral-dorsal-primary: #7A9A7A;
+      --sympathetic-dorsal-primary: #7A5A6A;
+      --integrated-primary: #C4A87A;
+
+      /* Typography */
+      --font-body: 'Nunito Sans', system-ui, -apple-system, sans-serif;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+
+      /* Spacing */
+      --space-xxs: 4px;
+      --space-xs: 8px;
+      --space-sm: 16px;
+      --space-md: 24px;
+      --space-lg: 32px;
+      --space-xl: 48px;
+      --space-2xl: 64px;
+
+      /* Border radius */
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 32px;
+      --radius-pill: 999px;
+
+      /* Timing */
+      --duration-micro: 150ms;
+      --duration-fast: 250ms;
+      --duration-normal: 400ms;
+      --duration-slow: 600ms;
+      --duration-page: 500ms;
+
+      /* Easing */
+      --ease-breath-in: cubic-bezier(0.4, 0, 0.6, 1);
+      --ease-breath-out: cubic-bezier(0.6, 0, 0.4, 1);
+      --ease-gentle: cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    /* ============================================
+       RESET & BASE
+    ============================================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-text-size-adjust: 100%;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-weight: 400;
+      line-height: 1.6;
+      letter-spacing: 0.01em;
+      color: var(--text-primary);
+      background: var(--bg-base);
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ============================================
+       APP CONTAINER
+    ============================================ */
+    .app {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .app__inner {
+      position: relative;
+      width: 100%;
+      max-width: 428px;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ============================================
+       DECORATIVE BLOBS (background atmosphere)
+    ============================================ */
+    .blob {
+      position: absolute;
+      border-radius: 60% 40% / 50% 50% 50% 50%;
+      pointer-events: none;
+      z-index: 0;
+      will-change: transform;
+    }
+
+    .blob--1 {
+      width: 280px;
+      height: 280px;
+      top: -60px;
+      right: -100px;
+      background: radial-gradient(ellipse at center, rgba(212, 184, 150, 0.08) 0%, transparent 70%);
+      filter: blur(50px);
+      animation: blobFloat 8s ease-in-out infinite;
+    }
+
+    .blob--2 {
+      width: 220px;
+      height: 220px;
+      bottom: 20%;
+      left: -80px;
+      background: radial-gradient(ellipse at center, rgba(122, 154, 122, 0.07) 0%, transparent 70%);
+      filter: blur(40px);
+      animation: blobFloat 8s ease-in-out infinite reverse;
+      animation-delay: -2s;
+    }
+
+    .blob--3 {
+      width: 180px;
+      height: 180px;
+      top: 40%;
+      right: -60px;
+      background: radial-gradient(ellipse at center, rgba(196, 122, 90, 0.06) 0%, transparent 70%);
+      filter: blur(35px);
+      animation: blobFloat 10s ease-in-out infinite;
+      animation-delay: -4s;
+    }
+
+    @keyframes blobFloat {
+      0%   { transform: translate(0, 0) scale(1); }
+      33%  { transform: translate(10px, -15px) scale(1.05); }
+      66%  { transform: translate(-5px, 10px) scale(0.98); }
+      100% { transform: translate(0, 0) scale(1); }
+    }
+
+    /* ============================================
+       SCREENS
+    ============================================ */
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity var(--duration-page) ease-out, visibility var(--duration-page) ease-out;
+      z-index: 1;
+      overflow-y: auto;
+      overflow-y: clip;
+    }
+
+    .screen.active {
+      opacity: 1;
+      visibility: visible;
+      z-index: 2;
+    }
+
+    .screen__content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: var(--space-xl) var(--space-md);
+      padding-bottom: var(--space-2xl);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       TYPOGRAPHY
+    ============================================ */
+    .title-display {
+      font-family: var(--font-display);
+      font-size: 2.25rem;
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    .title-section {
+      font-family: var(--font-display);
+      font-size: 1.875rem;
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    .title-label {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .body-text {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    .body-text--sm {
+      font-size: 0.875rem;
+    }
+
+    .body-text--lg {
+      font-size: 1.125rem;
+    }
+
+    .body-text--muted {
+      color: var(--text-muted);
+    }
+
+    .body-text--light {
+      font-weight: 300;
+    }
+
+    .quote-text {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--warm-sand);
+    }
+
+    .accent-text {
+      color: var(--amber);
+    }
+
+    /* ============================================
+       DISCLAIMER SCREEN
+    ============================================ */
+    .disclaimer {
+      justify-content: center;
+    }
+
+    .disclaimer__card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .disclaimer__card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--terracotta), var(--amber), var(--sage));
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+
+    .disclaimer__icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: var(--space-md);
+    }
+
+    .disclaimer__icon svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .disclaimer__note {
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: var(--space-lg);
+      padding: var(--space-sm);
+      background: rgba(212, 184, 150, 0.06);
+      border-radius: var(--radius-sm);
+      border-left: 3px solid var(--warm-sand);
+    }
+
+    .disclaimer__points {
+      list-style: none;
+      margin-bottom: var(--space-lg);
+    }
+
+    .disclaimer__points li {
+      position: relative;
+      padding-left: var(--space-md);
+      margin-bottom: var(--space-xs);
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .disclaimer__points li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--text-muted);
+    }
+
+    .disclaimer__closing {
+      font-family: var(--font-display);
+      font-size: 1.125rem;
+      font-style: italic;
+      color: var(--warm-sand);
+      text-align: center;
+      margin-bottom: var(--space-lg);
+      line-height: 1.5;
+    }
+
+    /* ============================================
+       INTRO SCREEN
+    ============================================ */
+    .intro {
+      justify-content: center;
+    }
+
+    .intro__header {
+      text-align: center;
+      margin-bottom: var(--space-lg);
+    }
+
+    .intro__subtitle {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      margin-bottom: var(--space-xs);
+    }
+
+    .intro__title {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: var(--space-sm);
+    }
+
+    .intro__breath-visual {
+      display: flex;
+      justify-content: center;
+      margin: var(--space-lg) 0;
+    }
+
+    .intro__breath-ring {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      animation: breathRing 8s ease-in-out infinite;
+    }
+
+    .intro__breath-ring::before {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border-radius: 50%;
+      border: 1px solid var(--warm-sand);
+      opacity: 0.3;
+      animation: breathRingInner 8s ease-in-out infinite reverse;
+    }
+
+    .intro__breath-ring svg {
+      width: 28px;
+      height: 28px;
+      color: var(--warm-sand);
+      opacity: 0.7;
+    }
+
+    @keyframes breathRing {
+      0%, 100% { transform: scale(1); border-color: var(--border); }
+      50% { transform: scale(1.08); border-color: var(--warm-sand); }
+    }
+
+    @keyframes breathRingInner {
+      0%, 100% { transform: scale(1); opacity: 0.3; }
+      50% { transform: scale(0.9); opacity: 0.15; }
+    }
+
+    .intro__body {
+      margin-bottom: var(--space-lg);
+    }
+
+    .intro__paragraph {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: var(--space-sm);
+    }
+
+    .intro__paragraph:last-child {
+      margin-bottom: 0;
+    }
+
+    .intro__highlight {
+      color: var(--warm-sand);
+      font-weight: 600;
+    }
+
+    .intro__divider {
+      width: 48px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--warm-sand), transparent);
+      margin: var(--space-md) auto;
+      border-radius: 2px;
+    }
+
+    /* ============================================
+       BUTTONS
+    ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-xs);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      border: none;
+      cursor: pointer;
+      transition: all var(--duration-fast) var(--ease-gentle);
+      -webkit-appearance: none;
+      appearance: none;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--warm-sand);
+      outline-offset: 4px;
+    }
+
+    .btn--primary {
+      background: linear-gradient(135deg, var(--terracotta) 0%, var(--amber) 100%);
+      color: var(--bg-base);
+      padding: 16px 40px;
+      border-radius: var(--radius-pill);
+      box-shadow: 0 4px 20px rgba(196, 122, 90, 0.3);
+      width: 100%;
+    }
+
+    .btn--primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 28px rgba(196, 122, 90, 0.4);
+    }
+
+    .btn--primary:active {
+      transform: translateY(0);
+    }
+
+    .btn--secondary {
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      padding: 14px 28px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+    }
+
+    .btn--secondary:hover {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      border-color: var(--warm-sand);
+    }
+
+    .btn--ghost {
+      background: transparent;
+      color: var(--text-muted);
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--radius-sm);
+    }
+
+    .btn--ghost:hover {
+      color: var(--text-secondary);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .btn--result {
+      background: linear-gradient(135deg, var(--terracotta) 0%, var(--amber) 100%);
+      color: var(--bg-base);
+      padding: 14px 28px;
+      border-radius: var(--radius-pill);
+      box-shadow: 0 4px 16px rgba(196, 122, 90, 0.25);
+      width: 100%;
+      font-size: 0.9375rem;
+    }
+
+    .btn--result:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px rgba(196, 122, 90, 0.35);
+    }
+
+    .btn--outline {
+      background: transparent;
+      color: var(--text-secondary);
+      padding: 14px 28px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+      width: 100%;
+      font-size: 0.9375rem;
+    }
+
+    .btn--outline:hover {
+      border-color: var(--warm-sand);
+      color: var(--warm-sand);
+      background: rgba(212, 184, 150, 0.06);
+    }
+
+    .btn__icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    /* ============================================
+       QUIZ SCREEN
+    ============================================ */
+    .quiz {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Progress indicator */
+    .progress {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: var(--space-md) 0;
+      padding-top: var(--space-sm);
+    }
+
+    .progress__ring-wrap {
+      position: relative;
+      width: 64px;
+      height: 64px;
+    }
+
+    .progress__ring {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .progress__ring-track {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(
+        var(--border) 0deg 360deg
+      );
+    }
+
+    .progress__ring-fill {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(
+        var(--result-color, var(--warm-sand)) 0deg calc(var(--progress-deg, 0) * 1deg),
+        transparent calc(var(--progress-deg, 0) * 1deg) 360deg
+      );
+      opacity: 0.5;
+      transition: background var(--duration-slow) var(--ease-gentle);
+    }
+
+    .progress__ring-inner {
+      position: absolute;
+      inset: 5px;
+      border-radius: 50%;
+      background: var(--bg-base);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .progress__fraction {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .progress__fraction span {
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .progress__ring-pulse {
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 1px solid var(--result-color, var(--warm-sand));
+      opacity: 0;
+      animation: progressPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes progressPulse {
+      0% { transform: scale(0.9); opacity: 0.4; }
+      50% { transform: scale(1.1); opacity: 0; }
+      100% { transform: scale(0.9); opacity: 0.4; }
+    }
+
+    .progress__label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: var(--space-xs);
+    }
+
+    /* Quiz body */
+    .quiz__body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding-top: var(--space-sm);
+    }
+
+    .quiz__question-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .quiz__question {
+      animation: fadeIn var(--duration-normal) var(--ease-gentle);
+    }
+
+    .quiz__question-number {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      margin-bottom: var(--space-xs);
+    }
+
+    .quiz__question-text {
+      font-family: var(--font-display);
+      font-size: 1.375rem;
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--text-primary);
+      margin-bottom: var(--space-md);
+    }
+
+    .quiz__question-context {
+      font-size: 0.875rem;
+      font-style: italic;
+      color: var(--text-muted);
+      margin-bottom: var(--space-sm);
+      line-height: 1.5;
+    }
+
+    /* Options */
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .option {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: var(--space-sm) var(--space-md);
+      cursor: pointer;
+      transition: all var(--duration-fast) var(--ease-gentle);
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-sm);
+      text-align: left;
+      width: 100%;
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      line-height: 1.5;
+      color: var(--text-secondary);
+      min-height: 56px;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .option:hover {
+      background: var(--bg-elevated);
+      border-color: rgba(212, 184, 150, 0.3);
+      color: var(--text-primary);
+      transform: translateY(-1px);
+    }
+
+    .option:focus-visible {
+      outline: 2px solid var(--warm-sand);
+      outline-offset: 2px;
+    }
+
+    .option.selected {
+      background: rgba(var(--result-color-rgb, 212, 184, 150), 0.12);
+      border-color: var(--result-color, var(--warm-sand));
+      color: var(--text-primary);
+    }
+
+    .option__letter {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      transition: all var(--duration-fast) var(--ease-gentle);
+      margin-top: 1px;
+    }
+
+    .option.selected .option__letter {
+      background: var(--result-color, var(--warm-sand));
+      border-color: var(--result-color, var(--warm-sand));
+      color: var(--bg-base);
+    }
+
+    .option__text {
+      flex: 1;
+    }
+
+    .option__text cite {
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    /* Quiz footer */
+    .quiz__footer {
+      padding-top: var(--space-md);
+      padding-bottom: var(--space-sm);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .quiz__back {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: var(--space-xxs);
+      transition: color var(--duration-micro);
+    }
+
+    .quiz__back:hover {
+      color: var(--text-secondary);
+    }
+
+    .quiz__back svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .quiz__progress-text {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* ============================================
+       RESULT SCREEN
+    ============================================ */
+    .result {
+      padding-bottom: var(--space-2xl);
+    }
+
+    .result__card {
+      background: linear-gradient(160deg, rgba(var(--result-color-rgb, 212, 184, 150), 0.12) 0%, var(--bg-surface) 60%);
+      border: 1px solid rgba(var(--result-color-rgb, 212, 184, 150), 0.25);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg) var(--space-md);
+      margin-bottom: var(--space-md);
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp var(--duration-slow) var(--ease-gentle);
+    }
+
+    .result__card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--result-color, var(--warm-sand));
+    }
+
+    .result__type-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--result-color, var(--warm-sand));
+      margin-bottom: var(--space-xs);
+    }
+
+    .result__title {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      margin-bottom: var(--space-xxs);
+    }
+
+    .result__subtitle {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: var(--space-md);
+    }
+
+    .result__divider {
+      width: 40px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--result-color, var(--warm-sand)), transparent);
+      margin: var(--space-md) 0;
+    }
+
+    .result__section {
+      margin-bottom: var(--space-md);
+    }
+
+    .result__section:last-child {
+      margin-bottom: 0;
+    }
+
+    .result__section-title {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: var(--space-xs);
+    }
+
+    .result__somatic {
+      font-size: 0.9375rem;
+      line-height: 1.65;
+      color: var(--text-secondary);
+    }
+
+    .result__superpower {
+      font-size: 0.9375rem;
+      line-height: 1.65;
+      color: var(--text-secondary);
+    }
+
+    .result__superpower-label {
+      color: var(--result-color, var(--warm-sand));
+      font-weight: 600;
+    }
+
+    .result__growth {
+      font-size: 0.9375rem;
+      line-height: 1.65;
+      color: var(--text-secondary);
+    }
+
+    /* Body trait tags */
+    .result__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+      margin-bottom: var(--space-md);
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(var(--result-color-rgb, 212, 184, 150), 0.1);
+      border: 1px solid rgba(var(--result-color-rgb, 212, 184, 150), 0.25);
+      border-radius: var(--radius-pill);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    .tag__dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--result-color, var(--warm-sand));
+    }
+
+    /* Grounding tip */
+    .result__grounding {
+      background: rgba(42, 32, 25, 0.8);
+      border: 1px solid rgba(var(--result-color-rgb, 212, 184, 150), 0.15);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+
+    .result__grounding-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--result-color, var(--warm-sand));
+      margin-bottom: var(--space-xs);
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    .result__grounding-label svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .result__grounding-text {
+      font-family: var(--font-display);
+      font-size: 1.0625rem;
+      font-style: italic;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    /* Actions */
+    .result__actions {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .result__share-feedback {
+      text-align: center;
+      font-size: 0.8125rem;
+      color: var(--sage);
+      margin-top: var(--space-xs);
+      opacity: 0;
+      transition: opacity var(--duration-fast);
+    }
+
+    .result__share-feedback.show {
+      opacity: 1;
+    }
+
+    /* Result footer */
+    .result__footer {
+      margin-top: var(--space-lg);
+      text-align: center;
+      padding: var(--space-md);
+      background: var(--bg-surface);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+    }
+
+    .result__footer-logo {
+      font-family: var(--font-display);
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: var(--warm-sand);
+      margin-bottom: var(--space-xxs);
+    }
+
+    .result__footer-tagline {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* ============================================
+       ANIMATIONS
+    ============================================ */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+    ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .blob { animation: none !important; }
+      .progress__ring-pulse { animation: none !important; opacity: 0.2; }
+      .intro__breath-ring { animation: none !important; }
+      .intro__breath-ring::before { animation: none !important; }
+    }
+
+    /* ============================================
+       CUSTOM SCROLLBAR
+    ============================================ */
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+
+    /* ============================================
+       UTILITY
+    ============================================ */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .mt-auto { margin-top: auto; }
+    .mb-sm { margin-bottom: var(--space-sm); }
+    .mb-md { margin-bottom: var(--space-md); }
+    .mb-lg { margin-bottom: var(--space-lg); }
+    .text-center { text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Decorative blobs -->
+    <div class="blob blob--1" aria-hidden="true"></div>
+    <div class="blob blob--2" aria-hidden="true"></div>
+    <div class="blob blob--3" aria-hidden="true"></div>
+
+    <div class="app__inner">
+
+      <!-- ========================================
+           DISCLAIMER SCREEN
+      ======================================== -->
+      <section class="screen screen--disclaimer disclaimer active" id="screen-disclaimer" role="region" aria-label="Quiz Disclaimer">
+        <div class="screen__content" style="justify-content: center;">
+          <div class="disclaimer__card" style="animation: fadeInUp 600ms var(--ease-gentle) both;">
+            <!-- Heart icon -->
+            <div class="disclaimer__icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M24 42s-16-9.6-16-22a10 10 0 0 1 16-7.6A10 10 0 0 1 40 20c0 12.4-16 22-16 22z" stroke="#C47A5A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                <path d="M24 18c-1.5-1-3.5-1-4.5 0-.8.8-1 2-1 3 0 2 .5 3.5 2 4.5l3.5 2.5 3.5-2.5c1.5-1 2-2.5 2-4.5 0-1-.2-2.2-1-3-1-1-3-1-4.5 0z" stroke="#D4A854" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              </svg>
+            </div>
+
+            <h1 class="title-display mb-sm">What's Your Nervous System State?</h1>
+
+            <div class="disclaimer__note">
+              <strong style="color: var(--warm-sand); font-weight: 600;">A gentle note before you begin:</strong><br>
+              This quiz explores how your nervous system responds to stress. Some questions describe body sensations that may feel familiar or uncomfortable. There are no right or wrong answers.
+            </div>
+
+            <ul class="disclaimer__points" aria-label="Important information">
+              <li>For educational purposes only — not a medical diagnosis</li>
+              <li>Not a substitute for professional mental health care</li>
+              <li>Take care of yourself — skip anything that feels too much</li>
+              <li>Your results are for self-awareness, not labeling</li>
+            </ul>
+
+            <p class="disclaimer__closing">
+              "Your body is not broken.<br>It learned to survive.<br>Let's understand how."
+            </p>
+
+            <button class="btn btn--primary" id="btn-begin" type="button" aria-label="Begin the quiz">
+              Begin
+              <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================
+           INTRO SCREEN
+      ======================================== -->
+      <section class="screen screen--intro intro" id="screen-intro" role="region" aria-label="Introduction">
+        <div class="screen__content" style="justify-content: center;">
+          <div class="intro__header" style="animation: fadeInUp 600ms var(--ease-gentle) both;">
+            <p class="intro__subtitle">PsychoMaster Quiz Series</p>
+            <h2 class="intro__title">What's Your<br>Nervous System<br>State?</h2>
+          </div>
+
+          <div class="intro__breath-visual" aria-hidden="true">
+            <div class="intro__breath-ring">
+              <!-- Lungs/spark icon -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3c-1.5 2-3 3.5-3 6a3 3 0 0 0 6 0c0-2.5-1.5-4-3-6z"/>
+                <path d="M9 14c-2.5.5-4 2-4 4a4 4 0 0 0 8 0c0-2-1.5-3.5-4-4z"/>
+                <path d="M12 12v4M10 14h4"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="intro__body" style="animation: fadeInUp 600ms var(--ease-gentle) 150ms both;">
+            <p class="intro__paragraph">
+              Your nervous system is constantly reading the world. Every sound, every face, every situation — your body is running calculations you don't even notice.
+            </p>
+            <p class="intro__paragraph">
+              <span class="intro__highlight">Safe or dangerous? Connection or threat?</span>
+            </p>
+            <p class="intro__paragraph">
+              This quiz reveals your dominant nervous system state <em>right now</em> — not who you are forever, but how your body currently responds to stress.
+            </p>
+
+            <div class="intro__divider" aria-hidden="true"></div>
+
+            <p class="intro__paragraph">
+              Based on <span class="intro__highlight">Polyvagal Theory</span> (Dr. Stephen Porges), the science of how your nervous system decides: fight, flee, freeze, or connect.
+            </p>
+            <p class="intro__paragraph">
+              <em>No judgment. Just your body, telling its truth.</em>
+            </p>
+            <p class="quote-text text-center" style="margin-top: var(--space-md);">
+              "Let's find out what's really going on."
+            </p>
+          </div>
+
+          <div class="mt-auto" style="animation: fadeInUp 600ms var(--ease-gentle) 300ms both;">
+            <button class="btn btn--primary" id="btn-start" type="button">
+              Start the Quiz
+              <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================
+           QUIZ SCREEN
+      ======================================== -->
+      <section class="screen screen--quiz quiz" id="screen-quiz" role="region" aria-label="Quiz Questions">
+        <!-- Progress indicator -->
+        <div class="progress" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="12" aria-label="Question 1 of 12" id="progress-indicator">
+          <div class="progress__ring-wrap">
+            <div class="progress__ring" id="progress-ring">
+              <div class="progress__ring-track"></div>
+              <div class="progress__ring-fill" id="progress-ring-fill"></div>
+              <div class="progress__ring-inner">
+                <span class="progress__fraction" id="progress-fraction">1<span> / 12</span></span>
+              </div>
+              <div class="progress__ring-pulse" id="progress-pulse"></div>
+            </div>
+          </div>
+          <span class="progress__label" id="progress-label">of 12</span>
+        </div>
+
+        <!-- Question content -->
+        <div class="screen__content quiz__body">
+          <div class="quiz__question-wrap" id="quiz-question-wrap">
+            <!-- Questions injected by JS -->
+          </div>
+
+          <div class="quiz__footer" id="quiz-footer" style="display: none;">
+            <button class="quiz__back btn btn--ghost" id="btn-back" type="button" aria-label="Go to previous question">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+              Back
+            </button>
+            <span class="quiz__progress-text" id="quiz-progress-text"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================
+           RESULT SCREEN
+      ======================================== -->
+      <section class="screen screen--result result" id="screen-result" role="region" aria-label="Your Result">
+        <div class="screen__content">
+          <div id="result-content">
+            <!-- Result injected by JS -->
+          </div>
+
+          <div class="result__footer mt-auto">
+            <div class="result__footer-logo">PsychoMaster</div>
+            <div class="result__footer-tagline">Know your nervous system. Trust your body.</div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      'use strict';
+
+      // ============================================
+      // QUIZ DATA — 12 Questions
+      // ============================================
+      const QUESTIONS = [
+        {
+          number: 1,
+          context: "You're at a crowded social event. Someone you don't know approaches and starts chatting with you.",
+          text: "How does your body respond?",
+          options: [
+            { letter: 'A', text: 'I relax into it. I\'m curious, making eye contact, genuinely interested. It feels easy.', state: 'A' },
+            { letter: 'B', text: 'My shoulders tense. I\'m scanning for something wrong — what do they want? Are they judging me?', state: 'B' },
+            { letter: 'C', text: 'My mind goes blank. I smile and nod but I\'m not really there. I just want it to be over.', state: 'C' },
+            { letter: 'D', text: 'I go bright and performative — big smile, fast talker — but inside I\'m spinning. Later I\'ll crash hard.', state: 'D' }
+          ]
+        },
+        {
+          number: 2,
+          context: "You have a confrontation coming up — an email you need to send, a difficult conversation you've been avoiding.",
+          text: "What happens in your body?",
+          options: [
+            { letter: 'A', text: 'I take a breath, get centered, and handle it. I feel capable.', state: 'A' },
+            { letter: 'B', text: 'My heart races. I rehearse every possible worst-case scenario. I\'m already exhausted before I start.', state: 'B' },
+            { letter: 'C', text: 'I just… don\'t do it. I freeze. I\'ll deal with it tomorrow. Or never.', state: 'C' },
+            { letter: 'D', text: 'I snap into action and fire off the email in a panic, then immediately regret it. Or I procrastinate until I collapse.', state: 'D' }
+          ]
+        },
+        {
+          number: 3,
+          context: "You're alone at home on a quiet evening. The door is locked. No one is expecting anything from you.",
+          text: "How do you feel inside?",
+          options: [
+            { letter: 'A', text: 'Peaceful. Grounded. Safe in my own skin. I can actually rest.', state: 'A' },
+            { letter: 'B', text: 'Restless. I can\'t sit still. I scroll, I clean, I do something — anything. The quiet feels threatening.', state: 'B' },
+            { letter: 'C', text: 'Numb. Empty. Like I\'m watching my life from behind glass. Nothing feels real.', state: 'C' },
+            { letter: 'D', text: 'It depends on the day. Sometimes peaceful. Sometimes the quiet amplifies every anxious thought until I can\'t breathe.', state: 'D' }
+          ]
+        },
+        {
+          number: 4,
+          context: "You receive unexpected critical feedback on something you care about.",
+          text: "What fires in your nervous system?",
+          options: [
+            { letter: 'A', text: 'I feel a pang, but I can stay open. I listen, I reflect. I can hold the discomfort without collapsing.', state: 'A' },
+            { letter: 'B', text: 'My chest tightens. I feel attacked. My mind races to defend, to prove them wrong, to figure out what\'s wrong with me.', state: 'B' },
+            { letter: 'C', text: 'I shut down. I read it, I nod, I go quiet. Inside I feel small and frozen. I don\'t respond for a long time.', state: 'C' },
+            { letter: 'D', text: 'First I get defensive and heated — then I collapse into shame and can\'t function for the rest of the day.', state: 'D' }
+          ]
+        },
+        {
+          number: 5,
+          context: "You're in nature — a forest, a beach, somewhere open and quiet. No deadlines. No people.",
+          text: "What does your body feel?",
+          options: [
+            { letter: 'A', text: 'My jaw softens. My breath deepens. I feel held by the world. Something in me unclenches.', state: 'A' },
+            { letter: 'B', text: 'The calm feels fragile. I\'m waiting for the other shoe to drop. Is something wrong because I\'m not doing anything?', state: 'B' },
+            { letter: 'C', text: 'I feel disconnected from it all. Beautiful scenery, but it doesn\'t reach me. I\'m just… absent.', state: 'C' },
+            { letter: 'D', text: 'For the first 10 minutes I\'m anxious. Then, if I push through, I finally drop. Or I never drop and just white-knuckle the outing.', state: 'D' }
+          ]
+        },
+        {
+          number: 6,
+          context: "A close friend reaches out and says, \"I just need someone to listen. Can we talk?\"",
+          text: "How do you respond?",
+          options: [
+            { letter: 'A', text: 'Absolutely. I\'m there. I can hold space for them — genuinely, without it draining me.', state: 'A' },
+            { letter: 'B', text: 'I\'ll help, but I\'m already feeling the weight of their stress settling into my body. I take it on.', state: 'B' },
+            { letter: 'C', text: 'I want to be there for them, but I physically can\'t. I go blank. I postpone. I feel guilty but I just can\'t show up.', state: 'C' },
+            { letter: 'D', text: 'I over-function — I throw myself into fixing their problem, burning myself out — then resent them for needing me.', state: 'D' }
+          ]
+        },
+        {
+          number: 7,
+          context: "You wake up in the middle of the night. Your mind is racing. Something is worrying you.",
+          text: "What happens next?",
+          options: [
+            { letter: 'A', text: 'I notice the worry, name it, and can usually soothe myself back to sleep within a few minutes.', state: 'A' },
+            { letter: 'B', text: 'I\'m awake for hours. My mind runs the same loops. My body is buzzing. Sleep feels impossible.', state: 'B' },
+            { letter: 'C', text: 'I lie there frozen. I know I should get up, do something, but I can\'t move. I\'m paralyzed.', state: 'C' },
+            { letter: 'D', text: 'I spiral between panic and exhaustion — wired one moment, unable to move the next. I\'m not sure which state I\'m in.', state: 'D' }
+          ]
+        },
+        {
+          number: 8,
+          context: "You're in public and suddenly feel overwhelmed — too many people, too much noise, too much stimulation.",
+          text: "Your body wants to:",
+          options: [
+            { letter: 'A', text: 'Take a breath, find my bearings, maybe step out briefly, and rejoin when I\'m regulated.', state: 'A' },
+            { letter: 'B', text: 'Bolt. I need to get out NOW. My nervous system says: RUN.', state: 'B' },
+            { letter: 'C', text: 'Check out. My face goes flat. I go through the motions. I\'m here but I\'m not here.', state: 'C' },
+            { letter: 'D', text: 'Smile and push through until I suddenly can\'t — then I\'m the person sitting in the car having a silent breakdown.', state: 'D' }
+          ]
+        },
+        {
+          number: 9,
+          context: "You successfully complete a challenging task — a work project, a difficult conversation, a workout you almost skipped.",
+          text: "How do you feel afterward?",
+          options: [
+            { letter: 'A', text: 'Satisfied. Proud. I can feel the accomplishment in my body. I rest well.', state: 'A' },
+            { letter: 'B', text: 'Anxious about the next thing. I can\'t fully celebrate. What\'s wrong now? What did I miss?', state: 'B' },
+            { letter: 'C', text: 'Relieved it\'s over but deeply exhausted. I don\'t feel proud. I feel hollow.', state: 'C' },
+            { letter: 'D', text: 'First I crash — hard. Then I immediately look for the next thing to attack, or I collapse. Nothing feels like enough.', state: 'D' }
+          ]
+        },
+        {
+          number: 10,
+          context: "A person you care about is going through something hard. You feel genuine empathy for them.",
+          text: "How does that empathy move through your body?",
+          options: [
+            { letter: 'A', text: 'I feel warmth in my chest. My nervous system attunes to theirs. I can stay present without losing myself.', state: 'A' },
+            { letter: 'B', text: 'My stomach knots. I absorb their pain like it\'s mine. I feel responsible for fixing it.', state: 'B' },
+            { letter: 'C', text: 'I feel for them, but from a distance — like隔着玻璃. I want to help but I\'m not sure I can access that part of myself right now.', state: 'C' },
+            { letter: 'D', text: 'I over-give until I\'m depleted, then I shut down completely. Or I swing between feeling everything and feeling nothing.', state: 'D' }
+          ]
+        },
+        {
+          number: 11,
+          context: "You're sitting with yourself — no phone, no task, no other people. Just you.",
+          text: "How does that land?",
+          options: [
+            { letter: 'A', text: 'Like a gift. I can sit with my own thoughts, feel my body, and not need to escape.', state: 'A' },
+            { letter: 'B', text: 'Uncomfortable. The silence is too loud. I reach for my phone within 30 seconds.', state: 'B' },
+            { letter: 'C', text: 'Like nothing. I\'m not really there. There\'s no "me" to sit with.', state: 'C' },
+            { letter: 'D', text: 'It\'s a roulette. Sometimes I can. Most times I can\'t. I\'m not sure who I am without a distraction.', state: 'D' }
+          ]
+        },
+        {
+          number: 12,
+          context: "You think about the future — your life, your goals, your path.",
+          text: "Your nervous system feels:",
+          options: [
+            { letter: 'A', text: 'Cautiously hopeful. There\'s uncertainty, but I trust myself to navigate it. I\'m open to what\'s next.', state: 'A' },
+            { letter: 'B', text: 'Terrified. What if I fail? What if something goes wrong? I catastrophize constantly.', state: 'B' },
+            { letter: 'C', text: 'Indifferent. I don\'t really think about it. Everything feels the same. There\'s no pull toward anything.', state: 'C' },
+            { letter: 'D', text: 'I flip-flop. Some days I\'m excited and driven. Other days I can\'t imagine making it through tomorrow. It\'s exhausting.', state: 'D' }
+          ]
+        }
+      ];
+
+      // ============================================
+      // RESULT DATA — 7 Types
+      // ============================================
+      const RESULTS = {
+        A: {
+          id: 'A',
+          typeLabel: 'Ventral Vagal Dominant',
+          title: 'The Social Engager',
+          subtitle: 'Ventral Vagal Dominant',
+          somaticDescription: 'Your body feels open, warm, and alive. Breathing is easy. You can connect, laugh, and feel safe in the present moment. Your nervous system reads cues of safety easily — a warm voice, a kind eye, a relaxed posture — and it lets you stay present without bracing.',
+          superpower: 'You regulate through connection — not by shutting down or fighting, but by attuning. You make people feel seen. You create safety just by being in a room.',
+          growthEdge: 'Because safety feels so available to you, you may sometimes miss real warning signs. Your openness is a gift — but in unsafe contexts, that same openness can leave you over-exposed. The invitation is to sharpen your discernment without hardening your heart.',
+          bodyTags: ['breath flows freely', 'face softens', 'voice warm', 'gut relaxed'],
+          groundingTip: 'Place one hand on your heart. Notice this: you are safe, and your body knows it. Stay here as long as you can.',
+          shareText: 'My nervous system defaults to safe. I\'m a Social Engager — I regulate through connection. Find out yours: [quiz link] #NervousSystemState #Polyvagal #TraumaInformed',
+          color: '#D4A854',
+          colorRGB: '212, 184, 150',
+          colorDark: '#A07830'
+        },
+        B: {
+          id: 'B',
+          typeLabel: 'Sympathetic Dominant',
+          title: 'The Hypervigilant Protector',
+          subtitle: 'Sympathetic Activation',
+          somaticDescription: 'Your body is mobilized, alert, and braced. Heart races. Muscles tense. You feel wired, on-edge, or pent-up with energy. Your nervous system is always scanning for danger — you anticipate problems before they exist, rehearse disasters that haven\'t happened.',
+          superpower: 'You are the protector. When something needs to be done, handled, solved — you\'re already three steps ahead. You notice what others miss. You respond fast. You are fiercely capable under pressure.',
+          growthEdge: 'Your nervous system doesn\'t know the difference between a tiger and a deadline. Constant vigilance depletes you. The invitation is to build genuine safety into your inner world. Your body needs to learn: not every signal is a threat. Rest is not danger.',
+          bodyTags: ['heart pounds', 'breath shallow', 'jaw tight', 'fists clenched'],
+          groundingTip: 'Stamp your feet three times. Then exhale loudly. Name 5 things you can see. Your nervous system is trying to protect you — acknowledge it.',
+          shareText: 'I\'m a Hypervigilant Protector — my nervous system never clocks out. Living in high-alert mode is exhausting (and impressive). Find out yours: [quiz link] #NervousSystemState #Polyvagal #ChronicStress',
+          color: '#C45A3A',
+          colorRGB: '196, 90, 58',
+          colorDark: '#8A3A1A'
+        },
+        C: {
+          id: 'C',
+          typeLabel: 'Dorsal Vagal Dominant',
+          title: 'The Calm Dissociator',
+          subtitle: 'Dorsal Vagal Collapse',
+          somaticDescription: 'Your body has pulled inward, slowed down, and disengaged. Heaviness. Fog. You may feel numb, disconnected, or wanting to disappear. When overwhelm hits, your body knows how to shut down gracefully — you\'ve learned to leave your body a little to survive too much.',
+          superpower: 'You know how to rest — truly rest — in a way others can\'t access. In shutdown, there is peace. You\'ve developed incredible endurance for monotony and difficulty. You\'ve survived what would break others, and you did it quietly.',
+          growthEdge: 'Dissociation is protection, but it\'s also isolation. You may feel disconnected from your own life. The invitation is to discover that you can feel difficult things and survive them. You can come back to your body — gently, slowly, on your own terms.',
+          bodyTags: ['limbs heavy', 'breath shallow', 'gaze distant', 'voice flat'],
+          groundingTip: 'If you can, place both feet flat on the floor. Press down. Feel the floor beneath you. Even small signals of support reach your system.',
+          shareText: 'I\'m a Calm Dissociator — I survived by learning to disappear. Turns out, my nervous system was just trying to protect me. Find out yours: [quiz link] #NervousSystemState #Polyvagal #Dissociation',
+          color: '#5A7A8A',
+          colorRGB: '90, 122, 138',
+          colorDark: '#3A5A6A'
+        },
+        D: {
+          id: 'D',
+          typeLabel: 'Sympathetic + Dorsal Vagal Mix',
+          title: 'The Wired-and-Tired',
+          subtitle: 'Sympathetic + Dorsal Mix',
+          somaticDescription: 'You oscillate between wired and exhausted. Your nervous system can\'t tell if it should fight or collapse. Some days you\'re running on fumes, hands shaking, mind spinning. Other days you can\'t get off the floor. You switch between states without warning.',
+          superpower: 'You are adaptable. You can mobilize when needed and conserve when necessary. You have range — you\'ve just been given the worst of both states instead of the best.',
+          growthEdge: 'The oscillation itself is exhausting. You spend so much energy on the switch that you have nothing left for living. The invitation is to build regulation skills that don\'t require collapse or explosion. There is a third option: grounded presence.',
+          bodyTags: ['energy swings', 'restless then flat', 'unpredictable', 'exhausted'],
+          groundingTip: 'Let out a sigh — the longest exhale you can manage. You are allowed to feel stuck. This is your system trying to survive. Breathe before you try to do anything.',
+          shareText: 'I\'m a Wired-and-Tired — my nervous system can\'t pick a lane: fight or collapse. Every. Single. Day. Find out yours: [quiz link] #NervousSystemState #Polyvagal #WiredAndTired',
+          color: '#7A5A6A',
+          colorRGB: '122, 90, 106',
+          colorDark: '#4A3A4A'
+        },
+        E: {
+          id: 'E',
+          typeLabel: 'Ventral-Sympathetic Mix',
+          title: 'The Anxious Optimist',
+          subtitle: 'Ventral-Sympathetic Mix',
+          somaticDescription: 'You feel connected and driven — but underneath there\'s urgency and worry. Optimism laced with nervous energy. Reaching out but bracing for impact. Your system is revving — heart up, cortisol pumping, mind racing — but you haven\'t lost your social spark.',
+          superpower: 'Your anxiety is just miswired vigilance turned inside out — and underneath it is genuine warmth and capacity for connection. You care deeply. You show up. You feel things fully, and your hope is real.',
+          growthEdge: 'Anxiety-as-optimism can look like overcommitting, overgiving, over-explaining. You may use busyness to self-soothe without ever actually soothing. The invitation is to build genuine safety inside your own body — not just positive thinking, but nervous system regulation.',
+          bodyTags: ['breath catches', 'chest tight', 'gut churns', 'driven mind'],
+          groundingTip: 'Place your hand on your belly. Breathe so your hand rises and falls. Let the energy move downward. You don\'t have to fix anything right now.',
+          shareText: 'I\'m an Anxious Optimist — my body is revving 24/7 but I still believe in people. Anxiety + heart. Find out yours: [quiz link] #NervousSystemState #Polyvagal #AnxiousOptimist',
+          color: '#C48A3A',
+          colorRGB: '196, 138, 58',
+          colorDark: '#8A5A1A'
+        },
+        F: {
+          id: 'F',
+          typeLabel: 'Ventral-Dorsal Mix',
+          title: 'The Frozen Flamingo',
+          subtitle: 'Ventral-Dorsal Mix',
+          somaticDescription: 'Outwardly calm, functional, maybe even serene. But inside there\'s a panic storm. You\'ve learned to hide the freeze — on the surface composed and contained, but inside rigid with anxiety you can\'t name. You dissociate from the panic to stay functional.',
+          superpower: 'You have mastered functional presentation. You can hold it together when others would crumble. Your composure is a genuine skill — one developed through real adversity.',
+          growthEdge: 'The split between your inside and outside is exhausting and lonely. You\'ve been so focused on not feeling the panic that you\'ve disconnected from everything else too. The invitation is to let the freeze move. Your body can also unfreeze. That is how the body works.',
+          bodyTags: ['surface calm', 'breath withheld', 'gut numb', 'inner storm'],
+          groundingTip: 'Press your fingertips together gently. Feel the pressure. Then notice: what is one thing your body is actually feeling right now, beneath the calm?',
+          shareText: 'I\'m a Frozen Flamingo — calm on top, storm underneath. I\'ve been dissociating through my calm for so long I forgot I was scared. Find out yours: [quiz link] #NervousSystemState #Polyvagal #FrozenFlamingo',
+          color: '#7A9A7A',
+          colorRGB: '122, 154, 122',
+          colorDark: '#5A7A5A'
+        },
+        G: {
+          id: 'G',
+          typeLabel: 'Polyvagal Integrated',
+          title: 'The Flexible Regulator',
+          subtitle: 'All Three States Accessible',
+          somaticDescription: 'Your system moves smoothly between states. You can energize when needed, calm when safe, and rest when it\'s time. Your body is your ally. You have full nervous system range — fight when needed, retreat when necessary, and when the world is safe — you connect, open, and belong.',
+          superpower: 'Adaptability. Resourcefulness. Embodied wisdom. You don\'t force yourself into one mode — your system reads the room and responds appropriately. You can mobilize, conserve, and connect. You feel your feelings without being controlled by them.',
+          growthEdge: 'This is the most resourced state — but it is not a destination. It is a practice. Stress, trauma, and life can still pull you toward dysregulation. The invitation is to keep building your window of tolerance, deepening your felt sense of safety.',
+          bodyTags: ['breath fluid', 'heart steady', 'body present', 'emotion aware'],
+          groundingTip: 'Scan your body slowly from head to toe. Notice where you feel open, where you feel held. You have access to all of your states — and you\'re here.',
+          shareText: 'I\'m a Flexible Regulator — my nervous system has full range. Fight when needed, retreat when necessary, connect when safe. This is the goal. Find out yours: [quiz link] #NervousSystemState #Polyvagal #FlexibleRegulator',
+          color: '#C4A87A',
+          colorRGB: '196, 168, 122',
+          colorDark: '#A08850'
+        }
+      };
+
+      // ============================================
+      // STATE
+      // ============================================
+      const state = {
+        currentScreen: 'disclaimer', // disclaimer | intro | quiz | result
+        currentQuestion: 0,           // 0-indexed
+        answers: [],                  // array of { questionIndex, letter, state }
+        scores: { A: 0, B: 0, C: 0, D: 0 }
+      };
+
+      // ============================================
+      // DOM REFS
+      // ============================================
+      const screens = {
+        disclaimer: document.getElementById('screen-disclaimer'),
+        intro: document.getElementById('screen-intro'),
+        quiz: document.getElementById('screen-quiz'),
+        result: document.getElementById('screen-result')
+      };
+
+      const btnBegin = document.getElementById('btn-begin');
+      const btnStart = document.getElementById('btn-start');
+      const btnBack = document.getElementById('btn-back');
+      const quizQuestionWrap = document.getElementById('quiz-question-wrap');
+      const quizFooter = document.getElementById('quiz-footer');
+      const quizProgressText = document.getElementById('quiz-progress-text');
+      const progressFraction = document.getElementById('progress-fraction');
+      const progressLabel = document.getElementById('progress-label');
+      const progressRingFill = document.getElementById('progress-ring-fill');
+      const progressPulse = document.getElementById('progress-pulse');
+      const progressIndicator = document.getElementById('progress-indicator');
+      const resultContent = document.getElementById('result-content');
+
+      // ============================================
+      // SCREEN TRANSITIONS
+      // ============================================
+      function showScreen(screenName) {
+        // Hide all screens
+        Object.values(screens).forEach(s => {
+          s.classList.remove('active');
+        });
+
+        // Show target screen
+        const target = screens[screenName];
+        if (target) {
+          target.classList.add('active');
+          state.currentScreen = screenName;
+
+          // Scroll to top
+          target.scrollTop = 0;
+
+          // Force reflow for animation restart
+          const content = target.querySelector('.screen__content');
+          if (content) {
+            content.style.animation = 'none';
+            content.offsetHeight; // reflow
+            content.style.animation = '';
+          }
+        }
+      }
+
+      // ============================================
+      // PROGRESS RING UPDATE
+      // ============================================
+      function updateProgressRing() {
+        const q = state.currentQuestion;
+        const total = QUESTIONS.length;
+        const fraction = `${q + 1}<span> / ${total}</span>`;
+        progressFraction.innerHTML = fraction;
+        progressLabel.textContent = `of ${total}`;
+
+        const deg = ((q) / total) * 360;
+        progressRingFill.style.setProperty('--progress-deg', deg);
+
+        // Accessibility
+        progressIndicator.setAttribute('aria-valuenow', q + 1);
+        progressIndicator.setAttribute('aria-label', `Question ${q + 1} of ${total}`);
+
+        // Show progress text
+        quizProgressText.textContent = `${q + 1} of ${total} answered`;
+      }
+
+      // ============================================
+      // RENDER QUESTION
+      // ============================================
+      function renderQuestion() {
+        const q = QUESTIONS[state.currentQuestion];
+        const total = QUESTIONS.length;
+
+        // Update progress
+        updateProgressRing();
+
+        // Show/hide back button
+        quizFooter.style.display = state.currentQuestion > 0 ? 'flex' : 'none';
+
+        // Determine result color for this session (use a neutral warm-sand default)
+        const resultColor = 'var(--warm-sand)';
+
+        let html = `
+          <div class="quiz__question" aria-live="polite">
+            <p class="quiz__question-number">Question ${q.number} of ${total}</p>
+            <p class="quiz__question-context">${q.context}</p>
+            <h2 class="quiz__question-text">${q.text}</h2>
+
+            <div class="options" role="radiogroup" aria-label="Answer options">
+        `;
+
+        q.options.forEach((opt, idx) => {
+          const isSelected = state.answers[state.currentQuestion]?.letter === opt.letter;
+          html += `
+            <button
+              class="option${isSelected ? ' selected' : ''}"
+              data-letter="${opt.letter}"
+              data-state="${opt.state}"
+              data-index="${idx}"
+              type="button"
+              role="radio"
+              aria-checked="${isSelected ? 'true' : 'false'}"
+              aria-label="Option ${opt.letter}: ${opt.text}"
+            >
+              <span class="option__letter">${opt.letter}</span>
+              <span class="option__text">${opt.text}</span>
+            </button>
+          `;
+        });
+
+        html += `
+            </div>
+          </div>
+        `;
+
+        quizQuestionWrap.innerHTML = html;
+
+        // Attach option listeners
+        const optionBtns = quizQuestionWrap.querySelectorAll('.option');
+        optionBtns.forEach(btn => {
+          btn.addEventListener('click', handleOptionSelect);
+        });
+      }
+
+      // ============================================
+      // HANDLE OPTION SELECTION
+      // ============================================
+      function handleOptionSelect(e) {
+        const btn = e.currentTarget;
+        const letter = btn.dataset.letter;
+        const optState = btn.dataset.state;
+        const questionIndex = state.currentQuestion;
+
+        // Save answer
+        state.answers[questionIndex] = { letter, state: optState };
+        state.scores[optState]++;
+
+        // Visual feedback — mark selected
+        const allBtns = quizQuestionWrap.querySelectorAll('.option');
+        allBtns.forEach(b => {
+          b.classList.remove('selected');
+          b.setAttribute('aria-checked', 'false');
+        });
+        btn.classList.add('selected');
+        btn.setAttribute('aria-checked', 'true');
+
+        // Auto-advance after brief delay
+        setTimeout(() => {
+          if (state.currentQuestion < QUESTIONS.length - 1) {
+            state.currentQuestion++;
+            renderQuestion();
+          } else {
+            // Last question — go to result
+            showResult();
+          }
+        }, 350);
+      }
+
+      // ============================================
+      // BACK BUTTON
+      // ============================================
+      function handleBack() {
+        if (state.currentQuestion > 0) {
+          // Remove last answer from scores
+          const lastAnswer = state.answers[state.currentQuestion];
+          if (lastAnswer) {
+            state.scores[lastAnswer.state]--;
+          }
+          state.answers[state.currentQuestion] = null;
+          state.currentQuestion--;
+          renderQuestion();
+        } else {
+          // Back to intro
+          showScreen('intro');
+        }
+      }
+
+      // ============================================
+      // SCORING LOGIC
+      // ============================================
+      function calculateResult() {
+        const { A, B, C, D } = state.scores;
+        const total = A + B + C + D;
+
+        // D dominant (6+)
+        if (D >= 6) return 'D';
+
+        // A dominant (7+)
+        if (A >= 7) return 'A';
+
+        // B dominant (7+)
+        if (B >= 7) return 'B';
+
+        // C dominant (7+)
+        if (C >= 7) return 'C';
+
+        // Check for tie or mixed patterns
+        const max = Math.max(A, B, C, D);
+        const winners = [];
+        if (A === max) winners.push('A');
+        if (B === max) winners.push('B');
+        if (C === max) winners.push('C');
+        if (D === max && D >= 4) winners.push('D');
+
+        if (winners.length === 1) {
+          // Single clear winner but not dominant enough for above cases
+          const w = winners[0];
+          if (w === 'A' && B >= 4) return 'E'; // Anxious Optimist: A + B
+          if (w === 'A' && C >= 4) return 'F'; // Frozen Flamingo: A + C
+          if (w === 'B' && C >= 4) return 'D'; // Wired-and-Tired: B + C
+          if (w === 'B' && A >= 4) return 'E'; // Anxious Optimist: B + A
+          if (w === 'C' && A >= 4) return 'F'; // Frozen Flamingo: C + A
+          if (w === 'C' && B >= 4) return 'D'; // Wired-and-Tired: C + B
+          return w;
+        }
+
+        if (winners.length === 2) {
+          const wSet = new Set(winners);
+          if (wSet.has('A') && wSet.has('B')) return 'E'; // Anxious Optimist
+          if (wSet.has('A') && wSet.has('C')) return 'F'; // Frozen Flamingo
+          if (wSet.has('B') && wSet.has('C')) return 'D'; // Wired-and-Tired
+          if (wSet.has('A') && wSet.has('D')) return 'E'; // A + D → E
+          if (wSet.has('B') && wSet.has('D')) return 'D'; // B + D → D
+          if (wSet.has('C') && wSet.has('D')) return 'F'; // C + D → F
+        }
+
+        if (winners.length === 3 || winners.length === 4) {
+          // Evenly distributed → Flexible Regulator
+          if (A >= 3 && B >= 3 && C >= 3) return 'G';
+          // Otherwise fall back to highest
+          if (A >= B && A >= C) return 'E'; // A dominant mixed
+          if (B >= A && B >= C) return 'D'; // B dominant mixed
+          return 'F'; // C dominant mixed
+        }
+
+        // Default fallback
+        if (A >= B && A >= C) return 'A';
+        if (B >= A && B >= C) return 'B';
+        return 'C';
+      }
+
+      // ============================================
+      // SHOW RESULT
+      // ============================================
+      function showResult() {
+        const resultId = calculateResult();
+        const result = RESULTS[resultId];
+
+        // Set CSS custom properties for result color
+        document.documentElement.style.setProperty('--result-color', result.color);
+        document.documentElement.style.setProperty('--result-color-rgb', result.colorRGB);
+        document.documentElement.style.setProperty('--result-color-dark', result.colorDark);
+
+        // Update progress ring to result color
+        progressRingFill.style.setProperty('background',
+          `conic-gradient(${result.color} 0deg ${progressRingFill.style.getPropertyValue('--progress-deg') || 360}deg, transparent ${progressRingFill.style.getPropertyValue('--progress-deg') || 360}deg 360deg)`);
+
+        // Build result HTML
+        const tagsHtml = result.bodyTags.map(tag => `
+          <span class="tag">
+            <span class="tag__dot"></span>
+            ${tag}
+          </span>
+        `).join('');
+
+        resultContent.innerHTML = `
+          <div class="result__card" role="article">
+            <p class="result__type-label">${result.typeLabel}</p>
+            <h2 class="result__title">${result.title}</h2>
+            <p class="result__subtitle">${result.subtitle}</p>
+
+            <div class="result__divider" aria-hidden="true"></div>
+
+            <div class="result__section">
+              <p class="result__somatic">${result.somaticDescription}</p>
+            </div>
+
+            <div class="result__section">
+              <p class="result__superpower">
+                <span class="result__superpower-label">Your superpower:</span> ${result.superpower}
+              </p>
+            </div>
+
+            <div class="result__section">
+              <p class="result__growth">${result.growthEdge}</p>
+            </div>
+
+            <div class="result__tags" aria-label="Body state traits">
+              ${tagsHtml}
+            </div>
+
+            <div class="result__grounding">
+              <p class="result__grounding-label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 3c-1.5 2-3 3.5-3 6a3 3 0 0 0 6 0c0-2.5-1.5-4-3-6z"/>
+                  <path d="M9 14c-2.5.5-4 2-4 4a4 4 0 0 0 8 0c0-2-1.5-3.5-4-4z"/>
+                </svg>
+                Grounding Tip
+              </p>
+              <p class="result__grounding-text">${result.groundingTip}</p>
+            </div>
+          </div>
+
+          <div class="result__actions">
+            <button class="btn btn--result" id="btn-share" type="button">
+              <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+              </svg>
+              Share My Result
+            </button>
+            <button class="btn btn--outline" id="btn-retake" type="button">
+              <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="1 4 1 10 7 10"/>
+                <path d="M3.51 15a9 9 0 1 0 .49-4.5"/>
+              </svg>
+              Take Quiz Again
+            </button>
+            <p class="result__share-feedback" id="share-feedback" role="status" aria-live="polite">Copied! Your result is ready to share.</p>
+          </div>
+        `;
+
+        // Attach share button
+        const btnShare = document.getElementById('btn-share');
+        const shareFeedback = document.getElementById('share-feedback');
+        btnShare.addEventListener('click', () => {
+          const shareText = result.shareText.replace('[quiz link]', window.location.href);
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(shareText).then(() => {
+              shareFeedback.classList.add('show');
+              setTimeout(() => shareFeedback.classList.remove('show'), 3000);
+            }).catch(() => {
+              // Fallback
+              const ta = document.createElement('textarea');
+              ta.value = shareText;
+              ta.style.position = 'fixed';
+              ta.style.opacity = '0';
+              document.body.appendChild(ta);
+              ta.select();
+              document.execCommand('copy');
+              document.body.removeChild(ta);
+              shareFeedback.classList.add('show');
+              setTimeout(() => shareFeedback.classList.remove('show'), 3000);
+            });
+          } else {
+            // Fallback for older browsers
+            const ta = document.createElement('textarea');
+            ta.value = shareText;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            shareFeedback.classList.add('show');
+            setTimeout(() => shareFeedback.classList.remove('show'), 3000);
+          }
+        });
+
+        // Attach retake button
+        const btnRetake = document.getElementById('btn-retake');
+        btnRetake.addEventListener('click', handleRetake);
+
+        // Transition to result screen
+        showScreen('result');
+      }
+
+      // ============================================
+      // RETAKE
+      // ============================================
+      function handleRetake() {
+        state.currentQuestion = 0;
+        state.answers = [];
+        state.scores = { A: 0, B: 0, C: 0, D: 0 };
+
+        // Reset result color
+        document.documentElement.style.removeProperty('--result-color');
+        document.documentElement.style.removeProperty('--result-color-rgb');
+        document.documentElement.style.removeProperty('--result-color-dark');
+
+        // Reset progress ring
+        progressRingFill.style.background = '';
+
+        showScreen('disclaimer');
+      }
+
+      // ============================================
+      // 4-7-8 BREATHING ANIMATION on progress ring
+      // The ring already pulses with CSS. Here we
+      // dynamically adjust the scale for 4-7-8 rhythm.
+      // ============================================
+      function startBreathAnimation() {
+        const ring = document.getElementById('progress-ring');
+        if (!ring) return;
+
+        // 4-7-8 breathing rhythm:
+        // Inhale 4s, Hold 7s, Exhale 8s = 19s cycle
+        // For the progress ring, we use a subtle 4s cycle
+        // that feels like gentle breathing
+        function breathCycle() {
+          // Skip if not on quiz screen
+          if (state.currentScreen !== 'quiz') {
+            setTimeout(breathCycle, 1000);
+            return;
+          }
+
+          // We use CSS keyframes for the ring pulse
+          // This is just a check-and-continue for JS-side control
+          setTimeout(breathCycle, 4000);
+        }
+
+        setTimeout(breathCycle, 1000);
+      }
+
+      // ============================================
+      // INIT
+      // ============================================
+      function init() {
+        // Begin button → intro
+        btnBegin.addEventListener('click', () => {
+          showScreen('intro');
+        });
+
+        // Start button → quiz
+        btnStart.addEventListener('click', () => {
+          showScreen('quiz');
+          renderQuestion();
+          startBreathAnimation();
+        });
+
+        // Back button
+        btnBack.addEventListener('click', handleBack);
+
+        // Keyboard navigation for options
+        document.addEventListener('keydown', (e) => {
+          if (state.currentScreen !== 'quiz') return;
+          if (e.key === 'Escape' || (e.key === 'Backspace' && document.activeElement.tagName !== 'INPUT')) {
+            handleBack();
+          }
+        });
+
+        // Check for reduced motion
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReducedMotion) {
+          document.documentElement.classList.add('reduced-motion');
+        }
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
