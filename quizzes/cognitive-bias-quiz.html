@@ -7,7 +7,7 @@
   <meta name="description" content="Take 3 minutes to discover the thinking traps you fall into every day — and how to outsmart them.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -25,7 +25,7 @@
   --success: #10B981;
   --highlight: #FBBF24;
 
-  --font-display: 'Outfit', system-ui, sans-serif;
+  --font-display: 'DM Sans', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
 
   --radius-sm: 8px;
@@ -34,14 +34,15 @@
   --radius-xl: 24px;
   --radius-pill: 999px;
 
-  --space-xs: 8px;
-  --space-sm: 16px;
-  --space-md: 24px;
-  --space-lg: 32px;
-  --space-xl: 48px;
+  --space-xs: 6px;
+  --space-sm: 12px;
+  --space-md: 20px;
+  --space-lg: 28px;
+  --space-xl: 40px;
 
   --transition-fast: 200ms ease;
-  --transition-normal: 350ms ease;
+  --transition-normal: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -87,30 +88,41 @@ body {
 }
 
 /* ── Progress Dots ─────────────────────────────────────────────────────── */
+.progress-dots-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
 .progress-dots {
   display: flex;
-  gap: 6px;
+  gap: 5px;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
-  width: 100%;
 }
 .dot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: var(--radius-pill);
   background: var(--border);
   transition: all var(--transition-normal);
+  flex-shrink: 0;
 }
-.dot.filled { background: var(--primary); transform: scale(1.1); }
-.dot.current { 
-  background: var(--primary); 
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
-  animation: dotPulse 2s ease-in-out infinite;
+.dot.filled { background: var(--primary); }
+.dot.current {
+  background: var(--primary);
+  transform: scale(1.3);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
 }
-@keyframes dotPulse {
-  0%, 100% { box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2); }
-  50% { box-shadow: 0 0 0 6px rgba(79, 70, 229, 0.1); }
+.progress-hint {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--secondary);
+  min-height: 18px;
+  transition: opacity var(--transition-fast);
 }
 
 /* ── Disclaimer Screen ──────────────────────────────────────────────────── */
@@ -120,44 +132,56 @@ body {
   border-radius: var(--radius-lg);
   padding: var(--space-md);
   text-align: left;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--text-secondary);
-  line-height: 1.7;
+  line-height: 1.75;
   box-shadow: 0 2px 12px rgba(0,0,0,0.04);
 }
+.screen-disclaimer .disclaimer-text strong { color: var(--text-primary); }
 
 /* ── Intro Screen ──────────────────────────────────────────────────────── */
-.screen-intro .intro-tag {
-  font-size: 0.75rem;
-  font-weight: 600;
+.screen-intro .intro-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   color: var(--secondary);
-  background: rgba(249, 115, 22, 0.08);
-  padding: 6px 16px;
+  background: rgba(249, 115, 22, 0.1);
+  padding: 5px 14px;
   border-radius: var(--radius-pill);
 }
 .screen-intro .intro-title {
   font-family: var(--font-display);
-  font-size: clamp(1.75rem, 7vw, 2.5rem);
+  font-size: clamp(1.8rem, 7vw, 2.6rem);
   font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
   color: var(--text-primary);
 }
-.screen-intro .intro-subtitle {
-  font-size: 1rem;
+.screen-intro .intro-sub {
+  font-size: 0.95rem;
   color: var(--text-secondary);
-  max-width: 340px;
-  line-height: 1.6;
+  max-width: 320px;
+  line-height: 1.65;
 }
 .screen-intro .intro-meta {
   display: flex;
-  gap: var(--space-md);
+  gap: 20px;
+  justify-content: center;
+}
+.screen-intro .intro-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 0.8rem;
   color: var(--text-muted);
+  font-family: var(--font-display);
+  font-weight: 500;
 }
-.screen-intro .intro-meta span { display: flex; align-items: center; gap: 6px; }
+.screen-intro .intro-privacy {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
 
 /* ── Quiz Screen ────────────────────────────────────────────────────────── */
 .screen-quiz {
@@ -169,21 +193,13 @@ body {
   max-width: 420px;
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
-}
-.q-label {
-  font-size: 0.7rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-muted);
-  text-align: center;
+  gap: 10px;
 }
 .q-text {
   font-family: var(--font-body);
-  font-size: clamp(1rem, 4vw, 1.15rem);
+  font-size: clamp(0.98rem, 4vw, 1.1rem);
   font-weight: 400;
-  line-height: 1.55;
+  line-height: 1.6;
   color: var(--text-primary);
   text-align: left;
 }
@@ -199,57 +215,70 @@ body {
   background: var(--surface);
   border: 1.5px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 14px var(--space-sm);
+  padding: 13px 14px;
   text-align: left;
   cursor: pointer;
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+  gap: 11px;
   transition: all var(--transition-fast);
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: var(--text-primary);
-  line-height: 1.5;
+  line-height: 1.55;
+  min-height: 52px;
 }
 .option-btn:hover {
   background: var(--surface-elevated);
   border-color: var(--primary-light);
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.08);
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.1);
 }
-.option-btn:active { transform: scale(0.99); }
+.option-btn:active { transform: scale(0.985); }
 .option-btn.selected {
-  background: rgba(79, 70, 229, 0.06);
+  background: rgba(79, 70, 229, 0.07);
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
 }
 .opt-letter {
   font-weight: 700;
   color: var(--primary);
   flex-shrink: 0;
-  min-width: 1.4em;
-  font-size: 0.9rem;
+  min-width: 1.3em;
+  font-size: 0.88rem;
+  margin-top: 1px;
 }
-.opt-text { color: var(--text-primary); }
+.not-sure {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-align: center;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color var(--transition-fast);
+}
+.not-sure:hover { color: var(--text-secondary); }
 .quiz-nav {
   width: 100%;
   max-width: 420px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: var(--space-xs);
+  margin-top: 6px;
 }
 .back-btn {
   display: none;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   background: transparent;
   border: none;
   color: var(--text-muted);
   font-family: var(--font-body);
-  font-size: 0.875rem;
+  font-size: 0.82rem;
   cursor: pointer;
-  padding: 6px 12px;
+  padding: 5px 10px;
   border-radius: var(--radius-sm);
   transition: color var(--transition-fast);
 }
@@ -261,59 +290,80 @@ body {
   justify-content: flex-start;
   padding-top: var(--space-xl);
   gap: var(--space-lg);
+  overflow-y: auto;
 }
-.result-header { text-align: center; display: flex; flex-direction: column; gap: 10px; }
+.result-reveal-wrap { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: var(--space-lg); }
+.result-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 700ms ease, transform 700ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.result-header.revealed { opacity: 1; transform: translateY(0); }
+
 .result-type-label {
-  font-size: 0.7rem;
-  font-weight: 600;
+  font-size: 0.68rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
 }
 .result-title {
   font-family: var(--font-display);
-  font-size: clamp(1.75rem, 7vw, 2.5rem);
+  font-size: clamp(1.8rem, 7vw, 2.6rem);
   font-weight: 700;
   line-height: 1.1;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
 }
-.result-subtitle {
+.result-subtitle-line {
   font-size: 0.95rem;
   color: var(--text-secondary);
   line-height: 1.5;
-  max-width: 320px;
-  margin: 0 auto;
+  font-family: var(--font-display);
+  font-weight: 500;
 }
 .result-divider {
   width: 40px;
   height: 3px;
   border-radius: 2px;
-  margin: 4px auto;
+  margin: 2px auto 0;
 }
+.result-closing {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
 .result-description {
   width: 100%;
-  max-width: 420px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 500ms ease 200ms, transform 500ms cubic-bezier(0.4, 0, 0.2, 1) 200ms;
 }
+.result-description.revealed { opacity: 1; transform: translateY(0); }
 .result-desc-block {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  padding: var(--space-sm) var(--space-md);
+  padding: 14px var(--space-sm);
   text-align: left;
   box-shadow: 0 1px 6px rgba(0,0,0,0.03);
 }
 .result-desc-block h3 {
-  font-family: var(--font-body);
-  font-size: 0.7rem;
+  font-family: var(--font-display);
+  font-size: 0.68rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin-bottom: 8px;
 }
 .result-desc-block p {
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   color: var(--text-secondary);
   line-height: 1.7;
 }
@@ -322,98 +372,129 @@ body {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
 }
 .result-desc-block ul li {
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   color: var(--text-secondary);
-  line-height: 1.6;
-  padding-left: 18px;
+  line-height: 1.65;
+  padding-left: 14px;
   position: relative;
 }
 .result-desc-block ul li::before {
   content: "—";
   position: absolute;
   left: 0;
-  color: var(--primary);
   font-weight: 600;
 }
+.result-desc-block ol {
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  counter-reset: bias-buster;
+}
+.result-desc-block ol li {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  counter-increment: bias-buster;
+}
+.result-desc-block ol li::before {
+  content: counter(bias-buster) ". ";
+  font-weight: 700;
+  font-family: var(--font-display);
+}
+
 .result-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 7px;
   justify-content: center;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 400ms ease 380ms, transform 400ms cubic-bezier(0.4, 0, 0.2, 1) 380ms;
 }
+.result-tags.revealed { opacity: 1; transform: translateY(0); }
 .trait-tag {
-  background: rgba(79, 70, 229, 0.06);
-  border: 1px solid rgba(79, 70, 229, 0.2);
   border-radius: var(--radius-pill);
-  padding: 4px 14px;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
+  padding: 4px 13px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-family: var(--font-display);
 }
+
 .result-share {
   width: 100%;
-  max-width: 420px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 400ms ease 460ms, transform 400ms cubic-bezier(0.4, 0, 0.2, 1) 460ms;
 }
+.result-share.revealed { opacity: 1; transform: translateY(0); }
 .share-quote {
   font-style: italic;
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   line-height: 1.6;
   text-align: center;
-  border-left: none;
-  margin: 0 0 var(--space-sm);
+  margin: 0 0 12px;
 }
 .share-buttons {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   justify-content: center;
   flex-wrap: wrap;
 }
 .share-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
+  gap: 5px;
+  padding: 7px 14px;
   border-radius: var(--radius-pill);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 600;
-  font-family: var(--font-body);
+  font-family: var(--font-display);
   cursor: pointer;
   border: 1.5px solid;
   transition: all var(--transition-fast);
   text-decoration: none;
+  background: transparent;
 }
-.share-btn.copylink {
-  background: var(--surface-elevated);
-  border-color: var(--border);
-  color: var(--text-secondary);
-}
-.share-btn.copylink:hover { border-color: var(--primary); color: var(--primary); }
+.share-btn.ig { border-color: #E1306C; color: #E1306C; }
+.share-btn.tt { border-color: #000; color: #000; background: #000; color: #fff; }
+.share-btn.wx { border-color: #07C160; color: #07C160; }
+.share-btn.copy { border-color: var(--border); color: var(--text-secondary); }
+.share-btn:hover { opacity: 0.8; transform: translateY(-1px); }
+
 .result-footer {
   text-align: center;
   color: var(--text-muted);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   padding-bottom: var(--space-lg);
   align-items: center;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 400ms ease 540ms, transform 400ms cubic-bezier(0.4, 0, 0.2, 1) 540ms;
 }
+.result-footer.revealed { opacity: 1; transform: translateY(0); }
 .retake-btn {
   background: transparent;
   border: 1.5px solid var(--border);
   border-radius: var(--radius-pill);
   color: var(--text-secondary);
-  font-family: var(--font-body);
-  font-size: 0.875rem;
-  padding: 8px 24px;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 8px 22px;
   cursor: pointer;
   transition: all var(--transition-fast);
 }
@@ -429,78 +510,79 @@ body {
   overflow: hidden;
   position: relative;
   text-align: center;
-  padding: 32px 24px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
+  padding: 36px 28px;
 }
-.share-card-inner {
-  width: 100%;
+.share-card-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.share-card-content {
+  position: relative;
+  z-index: 1;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  position: relative;
-  z-index: 1;
+  gap: 14px;
 }
-.share-card .brand {
-  font-size: 0.65rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  opacity: 0.6;
-  position: absolute;
-  top: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-}
-.share-card .result-name {
-  font-family: var(--font-display);
-  font-size: 1.8rem;
+.share-card .card-brand {
+  font-size: 0.6rem;
   font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-}
-.share-card .result-subtitle-text {
-  font-size: 0.85rem;
-  opacity: 0.8;
-  line-height: 1.5;
-  max-width: 260px;
-}
-.share-card .result-trait {
-  font-size: 0.7rem;
-  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  opacity: 0.7;
-  padding: 4px 14px;
-  border-radius: var(--radius-pill);
-  border: 1px solid currentColor;
-}
-.share-card .cta-text {
-  font-size: 0.7rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.18em;
   opacity: 0.5;
   position: absolute;
-  bottom: 24px;
+  top: 28px;
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
+  font-family: var(--font-display);
 }
-.share-card .card-bg-shape {
+.share-card .card-trait-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 4px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid;
+  opacity: 0.85;
+  font-family: var(--font-display);
+}
+.share-card .card-result-name {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+}
+.share-card .card-result-sub {
+  font-size: 0.82rem;
+  opacity: 0.75;
+  line-height: 1.5;
+  max-width: 260px;
+  font-family: var(--font-body);
+}
+.share-card .card-cta {
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  opacity: 0.4;
   position: absolute;
-  top: -60px;
-  right: -60px;
-  width: 200px;
-  height: 200px;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--font-display);
+}
+.card-orb {
+  position: absolute;
   border-radius: 50%;
-  opacity: 0.12;
+  filter: blur(60px);
+  z-index: 0;
 }
 
 /* ── CTA Button ────────────────────────────────────────────────────────── */
@@ -509,26 +591,26 @@ body {
   color: #fff;
   border: none;
   border-radius: var(--radius-pill);
-  font-family: var(--font-body);
+  font-family: var(--font-display);
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   padding: 14px 36px;
   cursor: pointer;
   transition: all var(--transition-fast);
   letter-spacing: 0.02em;
   min-width: 200px;
-  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.25);
+  box-shadow: 0 4px 20px rgba(79, 70, 229, 0.3);
 }
 .btn-primary:hover {
   background: var(--primary-light);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.35);
+  box-shadow: 0 8px 28px rgba(79, 70, 229, 0.4);
 }
 .btn-primary:active { transform: translateY(0); }
 
 /* ── Animations ────────────────────────────────────────────────────────── */
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(14px); }
+  from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
 }
 @keyframes fadeIn {
@@ -536,11 +618,10 @@ body {
   to { opacity: 1; }
 }
 .quiz-screen.active .screen-inner { animation: fadeInUp 500ms cubic-bezier(0.4, 0, 0.6, 1) both; }
-.screen-result .result-header { animation: fadeInUp 500ms cubic-bezier(0.4, 0, 0.6, 1) both; }
-.screen-result .result-description { animation: fadeInUp 500ms cubic-bezier(0.4, 0, 0.6, 1) 100ms both; }
-.screen-result .result-tags { animation: fadeInUp 500ms cubic-bezier(0.4, 0, 0.6, 1) 180ms both; }
-.screen-result .result-share { animation: fadeInUp 500ms cubic-bezier(0.4, 0, 0.6, 1) 240ms both; }
-.screen-result .result-footer { animation: fadeInUp 500ms cubic-bezier(0.4, 0, 0.6, 1) 300ms both; }
+.screen-intro .intro-badge { animation: fadeInUp 400ms ease 50ms both; }
+.screen-intro .intro-title { animation: fadeInUp 400ms ease 100ms both; }
+.screen-intro .intro-sub { animation: fadeInUp 400ms ease 150ms both; }
+.screen-intro .intro-meta { animation: fadeInUp 400ms ease 200ms both; }
 
 /* ── Responsive ────────────────────────────────────────────────────────── */
 @media (min-width: 640px) {
@@ -555,13 +636,14 @@ body {
   border-radius: 4px;
 }
 @media (prefers-reduced-motion: reduce) {
-  .quiz-screen.active .screen-inner,
-  .screen-result .result-header,
-  .screen-result .result-description,
-  .screen-result .result-tags,
-  .screen-result .result-share,
-  .screen-result .result-footer {
-    animation: fadeIn 200ms ease both;
+  .result-header,
+  .result-description,
+  .result-tags,
+  .result-share,
+  .result-footer {
+    transition: none;
+    opacity: 1 !important;
+    transform: none !important;
   }
   .dot.current { animation: none; }
 }
@@ -579,29 +661,33 @@ body {
   </div>
 </div>
 
-<!-- ── INTRO SCREEN ────────────────────────────────────────────────────── -->
+<!-- ── INTRO SCREEN ─────────────────────────────────────────────────── -->
 <div id="screen-intro" class="quiz-screen screen-intro">
   <div class="screen-inner">
-    <span class="intro-tag">🧠 Psychology Quiz</span>
+    <span class="intro-badge">🧠 Psychology Quiz</span>
     <h1 class="intro-title">You think you're logical.<br>Your brain disagrees.</h1>
-    <p class="intro-subtitle">This 3-minute quiz reveals the thinking traps you fall into every day — and how to outsmart them.</p>
+    <p class="intro-sub">This 3-minute quiz reveals the thinking traps you fall into every day — and how to outsmart them.</p>
     <div class="intro-meta">
-      <span>📋 10 questions</span>
-      <span>⏱️ ~3 minutes</span>
+      <span class="intro-meta-item">📋 10 questions</span>
+      <span class="intro-meta-item">⏱️ ~3 minutes</span>
     </div>
     <button id="start-btn" class="btn-primary">Start Quiz</button>
+    <p class="intro-privacy">No sign-up. No data stored. Just honest insights.</p>
   </div>
 </div>
 
-<!-- ── QUIZ SCREEN ─────────────────────────────────────────────────────── -->
+<!-- ── QUIZ SCREEN ──────────────────────────────────────────────────── -->
 <div id="screen-quiz" class="quiz-screen screen-quiz">
   <div class="quiz-header">
-    <div class="progress-dots" id="progress-dots"></div>
-    <span id="q-label" class="q-label"></span>
+    <div class="progress-dots-wrap">
+      <div id="progress-dots" class="progress-dots" role="progressbar" aria-label="Quiz progress"></div>
+      <div id="progress-hint" class="progress-hint"></div>
+    </div>
   </div>
   <div class="question-container">
     <p id="q-text" class="q-text"></p>
     <div id="options-container" class="options-list"></div>
+    <span id="not-sure" class="not-sure">Not sure? Go with your gut →</span>
   </div>
   <div class="quiz-nav">
     <button id="back-btn" class="back-btn">← Back</button>
@@ -609,21 +695,25 @@ body {
   </div>
 </div>
 
-<!-- ── RESULT SCREEN ───────────────────────────────────────────────────── -->
+<!-- ── RESULT SCREEN ───────────────────────────────────────────────── -->
 <div id="screen-result" class="quiz-screen screen-result">
-  <div class="screen-inner">
-    <div class="result-header">
+  <div class="result-reveal-wrap">
+    <div id="result-header" class="result-header">
       <span id="result-type-label" class="result-type-label">Your Thinking Trap</span>
       <h1 id="result-title" class="result-title"></h1>
+      <p id="result-subtitle-line" class="result-subtitle-line"></p>
       <div id="result-divider" class="result-divider"></div>
-      <p id="result-subtitle" class="result-subtitle"></p>
+      <p id="result-closing" class="result-closing">No judgment here. Self-awareness is the first step to smarter thinking.</p>
     </div>
     <div id="result-description" class="result-description"></div>
     <div id="result-tags" class="result-tags"></div>
     <div id="result-share" class="result-share">
       <blockquote id="share-quote" class="share-quote"></blockquote>
       <div class="share-buttons">
-        <button id="copy-link-btn" class="share-btn copylink">📋 Copy Link</button>
+        <button class="share-btn ig" onclick="shareToInstagram()">📸 Instagram</button>
+        <button class="share-btn tt" onclick="shareToTikTok()">🎵 TikTok</button>
+        <button class="share-btn wx" onclick="shareToWeChat()">💬 WeChat</button>
+        <button id="copy-link-btn" class="share-btn copy">📋 Copy Link</button>
       </div>
     </div>
     <div id="result-footer" class="result-footer">
@@ -633,15 +723,16 @@ body {
   </div>
 </div>
 
-<!-- ── SHARE CARD (hidden, for download) ───────────────────────────────── -->
+<!-- ── SHARE CARD (9:16, hidden, used for canvas export) ───────────── -->
 <div id="share-card" class="share-card">
-  <div class="share-card-inner">
-    <div id="card-bg-shape" class="card-bg-shape"></div>
-    <span class="brand">PsychoMaster</span>
-    <span id="card-trait" class="result-trait"></span>
-    <h2 id="card-name" class="result-name"></h2>
-    <p id="card-subtitle-text" class="result-subtitle-text"></p>
-    <span class="cta-text">Take the quiz →</span>
+  <div id="share-card-bg" class="share-card-bg"></div>
+  <div class="share-card-content">
+    <div id="card-bg-orb" class="card-orb"></div>
+    <span id="card-brand" class="card-brand">PsychoMaster</span>
+    <span id="card-trait-badge" class="card-trait-badge"></span>
+    <h2 id="card-result-name" class="card-result-name"></h2>
+    <p id="card-result-sub" class="card-result-sub"></p>
+    <span class="card-cta">Take the quiz →</span>
   </div>
 </div>
 
@@ -740,10 +831,10 @@ const QUESTIONS = [
     n: 9,
     text: "Your friend asks you to predict how likely they are to achieve a major goal they've set. You've seen them set similar goals before. What do you say?",
     options: {
-      A: '"Honestly? History suggests it\'s going to be hard. But this time feels different."',
-      B: '"You\'ve got this! You\'re more capable than you think."',
-      C: '"What specifically are you doing differently this time to make it happen?"',
-      D: '"It depends on how you define success. Most people underestimate how long things take."'
+      A: "\"Honestly? History suggests it's going to be hard. But this time feels different.\"",
+      B: "\"You've got this! You're more capable than you think.\"",
+      C: "\"What specifically are you doing differently this time to make it happen?\"",
+      D: "\"It depends on how you define success. Most people underestimate how long things take.\""
     },
     biasMap: { A: "confirmation", B: "optimism", C: "availability", D: "sunkcost" }
   },
@@ -767,18 +858,18 @@ const RESULT_TYPES = {
     subtitle: "You seek evidence that confirms what you already believe",
     primary: "#6366F1",
     glow: "#818CF8",
-    accent: "#A5B4FC",
-    traits: ["Quick to judge", "Hindsight aware", "Seeker of truth", "Pattern matcher"],
+    bg: "linear-gradient(160deg, #EEF2FF 0%, #FAFAF8 100%)",
+    traits: ["Quick to judge", "Hindsight aware", "Pattern matcher", "Truth seeker"],
     keyTraits: [
       "You form opinions quickly and then unconsciously seek information that confirms them",
-      "Past 'lessons learned' often look clearer in hindsight than they did in the moment",
+      "Past \"lessons learned\" often look clearer in hindsight than they did in the moment",
       "You tend to feel more certain than the evidence warrants",
       "You might dismiss perspectives that don't fit your existing narrative"
     ],
     dayToDay: "You probably think you're more open-minded than you actually are. Your brain filters out dissonant information so efficiently that you don't notice it happening.",
     biasBuster: [
       "Before making your next important decision, seek one opinion that actively challenges your view. Write it down. Take it seriously for 5 minutes before returning to your original position.",
-      "After forming an opinion, ask yourself: 'What information would actually change my mind?' Write it down. Watch whether you update your view when that information arrives."
+      "After forming an opinion, ask yourself: \"What information would actually change my mind?\" Write it down. Watch whether you update your view when that information arrives."
     ],
     shareText: "My brain already made up its mind — and then recruited evidence to back itself up. Classic Confirmation Detective."
   },
@@ -788,7 +879,7 @@ const RESULT_TYPES = {
     subtitle: "You naturally expect better outcomes than the data supports",
     primary: "#F97316",
     glow: "#FB923C",
-    accent: "#FDBA74",
+    bg: "linear-gradient(160deg, #FFF7ED 0%, #FAFAF8 100%)",
     traits: ["Risk underestimator", "Goal chaser", "Hope builder", "Deadline misjudger"],
     keyTraits: [
       "You tend to underestimate risks and overestimate positive outcomes",
@@ -799,7 +890,7 @@ const RESULT_TYPES = {
     dayToDay: "Your optimism is a genuine strength — it keeps you going. But it also means you regularly overcommit, underestimate difficulty, and feel caught off guard when things don't work out.",
     biasBuster: [
       "Before committing to a deadline or goal, look at how long similar tasks actually took you (not how long you thought they took). Use the median, not the best case.",
-      "Before starting your next project, spend 2 minutes imagining it has completely failed. Ask: 'What went wrong?' This activates risk-sensing that optimism typically suppresses."
+      "Before starting your next project, spend 2 minutes imagining it has completely failed. Ask: \"What went wrong?\" This activates risk-sensing that optimism typically suppresses."
     ],
     shareText: "I consistently expect things to go better than they probably will. That's the Optimism Bias Oracle in me."
   },
@@ -809,10 +900,10 @@ const RESULT_TYPES = {
     subtitle: "You keep going because you've already invested so much",
     primary: "#F59E0B",
     glow: "#FBBF24",
-    accent: "#FCD34D",
+    bg: "linear-gradient(160deg, #FFFBEB 0%, #FAFAF8 100%)",
     traits: ["Loyal persistent", "Status quo lover", "Investor continuer", "Quit avoider"],
     keyTraits: [
-      "You continue investing in failing projects, jobs, or relationships because 'you've come this far'",
+      "You continue investing in failing projects, jobs, or relationships because \"you've come this far\"",
       "The status quo feels safe, even when change would objectively be better",
       "Walking away from something you've put significant effort into feels like admitting failure",
       "You often stay in comfortable-but-limiting situations longer than you should"
@@ -820,7 +911,7 @@ const RESULT_TYPES = {
     dayToDay: "Your loyalty and persistence are real virtues. But when applied blindly, they turn into cages. Your brain mistakes past investment for future value — and they're simply not the same thing.",
     biasBuster: [
       "If you encountered your current situation for the first time today — knowing what you know now — would you choose to enter it? If no, the sunk cost is already gone. You're choosing it fresh right now. Own that choice.",
-      "Ask yourself: 'Will I care about this decision in 10 years?' If no, the sunk cost is already history. Let it go."
+      "Ask yourself: \"Will I care about this decision in 10 years?\" If no, the sunk cost is already history. Let it go."
     ],
     shareText: "I've thrown good money/time/energy after bad and convinced myself it makes sense because I already invested. Sunk Cost Swimmer energy."
   },
@@ -830,7 +921,7 @@ const RESULT_TYPES = {
     subtitle: "You overestimate how much others notice you",
     primary: "#F43F5E",
     glow: "#FB7185",
-    accent: "#FDA4AF",
+    bg: "linear-gradient(160deg, #FFF1F3 0%, #FAFAF8 100%)",
     traits: ["Social scanner", "Mistake replayer", "Judgment overestimator", "Visibility seeker"],
     keyTraits: [
       "You overestimate how much others notice or remember about your appearance, behavior, and mistakes",
@@ -843,7 +934,7 @@ const RESULT_TYPES = {
       "In your next social situation, quietly observe how much other people are actually paying attention to you versus their own internal worlds. Most people are too absorbed in themselves to notice 90% of what you thought they saw.",
       "Write down your 3 most embarrassing moments from the past year. Then ask: how many do you actively remember about other people? Usually the answer is almost none. They're doing the same thing you are."
     ],
-    shareText: "I feel like everyone's watching and judging. Turns out they're mostly too busy worrying about themselves to notice me."
+    shareText: "I feel like everyone's watching and judging. Turns out they're mostly too busy worrying about themselves to notice me. Classic Spotlight Effect."
   },
   availability: {
     id: "availability_heuristic_navigator",
@@ -851,18 +942,18 @@ const RESULT_TYPES = {
     subtitle: "You judge probability by how easily examples come to mind",
     primary: "#14B8A6",
     glow: "#2DD4BF",
-    accent: "#5EEAD4",
+    bg: "linear-gradient(160deg, #F0FDFA 0%, #FAFAF8 100%)",
     traits: ["News believer", "FOMO sensitive", "Trend follower", "Risk miscalibrator"],
     keyTraits: [
       "Rare but dramatic events feel far more likely than they statistically are",
       "You might make decisions based on what you saw most recently in the news rather than actual base rates",
       "You tend to update your worldview quickly based on vivid stories, even when data contradicts them",
-      "You are highly influenced by what 'everyone seems to be doing'"
+      "You are highly influenced by what \"everyone seems to be doing\""
     ],
     dayToDay: "Your brain is a pattern-recognition machine — it's what made you survive. But in a world of algorithmic feeds and viral headlines, your pattern-recognition is being hijacked by whoever tells the most vivid stories.",
     biasBuster: [
       "When a vivid story makes you feel like a risk is much higher than it is, look up the actual statistics. The answer is almost always lower than your gut says.",
-      "When forming an opinion based on a news story or viral post, ask: 'What would an expert who disagrees with this take seriously?' Give that view a fair hearing before solidifying your view."
+      "When forming an opinion based on a news story or viral post, ask: \"What would an expert who disagrees with this take seriously?\" Give that view a fair hearing before solidifying your view."
     ],
     shareText: "I judge risks based on whatever news story is loudest in my head, not actual statistics. Availability Heuristic hits hard."
   }
@@ -877,7 +968,7 @@ const state = {
   resultBias: null
 };
 
-// ─── Utility ──────────────────────────────────────────────────────────────
+// ─── Utilities ────────────────────────────────────────────────────────────
 function shuffle(arr) {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -904,7 +995,9 @@ function showScreen(name) {
 // ─── Progress Dots ────────────────────────────────────────────────────────
 function renderProgressDots() {
   const container = document.getElementById('progress-dots');
+  const hint = document.getElementById('progress-hint');
   container.innerHTML = '';
+
   for (let i = 1; i <= 10; i++) {
     const dot = document.createElement('div');
     dot.className = 'dot';
@@ -912,29 +1005,43 @@ function renderProgressDots() {
     if (i === state.currentQuestion) dot.classList.add('current');
     container.appendChild(dot);
   }
+
+  // Progress hints per UX spec
+  const answeredCount = Object.keys(state.answers).length;
+  if (state.currentQuestion >= 8) {
+    hint.textContent = 'Almost there! 🎉';
+  } else if (answeredCount === 5) {
+    hint.textContent = 'Halfway!';
+  } else {
+    hint.textContent = '';
+  }
+
+  // Accessibility
+  container.setAttribute('aria-label', `Question ${state.currentQuestion} of 10`);
 }
 
-// ─── Question Rendering ──────────────────────────────────────────────────
+// ─── Question Rendering ───────────────────────────────────────────────────
 function renderQuestion() {
   const q = state.shuffledQuestions[state.currentQuestion - 1];
-  const labelEl = document.getElementById('q-label');
   const textEl = document.getElementById('q-text');
   const optionsEl = document.getElementById('options-container');
+  const notSureEl = document.getElementById('not-sure');
 
-  labelEl.textContent = `Question ${state.currentQuestion} of 10`;
   textEl.textContent = q.text;
   optionsEl.innerHTML = '';
 
-  // Shuffle option keys for this question
+  // Shuffle option keys
   const optionKeys = shuffle(['A', 'B', 'C', 'D']);
+  const chosenOption = state.answers[state.currentQuestion];
 
   optionKeys.forEach(letter => {
     const optText = q.options[letter];
     if (!optText) return;
-    const isSelected = state.answers[state.currentQuestion] === letter;
+    const isSelected = chosenOption === letter;
     const btn = document.createElement('button');
     btn.className = 'option-btn' + (isSelected ? ' selected' : '');
     btn.setAttribute('data-letter', letter);
+    btn.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
     btn.innerHTML = `<span class="opt-letter">${letter}.</span><span class="opt-text">${escHtml(optText)}</span>`;
     btn.addEventListener('click', () => selectOption(letter));
     optionsEl.appendChild(btn);
@@ -944,25 +1051,36 @@ function renderQuestion() {
 
   const backBtn = document.getElementById('back-btn');
   backBtn.style.display = state.currentQuestion > 1 ? 'inline-flex' : 'none';
+
+  // Not sure link — advance with a neutral skip
+  notSureEl.onclick = () => {
+    if (!state.answers[state.currentQuestion]) {
+      state.answers[state.currentQuestion] = null; // neutral
+    }
+    advanceQuestion();
+  };
 }
 
 function selectOption(letter) {
   state.answers[state.currentQuestion] = letter;
 
-  // Visual feedback
   document.querySelectorAll('.option-btn').forEach(b => {
-    b.classList.toggle('selected', b.getAttribute('data-letter') === letter);
+    const isSelected = b.getAttribute('data-letter') === letter;
+    b.classList.toggle('selected', isSelected);
+    b.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
   });
 
-  // Advance after short delay
-  setTimeout(() => {
-    if (state.currentQuestion < 10) {
-      state.currentQuestion++;
-      renderQuestion();
-    } else {
-      calculateResult();
-    }
-  }, 380);
+  // Auto-advance after brief pause
+  setTimeout(() => advanceQuestion(), 380);
+}
+
+function advanceQuestion() {
+  if (state.currentQuestion < 10) {
+    state.currentQuestion++;
+    renderQuestion();
+  } else {
+    calculateResult();
+  }
 }
 
 function goBack() {
@@ -974,12 +1092,11 @@ function goBack() {
 
 // ─── Scoring ──────────────────────────────────────────────────────────────
 function calculateResult() {
-  // Count bias scores based on the biasMap in each question
   const scores = { confirmation: 0, optimism: 0, sunkcost: 0, spotlight: 0, availability: 0 };
 
   for (let i = 1; i <= 10; i++) {
     const answer = state.answers[i];
-    if (!answer) continue;
+    if (!answer) continue; // neutral skip
     const q = state.shuffledQuestions[i - 1];
     const bias = q.biasMap[answer];
     if (bias && scores.hasOwnProperty(bias)) {
@@ -987,7 +1104,6 @@ function calculateResult() {
     }
   }
 
-  // Find dominant bias (ties broken by first in order)
   let maxScore = 0;
   let dominantBias = 'confirmation';
   const biasOrder = ['confirmation', 'optimism', 'sunkcost', 'spotlight', 'availability'];
@@ -999,35 +1115,45 @@ function calculateResult() {
   }
 
   state.resultBias = dominantBias;
-  renderResult();
+
+  // Pre-fill share card data
+  prepareShareCard(dominantBias);
+
+  // Show result screen
   showScreen('result');
+
+  // Trigger staged reveal
+  setTimeout(() => {
+    const header = document.getElementById('result-header');
+    const desc = document.getElementById('result-description');
+    const tags = document.getElementById('result-tags');
+    const share = document.getElementById('result-share');
+    const footer = document.getElementById('result-footer');
+
+    header.classList.add('revealed');
+    setTimeout(() => desc.classList.add('revealed'), 200);
+    setTimeout(() => tags.classList.add('revealed'), 380);
+    setTimeout(() => share.classList.add('revealed'), 460);
+    setTimeout(() => footer.classList.add('revealed'), 540);
+  }, 100);
 }
 
-// ─── Result Rendering ────────────────────────────────────────────────────
+// ─── Result Rendering ──────────────────────────────────────────────────────
 function renderResult() {
   const r = RESULT_TYPES[state.resultBias];
 
-  // Set result type color
-  document.documentElement.style.setProperty('--result-primary', r.primary);
-  document.documentElement.style.setProperty('--result-glow', r.glow);
-  document.documentElement.style.setProperty('--result-accent', r.accent);
-
-  // Update result header
   document.getElementById('result-type-label').textContent = 'Your Thinking Trap';
   document.getElementById('result-type-label').style.color = r.primary;
   document.getElementById('result-title').textContent = r.name;
   document.getElementById('result-title').style.color = r.primary;
+  document.getElementById('result-subtitle-line').textContent = `You're a ${r.subtitle} — and that's completely human.`;
   document.getElementById('result-divider').style.background = `linear-gradient(90deg, transparent, ${r.primary}, transparent)`;
-  document.getElementById('result-subtitle').textContent = r.subtitle;
 
-  // Build description blocks
   const descEl = document.getElementById('result-description');
   descEl.innerHTML = `
     <div class="result-desc-block">
       <h3 style="color: ${r.primary}">Key Traits</h3>
-      <ul>
-        ${r.keyTraits.map(t => `<li>${escHtml(t)}</li>`).join('')}
-      </ul>
+      <ul>${r.keyTraits.map(t => `<li>${escHtml(t)}</li>`).join('')}</ul>
     </div>
     <div class="result-desc-block">
       <h3 style="color: ${r.primary}">What This Means Day-to-Day</h3>
@@ -1035,44 +1161,76 @@ function renderResult() {
     </div>
     <div class="result-desc-block">
       <h3 style="color: ${r.primary}">Your Bias Buster</h3>
-      <ol style="padding-left: 18px; display: flex; flex-direction: column; gap: 8px;">
-        ${r.biasBuster.map((b, i) => `<li style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6;">${escHtml(b)}</li>`).join('')}
-      </ol>
+      <ol>${r.biasBuster.map(b => `<li>${escHtml(b)}</li>`).join('')}</ol>
     </div>
   `;
 
-  // Trait tags
   const tagsEl = document.getElementById('result-tags');
   tagsEl.innerHTML = r.traits.map(t =>
-    `<span class="trait-tag" style="color: ${r.primary}; border-color: ${r.accent}; background: ${r.primary}10;">${escHtml(t)}</span>`
+    `<span class="trait-tag" style="color: ${r.primary}; border-color: ${r.primary}30; background: ${r.primary}10;">${escHtml(t)}</span>`
   ).join('');
 
-  // Share quote
-  document.getElementById('share-quote').innerHTML = `"${escHtml(r.shareText)} Take the quiz to find your thinking traps →"`;
-
-  // Update share card
-  document.getElementById('card-trait').textContent = 'Your Thinking Trap';
-  document.getElementById('card-trait').style.color = r.primary;
-  document.getElementById('card-trait').style.borderColor = r.accent;
-  document.getElementById('card-name').textContent = r.name;
-  document.getElementById('card-name').style.color = r.primary;
-  document.getElementById('card-subtitle-text').textContent = r.subtitle;
-  const cardBg = document.getElementById('card-bg-shape');
-  cardBg.style.background = `radial-gradient(circle, ${r.primary}40 0%, transparent 70%)`;
+  document.getElementById('share-quote').innerHTML =
+    `"${escHtml(r.shareText)} Take the quiz to find your thinking traps →"`;
 }
 
-// ─── Share ────────────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  const copyBtn = document.getElementById('copy-link-btn');
-  if (copyBtn) {
-    copyBtn.addEventListener('click', () => {
-      navigator.clipboard.writeText(window.location.href).then(() => {
-        copyBtn.textContent = '✓ Copied!';
-        setTimeout(() => { copyBtn.textContent = '📋 Copy Link'; }, 2000);
-      });
+function prepareShareCard(bias) {
+  const r = RESULT_TYPES[bias];
+
+  // Set card background
+  const card = document.getElementById('share-card');
+  card.style.background = r.bg;
+
+  const cardBg = document.getElementById('share-card-bg');
+
+  // Set card content
+  document.getElementById('card-brand').style.color = r.primary;
+  const badge = document.getElementById('card-trait-badge');
+  badge.textContent = 'Your Thinking Trap';
+  badge.style.color = r.primary;
+  badge.style.borderColor = r.primary;
+
+  const nameEl = document.getElementById('card-result-name');
+  nameEl.textContent = r.name;
+  nameEl.style.color = r.primary;
+
+  const subEl = document.getElementById('card-result-sub');
+  subEl.textContent = r.subtitle;
+  subEl.style.color = r.primary;
+
+  document.getElementById('card-cta').style.color = r.primary;
+
+  // Orb
+  const orb = document.getElementById('card-bg-orb');
+  orb.style.background = `radial-gradient(circle, ${r.primary}30 0%, transparent 70%)`;
+  orb.style.width = '220px';
+  orb.style.height = '220px';
+  orb.style.top = '20px';
+  orb.style.right = '-40px';
+}
+
+// ─── Share Functions ─────────────────────────────────────────────────────
+function shareToInstagram() {
+  const r = RESULT_TYPES[state.resultBias];
+  const text = encodeURIComponent(`${r.shareText} Take the quiz → ${window.location.href}`);
+  window.open(`https://instagram.com/stories/create?text=${text}`, '_blank');
+}
+
+function shareToTikTok() {
+  const r = RESULT_TYPES[state.resultBias];
+  const text = encodeURIComponent(`${r.shareText} Take the quiz → ${window.location.href}`);
+  window.open(`https://www.tiktok.com/share?text=${text}`, '_blank');
+}
+
+function shareToWeChat() {
+  const r = RESULT_TYPES[state.resultBias];
+  const text = `${r.shareText} Take the quiz → ${window.location.href}`;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Share text copied! Paste it in WeChat.');
     });
   }
-});
+}
 
 // ─── Retake ──────────────────────────────────────────────────────────────
 function retakeQuiz() {
@@ -1080,6 +1238,12 @@ function retakeQuiz() {
   state.currentQuestion = 1;
   state.resultBias = null;
   state.shuffledQuestions = shuffle(QUESTIONS);
+
+  // Reset reveal states
+  ['result-header','result-description','result-tags','result-share','result-footer'].forEach(id => {
+    document.getElementById(id).classList.remove('revealed');
+  });
+
   showScreen('disclaimer');
 }
 
@@ -1089,19 +1253,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   showScreen('disclaimer');
 
-  const beginBtn = document.getElementById('begin-btn');
-  if (beginBtn) beginBtn.addEventListener('click', () => {
-    showScreen('intro');
-  });
-
-  const startBtn = document.getElementById('start-btn');
-  if (startBtn) startBtn.addEventListener('click', () => {
+  document.getElementById('begin-btn').addEventListener('click', () => showScreen('intro'));
+  document.getElementById('start-btn').addEventListener('click', () => {
     renderQuestion();
     showScreen('quiz');
   });
+  document.getElementById('back-btn').addEventListener('click', goBack);
 
-  const backBtn = document.getElementById('back-btn');
-  if (backBtn) backBtn.addEventListener('click', goBack);
+  document.getElementById('copy-link-btn').addEventListener('click', () => {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      const btn = document.getElementById('copy-link-btn');
+      btn.textContent = '✓ Copied!';
+      setTimeout(() => { btn.textContent = '📋 Copy Link'; }, 2000);
+    });
+  });
 });
 </script>
 </body>
