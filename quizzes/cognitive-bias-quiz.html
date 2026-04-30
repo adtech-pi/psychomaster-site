@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What Thinking Trap Are You Most Prone To?</title>
+  <meta name="description" content="Take 3 minutes to discover the thinking traps you fall into every day — and how to outsmart them.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #FAFAF8;
+  --surface: #FFFFFF;
+  --surface-elevated: #F5F3F0;
+  --border: #E5E0D8;
+  --text-primary: #1F2937;
+  --text-secondary: #6B7280;
+  --text-muted: #9CA3AF;
+  --primary: #4F46E5;
+  --primary-light: #818CF8;
+  --secondary: #F97316;
+  --success: #10B981;
+  --highlight: #FBBF24;
+
+  --font-display: 'Outfit', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+
+  --transition-fast: 200ms ease;
+  --transition-normal: 350ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Screens ───────────────────────────────────────────────────────────── */
+.quiz-screen {
+  display: none;
+  min-height: 100dvh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl) var(--space-md);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+.quiz-screen.active { display: flex; opacity: 1; }
+
+.screen-inner {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+  text-align: center;
+}
+
+/* ── Progress Dots ─────────────────────────────────────────────────────── */
+.progress-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--border);
+  transition: all var(--transition-normal);
+}
+.dot.filled { background: var(--primary); transform: scale(1.1); }
+.dot.current { 
+  background: var(--primary); 
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+  animation: dotPulse 2s ease-in-out infinite;
+}
+@keyframes dotPulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2); }
+  50% { box-shadow: 0 0 0 6px rgba(79, 70, 229, 0.1); }
+}
+
+/* ── Disclaimer Screen ──────────────────────────────────────────────────── */
+.screen-disclaimer .disclaimer-text {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  text-align: left;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+
+/* ── Intro Screen ──────────────────────────────────────────────────────── */
+.screen-intro .intro-tag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--secondary);
+  background: rgba(249, 115, 22, 0.08);
+  padding: 6px 16px;
+  border-radius: var(--radius-pill);
+}
+.screen-intro .intro-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 7vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+.screen-intro .intro-subtitle {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  max-width: 340px;
+  line-height: 1.6;
+}
+.screen-intro .intro-meta {
+  display: flex;
+  gap: var(--space-md);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.screen-intro .intro-meta span { display: flex; align-items: center; gap: 6px; }
+
+/* ── Quiz Screen ────────────────────────────────────────────────────────── */
+.screen-quiz {
+  justify-content: flex-start;
+  padding-top: var(--space-lg);
+}
+.quiz-header {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+.q-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-align: center;
+}
+.q-text {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 4vw, 1.15rem);
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--text-primary);
+  text-align: left;
+}
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  width: 100%;
+  max-width: 420px;
+}
+.option-btn {
+  width: 100%;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px var(--space-sm);
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  transition: all var(--transition-fast);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+.option-btn:hover {
+  background: var(--surface-elevated);
+  border-color: var(--primary-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.08);
+}
+.option-btn:active { transform: scale(0.99); }
+.option-btn.selected {
+  background: rgba(79, 70, 229, 0.06);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+.opt-letter {
+  font-weight: 700;
+  color: var(--primary);
+  flex-shrink: 0;
+  min-width: 1.4em;
+  font-size: 0.9rem;
+}
+.opt-text { color: var(--text-primary); }
+.quiz-nav {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-xs);
+}
+.back-btn {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast);
+}
+.back-btn:hover { color: var(--text-primary); }
+.nav-spacer { flex: 1; }
+
+/* ── Result Screen ─────────────────────────────────────────────────────── */
+.screen-result {
+  justify-content: flex-start;
+  padding-top: var(--space-xl);
+  gap: var(--space-lg);
+}
+.result-header { text-align: center; display: flex; flex-direction: column; gap: 10px; }
+.result-type-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+.result-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 7vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.result-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  max-width: 320px;
+  margin: 0 auto;
+}
+.result-divider {
+  width: 40px;
+  height: 3px;
+  border-radius: 2px;
+  margin: 4px auto;
+}
+.result-description {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.result-desc-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  text-align: left;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.03);
+}
+.result-desc-block h3 {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+.result-desc-block p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+.result-desc-block ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.result-desc-block ul li {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  padding-left: 18px;
+  position: relative;
+}
+.result-desc-block ul li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: 600;
+}
+.result-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+.trait-tag {
+  background: rgba(79, 70, 229, 0.06);
+  border: 1px solid rgba(79, 70, 229, 0.2);
+  border-radius: var(--radius-pill);
+  padding: 4px 14px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+.result-share {
+  width: 100%;
+  max-width: 420px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+}
+.share-quote {
+  font-style: italic;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  text-align: center;
+  border-left: none;
+  margin: 0 0 var(--space-sm);
+}
+.share-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: 1.5px solid;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+.share-btn.copylink {
+  background: var(--surface-elevated);
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+.share-btn.copylink:hover { border-color: var(--primary); color: var(--primary); }
+.result-footer {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: var(--space-lg);
+  align-items: center;
+}
+.retake-btn {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  padding: 8px 24px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.retake-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+/* ── Share Card (9:16) ─────────────────────────────────────────────────── */
+.share-card {
+  display: none;
+  width: 100%;
+  aspect-ratio: 9/16;
+  max-width: 390px;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+  padding: 32px 24px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+.share-card-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+.share-card .brand {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  opacity: 0.6;
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+.share-card .result-name {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.share-card .result-subtitle-text {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  line-height: 1.5;
+  max-width: 260px;
+}
+.share-card .result-trait {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+  padding: 4px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid currentColor;
+}
+.share-card .cta-text {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  opacity: 0.5;
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+.share-card .card-bg-shape {
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  opacity: 0.12;
+}
+
+/* ── CTA Button ────────────────────────────────────────────────────────── */
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 14px 36px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  letter-spacing: 0.02em;
+  min-width: 200px;
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.25);
+}
+.btn-primary:hover {
+  background: var(--primary-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.35);
+}
+.btn-primary:active { transform: translateY(0); }
+
+/* ── Animations ────────────────────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.quiz-screen.active .screen-inner { animation: fadeInUp 500ms cubic-bezier(0.4, 0, 0.6, 1) both; }
+.screen-result .result-header { animation: fadeInUp 500ms cubic-bezier(0.4, 0, 0.6, 1) both; }
+.screen-result .result-description { animation: fadeInUp 500ms cubic-bezier(0.4, 0, 0.6, 1) 100ms both; }
+.screen-result .result-tags { animation: fadeInUp 500ms cubic-bezier(0.4, 0, 0.6, 1) 180ms both; }
+.screen-result .result-share { animation: fadeInUp 500ms cubic-bezier(0.4, 0, 0.6, 1) 240ms both; }
+.screen-result .result-footer { animation: fadeInUp 500ms cubic-bezier(0.4, 0, 0.6, 1) 300ms both; }
+
+/* ── Responsive ────────────────────────────────────────────────────────── */
+@media (min-width: 640px) {
+  body { font-size: 17px; }
+  .quiz-screen { padding: var(--space-xl) var(--space-lg); }
+}
+
+/* ── Accessibility ─────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .quiz-screen.active .screen-inner,
+  .screen-result .result-header,
+  .screen-result .result-description,
+  .screen-result .result-tags,
+  .screen-result .result-share,
+  .screen-result .result-footer {
+    animation: fadeIn 200ms ease both;
+  }
+  .dot.current { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── DISCLAIMER SCREEN ─────────────────────────────────────────────── -->
+<div id="screen-disclaimer" class="quiz-screen screen-disclaimer">
+  <div class="screen-inner">
+    <div class="disclaimer-text">
+      <strong>Before you begin:</strong> This quiz is for self-reflection only — not a clinical diagnosis. Cognitive biases are natural patterns in human thinking. Recognizing yours is a strength, not a weakness. If you're experiencing persistent difficulties with decision-making or mental health, please consult a qualified professional.
+    </div>
+    <button id="begin-btn" class="btn-primary">Begin →</button>
+  </div>
+</div>
+
+<!-- ── INTRO SCREEN ────────────────────────────────────────────────────── -->
+<div id="screen-intro" class="quiz-screen screen-intro">
+  <div class="screen-inner">
+    <span class="intro-tag">🧠 Psychology Quiz</span>
+    <h1 class="intro-title">You think you're logical.<br>Your brain disagrees.</h1>
+    <p class="intro-subtitle">This 3-minute quiz reveals the thinking traps you fall into every day — and how to outsmart them.</p>
+    <div class="intro-meta">
+      <span>📋 10 questions</span>
+      <span>⏱️ ~3 minutes</span>
+    </div>
+    <button id="start-btn" class="btn-primary">Start Quiz</button>
+  </div>
+</div>
+
+<!-- ── QUIZ SCREEN ─────────────────────────────────────────────────────── -->
+<div id="screen-quiz" class="quiz-screen screen-quiz">
+  <div class="quiz-header">
+    <div class="progress-dots" id="progress-dots"></div>
+    <span id="q-label" class="q-label"></span>
+  </div>
+  <div class="question-container">
+    <p id="q-text" class="q-text"></p>
+    <div id="options-container" class="options-list"></div>
+  </div>
+  <div class="quiz-nav">
+    <button id="back-btn" class="back-btn">← Back</button>
+    <div class="nav-spacer"></div>
+  </div>
+</div>
+
+<!-- ── RESULT SCREEN ───────────────────────────────────────────────────── -->
+<div id="screen-result" class="quiz-screen screen-result">
+  <div class="screen-inner">
+    <div class="result-header">
+      <span id="result-type-label" class="result-type-label">Your Thinking Trap</span>
+      <h1 id="result-title" class="result-title"></h1>
+      <div id="result-divider" class="result-divider"></div>
+      <p id="result-subtitle" class="result-subtitle"></p>
+    </div>
+    <div id="result-description" class="result-description"></div>
+    <div id="result-tags" class="result-tags"></div>
+    <div id="result-share" class="result-share">
+      <blockquote id="share-quote" class="share-quote"></blockquote>
+      <div class="share-buttons">
+        <button id="copy-link-btn" class="share-btn copylink">📋 Copy Link</button>
+      </div>
+    </div>
+    <div id="result-footer" class="result-footer">
+      <p>PsychoMaster · Self-Reflection Quiz</p>
+      <button class="retake-btn" onclick="retakeQuiz()">Retake Quiz →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── SHARE CARD (hidden, for download) ───────────────────────────────── -->
+<div id="share-card" class="share-card">
+  <div class="share-card-inner">
+    <div id="card-bg-shape" class="card-bg-shape"></div>
+    <span class="brand">PsychoMaster</span>
+    <span id="card-trait" class="result-trait"></span>
+    <h2 id="card-name" class="result-name"></h2>
+    <p id="card-subtitle-text" class="result-subtitle-text"></p>
+    <span class="cta-text">Take the quiz →</span>
+  </div>
+</div>
+
+<script>
+// ─── Quiz Data ───────────────────────────────────────────────────────────
+const QUESTIONS = [
+  {
+    n: 1,
+    text: "You and your team are discussing a project plan. You privately think one idea is risky, but everyone else seems excited about it. What do you do?",
+    options: {
+      A: "Speak up and share your concern — you owe it to the team to be honest.",
+      B: "Go along with the group. Everyone seems on board, so the risk must be manageable.",
+      C: "Quietly prepare a backup plan just in case, but say nothing for now.",
+      D: "Wait to see how the first month goes before deciding if your concern was valid."
+    },
+    biasMap: { A: "confirmation", B: "availability", C: "sunkcost", D: "optimism" }
+  },
+  {
+    n: 2,
+    text: "You see a headline about a study linking a popular food to cancer. What do you do first?",
+    options: {
+      A: "Look for the original study to check the sample size and methodology.",
+      B: "Immediately cut that food from your diet and tell your friends about it.",
+      C: "Assume it's probably fine — headlines always overhype these things.",
+      D: "Wonder why this study got funding when so many more important health issues exist."
+    },
+    biasMap: { A: "sunkcost", B: "availability", C: "optimism", D: "availability" }
+  },
+  {
+    n: 3,
+    text: "You've been interviewing at a company you like. They make you an offer — slightly below your target salary, but the role is great. What do you do?",
+    options: {
+      A: "You accept quickly, relieved the process is over and worried they might withdraw the offer.",
+      B: "You counter-offer confidently, citing your research on comparable salaries.",
+      C: "You tell yourself you'd have taken this offer even if it paid 20% less — it's the perfect role.",
+      D: "You immediately start imagining all the ways this job will transform your career."
+    },
+    biasMap: { A: "sunkcost", B: "confirmation", C: "optimism", D: "optimism" }
+  },
+  {
+    n: 4,
+    text: "A close friend tells you they're moving abroad for a new job. They seem excited, but you remember they said this about their last two major life decisions. What do you think?",
+    options: {
+      A: "They clearly didn't learn from past patterns — history repeats itself.",
+      B: "This time feels different — you can tell by how they're talking about it.",
+      C: "You've seen them make impulsive decisions before; you stay quiet but prepare yourself for updates.",
+      D: "You get excited too and start planning how to visit them."
+    },
+    biasMap: { A: "confirmation", B: "optimism", C: "confirmation", D: "availability" }
+  },
+  {
+    n: 5,
+    text: "You spent $80 on a non-refundable ticket to a concert. On the day of the show, you're exhausted and the weather is terrible. What do you do?",
+    options: {
+      A: "Go to the concert anyway — you paid for it, and you might miss the memory of not going.",
+      B: "Stay home and rest. The money is already spent either way.",
+      C: "Check if any friends want the ticket last-minute, but don't push it.",
+      D: "Go because you might regret missing it, and FOMO is real."
+    },
+    biasMap: { A: "sunkcost", B: "sunkcost", C: "availability", D: "availability" }
+  },
+  {
+    n: 6,
+    text: "Someone leaves a rude comment on your social media post. How do you feel and react?",
+    options: {
+      A: "It bothers you disproportionately — one comment from a stranger feels like validation that people don't like you.",
+      B: "You scroll past. One comment doesn't reflect your overall reputation.",
+      C: "You look at their profile to see what kind of person would say that.",
+      D: "You draft a reply, imagining all the ways you could dismantle them — then don't send it."
+    },
+    biasMap: { A: "spotlight", B: "spotlight", C: "confirmation", D: "optimism" }
+  },
+  {
+    n: 7,
+    text: "Your manager gives you mostly positive feedback but highlights one area for improvement. A week later, you can only remember the negative part. What happened?",
+    options: {
+      A: "Your brain is doing what brains do — negativity bias. The criticism outweighs the praise automatically.",
+      B: "You think your manager was being passive-aggressive and hiding real criticism.",
+      C: "You decide to prove them wrong entirely in that area and channel all your energy there.",
+      D: "You wait to see if they bring it up again before taking it seriously."
+    },
+    biasMap: { A: "spotlight", B: "confirmation", C: "sunkcost", D: "availability" }
+  },
+  {
+    n: 8,
+    text: "A financial app shows you a stock that has gone up 200% in the past year. The app highlights this impressive return. What do you think?",
+    options: {
+      A: "You check the company's fundamentals before making any judgment.",
+      B: "You think it must be a good company if the stock performed this well — past performance is a signal.",
+      C: "You assume the app is promoting it because it wants you to buy, not because it's actually a good pick.",
+      D: "You feel excited and imagine how much you could have made if you'd invested earlier."
+    },
+    biasMap: { A: "availability", B: "availability", C: "sunkcost", D: "availability" }
+  },
+  {
+    n: 9,
+    text: "Your friend asks you to predict how likely they are to achieve a major goal they've set. You've seen them set similar goals before. What do you say?",
+    options: {
+      A: '"Honestly? History suggests it\'s going to be hard. But this time feels different."',
+      B: '"You\'ve got this! You\'re more capable than you think."',
+      C: '"What specifically are you doing differently this time to make it happen?"',
+      D: '"It depends on how you define success. Most people underestimate how long things take."'
+    },
+    biasMap: { A: "confirmation", B: "optimism", C: "availability", D: "sunkcost" }
+  },
+  {
+    n: 10,
+    text: "You're in a group photo. You see it for the first time. What do you notice first?",
+    options: {
+      A: "Yourself — how you look, your expression, your posture.",
+      B: "Whether everyone looks happy and connected.",
+      C: "The person who took the photo didn't get a good angle — again.",
+      D: "That you should have worn something different."
+    },
+    biasMap: { A: "spotlight", B: "spotlight", C: "confirmation", D: "sunkcost" }
+  }
+];
+
+const RESULT_TYPES = {
+  confirmation: {
+    id: "confirmation_detective",
+    name: "The Confirmation Detective",
+    subtitle: "You seek evidence that confirms what you already believe",
+    primary: "#6366F1",
+    glow: "#818CF8",
+    accent: "#A5B4FC",
+    traits: ["Quick to judge", "Hindsight aware", "Seeker of truth", "Pattern matcher"],
+    keyTraits: [
+      "You form opinions quickly and then unconsciously seek information that confirms them",
+      "Past 'lessons learned' often look clearer in hindsight than they did in the moment",
+      "You tend to feel more certain than the evidence warrants",
+      "You might dismiss perspectives that don't fit your existing narrative"
+    ],
+    dayToDay: "You probably think you're more open-minded than you actually are. Your brain filters out dissonant information so efficiently that you don't notice it happening.",
+    biasBuster: [
+      "Before making your next important decision, seek one opinion that actively challenges your view. Write it down. Take it seriously for 5 minutes before returning to your original position.",
+      "After forming an opinion, ask yourself: 'What information would actually change my mind?' Write it down. Watch whether you update your view when that information arrives."
+    ],
+    shareText: "My brain already made up its mind — and then recruited evidence to back itself up. Classic Confirmation Detective."
+  },
+  optimism: {
+    id: "optimism_bias_oracle",
+    name: "The Optimism Bias Oracle",
+    subtitle: "You naturally expect better outcomes than the data supports",
+    primary: "#F97316",
+    glow: "#FB923C",
+    accent: "#FDBA74",
+    traits: ["Risk underestimator", "Goal chaser", "Hope builder", "Deadline misjudger"],
+    keyTraits: [
+      "You tend to underestimate risks and overestimate positive outcomes",
+      "Projects and tasks consistently take longer than you expect",
+      "You believe negative events are more likely to happen to others than to you",
+      "You set ambitious goals but consistently misjudge the path to get there"
+    ],
+    dayToDay: "Your optimism is a genuine strength — it keeps you going. But it also means you regularly overcommit, underestimate difficulty, and feel caught off guard when things don't work out.",
+    biasBuster: [
+      "Before committing to a deadline or goal, look at how long similar tasks actually took you (not how long you thought they took). Use the median, not the best case.",
+      "Before starting your next project, spend 2 minutes imagining it has completely failed. Ask: 'What went wrong?' This activates risk-sensing that optimism typically suppresses."
+    ],
+    shareText: "I consistently expect things to go better than they probably will. That's the Optimism Bias Oracle in me."
+  },
+  sunkcost: {
+    id: "sunk_cost_swimmer",
+    name: "The Sunk Cost Swimmer",
+    subtitle: "You keep going because you've already invested so much",
+    primary: "#F59E0B",
+    glow: "#FBBF24",
+    accent: "#FCD34D",
+    traits: ["Loyal persistent", "Status quo lover", "Investor continuer", "Quit avoider"],
+    keyTraits: [
+      "You continue investing in failing projects, jobs, or relationships because 'you've come this far'",
+      "The status quo feels safe, even when change would objectively be better",
+      "Walking away from something you've put significant effort into feels like admitting failure",
+      "You often stay in comfortable-but-limiting situations longer than you should"
+    ],
+    dayToDay: "Your loyalty and persistence are real virtues. But when applied blindly, they turn into cages. Your brain mistakes past investment for future value — and they're simply not the same thing.",
+    biasBuster: [
+      "If you encountered your current situation for the first time today — knowing what you know now — would you choose to enter it? If no, the sunk cost is already gone. You're choosing it fresh right now. Own that choice.",
+      "Ask yourself: 'Will I care about this decision in 10 years?' If no, the sunk cost is already history. Let it go."
+    ],
+    shareText: "I've thrown good money/time/energy after bad and convinced myself it makes sense because I already invested. Sunk Cost Swimmer energy."
+  },
+  spotlight: {
+    id: "spotlight_effect_star",
+    name: "The Spotlight Effect Star",
+    subtitle: "You overestimate how much others notice you",
+    primary: "#F43F5E",
+    glow: "#FB7185",
+    accent: "#FDA4AF",
+    traits: ["Social scanner", "Mistake replayer", "Judgment overestimator", "Visibility seeker"],
+    keyTraits: [
+      "You overestimate how much others notice or remember about your appearance, behavior, and mistakes",
+      "Social situations can feel more scrutinizing than they actually are",
+      "You replay embarrassing moments more often and more vividly than warranted",
+      "You might avoid taking action because you fear being seen and evaluated"
+    ],
+    dayToDay: "You're the main character in your head — but in everyone else's story, you're a supporting cast member at most. This isn't a tragedy; it's actually deeply freeing once you internalize it.",
+    biasBuster: [
+      "In your next social situation, quietly observe how much other people are actually paying attention to you versus their own internal worlds. Most people are too absorbed in themselves to notice 90% of what you thought they saw.",
+      "Write down your 3 most embarrassing moments from the past year. Then ask: how many do you actively remember about other people? Usually the answer is almost none. They're doing the same thing you are."
+    ],
+    shareText: "I feel like everyone's watching and judging. Turns out they're mostly too busy worrying about themselves to notice me."
+  },
+  availability: {
+    id: "availability_heuristic_navigator",
+    name: "The Availability Heuristic Navigator",
+    subtitle: "You judge probability by how easily examples come to mind",
+    primary: "#14B8A6",
+    glow: "#2DD4BF",
+    accent: "#5EEAD4",
+    traits: ["News believer", "FOMO sensitive", "Trend follower", "Risk miscalibrator"],
+    keyTraits: [
+      "Rare but dramatic events feel far more likely than they statistically are",
+      "You might make decisions based on what you saw most recently in the news rather than actual base rates",
+      "You tend to update your worldview quickly based on vivid stories, even when data contradicts them",
+      "You are highly influenced by what 'everyone seems to be doing'"
+    ],
+    dayToDay: "Your brain is a pattern-recognition machine — it's what made you survive. But in a world of algorithmic feeds and viral headlines, your pattern-recognition is being hijacked by whoever tells the most vivid stories.",
+    biasBuster: [
+      "When a vivid story makes you feel like a risk is much higher than it is, look up the actual statistics. The answer is almost always lower than your gut says.",
+      "When forming an opinion based on a news story or viral post, ask: 'What would an expert who disagrees with this take seriously?' Give that view a fair hearing before solidifying your view."
+    ],
+    shareText: "I judge risks based on whatever news story is loudest in my head, not actual statistics. Availability Heuristic hits hard."
+  }
+};
+
+// ─── State ────────────────────────────────────────────────────────────────
+const state = {
+  screen: 'disclaimer',
+  answers: {},
+  currentQuestion: 1,
+  shuffledQuestions: null,
+  resultBias: null
+};
+
+// ─── Utility ──────────────────────────────────────────────────────────────
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function escHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─── Navigation ───────────────────────────────────────────────────────────
+function showScreen(name) {
+  document.querySelectorAll('.quiz-screen').forEach(s => s.classList.remove('active'));
+  const screen = document.getElementById('screen-' + name);
+  if (screen) screen.classList.add('active');
+  state.screen = name;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── Progress Dots ────────────────────────────────────────────────────────
+function renderProgressDots() {
+  const container = document.getElementById('progress-dots');
+  container.innerHTML = '';
+  for (let i = 1; i <= 10; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'dot';
+    if (state.answers[i] !== undefined) dot.classList.add('filled');
+    if (i === state.currentQuestion) dot.classList.add('current');
+    container.appendChild(dot);
+  }
+}
+
+// ─── Question Rendering ──────────────────────────────────────────────────
+function renderQuestion() {
+  const q = state.shuffledQuestions[state.currentQuestion - 1];
+  const labelEl = document.getElementById('q-label');
+  const textEl = document.getElementById('q-text');
+  const optionsEl = document.getElementById('options-container');
+
+  labelEl.textContent = `Question ${state.currentQuestion} of 10`;
+  textEl.textContent = q.text;
+  optionsEl.innerHTML = '';
+
+  // Shuffle option keys for this question
+  const optionKeys = shuffle(['A', 'B', 'C', 'D']);
+
+  optionKeys.forEach(letter => {
+    const optText = q.options[letter];
+    if (!optText) return;
+    const isSelected = state.answers[state.currentQuestion] === letter;
+    const btn = document.createElement('button');
+    btn.className = 'option-btn' + (isSelected ? ' selected' : '');
+    btn.setAttribute('data-letter', letter);
+    btn.innerHTML = `<span class="opt-letter">${letter}.</span><span class="opt-text">${escHtml(optText)}</span>`;
+    btn.addEventListener('click', () => selectOption(letter));
+    optionsEl.appendChild(btn);
+  });
+
+  renderProgressDots();
+
+  const backBtn = document.getElementById('back-btn');
+  backBtn.style.display = state.currentQuestion > 1 ? 'inline-flex' : 'none';
+}
+
+function selectOption(letter) {
+  state.answers[state.currentQuestion] = letter;
+
+  // Visual feedback
+  document.querySelectorAll('.option-btn').forEach(b => {
+    b.classList.toggle('selected', b.getAttribute('data-letter') === letter);
+  });
+
+  // Advance after short delay
+  setTimeout(() => {
+    if (state.currentQuestion < 10) {
+      state.currentQuestion++;
+      renderQuestion();
+    } else {
+      calculateResult();
+    }
+  }, 380);
+}
+
+function goBack() {
+  if (state.currentQuestion > 1) {
+    state.currentQuestion--;
+    renderQuestion();
+  }
+}
+
+// ─── Scoring ──────────────────────────────────────────────────────────────
+function calculateResult() {
+  // Count bias scores based on the biasMap in each question
+  const scores = { confirmation: 0, optimism: 0, sunkcost: 0, spotlight: 0, availability: 0 };
+
+  for (let i = 1; i <= 10; i++) {
+    const answer = state.answers[i];
+    if (!answer) continue;
+    const q = state.shuffledQuestions[i - 1];
+    const bias = q.biasMap[answer];
+    if (bias && scores.hasOwnProperty(bias)) {
+      scores[bias]++;
+    }
+  }
+
+  // Find dominant bias (ties broken by first in order)
+  let maxScore = 0;
+  let dominantBias = 'confirmation';
+  const biasOrder = ['confirmation', 'optimism', 'sunkcost', 'spotlight', 'availability'];
+  for (const bias of biasOrder) {
+    if (scores[bias] > maxScore) {
+      maxScore = scores[bias];
+      dominantBias = bias;
+    }
+  }
+
+  state.resultBias = dominantBias;
+  renderResult();
+  showScreen('result');
+}
+
+// ─── Result Rendering ────────────────────────────────────────────────────
+function renderResult() {
+  const r = RESULT_TYPES[state.resultBias];
+
+  // Set result type color
+  document.documentElement.style.setProperty('--result-primary', r.primary);
+  document.documentElement.style.setProperty('--result-glow', r.glow);
+  document.documentElement.style.setProperty('--result-accent', r.accent);
+
+  // Update result header
+  document.getElementById('result-type-label').textContent = 'Your Thinking Trap';
+  document.getElementById('result-type-label').style.color = r.primary;
+  document.getElementById('result-title').textContent = r.name;
+  document.getElementById('result-title').style.color = r.primary;
+  document.getElementById('result-divider').style.background = `linear-gradient(90deg, transparent, ${r.primary}, transparent)`;
+  document.getElementById('result-subtitle').textContent = r.subtitle;
+
+  // Build description blocks
+  const descEl = document.getElementById('result-description');
+  descEl.innerHTML = `
+    <div class="result-desc-block">
+      <h3 style="color: ${r.primary}">Key Traits</h3>
+      <ul>
+        ${r.keyTraits.map(t => `<li>${escHtml(t)}</li>`).join('')}
+      </ul>
+    </div>
+    <div class="result-desc-block">
+      <h3 style="color: ${r.primary}">What This Means Day-to-Day</h3>
+      <p>${escHtml(r.dayToDay)}</p>
+    </div>
+    <div class="result-desc-block">
+      <h3 style="color: ${r.primary}">Your Bias Buster</h3>
+      <ol style="padding-left: 18px; display: flex; flex-direction: column; gap: 8px;">
+        ${r.biasBuster.map((b, i) => `<li style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6;">${escHtml(b)}</li>`).join('')}
+      </ol>
+    </div>
+  `;
+
+  // Trait tags
+  const tagsEl = document.getElementById('result-tags');
+  tagsEl.innerHTML = r.traits.map(t =>
+    `<span class="trait-tag" style="color: ${r.primary}; border-color: ${r.accent}; background: ${r.primary}10;">${escHtml(t)}</span>`
+  ).join('');
+
+  // Share quote
+  document.getElementById('share-quote').innerHTML = `"${escHtml(r.shareText)} Take the quiz to find your thinking traps →"`;
+
+  // Update share card
+  document.getElementById('card-trait').textContent = 'Your Thinking Trap';
+  document.getElementById('card-trait').style.color = r.primary;
+  document.getElementById('card-trait').style.borderColor = r.accent;
+  document.getElementById('card-name').textContent = r.name;
+  document.getElementById('card-name').style.color = r.primary;
+  document.getElementById('card-subtitle-text').textContent = r.subtitle;
+  const cardBg = document.getElementById('card-bg-shape');
+  cardBg.style.background = `radial-gradient(circle, ${r.primary}40 0%, transparent 70%)`;
+}
+
+// ─── Share ────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  const copyBtn = document.getElementById('copy-link-btn');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        copyBtn.textContent = '✓ Copied!';
+        setTimeout(() => { copyBtn.textContent = '📋 Copy Link'; }, 2000);
+      });
+    });
+  }
+});
+
+// ─── Retake ──────────────────────────────────────────────────────────────
+function retakeQuiz() {
+  state.answers = {};
+  state.currentQuestion = 1;
+  state.resultBias = null;
+  state.shuffledQuestions = shuffle(QUESTIONS);
+  showScreen('disclaimer');
+}
+
+// ─── Init ────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  state.shuffledQuestions = shuffle(QUESTIONS);
+
+  showScreen('disclaimer');
+
+  const beginBtn = document.getElementById('begin-btn');
+  if (beginBtn) beginBtn.addEventListener('click', () => {
+    showScreen('intro');
+  });
+
+  const startBtn = document.getElementById('start-btn');
+  if (startBtn) startBtn.addEventListener('click', () => {
+    renderQuestion();
+    showScreen('quiz');
+  });
+
+  const backBtn = document.getElementById('back-btn');
+  if (backBtn) backBtn.addEventListener('click', goBack);
+});
+</script>
+</body>
+</html>
