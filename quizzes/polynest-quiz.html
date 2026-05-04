@@ -1,0 +1,1792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Discover your PolyNest Type — the pattern that explains why some days everything feels like too much. Map your nervous system triggers and find your daily Safety Dose.">
+  <title>What Drains Your Nervous System? | The PolyNest Quiz | PsychoMaster</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES — PolyNest Palette
+    ============================================ */
+    :root {
+      /* Base palette */
+      --bg: #F0F9F8;
+      --surface: #FFFFFF;
+      --surface-elevated: #F0FAF9;
+      --border: #CCEEEA;
+      --text-primary: #1E293B;
+      --text-secondary: #475569;
+      --text-muted: #94A3B8;
+
+      /* Primary teal */
+      --teal: #0D9488;
+      --teal-light: #14B8A6;
+      --teal-pale: #99F6E4;
+      --teal-glow: #CCFBF1;
+
+      /* Secondary amber */
+      --amber: #F59E0B;
+      --amber-light: #FBBF24;
+      --amber-pale: #FEF3C7;
+
+      /* Safety dose zones */
+      --green: #10B981;
+      --green-light: #D1FAE5;
+      --yellow: #F59E0B;
+      --yellow-light: #FEF3C7;
+      --red: #EF4444;
+      --red-light: #FEE2E2;
+
+      /* Type colors */
+      --nest-primary: #0D9488;
+      --nest-glow: #14B8A6;
+      --nest-accent: #99F6E4;
+      --sentinel-primary: #B45309;
+      --sentinel-glow: #D97706;
+      --sentinel-accent: #FDE68A;
+      --freeze-primary: #6366F1;
+      --freeze-glow: #818CF8;
+      --freeze-accent: #C7D2FE;
+      --wave-primary: #0891B2;
+      --wave-glow: #22D3EE;
+      --wave-accent: #A5F3FC;
+
+      /* Typography */
+      --font-display: 'Nunito', system-ui, sans-serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+
+      /* Spacing */
+      --space-xs: 8px;
+      --space-sm: 16px;
+      --space-md: 24px;
+      --space-lg: 32px;
+      --space-xl: 48px;
+      --space-2xl: 64px;
+
+      /* Border radius */
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 32px;
+      --radius-pill: 999px;
+
+      /* Transitions */
+      --ease: cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Screen system ── */
+    .screen {
+      display: none;
+      min-height: 100dvh;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-xl) var(--space-sm);
+    }
+    .screen.active { display: flex; }
+
+    .screen-inner {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-lg);
+      text-align: center;
+    }
+
+    /* ── Welcome Screen ── */
+    .welcome-badge {
+      background: var(--teal-pale);
+      color: var(--teal);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-body);
+    }
+
+    .welcome-icon {
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .welcome-headline {
+      font-family: var(--font-display);
+      font-size: 1.875rem;
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    .welcome-tagline {
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.5;
+      color: var(--text-secondary);
+      max-width: 320px;
+    }
+
+    .welcome-outcomes {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: left;
+      width: 100%;
+      max-width: 280px;
+    }
+
+    .outcome-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.875rem;
+      color: var(--teal);
+      font-weight: 500;
+    }
+
+    .outcome-check {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--teal-pale);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 11px;
+    }
+
+    .btn-primary {
+      width: 100%;
+      max-width: 320px;
+      height: 56px;
+      background: var(--teal);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 150ms var(--ease), transform 150ms var(--ease), box-shadow 150ms var(--ease);
+      letter-spacing: 0.01em;
+    }
+
+    .btn-primary:hover {
+      background: var(--teal-light);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(13, 148, 136, 0.3);
+    }
+
+    .btn-primary:active { transform: translateY(0); }
+
+    .welcome-meta {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Consent Screen ── */
+    .consent-icon {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .consent-heading {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .consent-body {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 300px;
+    }
+
+    .consent-points {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-align: left;
+      width: 100%;
+      max-width: 260px;
+    }
+
+    .consent-point {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--amber);
+      font-weight: 500;
+    }
+
+    /* ── Quiz Screen ── */
+    .quiz-screen {
+      justify-content: flex-start;
+      padding-top: var(--space-lg);
+      gap: var(--space-md);
+    }
+
+    .progress-track {
+      width: 100%;
+      max-width: 480px;
+      height: 3px;
+      background: var(--border);
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--teal), var(--teal-light));
+      border-radius: var(--radius-pill);
+      transition: width 500ms var(--ease);
+    }
+
+    .q-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      width: 100%;
+      max-width: 480px;
+      text-align: left;
+    }
+
+    .scenario-box {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--teal);
+      border-radius: var(--radius-md);
+      padding: var(--space-sm);
+      width: 100%;
+      max-width: 480px;
+      text-align: left;
+    }
+
+    .scenario-text {
+      font-size: 1.125rem;
+      font-weight: 600;
+      line-height: 1.55;
+      color: var(--text-primary);
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .option-btn {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px var(--space-sm);
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1.45;
+      transition: border-color 150ms var(--ease), background 150ms var(--ease), transform 150ms var(--ease);
+    }
+
+    .option-btn:hover {
+      border-color: var(--teal-light);
+      transform: translateY(-1px);
+    }
+
+    .option-btn.selected {
+      border-color: var(--teal);
+      background: var(--teal-glow);
+      transform: scale(0.99);
+    }
+
+    .opt-letter {
+      font-weight: 700;
+      color: var(--teal);
+      flex-shrink: 0;
+      min-width: 1.4em;
+    }
+
+    .opt-text { flex: 1; }
+
+    /* ── Processing Screen ── */
+    .processing-icon {
+      width: 120px;
+      height: 120px;
+      position: relative;
+    }
+
+    .nest-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 3px solid var(--border);
+    }
+
+    .nest-pulse {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: var(--teal);
+      animation: spin 1s linear infinite;
+    }
+
+    .nest-inner {
+      position: absolute;
+      inset: 20px;
+      border-radius: 50%;
+      background: var(--teal-pale);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .processing-text {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    /* ── Result Screen ── */
+    .result-screen {
+      justify-content: flex-start;
+      padding-top: var(--space-lg);
+      padding-bottom: var(--space-xl);
+      gap: var(--space-sm);
+      align-items: stretch;
+    }
+
+    .result-inner {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      align-items: center;
+    }
+
+    /* Type Card */
+    .type-card {
+      background: var(--surface);
+      border-radius: var(--radius-xl);
+      padding: var(--space-md);
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-xs);
+      box-shadow: 0 4px 32px rgba(13, 148, 136, 0.12);
+    }
+
+    .type-eyebrow {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 4px 14px;
+      border-radius: var(--radius-pill);
+    }
+
+    .type-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+    }
+
+    .type-name {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .type-state {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--text-muted);
+    }
+
+    .type-tagline {
+      font-size: 0.9rem;
+      font-style: italic;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      max-width: 280px;
+    }
+
+    .type-description {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 320px;
+      text-align: left;
+    }
+
+    /* Section Card */
+    .section-card {
+      background: var(--surface);
+      border-radius: var(--radius-xl);
+      padding: var(--space-md);
+      width: 100%;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: var(--space-sm);
+    }
+
+    /* Radar Chart */
+    .radar-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .radar-chart-wrapper {
+      position: relative;
+      width: 240px;
+      height: 240px;
+    }
+
+    #radarCanvas {
+      width: 240px;
+      height: 240px;
+    }
+
+    .radar-scores {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4px;
+      width: 100%;
+    }
+
+    .radar-score-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .radar-score-num {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .radar-score-label {
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .radar-score-bar {
+      width: 32px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .radar-score-fill {
+      height: 100%;
+      background: var(--teal);
+      border-radius: 2px;
+      transition: width 800ms var(--ease);
+    }
+
+    /* WoT Gauge */
+    .wot-gauge-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .wot-gauge {
+      position: relative;
+      width: 100%;
+      max-width: 280px;
+      height: 24px;
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+      display: flex;
+    }
+
+    .wot-segment {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 200ms;
+    }
+
+    .wot-pointer {
+      position: absolute;
+      top: -8px;
+      width: 2px;
+      height: 40px;
+      background: var(--text-primary);
+      border-radius: 1px;
+      transform: translateX(-50%);
+      transition: left 800ms var(--ease-bounce);
+    }
+
+    .wot-pointer::before {
+      content: '';
+      position: absolute;
+      top: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 8px solid var(--text-primary);
+    }
+
+    .wot-pointer-label {
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+
+    .wot-legend {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 280px;
+    }
+
+    .wot-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .wot-legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .wot-label-text {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-align: center;
+    }
+
+    .wot-explanation {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 300px;
+      text-align: left;
+    }
+
+    /* Safety Dose */
+    .safety-dose-intro {
+      font-size: 0.9rem;
+      font-style: italic;
+      color: var(--text-secondary);
+      margin-bottom: var(--space-sm);
+    }
+
+    .safety-card {
+      background: var(--surface);
+      border-radius: var(--radius-md);
+      padding: var(--space-sm);
+      border-left: 4px solid;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .safety-card.green { border-color: var(--green); }
+    .safety-card.yellow { border-color: var(--yellow); }
+    .safety-card.red { border-color: var(--red); }
+
+    .safety-header {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .safety-card.green .safety-header { color: var(--green); }
+    .safety-card.yellow .safety-header { color: var(--yellow); }
+    .safety-card.red .safety-header { color: var(--red); }
+
+    .safety-items {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      list-style: none;
+    }
+
+    .safety-item {
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      line-height: 1.5;
+      padding-left: 12px;
+      position: relative;
+    }
+
+    .safety-item::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+    }
+
+    .safety-card.green .safety-item::before { color: var(--green); }
+    .safety-card.yellow .safety-item::before { color: var(--yellow); }
+    .safety-card.red .safety-item::before { color: var(--red); }
+
+    /* Insights */
+    .insight-card {
+      background: var(--surface-elevated);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      border-left: 3px solid var(--teal);
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .insight-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .insight-text {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    /* Share section */
+    .share-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-md) 0;
+    }
+
+    .share-heading {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .share-subtext {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      max-width: 280px;
+    }
+
+    .share-buttons {
+      display: flex;
+      gap: var(--space-xs);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn-share-tiktok {
+      background: var(--teal);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background 150ms var(--ease);
+    }
+
+    .btn-share-tiktok:hover { background: var(--teal-light); }
+
+    .btn-share-copy {
+      background: transparent;
+      color: var(--teal);
+      border: 2px solid var(--teal);
+      border-radius: var(--radius-pill);
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 8px 20px;
+      cursor: pointer;
+      transition: background 150ms var(--ease);
+    }
+
+    .btn-share-copy:hover { background: var(--teal-glow); }
+
+    .retake-link {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-decoration: underline;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: var(--font-body);
+    }
+
+    .retake-link:hover { color: var(--text-secondary); }
+
+    /* Footer disclaimer */
+    .footer-disclaimer {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-align: center;
+      max-width: 280px;
+      line-height: 1.6;
+      padding-bottom: var(--space-md);
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .screen-inner {
+      animation: fadeInUp 500ms var(--ease) both;
+    }
+
+    .quiz-screen.active .screen-inner {
+      animation-duration: 400ms;
+    }
+
+    .result-section {
+      animation: fadeInUp 600ms var(--ease) both;
+    }
+
+    .result-section:nth-child(1) { animation-delay: 0ms; }
+    .result-section:nth-child(2) { animation-delay: 80ms; }
+    .result-section:nth-child(3) { animation-delay: 160ms; }
+    .result-section:nth-child(4) { animation-delay: 240ms; }
+    .result-section:nth-child(5) { animation-delay: 320ms; }
+    .result-section:nth-child(6) { animation-delay: 400ms; }
+    .result-section:nth-child(7) { animation-delay: 480ms; }
+
+    /* ── Accessibility ── */
+    :focus-visible {
+      outline: 2px solid var(--teal);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    /* ── Responsive ── */
+    @media (min-width: 640px) {
+      .screen { padding: var(--space-2xl) var(--space-lg); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       WELCOME SCREEN
+  ════════════════════════════════════════════ -->
+  <div id="screen-welcome" class="screen active">
+    <div class="screen-inner">
+      <span class="welcome-badge">🧠 Nervous System Map</span>
+
+      <div class="welcome-icon">
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="38" fill="#CCFBF1" stroke="#99F6E4" stroke-width="2"/>
+          <ellipse cx="40" cy="44" rx="22" ry="14" fill="none" stroke="#0D9488" stroke-width="2.5"/>
+          <path d="M20 44 Q22 32 28 30" stroke="#0D9488" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <path d="M60 44 Q58 32 52 30" stroke="#0D9488" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <path d="M16 42 Q14 50 18 54" stroke="#14B8A6" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          <path d="M64 42 Q66 50 62 54" stroke="#14B8A6" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          <path d="M24 38 Q26 26 34 24" stroke="#0D9488" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <path d="M56 38 Q54 26 46 24" stroke="#0D9488" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <path d="M30 34 Q32 22 40 20 Q48 22 50 34" stroke="#14B8A6" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          <circle cx="40" cy="40" r="6" fill="#0D9488" opacity="0.15"/>
+          <circle cx="40" cy="40" r="3" fill="#0D9488"/>
+          <path d="M37 40 Q40 37 43 40" stroke="#fff" stroke-width="1" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
+
+      <h1 class="welcome-headline">What Drains & Regulates<br>Your Nervous System?</h1>
+
+      <p class="welcome-tagline">Discover your PolyNest Type — the pattern that explains why some days everything feels like too much.</p>
+
+      <div class="welcome-outcomes">
+        <div class="outcome-item">
+          <span class="outcome-check">✓</span>
+          Your PolyNest Type & what it means
+        </div>
+        <div class="outcome-item">
+          <span class="outcome-check">✓</span>
+          Your 5-trigger radar map
+        </div>
+        <div class="outcome-item">
+          <span class="outcome-check">✓</span>
+          Your Window of Tolerance score
+        </div>
+        <div class="outcome-item">
+          <span class="outcome-check">✓</span>
+          Your daily Safety Dose guide
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="showScreen('consent')">Find My PolyNest Type →</button>
+
+      <p class="welcome-meta">12 questions · ~90 seconds · Free forever</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       CONSENT SCREEN
+  ════════════════════════════════════════════ -->
+  <div id="screen-consent" class="screen">
+    <div class="screen-inner">
+      <div class="consent-icon">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+          <path d="M24 4L6 12V24C6 35.1 13.6 45.3 24 48C34.4 45.3 42 35.1 42 24V12L24 4Z" fill="#CCFBF1" stroke="#0D9488" stroke-width="2"/>
+          <path d="M17 24L22 29L31 19" stroke="#0D9488" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <h2 class="consent-heading">Before we map your nervous system…</h2>
+
+      <p class="consent-body">PolyNest is a self-understanding tool, not a clinical diagnosis. You'll answer 12 scenario-based questions about how you react to everyday situations. We don't collect names or email. Your results are yours.</p>
+
+      <div class="consent-points">
+        <div class="consent-point">
+          <span class="outcome-check">✓</span>
+          No account or email required
+        </div>
+        <div class="consent-point">
+          <span class="outcome-check">✓</span>
+          No data sold or shared
+        </div>
+        <div class="consent-point">
+          <span class="outcome-check">✓</span>
+          Not a medical diagnosis
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="startQuiz()">I'm ready to discover my type →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       QUIZ SCREEN
+  ════════════════════════════════════════════ -->
+  <div id="screen-quiz" class="screen quiz-screen">
+    <div class="progress-track">
+      <div id="progress-fill" class="progress-fill" style="width:0%"></div>
+    </div>
+
+    <div class="screen-inner" style="align-items:stretch;gap:var(--space-md);">
+      <span id="q-label" class="q-label"></span>
+
+      <div class="scenario-box">
+        <p id="q-text" class="scenario-text"></p>
+      </div>
+
+      <div id="options-container" class="options-list"></div>
+
+      <button id="back-btn" class="retake-link" onclick="goBack()" style="display:none;align-self:flex-start;">
+        ← Back
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PROCESSING SCREEN
+  ════════════════════════════════════════════ -->
+  <div id="screen-processing" class="screen">
+    <div class="screen-inner">
+      <div class="processing-icon">
+        <div class="nest-ring"></div>
+        <div class="nest-pulse"></div>
+        <div class="nest-inner">🪹</div>
+      </div>
+      <p class="processing-text">Mapping your nervous system…</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       RESULT SCREEN
+  ════════════════════════════════════════════ -->
+  <div id="screen-result" class="screen result-screen">
+    <div class="result-inner" id="result-inner">
+      <!-- Filled by JavaScript -->
+    </div>
+  </div>
+
+<script>
+// ─────────────────────────────────────────────────────────────────
+// QUIZ DATA — All 12 questions with scoring substrings
+// ─────────────────────────────────────────────────────────────────
+const QUESTIONS = [
+  {
+    number: 1,
+    text: "You're at a social gathering where you barely know anyone. The music is loud, conversations are layered on top of each other, and someone is standing too close to you. What most often happens?",
+    options: [
+      { letter: "A", text: "I scan the room for an exit and leave early — my nervous system is already flagging this as unsafe territory.", scores: "Social Drain +2 | Sensory Overload +2 | Control Threat +1" },
+      { letter: "B", text: "I find one person I can talk to and stay anchored to them. That makes it manageable.", scores: "Social Drain +1 | Sensory Overload +1" },
+      { letter: "C", text: "I push myself to meet new people and work the room. By the end, I'm completely drained and need two days to recover.", scores: "Social Drain +2 | Sensory Overload +1 | Emotional Depth +1" },
+      { letter: "D", text: "I actually enjoy it — I feed off the energy and leave feeling energized.", scores: "Social Drain +0 | Sensory Overload +0" }
+    ]
+  },
+  {
+    number: 2,
+    text: "At a family dinner, someone asks — in front of everyone — \"So, when are you going to get a real job?\" or \"Are you still single? Why?\" What do you typically do?",
+    options: [
+      { letter: "A", text: "My jaw tightens. I give a clipped answer and feel the anger rising in my chest. I'm visibly tense for the rest of the night.", scores: "Social Drain +2 | Control Threat +2 | Emotional Depth +1" },
+      { letter: "B", text: "I deflect with humor and turn it into a joke. Inside, I feel small and exposed.", scores: "Social Drain +2 | Emotional Depth +2" },
+      { letter: "C", text: "I answer honestly and directly. I hold my ground. Afterwards I process it alone.", scores: "Social Drain +1 | Control Threat +1 | Emotional Depth +1" },
+      { letter: "D", text: "I quietly get up and help in the kitchen — anything to stop being the focus of attention.", scores: "Social Drain +1 | Emotional Depth +2 | Control Threat +1" }
+    ]
+  },
+  {
+    number: 3,
+    text: "You're trying to concentrate on a complex task at your open-plan office. Someone nearby is on a loud call. Someone else is eating crunchy food. A colleague starts a conversation with you mid-task. What happens?",
+    options: [
+      { letter: "A", text: "I put on noise-cancelling headphones. That helps. Mostly.", scores: "Sensory Overload +1" },
+      { letter: "B", text: "I can still focus — this is my normal. The background noise doesn't register much.", scores: "Sensory Overload +0" },
+      { letter: "C", text: "I pack up and work from home, a coffee shop, or somewhere else. Staying here is pointless.", scores: "Sensory Overload +3 | Control Threat +1" },
+      { letter: "D", text: "The noise actually helps me zone in — I work best in chaos.", scores: "Sensory Overload +0" }
+    ]
+  },
+  {
+    number: 4,
+    text: "Your manager texts you on a Friday evening asking for an update on something due Monday. They're checking in \"just to make sure everything's on track.\" What goes through you?",
+    options: [
+      { letter: "A", text: "My stomach drops. I feel watched and not trusted. I comply but the resentment builds.", scores: "Control Threat +3 | Social Drain +1" },
+      { letter: "B", text: "I send the update calmly and move on. This is just how they are.", scores: "Control Threat +1" },
+      { letter: "C", text: "I explain my process and try to reassure them — but internally, I'm frustrated and exhausted.", scores: "Control Threat +2 | Emotional Depth +1" },
+      { letter: "D", text: "I feel cornered. I ignore it until Monday and deal with the fallout.", scores: "Control Threat +3 | Emotional Depth +1" }
+    ]
+  },
+  {
+    number: 5,
+    text: "Your friend cancels plans for Saturday night — something you've been looking forward to — because something came up. A last-minute change to an already-busy weekend. What happens in your body and mind?",
+    options: [
+      { letter: "A", text: "I adjust quickly and find something else to do. Plans are just plans.", scores: "Control Threat +0" },
+      { letter: "B", text: "I'm a little thrown off, but I adapt. I go with the flow.", scores: "Control Threat +1" },
+      { letter: "C", text: "I'm annoyed and frustrated. The whole weekend feels off now.", scores: "Control Threat +2 | Emotional Depth +1" },
+      { letter: "D", text: "I spiral. I feel like I can't trust the structure I built. My whole week feels unstable.", scores: "Control Threat +3 | Identity Erosion +1" }
+    ]
+  },
+  {
+    number: 6,
+    text: "Someone close to you asks to have a \"real talk\" about how your relationship is going — not because anything is wrong, but because they want to go deeper. What happens?",
+    options: [
+      { letter: "A", text: "I actually appreciate this. I welcome it. It feels meaningful and I engage openly.", scores: "Emotional Depth +0" },
+      { letter: "B", text: "I agree, but I need a few hours to mentally prepare. I'll show up, but it's not effortless.", scores: "Emotional Depth +1" },
+      { letter: "C", text: "I go along with it and listen well, but I'm actually uncomfortable the whole time. I feel naked.", scores: "Emotional Depth +2 | Social Drain +1" },
+      { letter: "D", text: "I find a way to change the subject or postpone. Repeatedly. I can't do this right now.", scores: "Emotional Depth +3 | Social Drain +1" }
+    ]
+  },
+  {
+    number: 7,
+    text: "You just had a professional win — a promotion, a new project, an achievement you're genuinely proud of. You go on social media and see everyone else's seemingly perfect lives. What happens?",
+    options: [
+      { letter: "A", text: "I share my win naturally and feel good about it. I don't really compare.", scores: "Identity Erosion +0" },
+      { letter: "B", text: "I think about posting something but get caught up wondering how it will land. I scroll past it and don't post.", scores: "Identity Erosion +2" },
+      { letter: "C", text: "I see everyone else's wins and feel like mine doesn't measure up. I close the app feeling hollow.", scores: "Identity Erosion +3 | Social Drain +1" },
+      { letter: "D", text: "I go dark. I stop scrolling entirely because I can't handle what I'm seeing.", scores: "Identity Erosion +2" }
+    ]
+  },
+  {
+    number: 8,
+    text: "You're at a busy mall, a concert, or a protest — somewhere with dense crowds, unpredictable movement, and competing sensory demands. How does it affect you?",
+    options: [
+      { letter: "A", text: "I love it. I feel alive. Bring on the energy.", scores: "Sensory Overload +0" },
+      { letter: "B", text: "It's neutral. I notice it but it doesn't overwhelm me.", scores: "Sensory Overload +1" },
+      { letter: "C", text: "I'm uncomfortable and on edge. My nervous system is in guard mode.", scores: "Sensory Overload +2 | Control Threat +1" },
+      { letter: "D", text: "I need to leave. Now. I feel panicky, claustrophobic, or dissociated.", scores: "Sensory Overload +3 | Control Threat +2" }
+    ]
+  },
+  {
+    number: 9,
+    text: "A close friend says something that genuinely hurts your feelings. It was a real boundary violation. How do you typically handle it?",
+    options: [
+      { letter: "A", text: "I reach out to them directly and have a calm, clear conversation about what happened. I say how I feel.", scores: "Emotional Depth +0" },
+      { letter: "B", text: "I need a few days to myself first. Then I'll talk to them.", scores: "Emotional Depth +1 | Control Threat +1" },
+      { letter: "C", text: "I want to address it but I avoid it. I tell myself it's fine. Meanwhile I feel anxious every time I see them.", scores: "Emotional Depth +2 | Social Drain +1" },
+      { letter: "D", text: "I freeze. I don't say anything. I slowly distance myself and the friendship quietly fades.", scores: "Emotional Depth +3 | Social Drain +1" }
+    ]
+  },
+  {
+    number: 10,
+    text: "You're in a new life role — a new job, becoming a parent, starting a business — and everyone around you has different, competing expectations of who you should be in this role. What happens?",
+    options: [
+      { letter: "A", text: "I clarify my own vision and boundaries early. Other people's expectations don't define mine.", scores: "Identity Erosion +1 | Control Threat +0" },
+      { letter: "B", text: "I try to meet everyone's expectations. I say yes to everything and spread myself thin.", scores: "Identity Erosion +2 | Control Threat +1" },
+      { letter: "C", text: "I feel pulled in too many directions. I'm performing a version of myself rather than being myself.", scores: "Identity Erosion +3 | Social Drain +2" },
+      { letter: "D", text: "I lose myself entirely. I don't know who I am in this role anymore. I feel like a fraud.", scores: "Identity Erosion +3 | Emotional Depth +2" }
+    ]
+  },
+  {
+    number: 11,
+    text: "You're deep in a creative or complex task. Someone interrupts you — texts, calls, a colleague dropping by — and you lose your train of thought entirely. What happens?",
+    options: [
+      { letter: "A", text: "I lose the thread completely. It takes me 10-20 minutes to get back to where I was.", scores: "Control Threat +2" },
+      { letter: "B", text: "I'm mildly annoyed but I recover quickly. A small inconvenience.", scores: "Control Threat +1" },
+      { letter: "C", text: "I barely notice. I'm good at compartmentalizing and picking back up.", scores: "Control Threat +0" },
+      { letter: "D", text: "I can't get back into the task at all. I shut down and stop working.", scores: "Control Threat +2 | Emotional Depth +1" }
+    ]
+  },
+  {
+    number: 12,
+    text: "In a serious conversation, someone holds intense, unbroken eye contact with you. They're not angry — but it's piercing. What do you feel?",
+    options: [
+      { letter: "A", text: "Comfortable. I hold it back. Eye contact feels natural and connecting.", scores: "Emotional Depth +0" },
+      { letter: "B", text: "Uncomfortable. I look away periodically. But I manage.", scores: "Emotional Depth +1" },
+      { letter: "C", text: "Exposed. Like they're reading me and I can't hide. I want to look at the floor.", scores: "Emotional Depth +2" },
+      { letter: "D", text: "Intimidated. Interrogated. I want to shut down completely or lash out.", scores: "Emotional Depth +2 | Control Threat +1" }
+    ]
+  }
+];
+
+// ─────────────────────────────────────────────────────────────────
+// RESULT TYPE DATA
+// ─────────────────────────────────────────────────────────────────
+const RESULT_TYPES = {
+  nest_builder: {
+    id: "nest_builder",
+    name: "The Nest Builder",
+    icon: "🌿",
+    polyvagalState: "Strong Ventral Vagal — your social engagement system is your anchor",
+    oneLiner: "You are at your best when you're genuinely connected — and you fall apart when you're isolated or emotionally cut off.",
+    description: "You are a creature built for connection. Your nervous system is wired to thrive in the presence of safe, real, human intimacy — and it lets you know, loudly, when that connection is absent. You likely experience deep empathy, warm relational instincts, and an intuitive read on people's emotional states. But this gift comes with sensitivity: environments that lack emotional warmth — competitive silos, emotionally flat workplaces, periods of enforced isolation — can leave you dysregulated in ways that feel personal and confusing. You don't just want connection; your nervous system literally requires it to regulate.",
+    primaryColor: "#0D9488",
+    glowColor: "#14B8A6",
+    accentColor: "#99F6E4",
+    safetyDose: {
+      green: [
+        "One-on-one deep conversations with someone who truly listens",
+        "Quality time with a close friend or partner",
+        "Group settings you've chosen and can exit",
+        "Meaningful collaborative work and physical affection from safe people"
+      ],
+      yellow: [
+        "Large social gatherings with unfamiliar people",
+        "Situations where you're the only emotional provider",
+        "Networking events where authenticity feels performative",
+        "Family dinners where you're the target of pointed questions"
+      ],
+      red: [
+        "Extended periods of forced solitude or isolation",
+        "Emotionally demanding conversations without relational payoff",
+        "Competitive environments where vulnerability is punished",
+        "Social situations where you can't be yourself"
+      ]
+    },
+    insights: [
+      { icon: "🔌", text: "Why deep, real conversations restore you while small talk depletes you — and why 'just being social' never quite works the way others suggest." },
+      { icon: "🏠", text: "Why you sometimes feel lonelier in a crowded room than when you're alone — it's not about quantity of connection, it's about felt safety." },
+      { icon: "💬", text: "Why you've been told you're 'too much' or 'too intense' — your nervous system isn't broken; it just needs connection that actually nourishes it." },
+      { icon: "🔋", text: "Why solitude can feel depleting rather than restorative, and why your 'battery' charges best through genuine human resonance, not isolation." }
+    ],
+    shareText: "My nervous system literally needs real connection to function — not networking, not small talk, real connection. Turns out that's not a personality preference, it's biology. I'm a Nest Builder. Find out your PolyNest type →"
+  },
+  sentinel: {
+    id: "sentinel",
+    name: "The Sentinel",
+    icon: "🛡️",
+    polyvagalState: "Hyper-Vigilant Sympathetic — your nervous system is always scanning for danger",
+    oneLiner: "Your body never quite believes the world is safe — and that's why you've survived. But it's also why you can't fully rest.",
+    description: "Your nervous system is a finely-tuned early warning system. You notice the micro-expressions others miss. You anticipate problems before they're spoken. You carry a background hum of vigilance that most people don't experience — and you've learned to function within it, even when it exhausts you. This isn't anxiety as a personality flaw; it's your biology trying to protect you. The Sentinel type is often deeply competent, hyperaware, and excellently prepared — because your system won't let you be caught off guard. But this comes at a cost: your body treats social threats and physical danger with the same alarm response. Your nervous system has a hair trigger, and unwinding that takes more than a single evening off.",
+    primaryColor: "#B45309",
+    glowColor: "#D97706",
+    accentColor: "#FDE68A",
+    safetyDose: {
+      green: [
+        "Solo deep-work time with no interruptions",
+        "Predictable routines with clear structure",
+        "Preparation time before social events",
+        "Outdoor exercise in low-density environments"
+      ],
+      yellow: [
+        "Open-plan office environments and unstructured networking",
+        "Social gatherings with unfamiliar people",
+        "High-stakes conversations without a clear agenda",
+        "Busy airports or transit hubs with unpredictable variables"
+      ],
+      red: [
+        "Being micromanaged or surveilled without transparency",
+        "Chaotic environments with no clear exit",
+        "Stacked unpredictable events without recovery between them",
+        "Sustained sensory stimulation like loud concerts or crowds"
+      ]
+    },
+    insights: [
+      { icon: "👁️", text: "Why you scan every room for exits, notice every micro-expression, and can't quite 'turn off' — your nervous system is doing exactly what it evolved to do." },
+      { icon: "⚡", text: "Why rest doesn't feel restful — because your system treats the world like a threat landscape even when nothing is actually wrong." },
+      { icon: "📋", text: "Why you're often the most prepared person in the room — and why that comes from a place of genuine biological urgency, not perfectionism." },
+      { icon: "🔄", text: "Why 'just relax' feels like a foreign language — your nervous system has learned that vigilance is the price of safety, and relaxing feels like letting your guard down." }
+    ],
+    shareText: "My brain never fully believes I'm safe. Every room I scan for threats. Every silence I fill with worst-case scenarios. That's not anxiety — that's my nervous system doing its job. I'm a Sentinel. Find out your type →"
+  },
+  freeze_frame: {
+    id: "freeze_frame",
+    name: "The Freeze Frame",
+    icon: "❄️",
+    polyvagalState: "Dorsal Vagal Vulnerability — your system tends toward shutdown under sustained threat",
+    oneLiner: "When the world asks too much for too long, your system does what mammals have done for millions of years — it plays dead.",
+    description: "You have a sensitive alarm system, but unlike the Sentinel, yours is calibrated so finely that prolonged stress doesn't just activate you — it overwhelms you. Your nervous system defaults toward shutdown when demands exceed your capacity: dissociation, emotional numbing, exhaustion that sleep doesn't fix, a 'light switch' going off during arguments or overwhelming situations where you go quiet and vanish internally. This is not weakness. It's one of the oldest mammalian survival mechanisms — freeze — and it served your ancestors well. But in modern life, it can feel like a betrayal: you want to engage and you can't. Freeze Frame types often have rich inner worlds and deep processing capacity — when they can access it. The path forward isn't to 'toughen up.' It's to understand your window of tolerance and build a life that respects it.",
+    primaryColor: "#6366F1",
+    glowColor: "#818CF8",
+    accentColor: "#C7D2FE",
+    safetyDose: {
+      green: [
+        "Quiet, low-stimulation environments and predictable social interactions",
+        "Solitary creative work at your own pace",
+        "Movement that feels good in your body — not performance",
+        "Rest before you're exhausted, not after"
+      ],
+      yellow: [
+        "Back-to-back obligations, even individually manageable ones",
+        "Emotionally complex conversations — schedule rest after",
+        "Family gatherings longer than 2 hours",
+        "Workplaces with unpredictable demands or new social settings"
+      ],
+      red: [
+        "Sustained conflict or confrontation without recovery",
+        "High emotional intimacy without built-in recovery time",
+        "Chaotic sensory environments or extended identity performance",
+        "Being 'on' for too long without breaks between demands"
+      ]
+    },
+    insights: [
+      { icon: "⚫", text: "Why 'freeze' isn't laziness or weakness — it's one of the oldest mammalian survival responses, and it protected your ancestors when fight/flight wasn't an option." },
+      { icon: "🧊", text: "Why you can want to engage and still not be able to — your body is responding to a signal your conscious mind hasn't registered yet." },
+      { icon: "🔋", text: "Why rest is load-bearing for you, not a reward — and why 'pushing through' doesn't build capacity, it uses it up." },
+      { icon: "🌊", text: "Why you've been told to 'snap out of it' by people who don't understand — and why that instruction is biologically meaningless to a nervous system in freeze." }
+    ],
+    shareText: "When there's too much for too long, I just... shut down. Not dramatically. Just gone. Turns out that's a real thing mammals do — it's called the dorsal vagal response. I'm a Freeze Frame. Find out yours →"
+  },
+  wave_rider: {
+    id: "wave_rider",
+    name: "The Wave Rider",
+    icon: "🌊",
+    polyvagalState: "Flexible Autonomic Shifting — your system moves between states fluidly",
+    oneLiner: "You adapt. You go with the flow. But sometimes you wonder if you have a home base at all.",
+    description: "You are a nervous system that moves with the current. Unlike the other types — which have strong, predictable patterns — you are defined by your adaptability. You can handle the party and the library. You can show up for the hard conversation and the quiet night. This flexibility is a genuine strength: you are low-maintenance in many ways, easy to be around, and resilient because you don't fixate on any single regulatory strategy. But Wave Riders often describe a subtle, persistent question: What actually regulates me? You may have noticed that no single practice, person, or environment feels like a true anchor. You're good at riding the waves — but you may not always know where the shore is. The work for a Wave Rider is developing an intentional regulatory practice rather than relying solely on adaptive flexibility.",
+    primaryColor: "#0891B2",
+    glowColor: "#22D3EE",
+    accentColor: "#A5F3FC",
+    safetyDose: {
+      green: [
+        "Whatever you're genuinely drawn to in the moment",
+        "A mix of social and solitary time",
+        "Environments with moderate stimulation",
+        "Creative or intellectual work and low-stakes social gatherings"
+      ],
+      yellow: [
+        "Extended periods without meaningful connection",
+        "Environments where your boundaries are constantly negotiated",
+        "Decision-making with too many variables and too little guidance",
+        "Long stretches without any anchor practice"
+      ],
+      red: [
+        "Situations where you lose yourself in others' preferences entirely",
+        "Sustained high stimulation without any recovery",
+        "Chaotic life periods without any grounding routine",
+        "Told how to feel about an experience by others"
+      ]
+    },
+    insights: [
+      { icon: "🌊", text: "Why 'going with the flow' is both your superpower and your subtle vulnerability — you can ride any wave, but that doesn't mean you know where shore is." },
+      { icon: "🎯", text: "Why no single practice, person, or environment feels like a true anchor — and why developing one intentional habit is the most important thing you can do." },
+      { icon: "🔄", text: "Why flexibility can mask quiet disconnection — you adapt so easily that you sometimes bypass your own actual needs without noticing." },
+      { icon: "⚓", text: "Why your resilience is real but your rootedness might be negotiable — your strength is adaptability; your growth edge is intentional grounding practice." }
+    ],
+    shareText: "I can handle almost anything. Party? Fine. Solitude? Fine. Conflict? Fine. But honestly? I don't always know what actually regulates me. I'm a Wave Rider. Find your PolyNest type →"
+  }
+};
+
+// ─────────────────────────────────────────────────────────────────
+// SCORING ENGINE
+// ─────────────────────────────────────────────────────────────────
+
+const DIMENSION_LABELS = {
+  socialDrain: "Social Drain",
+  sensoryOverload: "Sensory Overload",
+  controlThreat: "Control Threat",
+  emotionalDepth: "Emotional Depth",
+  identityErosion: "Identity Erosion"
+};
+
+function parseScoreString(scoreStr) {
+  // Parses strings like "Social Drain +2 | Sensory Overload +1 | Emotional Depth +1"
+  // Returns { socialDrain: 0, sensoryOverload: 0, controlThreat: 0, emotionalDepth: 0, identityErosion: 0 }
+  const dims = { socialDrain: 0, sensoryOverload: 0, controlThreat: 0, emotionalDepth: 0, identityErosion: 0 };
+
+  if (!scoreStr) return dims;
+
+  // Map dimension names to keys
+  const dimMap = {
+    'social drain': 'socialDrain',
+    'sensory overload': 'sensoryOverload',
+    'control threat': 'controlThreat',
+    'emotional depth': 'emotionalDepth',
+    'identity erosion': 'identityErosion'
+  };
+
+  // Match patterns like "Dimension +N" or "Dimension -N" or "Dimension +0"
+  const regex = /([Ss]ocial\s+[Dd]rain|[Ss]ensory\s+[Oo]verload|[Cc]ontrol\s+[Tt]hreat|[Ee]motional\s+[Dd]epth|[Ii]dentity\s+[Ee]rosion)\s*([+-]\d+)/g;
+  let match;
+  while ((match = regex.exec(scoreStr)) !== null) {
+    const dimKey = dimMap[match[1].toLowerCase()];
+    if (dimKey) {
+      dims[dimKey] += parseInt(match[2], 10);
+    }
+  }
+  return dims;
+}
+
+function calculateDimensions(answers) {
+  // answers: { questionNumber: letter }
+  const totals = { socialDrain: 0, sensoryOverload: 0, controlThreat: 0, emotionalDepth: 0, identityErosion: 0 };
+
+  for (const [qNum, letter] of Object.entries(answers)) {
+    const q = QUESTIONS.find(q => q.number === parseInt(qNum));
+    if (!q) continue;
+    const option = q.options.find(o => o.letter === letter);
+    if (!option) continue;
+    const parsed = parseScoreString(option.scores);
+    for (const [dim, val] of Object.entries(parsed)) {
+      totals[dim] += val;
+    }
+  }
+
+  return totals;
+}
+
+function normalizeToScale(dimensions) {
+  // Max possible per dimension based on question analysis:
+  // Social Drain: Q1(2), Q2(2), Q5(0), Q6(1), Q7(1), Q9(1) → max ~7
+  // Sensory Overload: Q1(2), Q3(3), Q8(3) → max ~8
+  // Control Threat: Q1(1), Q2(2), Q3(1), Q4(3), Q5(3), Q8(2), Q9(1), Q10(1), Q11(2), Q12(1) → max ~14
+  // Emotional Depth: Q1(1), Q2(2), Q4(1), Q5(1), Q6(3), Q9(3), Q10(2), Q11(1), Q12(2) → max ~13
+  // Identity Erosion: Q5(1), Q7(3), Q10(3) → max ~7
+
+  // Use estimated max values for normalization
+  const maxVals = { socialDrain: 7, sensoryOverload: 8, controlThreat: 14, emotionalDepth: 13, identityErosion: 7 };
+  const normalized = {};
+  for (const [dim, val] of Object.entries(dimensions)) {
+    const max = maxVals[dim] || 10;
+    normalized[dim] = Math.min(10, Math.round((val / max) * 10 * 10) / 10);
+  }
+  return normalized;
+}
+
+function determinePolyNestType(dimensions) {
+  const { socialDrain, sensoryOverload, controlThreat, emotionalDepth, identityErosion } = dimensions;
+
+  const sd_ed = socialDrain + emotionalDepth;
+  const ct_so = controlThreat + sensoryOverload;
+
+  // Check Freeze Frame: any dimension ≥ 7 AND no single dimension dominates
+  const maxDim = Math.max(socialDrain, sensoryOverload, controlThreat, emotionalDepth, identityErosion);
+  const dims = { socialDrain, sensoryOverload, controlThreat, emotionalDepth, identityErosion };
+  const countHigh = Object.values(dims).filter(v => v >= 5).length;
+
+  if (maxDim >= 7 && countHigh >= 2) {
+    return "freeze_frame";
+  }
+
+  // Check Wave Rider: scores cluster around 3-5 across all dimensions
+  const allScores = Object.values(dims);
+  const avg = allScores.reduce((a, b) => a + b, 0) / allScores.length;
+  const variance = allScores.reduce((sum, v) => sum + Math.pow(v - avg, 2), 0) / allScores.length;
+  if (variance < 3 && avg >= 2.5 && avg <= 5.5) {
+    return "wave_rider";
+  }
+
+  // Tiebreaker: Nest Builder vs Sentinel
+  if (sd_ed > ct_so) {
+    return "nest_builder";
+  } else if (ct_so > sd_ed) {
+    return "sentinel";
+  } else {
+    // If tied, check which is more dominant
+    if (maxDim === controlThreat || maxDim === sensoryOverload) {
+      return "sentinel";
+    }
+    return "nest_builder";
+  }
+}
+
+function calculateWoT(dimensions) {
+  const vals = Object.values(dimensions).sort((a, b) => b - a);
+  const top2Avg = (vals[0] + vals[1]) / 2;
+  let wot = 10 - (top2Avg * 0.8);
+  wot = Math.max(1, Math.min(10, Math.round(wot * 10) / 10));
+  return wot;
+}
+
+function getWoTLabel(score) {
+  if (score <= 3) return "Narrow Window";
+  if (score <= 6) return "Medium Window";
+  return "Wide Window";
+}
+
+function getWoTDescription(score) {
+  if (score <= 3) {
+    return "Your nervous system is easily pushed outside its optimal zone. Recovery time is longer. You may feel dysregulated frequently.";
+  }
+  if (score <= 6) {
+    return "You have average regulatory capacity. You can handle stress but extended or stacked demands will push you past your limit.";
+  }
+  return "High regulatory resilience. You can tolerate significant stress and recover well — but you may sometimes ignore early warning signs.";
+}
+
+// ─────────────────────────────────────────────────────────────────
+// NAVIGATION
+// ─────────────────────────────────────────────────────────────────
+let state = {
+  screen: 'welcome',
+  answers: {},
+  currentQuestion: 1
+};
+
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+  state.screen = name;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function startQuiz() {
+  state.answers = {};
+  state.currentQuestion = 1;
+  renderQuestion();
+  showScreen('quiz');
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[state.currentQuestion - 1];
+  const progress = ((state.currentQuestion - 1) / QUESTIONS.length) * 100;
+
+  document.getElementById('progress-fill').style.width = progress + '%';
+  document.getElementById('q-label').textContent = 'Scenario ' + state.currentQuestion + ' of ' + QUESTIONS.length;
+  document.getElementById('q-text').textContent = q.text;
+
+  const container = document.getElementById('options-container');
+  container.innerHTML = '';
+
+  q.options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    if (state.answers[q.number] === opt.letter) {
+      btn.classList.add('selected');
+    }
+    btn.setAttribute('data-letter', opt.letter);
+    btn.setAttribute('aria-label', opt.text.substring(0, 50) + '...');
+
+    // Split text from score substring
+    const textWithoutScore = opt.text;
+    btn.innerHTML = `<span class="opt-letter">${opt.letter}.</span><span class="opt-text">${textWithoutScore}</span>`;
+    btn.addEventListener('click', () => selectOption(opt.letter));
+    container.appendChild(btn);
+  });
+
+  document.getElementById('back-btn').style.display = state.currentQuestion > 1 ? 'block' : 'none';
+}
+
+function selectOption(letter) {
+  state.answers[state.currentQuestion] = letter;
+
+  document.querySelectorAll('.option-btn').forEach(b => {
+    b.classList.toggle('selected', b.getAttribute('data-letter') === letter);
+  });
+
+  setTimeout(() => {
+    if (state.currentQuestion < QUESTIONS.length) {
+      state.currentQuestion++;
+      renderQuestion();
+    } else {
+      showScreen('processing');
+      setTimeout(() => calculateAndShowResult(), 1800);
+    }
+  }, 350);
+}
+
+function goBack() {
+  if (state.currentQuestion > 1) {
+    state.currentQuestion--;
+    renderQuestion();
+  }
+}
+
+function calculateAndShowResult() {
+  const dimensions = calculateDimensions(state.answers);
+  const normalized = normalizeToScale(dimensions);
+  const polyNestType = determinePolyNestType(normalized);
+  const wot = calculateWoT(normalized);
+  const typeData = RESULT_TYPES[polyNestType];
+
+  renderResult(typeData, normalized, wot);
+  showScreen('result');
+}
+
+// ─────────────────────────────────────────────────────────────────
+// RESULT RENDERING
+// ─────────────────────────────────────────────────────────────────
+function renderResult(typeData, dimensions, wot) {
+  const inner = document.getElementById('result-inner');
+  const wotLabel = getWoTLabel(wot);
+  const wotDesc = getWoTDescription(wot);
+
+  const woTZoneColor = wot <= 3 ? '#EF4444' : wot <= 6 ? '#F59E0B' : '#10B981';
+  const wotPointerLeft = ((wot - 1) / 9) * 100 + '%';
+
+  const shareUrl = encodeURIComponent(window.location.href);
+  const shareText = encodeURIComponent(typeData.shareText);
+  const tiktokUrl = `https://www.tiktok.com/share?url=${shareUrl}&text=${shareText}`;
+  const copyUrl = `javascript:navigator.clipboard.writeText('${window.location.href}')`;
+
+  inner.innerHTML = `
+    <!-- Type Card -->
+    <div class="result-section type-card" style="animation-delay:0ms">
+      <span class="type-eyebrow" style="background:${typeData.accentColor};color:${typeData.primaryColor};">Your PolyNest Type</span>
+      <div class="type-icon" style="background:${typeData.accentColor};">
+        <span>${typeData.icon}</span>
+      </div>
+      <h1 class="type-name" style="color:${typeData.primaryColor};">${typeData.name}</h1>
+      <p class="type-state">${typeData.polyvagalState}</p>
+      <p class="type-tagline">${typeData.oneLiner}</p>
+      <p class="type-description">${typeData.description}</p>
+    </div>
+
+    <!-- Trigger Radar Chart -->
+    <div class="result-section section-card" style="animation-delay:80ms">
+      <h2 class="section-title">Your Trigger Map</h2>
+      <div class="radar-container">
+        <div class="radar-chart-wrapper">
+          <canvas id="radarCanvas" width="240" height="240"></canvas>
+        </div>
+        <div class="radar-scores">
+          ${Object.entries(dimensions).map(([dim, score]) => `
+            <div class="radar-score-item">
+              <div class="radar-score-bar">
+                <div class="radar-score-fill" style="width:${score * 10}%;"></div>
+              </div>
+              <span class="radar-score-num">${score}</span>
+              <span class="radar-score-label">${DIMENSION_LABELS[dim]}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- Window of Tolerance -->
+    <div class="result-section section-card" style="animation-delay:160ms">
+      <h2 class="section-title">Your Window of Tolerance</h2>
+      <div class="wot-gauge-container">
+        <div style="position:relative;width:100%;max-width:280px;">
+          <div class="wot-pointer" style="left:${wotPointerLeft};color:${woTZoneColor};">
+            <div class="wot-pointer-label" style="color:${woTZoneColor};">${wot}/10</div>
+          </div>
+          <div class="wot-gauge">
+            <div class="wot-segment" style="width:30%;background:#FEE2E2;border-radius:var(--radius-pill) 0 0 var(--radius-pill);">
+              <span style="font-size:0.6rem;color:#EF4444;font-weight:700;">1–3</span>
+            </div>
+            <div class="wot-segment" style="width:40%;background:#FEF3C7;">
+              <span style="font-size:0.6rem;color:#D97706;font-weight:700;">4–6</span>
+            </div>
+            <div class="wot-segment" style="width:30%;background:#D1FAE5;border-radius:0 var(--radius-pill) var(--radius-pill) 0;">
+              <span style="font-size:0.6rem;color:#059669;font-weight:700;">7–10</span>
+            </div>
+          </div>
+        </div>
+        <p class="wot-label-text" style="color:${woTZoneColor};">${wotLabel}</p>
+        <p class="wot-explanation">${wotDesc}</p>
+      </div>
+    </div>
+
+    <!-- Safety Dose -->
+    <div class="result-section section-card" style="animation-delay:240ms">
+      <h2 class="section-title">Your Daily Safety Dose</h2>
+      <p class="safety-dose-intro">Think of stress like sunlight — some is essential, too much burns. These are your personalized zones.</p>
+
+      <div class="safety-card green" style="margin-bottom:10px;">
+        <div class="safety-header">🟢 Within Your Daily Safe Dose</div>
+        <ul class="safety-items">
+          ${typeData.safetyDose.green.map(item => `<li class="safety-item">${item}</li>`).join('')}
+        </ul>
+      </div>
+
+      <div class="safety-card yellow" style="margin-bottom:10px;">
+        <div class="safety-header">🟡 Approach With Care</div>
+        <ul class="safety-items">
+          ${typeData.safetyDose.yellow.map(item => `<li class="safety-item">${item}</li>`).join('')}
+        </ul>
+      </div>
+
+      <div class="safety-card red">
+        <div class="safety-header">🔴 Requires Pre-Regulation or Recovery</div>
+        <ul class="safety-items">
+          ${typeData.safetyDose.red.map(item => `<li class="safety-item">${item}</li>`).join('')}
+        </ul>
+      </div>
+    </div>
+
+    <!-- What This Explains -->
+    <div class="result-section section-card" style="animation-delay:320ms">
+      <h2 class="section-title">What This Explains About You</h2>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        ${typeData.insights.map(insight => `
+          <div class="insight-card">
+            <span class="insight-icon">${insight.icon}</span>
+            <p class="insight-text">${insight.text}</p>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- Share -->
+    <div class="result-section share-section" style="animation-delay:400ms">
+      <h2 class="share-heading">Recognize yourself?</h2>
+      <p class="share-subtext">Share your PolyNest Type and help others understand their nervous system too.</p>
+      <div class="share-buttons">
+        <a href="${tiktokUrl}" target="_blank" class="btn-share-tiktok">Share on TikTok</a>
+        <button class="btn-share-copy" onclick="copyResult()">Copy Result Link</button>
+      </div>
+      <button class="retake-link" onclick="retakeQuiz()">Take the quiz again →</button>
+    </div>
+
+    <!-- Footer -->
+    <div class="result-section footer-disclaimer" style="animation-delay:480ms">
+      PolyNest is a psychoeducation tool for self-understanding, not a clinical diagnosis. If you're experiencing persistent distress, please consult a mental health professional.
+    </div>
+  `;
+
+  // Draw radar chart after DOM is ready
+  setTimeout(() => drawRadarChart(dimensions), 100);
+}
+
+function drawRadarChart(dimensions) {
+  const canvas = document.getElementById('radarCanvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width;
+  const h = canvas.height;
+  const cx = w / 2;
+  const cy = h / 2;
+  const maxRadius = 90;
+
+  ctx.clearRect(0, 0, w, h);
+
+  // 5 axes: SD, SO, CT, ED, IE
+  // Angles: SD=-90°, SO=-18°, CT=54°, ED=126°, IE=198°
+  const axes = [
+    { label: 'Social\nDrain', angle: -90, dim: 'socialDrain' },
+    { label: 'Sensory\nOverload', angle: -18, dim: 'sensoryOverload' },
+    { label: 'Control\nThreat', angle: 54, dim: 'controlThreat' },
+    { label: 'Emotional\nDepth', angle: 126, dim: 'emotionalDepth' },
+    { label: 'Identity\nErosion', angle: 198, dim: 'identityErosion' }
+  ];
+
+  const toRad = deg => deg * Math.PI / 180;
+
+  // Draw grid (5 levels)
+  const gridLevels = 5;
+  for (let level = 1; level <= gridLevels; level++) {
+    const r = (level / gridLevels) * maxRadius;
+    ctx.beginPath();
+    for (let i = 0; i <= 5; i++) {
+      const angle = toRad(axes[i % 5].angle);
+      const x = cx + r * Math.cos(angle);
+      const y = cy + r * Math.sin(angle);
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.strokeStyle = '#CCEEEA';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  // Draw axis lines
+  axes.forEach(axis => {
+    const angle = toRad(axis.axis);
+    const x = cx + maxRadius * Math.cos(angle);
+    const y = cy + maxRadius * Math.sin(angle);
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(x, y);
+    ctx.strokeStyle = '#CCEEEA';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Label
+    const labelRadius = maxRadius + 18;
+    const lx = cx + labelRadius * Math.cos(toRad(axis.angle));
+    const ly = cy + labelRadius * Math.sin(toRad(axis.angle));
+    ctx.fillStyle = '#475569';
+    ctx.font = '600 10px "DM Sans", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    const lines = axis.label.split('\n');
+    lines.forEach((line, i) => {
+      ctx.fillText(line, lx, ly + (i - (lines.length - 1) / 2) * 11);
+    });
+  });
+
+  // Draw data polygon
+  const scores = axes.map(axis => dimensions[axis.dim] || 0);
+  const dataPoints = axes.map((axis, i) => {
+    const r = (scores[i] / 10) * maxRadius;
+    return {
+      x: cx + r * Math.cos(toRad(axis.angle)),
+      y: cy + r * Math.sin(toRad(axis.angle))
+    };
+  });
+
+  // Fill
+  ctx.beginPath();
+  dataPoints.forEach((pt, i) => {
+    if (i === 0) ctx.moveTo(pt.x, pt.y);
+    else ctx.lineTo(pt.x, pt.y);
+  });
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(13, 148, 136, 0.2)';
+  ctx.fill();
+
+  // Stroke
+  ctx.beginPath();
+  dataPoints.forEach((pt, i) => {
+    if (i === 0) ctx.moveTo(pt.x, pt.y);
+    else ctx.lineTo(pt.x, pt.y);
+  });
+  ctx.closePath();
+  ctx.strokeStyle = '#0D9488';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Points
+  dataPoints.forEach(pt => {
+    ctx.beginPath();
+    ctx.arc(pt.x, pt.y, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#0D9488';
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  });
+}
+
+function copyResult() {
+  const text = RESULT_TYPES[window._lastType]?.shareText || 'Check out my PolyNest Type!';
+  navigator.clipboard.writeText(window.location.href + ' — ' + text).then(() => {
+    const btn = document.querySelector('.btn-share-copy');
+    if (btn) {
+      btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = 'Copy Result Link'; }, 2000);
+    }
+  });
+}
+
+function retakeQuiz() {
+  state.answers = {};
+  state.currentQuestion = 1;
+  window._lastType = null;
+  showScreen('welcome');
+}
+
+// ─────────────────────────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  showScreen('welcome');
+});
+</script>
+</body>
+</html>
