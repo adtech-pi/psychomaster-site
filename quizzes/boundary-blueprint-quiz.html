@@ -1,0 +1,2194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="What's your boundary type? Discover whether you have porous, rigid, flexible, or dense boundaries — and what that means for your relationships, energy, and sense of self. Based on boundary theory and attachment research.">
+  <title>边界蓝图测试 — 发现你的边界类型</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --color-bg: #FBF8F4;
+      --color-surface: #FFFFFF;
+      --color-text-primary: #2E2B27;
+      --color-text-secondary: #7A756D;
+      --color-text-muted: #C5BEB4;
+      --color-border: #E8E3DB;
+      --color-primary: #C4846A;
+      --color-primary-hover: #A86B52;
+      --color-porous: #7EBDC2;
+      --color-rigid: #8B8680;
+      --color-flexible: #87A878;
+      --color-dense: #B5847A;
+      --color-shifting: #9B8AA6;
+      --font-sans: 'DM Sans', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      --shadow-sm: 0 1px 3px rgba(46, 43, 39, 0.06);
+      --shadow-md: 0 4px 12px rgba(46, 43, 39, 0.08);
+      --shadow-lg: 0 8px 24px rgba(46, 43, 39, 0.12);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --transition-fast: 150ms ease-out;
+      --transition-normal: 250ms ease-out;
+      --transition-slow: 400ms ease-out;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--color-bg);
+      color: var(--color-text-primary);
+      line-height: 1.5;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: hidden;
+    }
+
+    /* ─── UTILITIES ─────────────────────────────── */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ─── SCREEN MANAGEMENT ─────────────────────── */
+    .screen {
+      display: none;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    .screen.active {
+      display: flex;
+      flex-direction: column;
+      animation: screenFadeIn 300ms ease-out;
+    }
+
+    @keyframes screenFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .screen.active {
+        animation: none;
+      }
+    }
+
+    /* ─── BUTTONS ───────────────────────────────── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--color-primary);
+      color: #fff;
+      font-family: var(--font-sans);
+      font-size: 16px;
+      font-weight: 600;
+      padding: 14px 28px;
+      border: none;
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+      min-height: 48px;
+      box-shadow: var(--shadow-sm);
+      text-decoration: none;
+      line-height: 1;
+    }
+
+    .btn-primary:hover {
+      background: var(--color-primary-hover);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-primary:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: transparent;
+      color: var(--color-text-secondary);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 10px 16px;
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: color var(--transition-fast), background var(--transition-fast);
+      min-height: 44px;
+      text-decoration: none;
+    }
+
+    .btn-ghost:hover {
+      color: var(--color-text-primary);
+      background: rgba(46, 43, 39, 0.05);
+    }
+
+    .btn-ghost:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    /* ─── ENTRY SCREEN ──────────────────────────── */
+    .entry-screen {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding-top: 60px;
+      padding-bottom: 40px;
+    }
+
+    .entry-brand {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 32px;
+    }
+
+    .entry-hero-illustration {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-porous), var(--color-dense));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .entry-hero-illustration svg {
+      width: 60px;
+      height: 60px;
+      fill: white;
+      opacity: 0.9;
+    }
+
+    .entry-headline {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--color-text-primary);
+      margin-bottom: 12px;
+    }
+
+    .entry-subtitle {
+      font-size: 16px;
+      color: var(--color-text-secondary);
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+
+    .entry-social-proof {
+      font-size: 13px;
+      color: var(--color-text-muted);
+      margin-top: 16px;
+    }
+
+    .entry-disclaimer {
+      font-size: 12px;
+      color: var(--color-text-muted);
+      margin-top: 12px;
+      line-height: 1.4;
+    }
+
+    /* ─── DISCLAIMER SCREEN ─────────────────────── */
+    .disclaimer-screen {
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .disclaimer-card {
+      background: var(--color-surface);
+      border-radius: var(--radius-xl);
+      padding: 36px 28px;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: var(--shadow-lg);
+      text-align: center;
+    }
+
+    .disclaimer-icon {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 20px;
+      background: linear-gradient(135deg, var(--color-porous), var(--color-primary));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .disclaimer-icon svg {
+      width: 28px;
+      height: 28px;
+      fill: white;
+    }
+
+    .disclaimer-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--color-text-primary);
+    }
+
+    .disclaimer-body {
+      font-size: 15px;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .disclaimer-body strong {
+      color: var(--color-text-primary);
+      font-weight: 600;
+    }
+
+    .disclaimer-learn-more {
+      display: block;
+      font-size: 13px;
+      color: var(--color-primary);
+      text-decoration: underline;
+      margin-bottom: 24px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: var(--font-sans);
+    }
+
+    .disclaimer-learn-more:hover {
+      color: var(--color-primary-hover);
+    }
+
+    /* ─── TRIGGER WARNING MODAL ────────────────── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(46, 43, 39, 0.5);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: fadeIn 200ms ease-out;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-card {
+      background: var(--color-surface);
+      border-radius: var(--radius-xl);
+      padding: 32px 28px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: var(--shadow-lg);
+      text-align: center;
+    }
+
+    .modal-icon {
+      font-size: 40px;
+      margin-bottom: 16px;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .modal-body {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .modal-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* ─── QUIZ SCREEN ───────────────────────────── */
+    .quiz-screen {
+      padding-top: env(safe-area-inset-top, 0px);
+    }
+
+    .quiz-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--color-bg);
+      padding: 16px 20px 12px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .quiz-back-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      border-radius: var(--radius-sm);
+      transition: color var(--transition-fast);
+    }
+
+    .quiz-back-btn:hover {
+      color: var(--color-text-primary);
+    }
+
+    .quiz-back-btn:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    .quiz-back-btn svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+    }
+
+    .progress-container {
+      width: 100%;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 4px;
+      background: var(--color-border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    @media (min-width: 768px) {
+      .progress-track {
+        height: 5px;
+        max-width: 560px;
+        margin: 0 auto;
+      }
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--color-primary);
+      border-radius: 2px;
+      transition: width 300ms ease-in-out;
+    }
+
+    .progress-label {
+      font-size: 12px;
+      color: var(--color-text-muted);
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    .quiz-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 32px 20px 40px;
+    }
+
+    .question-container {
+      display: none;
+    }
+
+    .question-container.active {
+      display: block;
+      animation: questionIn 200ms ease-out;
+    }
+
+    @keyframes questionIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .question-container.active {
+        animation: none;
+      }
+    }
+
+    .question-number {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-primary);
+      margin-bottom: 10px;
+      letter-spacing: 0.02em;
+    }
+
+    .question-text {
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--color-text-primary);
+      margin-bottom: 24px;
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option-card {
+      position: relative;
+      background: var(--color-surface);
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast), background var(--transition-fast);
+      min-height: 52px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      text-align: left;
+    }
+
+    .option-card:hover {
+      border-color: var(--color-text-muted);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .option-card:active {
+      transform: scale(0.98);
+      box-shadow: none;
+    }
+
+    .option-card:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    .option-card.selected {
+      border-color: var(--color-primary);
+      background: rgba(196, 132, 106, 0.04);
+      box-shadow: 0 0 0 3px rgba(196, 132, 106, 0.12);
+    }
+
+    .option-letter {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--color-bg);
+      border: 2px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--color-text-secondary);
+      transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+    }
+
+    .option-card.selected .option-letter {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: white;
+    }
+
+    .option-content {
+      flex: 1;
+    }
+
+    .option-label {
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--color-text-primary);
+    }
+
+    .option-sublabel {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      margin-top: 2px;
+      line-height: 1.3;
+    }
+
+    .option-check {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0);
+      transition: opacity var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .option-card.selected .option-check {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .option-check svg {
+      width: 12px;
+      height: 12px;
+      stroke: white;
+      stroke-width: 3;
+      fill: none;
+    }
+
+    /* Desktop 2x2 grid */
+    @media (min-width: 640px) {
+      .options-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+    }
+
+    /* ─── LOADING SCREEN ────────────────────────── */
+    .loading-screen {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .loading-pulse {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-porous));
+      margin: 0 auto 28px;
+      animation: loadingPulse 1.6s ease-in-out infinite;
+    }
+
+    @keyframes loadingPulse {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.08); opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .loading-pulse {
+        animation: none;
+      }
+    }
+
+    .loading-text {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      margin-bottom: 8px;
+    }
+
+    .loading-subtext {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+    }
+
+    /* ─── RESULT SCREEN ─────────────────────────── */
+    .result-screen {
+      padding-top: 0;
+    }
+
+    .result-header {
+      padding: 40px 20px 32px;
+      text-align: center;
+      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .result-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--result-color-light, var(--color-primary)), var(--result-color, var(--color-primary)));
+      opacity: 0.12;
+    }
+
+    .result-header > * {
+      position: relative;
+    }
+
+    .result-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 20px;
+    }
+
+    .result-emoji {
+      font-size: 64px;
+      line-height: 1;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .result-type-name {
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--result-color, var(--color-text-primary));
+      margin-bottom: 12px;
+    }
+
+    .result-tagline {
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      line-height: 1.4;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    .result-body {
+      padding: 28px 20px 40px;
+      max-width: 480px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .result-section {
+      margin-bottom: 28px;
+    }
+
+    .result-section-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 12px;
+    }
+
+    .result-description {
+      font-size: 15px;
+      color: var(--color-text-secondary);
+      line-height: 1.7;
+    }
+
+    .result-description p {
+      margin-bottom: 12px;
+    }
+
+    .result-description p:last-child {
+      margin-bottom: 0;
+    }
+
+    .result-traits {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .result-trait {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+    }
+
+    .result-trait::before {
+      content: '✓';
+      color: var(--result-color, var(--color-primary));
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .result-growth {
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      border-left: 3px solid var(--result-color, var(--color-primary));
+    }
+
+    .result-growth-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: 6px;
+    }
+
+    .result-growth-text {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+    }
+
+    .result-dose {
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      border: 1px solid var(--color-border);
+    }
+
+    .result-dose-item {
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .result-dose-item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .result-dose-time {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--result-color, var(--color-primary));
+      margin-bottom: 4px;
+    }
+
+    .result-dose-text {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+    }
+
+    .result-divider {
+      height: 1px;
+      background: var(--color-border);
+      margin: 28px 0;
+    }
+
+    /* Share section */
+    .share-section {
+      text-align: center;
+      padding: 24px 20px;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .share-prompt {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      margin-bottom: 20px;
+    }
+
+    .share-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .share-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 10px 18px;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+      cursor: pointer;
+      transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+      min-height: 44px;
+      text-decoration: none;
+    }
+
+    .share-btn:hover {
+      background: var(--color-bg);
+      border-color: var(--color-text-muted);
+      transform: translateY(-1px);
+    }
+
+    .share-btn:active {
+      transform: translateY(0);
+    }
+
+    .share-btn:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    .share-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .share-btn.wechat svg {
+      fill: #07C160;
+    }
+
+    .share-btn.telegram svg {
+      fill: #26A5E4;
+    }
+
+    .share-btn.copy-link svg {
+      fill: var(--color-text-secondary);
+    }
+
+    .post-share-message {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      margin-top: 16px;
+      display: none;
+    }
+
+    .post-share-message.visible {
+      display: block;
+      animation: screenFadeIn 300ms ease-out;
+    }
+
+    /* Retake section */
+    .retake-section {
+      padding: 0 20px 40px;
+      text-align: center;
+    }
+
+    .retake-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    /* ─── PRIVACY POLICY SCREEN ────────────────── */
+    .privacy-screen {
+      padding: 40px 20px;
+    }
+
+    .privacy-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px 0;
+      margin-bottom: 24px;
+    }
+
+    .privacy-back-btn:hover {
+      color: var(--color-text-primary);
+    }
+
+    .privacy-back-btn svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+    }
+
+    .privacy-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--color-text-primary);
+    }
+
+    .privacy-content {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      line-height: 1.7;
+    }
+
+    .privacy-content h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin: 20px 0 8px;
+    }
+
+    .privacy-content p {
+      margin-bottom: 12px;
+    }
+
+    /* ─── PROFESSIONAL SUPPORT ─────────────────── */
+    .support-banner {
+      background: linear-gradient(135deg, rgba(126, 189, 194, 0.1), rgba(196, 132, 106, 0.1));
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin: 0 20px 32px;
+      max-width: 440px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .support-banner-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .support-banner-title::before {
+      content: '💜';
+    }
+
+    .support-banner-text {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .support-banner-link {
+      font-size: 13px;
+      color: var(--color-primary);
+      text-decoration: underline;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: var(--font-sans);
+    }
+
+    .support-banner-link:hover {
+      color: var(--color-primary-hover);
+    }
+
+    /* ─── FOOTER ───────────────────────────────── */
+    .quiz-footer {
+      text-align: center;
+      padding: 20px;
+      border-top: 1px solid var(--color-border);
+      font-size: 12px;
+      color: var(--color-text-muted);
+      line-height: 1.5;
+    }
+
+    .quiz-footer a {
+      color: var(--color-text-muted);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .quiz-footer a:hover {
+      color: var(--color-text-secondary);
+    }
+
+    /* ─── SHARE CARD PREVIEW ────────────────────── */
+    .share-card-preview {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(46, 43, 39, 0.7);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: fadeIn 200ms ease-out;
+    }
+
+    .share-card-preview.active {
+      display: flex;
+    }
+
+    .share-card-canvas-wrapper {
+      background: white;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      max-width: 360px;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+    }
+
+    .share-card-canvas-wrapper canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .share-card-actions {
+      padding: 16px;
+      text-align: center;
+    }
+
+    .share-card-actions .btn-primary {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .share-card-cancel {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      padding: 8px;
+    }
+
+    .share-card-cancel:hover {
+      color: var(--color-text-primary);
+    }
+
+    /* ─── RESULT TYPE COLOR VARIANTS ────────────── */
+    .result-porous {
+      --result-color: #7EBDC2;
+      --result-color-light: #A8D5DC;
+    }
+    .result-rigid {
+      --result-color: #8B8680;
+      --result-color-light: #A9A49E;
+    }
+    .result-flexible {
+      --result-color: #87A878;
+      --result-color-light: #A8C49A;
+    }
+    .result-dense {
+      --result-color: #B5847A;
+      --result-color-light: #C9A89E;
+    }
+    .result-shifting {
+      --result-color: #9B8AA6;
+      --result-color-light: #B5A5C0;
+    }
+
+    /* ─── DESKTOP ENHANCEMENTS ──────────────────── */
+    @media (min-width: 768px) {
+      .quiz-header {
+        padding: 20px 20px 16px;
+      }
+
+      .quiz-body {
+        padding: 40px 20px 60px;
+      }
+
+      .question-text {
+        font-size: 20px;
+      }
+
+      .result-header {
+        padding: 60px 20px 48px;
+      }
+
+      .result-type-name {
+        font-size: 44px;
+      }
+
+      .result-body {
+        padding: 36px 20px 60px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── ENTRY SCREEN ─────────────────────────────── -->
+<section id="screen-entry" class="screen entry-screen active" role="region" aria-label="欢迎页面">
+  <div class="container">
+    <p class="entry-brand">PsychoMaster</p>
+    <div class="entry-hero-illustration" aria-hidden="true">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+        <circle cx="12" cy="12" r="3" fill="white" opacity="0.9"/>
+      </svg>
+    </div>
+    <h1 class="entry-headline">你的边界类型是什么？</h1>
+    <p class="entry-subtitle">通过16个真实场景，发现你在关系中的边界模式——以及它如何影响你的能量、自我和亲密感。</p>
+    <button class="btn-primary" id="btn-start" aria-label="开始测试，发现你的边界类型">
+      发现我的边界类型 →
+    </button>
+    <p class="entry-social-proof">已有 50,000+ 人完成测试</p>
+    <p class="entry-disclaimer">本测试仅供自我探索，非临床诊断</p>
+  </div>
+</section>
+
+<!-- ─── DISCLAIMER SCREEN ────────────────────────── -->
+<section id="screen-disclaimer" class="screen disclaimer-screen" role="dialog" aria-labelledby="disclaimer-title" aria-modal="true">
+  <div class="container">
+    <div class="disclaimer-card">
+      <div class="disclaimer-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+      </div>
+      <h2 class="disclaimer-title" id="disclaimer-title">在开始之前</h2>
+      <p class="disclaimer-body">
+        <strong>边界蓝图测试</strong>是一个自我觉察工具，而非临床诊断。<br><br>
+        你的边界类型是适应性的——它的发展是为了保护你。无论测试结果如何，<strong>你没有问题，你很出色。</strong>
+      </p>
+      <button class="btn-primary" id="btn-disclaimer-ready" aria-label="我准备好了，开始自我探索">
+        我准备好认识自己了 →
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ─── QUIZ SCREEN ──────────────────────────────── -->
+<section id="screen-quiz" class="screen quiz-screen" role="main">
+  <header class="quiz-header">
+    <button class="quiz-back-btn" id="btn-quiz-back" aria-label="返回上一页">
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+      返回
+    </button>
+    <div class="progress-container" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="16" aria-label="问题进度">
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width: 6.25%"></div>
+      </div>
+      <p class="progress-label" id="progress-label">问题 1 / 16</p>
+    </div>
+  </header>
+
+  <div class="quiz-body">
+    <!-- Questions injected by JS -->
+  </div>
+</section>
+
+<!-- ─── LOADING SCREEN ──────────────────────────── -->
+<section id="screen-loading" class="screen loading-screen" role="status" aria-live="polite">
+  <div class="container" style="text-align:center">
+    <div class="loading-pulse" aria-hidden="true"></div>
+    <p class="loading-text">正在解读你的边界模式……</p>
+    <p class="loading-subtext">每个人的边界都独一无二</p>
+  </div>
+</section>
+
+<!-- ─── RESULT SCREEN ────────────────────────────── -->
+<section id="screen-result" class="screen result-screen" role="region" aria-live="assertive" aria-atomic="true">
+  <div id="result-header" class="result-header" style="display:none"></div>
+  <div id="result-body" class="result-body" style="display:none"></div>
+  <div id="share-section" class="share-section" style="display:none">
+    <p class="share-prompt">分享你的结果 ✨</p>
+    <div class="share-buttons">
+      <button class="share-btn wechat" id="btn-share-wechat" aria-label="分享到微信">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.045c.134 0 .24-.11.24-.245 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89a5.718 5.718 0 0 0-.407-.032zm-1.834 2.994c.536 0 .97.44.97.983a.976.976 0 0 1-.97.983.976.976 0 0 1-.971-.983c0-.542.435-.983.97-.983zm4.857 0c.536 0 .97.44.97.983a.976.976 0 0 1-.97.983.976.976 0 0 1-.971-.983c0-.542.435-.983.97-.983z"/>
+        </svg>
+        微信
+      </button>
+      <button class="share-btn telegram" id="btn-share-telegram" aria-label="分享到Telegram">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+        </svg>
+        Telegram
+      </button>
+      <button class="share-btn copy-link" id="btn-share-copy" aria-label="复制链接">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        复制链接
+      </button>
+    </div>
+    <p class="post-share-message" id="post-share-message">你的朋友即将更懂你 💜</p>
+  </div>
+  <div id="retake-section" class="retake-section" style="display:none">
+    <div class="retake-links">
+      <a href="#" class="btn-ghost" id="btn-retake" role="button">再测一次（这次更诚实）→</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PRIVACY SCREEN ───────────────────────────── -->
+<section id="screen-privacy" class="screen privacy-screen" role="dialog" aria-labelledby="privacy-title" aria-modal="true">
+  <div class="container">
+    <button class="privacy-back-btn" id="btn-privacy-back" aria-label="返回上一页">
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+      返回
+    </button>
+    <h2 class="privacy-title" id="privacy-title">隐私政策</h2>
+    <div class="privacy-content">
+      <p>边界蓝图测试由 PsychoMaster 团队制作。我们尊重你的隐私。</p>
+
+      <h3>数据收集</h3>
+      <p>本测试在你的浏览器中完全运行。你的回答不会被上传、存储或与任何第三方共享。我们不收集任何个人身份信息。</p>
+
+      <h3>本地存储</h3>
+      <p>为提供继续测试功能（如果中断），你的测试进度会临时保存在浏览器本地存储中。测试完成后，这些数据会自动清除。你也可以随时手动清除浏览器数据。</p>
+
+      <h3>Cookie 使用</h3>
+      <p>本页面不使用任何追踪 Cookie 或第三方分析工具。</p>
+
+      <h3>分享内容</h3>
+      <p>如果你选择分享测试结果，生成分享卡片时所有数据处理均在你的设备上完成。我们不会访问或存储你分享的任何内容。</p>
+
+      <h3>联系我们</h3>
+      <p>如有任何隐私相关问题，请通过 PsychoMaster 官方渠道联系我们。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SHARE CARD PREVIEW ──────────────────────── -->
+<div class="share-card-preview" id="share-card-preview" role="dialog" aria-label="分享卡片预览" aria-modal="true">
+  <div>
+    <div class="share-card-canvas-wrapper">
+      <canvas id="share-card-canvas" width="1080" height="1350"></canvas>
+    </div>
+    <div class="share-card-actions">
+      <button class="btn-primary" id="btn-download-card">保存图片</button>
+      <button class="share-card-cancel" id="btn-cancel-share">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── CONFIRM EXIT MODAL ───────────────────────── -->
+<div class="modal-overlay" id="modal-exit" role="alertdialog" aria-labelledby="exit-title" aria-describedby="exit-desc" aria-modal="true">
+  <div class="modal-card">
+    <div class="modal-icon" aria-hidden="true">🤔</div>
+    <h3 class="modal-title" id="exit-title">确定要退出吗？</h3>
+    <p class="modal-body" id="exit-desc">你的测试进度将会丢失。</p>
+    <div class="modal-buttons">
+      <button class="btn-primary" id="btn-confirm-exit">确定退出</button>
+      <button class="btn-ghost" id="btn-cancel-exit">继续测试</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// DATA — Questions & Results
+// ══════════════════════════════════════════════════════════════
+
+const QUESTIONS = [
+  {
+    id: 1,
+    text: "同事不断停下来向你倾诉他们的生活——又一次。你自己的工作在拖延。",
+    options: [
+      { letter: 'A', label: '留下来倾听。', sublabel: '你不想伤害他们的感情。他们的压力开始变成你的压力。', type: 'porous' },
+      { letter: 'B', label: '礼貌地告辞，回去工作。', sublabel: '你会感到有点内疚，但你会保持坚定。', type: 'rigid' },
+      { letter: 'C', label: '听几分钟，然后温和地说：', sublabel: '"我需要专注我的任务——午餐时再聊？"', type: 'flexible' },
+      { letter: 'D', label: '今天听了，但你筋疲力尽且心生怨恨。', sublabel: '你告诉自己下次要设定边界。下次来了，你却没有。', type: 'dense' }
+    ]
+  },
+  {
+    id: 2,
+    text: "你在约会的人临时取消了计划。他们没有重新安排，只是像什么都没发生一样发消息。",
+    options: [
+      { letter: 'A', label: '你接受了拒绝。', sublabel: '你告诉自己你反应过度了。你发友好信息来缓和局面。', type: 'porous' },
+      { letter: 'B', label: '你沉默了。你结束了。', sublabel: '如果他们不尊重你的时间，你不会主动联系。', type: 'rigid' },
+      { letter: 'C', label: '你感到受伤，对自己说出来，并坦诚地联系对方。', sublabel: '你开放，但不是被动。', type: 'flexible' },
+      { letter: 'D', label: '你假装这没有困扰你，但你在暗中等待他们以某种方式弥补。', sublabel: '怨恨在无形中积累。', type: 'dense' }
+    ]
+  },
+  {
+    id: 3,
+    text: "一位家庭成员经常说一些刺痛你的话——'你太敏感了'，'为什么不能放手？'",
+    options: [
+      { letter: 'A', label: '你吞下了它。', sublabel: '你告诉自己他们是对的。你质疑自己的感受是否有效。', type: 'porous' },
+      { letter: 'B', label: '你在情感上完全关闭了。', sublabel: '你学会了不给他们任何东西。', type: 'rigid' },
+      { letter: 'C', label: '你认出这个模式，感受你的伤害而不冲动行事，决定是否要处理——按你的方式。', sublabel: '', type: 'flexible' },
+      { letter: 'D', label: '你慢慢地接受了它。你不会当场对质，但累积的重量最终让你在没有任何解释的情况下疏远。', sublabel: '', type: 'dense' }
+    ]
+  },
+  {
+    id: 4,
+    text: "你在社交媒体上看到一位朋友发布了一些明显关于你的内容——间接点名，含蓄的攻击，或者一个被动的攻击性玩笑。",
+    options: [
+      { letter: 'A', label: '你胸口有一个结。你反复重读。你想知道你做错了什么。', sublabel: '你可能会私下发消息来缓和局面。', type: 'porous' },
+      { letter: 'B', label: '你立即取消关注或静音。', sublabel: '如果他们想公开这样说话，你不需要那种能量。', type: 'rigid' },
+      { letter: 'C', label: '你感到刺痛，深呼吸，决定这是否值得直接处理——不是在评论里，而是在真正的对话中。', sublabel: '', type: 'flexible' },
+      { letter: 'D', label: '你保存了帖子。后来再翻看。让它在脑海中停留好几天。你什么都不说——但你从来没有真正放下。', sublabel: '', type: 'dense' }
+    ]
+  },
+  {
+    id: 5,
+    text: "一个亲密的朋友正在经历困难。他们已经严重依赖你好几周了。",
+    options: [
+      { letter: 'A', label: '你感受他们的痛苦如同自己的。', sublabel: '你几乎没想过自己的生活。你在空转但继续为他们出现。', type: 'porous' },
+      { letter: 'B', label: '你开始退缩。', sublabel: '你已经达到了极限，没有能力再承担任何人的重量。', type: 'rigid' },
+      { letter: 'C', label: '你诚实检查自己：今天我实际上能给予什么？你从一个有资源的地方出现——或者你诚实沟通你需要先补充。', sublabel: '', type: 'flexible' },
+      { letter: 'D', label: '你勉为其难地出现，但内心怨恨疲惫。你开始悄悄害怕他们的信息。', sublabel: '', type: 'dense' }
+    ]
+  },
+  {
+    id: 6,
+    text: "你正在和一个新人约会。他们想在几周内了解你的一切——你的过去，你的恐惧，你的模式。",
+    options: [
+      { letter: 'A', label: '你敞开了。你希望他们理解你。', sublabel: '你分享得比你预期的多，事后想知道是否太多了。', type: 'porous' },
+      { letter: 'B', label: '你回避。你保持轻松。', sublabel: '你不给他们访问你觉得柔软或未完成的部分。', type: 'rigid' },
+      { letter: 'C', label: '你诚实匹配他们的节奏。你对加深亲密关系持开放态度，但你也保护需要保护的东西，直到信任真正建立。', sublabel: '', type: 'flexible' },
+      { letter: 'D', label: '你给他们部分访问权限——有些东西感觉可以分享，有些感觉永久锁着。你自己也不完全理解规则。', sublabel: '', type: 'dense' }
+    ]
+  },
+  {
+    id: 7,
+    text: "你的经理对你的项目提出批评性反馈。你对部分内容不同意。",
+    options: [
+      { letter: 'A', label: '你全部接受，不反驳。', sublabel: '你接受他们的观点并怀疑自己。', type: 'porous' },
+      { letter: 'B', label: '你坚定地捍卫你的工作。', sublabel: '你不会让任何人让你觉得自己做错了。', type: 'rigid' },
+      { letter: 'C', label: '你倾听有用的部分，冷静地反驳不合理的部分——有具体理由和信心。', sublabel: '', type: 'flexible' },
+      { letter: 'D', label: '你说没关系，但内心翻江倒海。你好几天重播对话，没有解决——他们也没有。', sublabel: '', type: 'dense' }
+    ]
+  },
+  {
+    id: 8,
+    text: "一个家庭成员再次要求借钱。他们上次借的还没还。",
+    options: [
+      { letter: 'A', label: '你再次借了。', sublabel: '你不想制造冲突。你告诉自己他们最终会还的。', type: 'porous' },
+      { letter: 'B', label: '你说不行——坚定且无需解释。', sublabel: '你的答案最终，你不再重提。', type: 'rigid' },
+      { letter: 'C', label: '你说不，或者你提供不同的东西（更小的金额，不同形式的帮助），你冷静地沟通你的理由。', sublabel: '', type: 'flexible' },
+      { letter: 'D', label: '你说是了，但你觉得被利用了。你心里记着账。它影响你如何在关系中出现，但你从不真正谈论它。', sublabel: '', type: 'dense' }
+    ]
+  },
+  {
+    id: 9,
+    text: "你的邻居又有'就一个 quick 问题'——又一次。已经40分钟了。你有事情要做。",
+    options: [
+      { letter: 'A', label: '你留下来了。', sublabel: '你不想粗鲁。你自己的计划悄悄瓦解了。', type: 'porous' },
+      { letter: 'B', label: '你友好地打断，说你需要走了。', sublabel: '你不解释也不道歉。', type: 'rigid' },
+      { letter: 'C', label: '你说，"我现在只有5分钟——什么最重要？"时间到了温和地结束对话。', sublabel: '', type: 'flexible' },
+      { letter: 'D', label: '你点头，但第二天你避免他们——在异常时间离开，假装你不在家。', sublabel: '', type: 'dense' }
+    ]
+  },
+  {
+    id: 10,
+    text: "你在网上发布了一些个人内容——一个成就，一个挣扎，一个脆弱的时刻。",
+    options: [
+      { letter: 'A', label: '你不断标记你生活中的朋友。', sublabel: '你希望他们觉得你把他们包括在你的世界里——即使是复杂的那部分。', type: 'porous' },
+      { letter: 'B', label: '你保持你的网络存在感稀疏或精心策划。', sublabel: '你不让人们进入太多。', type: 'rigid' },
+      { letter: 'C', label: '你有意分享——对你有意义的东西，以感觉真实的方式，即使不是一切。', sublabel: '', type: 'flexible' },
+      { letter: 'D', label: '你在一次连接爆发中过度分享，然后后悔并删除东西，或者悄悄希望没人注意到。', sublabel: '', type: 'dense' }
+    ]
+  },
+  {
+    id: 11,
+    text: "你的团队正在开会讨论工作量。你对薪酬和休假有话要说。",
+    options: [
+      { letter: 'A', label: '你保持沉默。', sublabel: '你不想惹麻烦。你希望有人会提出来。', type: 'porous' },
+      { letter: 'B', label: '你直接提出你的观点，不软化它。', sublabel: '你不需要他们的认可。', type: 'rigid' },
+      { letter: 'C', label: '你说出来——清晰，有建设性。你为自己倡导而不攻击任何人。', sublabel: '', type: 'flexible' },
+      { letter: 'D', label: '你在边缘暗示你想要什么。希望他们能读懂字里行间的意思。', sublabel: '', type: 'dense' }
+    ]
+  },
+  {
+    id: 12,
+    text: "一个浪漫的伴侣想和你共度所有空闲时间。他们对分开做事不感兴趣。",
+    options: [
+      { letter: 'A', label: '你受宠若惊。你让你的生活萎缩来容纳他们。', sublabel: '', type: 'porous' },
+      { letter: 'B', label: '你强烈主张你的独立性。你需要你自己的空间，你不会妥协。', sublabel: '', type: 'rigid' },
+      { letter: 'C', label: '你喜欢和他们共度时光——你也保护你的友谊、爱好和独处。你诚实沟通两者。', sublabel: '', type: 'flexible' },
+      { letter: 'D', label: '你被吸引但也排斥亲密。你想要，但不完全。你在关系中，但你的脚在门边。', sublabel: '', type: 'dense' }
+    ]
+  },
+  {
+    id: 13,
+    text: "一个朋友要你帮忙搬家。又一次。你已经有很多事情了。",
+    options: [
+      { letter: 'A', label: '"好的，我能做到。"', sublabel: '你说好，即使你已经承诺过多。你会想办法应付。', type: 'porous' },
+      { letter: 'B', label: '"我这次不行——抱歉。"', sublabel: '你说不，你不过度解释，也不为此感到内疚。', type: 'rigid' },
+      { letter: 'C', label: '"我周六有空两小时——行吗？"', sublabel: '你带着明确的参数出现。', type: 'flexible' },
+      { letter: 'D', label: '你说是了，但你怨恨他们问。你出现了，但你不在那里。你已经在排练你的委屈。', sublabel: '', type: 'dense' }
+    ]
+  },
+  {
+    id: 14,
+    text: "你今天过得很艰难。你累了，有点悲伤。一个亲密的朋友说："得了吧——你得振作起来。"",
+    options: [
+      { letter: 'A', label: '你接受了他们对你感受的不适。', sublabel: '你为情绪低落道歉。你为他们的感受表演okay。', type: 'porous' },
+      { letter: 'B', label: '你关闭了。', sublabel: '你没有精力解释自己，所以你给他们什么都没有。', type: 'rigid' },
+      { letter: 'C', label: '你温和地说："实际上，我只需要感受一下。我会没事的。"你在保护你的过程而不推开他们。', sublabel: '', type: 'flexible' },
+      { letter: 'D', label: '你感到困惑。那是过分了吗？你的感受有效吗？你沉默了——不是因为你决定了，而是因为他们的反应让它变得不安全。', sublabel: '', type: 'dense' }
+    ]
+  },
+  {
+    id: 15,
+    text: "想想你在亲密关系中——浪漫的或其他——的内心感受。",
+    options: [
+      { letter: 'A', label: '我感到融合。', sublabel: '我接受他们的情绪、压力和需求。有时候我不确定他们在哪里结束，我在哪里开始。', type: 'porous' },
+      { letter: 'B', label: '我在关系中感到孤独。', sublabel: '我的内心世界周围有一堵墙，没有人通过——我喜欢这样。', type: 'rigid' },
+      { letter: 'C', label: '我感到亲密，但我知道我在哪里结束。', sublabel: '我可以深度连接而不失去自己。', type: 'flexible' },
+      { letter: 'D', label: '我感到给予部分访问权限——像一个门厅，但更深的房间是锁着的。有些人比其他人走得更远，但即使最亲密的人也没有完全的钥匙。', sublabel: '', type: 'dense' }
+    ]
+  },
+  {
+    id: 16,
+    text: "有人与你分享了一些脆弱的东西——一个秘密，一个恐惧，一个伤口。",
+    options: [
+      { letter: 'A', label: '你把它作为自己的负担。', sublabel: '你辗转难眠想着它。他们的痛苦成为你的痛苦。', type: 'porous' },
+      { letter: 'B', label: '你在当时承认它，然后放下它。', sublabel: '你不携带不属于你的东西。', type: 'rigid' },
+      { letter: 'C', label: '你保持空间。你倾听而不修复、吸收或撤退。你给予他们你的存在——而不是你的平静。', sublabel: '', type: 'flexible' },
+      { letter: 'D', label: '你慢慢让它进来。你成为他们秘密的守护者。但重量积累，你并不总是知道他们的东西在哪里结束，你的在哪里开始。', sublabel: '', type: 'dense' }
+    ]
+  }
+];
+
+const RESULT_TYPES = {
+  porous: {
+    name: '海纳型',
+    emoji: '🌊',
+    tagline: '我感受所有人的情绪——我把它们当作自己的。',
+    cssClass: 'result-porous',
+    color: '#7EBDC2',
+    colorLight: '#A8D5DC',
+    description: '<p>你的心完全敞开——这是你最大的天赋，也是你最脆弱的地方。</p><p>你不只是倾听人们，你<em>感受</em>他们。你如此深刻地调谐周围的情感天气，以至于很难区分他们的体验在哪里结束，你的在哪里开始。说\'不\'感觉像抛弃某人。设定边界感觉像背叛。</p><p>这不是软弱。这是一个神经系统为深度同理心而构建的标记——而你的环境没有教你，你自己的能量值得保护。</p>',
+    traits: [
+      '社交互动后经常感到疲惫，即使是好的人际关系',
+      '你知道有什么不对劲，但说不出来——只觉得给得太多',
+      '当考虑把自己的需求放在第一位时，内疚是你默认的情绪',
+      '有人说你"太敏感"——你相信了'
+    ],
+    growthTitle: '你的成长空间',
+    growthText: '邀请不是关闭你的心，而是在你的开放周围建立边界——一层允许连接进入同时保持你内心世界完整的可渗透膜。你的同理心不是问题。没有人教过你，你可以感受某人<em>同时</em>保护自己。你可以。这需要练习。',
+    dose: [
+      { time: '早晨', text: '在打开手机或与任何人接触之前，问自己："我今天需要什么？"与答案共处30秒，不立即将其折叠到其他人的需求中。' },
+      { time: '中午', text: '一次诚实的检查。你在哪里说了是但实际想说不是？轻轻记下，不带评判——觉察是改变的开始。' },
+      { time: '晚上', text: '写下今天你保护能量的一次时刻——即使很小。这重新连接你的神经系统对可能性的感知。' }
+    ],
+    shareText: '我是海纳型——我感受一切，我的边界大开，我已经多年空转。测测你的：[链接] #边界蓝图 #讨好型 #共情者 #边界'
+  },
+  rigid: {
+    name: '铠甲型',
+    emoji: '🛡️',
+    tagline: '我让一切保持在外面——这样更安全。',
+    cssClass: 'result-rigid',
+    color: '#8B8680',
+    colorLight: '#A9A49E',
+    description: '<p>你已经学会，让一切保持在外面是最安全的生存方式。</p><p>你的边界是坚定的——也许是堡垒式的。你知道如何说不。你知道如何离开。你用高墙建造了你的内心世界，你已经善于生活在它们后面。</p><p>这不是冷漠。这是盔甲——当更柔软的选择不可用时，它保护了你。但 rigid 边界不只是把危险挡在外面。它们把<em>一切</em>挡在外面——包括你应得的连接、亲密和支持。</p>',
+    traits: [
+      '人们有时形容你"难以读懂"或"不可能真正了解"',
+      '你因为感到受威胁而突然结束过友谊或关系',
+      '内心深处，你害怕需要某人让你变得软弱',
+      '有人说你"封闭"或"难以接近"——你部分相信了'
+    ],
+    growthTitle: '你的成长空间',
+    growthText: '邀请不是拆除你的墙，而是建造一扇门——让你<em>自己</em>决定何时打开，而不是默认让所有人留在外面。脆弱不是软弱。它是真正亲密的地方。你可以坚强<em>同时</em>开放。',
+    dose: [
+      { time: '早晨', text: '注意今天你自动关闭某人的一个时刻——问自己：我现在在保护什么？这还在为我服务吗？' },
+      { time: '中午', text: '让一件小事进来。关于你内心世界的一个问题。一个 micro-moment 的诚实回应，而不是 deflection。' },
+      { time: '晚上', text: '注意你今天在隔离中是否感到更安全——还是缺少了什么。两个答案都没有错。只是注意。' }
+    ],
+    shareText: '我是铠甲型——我的墙很高，我为好的理由建造了它们。但我已经独自在它们后面太久了。测测你的：[链接] #边界蓝图 #僵硬边界 #情感盔甲 #亲密恐惧'
+  },
+  flexible: {
+    name: '平衡型',
+    emoji: '🌿',
+    tagline: '我选择。我清楚自己在哪里结束，别人在哪里开始。',
+    cssClass: 'result-flexible',
+    color: '#87A878',
+    colorLight: '#A8C49A',
+    description: '<p>你拥有大多数人花费数年才学会建立的东西：一种适应而不瓦解的边界。</p><p>你知道如何在陪伴某人时不被他们的痛苦消耗。你知道如何在保护你的平静时不撤退。你可以在同一小时内深度亲密和高度独立。你的边界不是墙或敞开的门——它们是智能的、活的膜，根据背景、信任和你自己的内在智慧打开和关闭。</p><p>这是最罕见和最发达边界风格的标记——不是因为你完美，而是因为你做了工作来知道自己在哪里结束，别人在哪里开始。</p>',
+    traits: [
+      '你可以为某人的痛苦保持空间而不被它消耗',
+      '说不感觉不舒服但不是不可能——你可以做到',
+      '你可以识别你的边界何时滑动并纠正方向',
+      '人际关系感觉滋养而不是消耗——大多数时候'
+    ],
+    growthTitle: '你的成长空间',
+    growthText: '灵活不意味着毫不费力。即使最有资源的边界持有者也会在压力下疲惫、触发和滑入旧模式。邀请是继续精炼——注意你的灵活性变得太可渗透（海纳）或太封闭（僵硬）的背景、人或情况。灵活性是一种练习，不是永久的成就。目标不是完美——是响应。',
+    dose: [
+      { time: '早晨', text: '命名一个你的边界感觉强的地方——和一个感觉被测试的地方。两者都是数据。' },
+      { time: '中午', text: '与你信任的人练习一个有意的小边界——小事。加强这个肌肉。' },
+      { time: '晚上', text: '反思：你今天保持在灵活区域，还是摆向海纳或僵硬？是什么触发了它？（这不是自我判断——是校准。）' }
+    ],
+    shareText: '我是平衡型——我知道我在哪里结束，别人在哪里开始，我可以选择何时开门。每天仍在努力。测测你的：[链接] #边界蓝图 #灵活边界 #健康关系 #自我觉察'
+  },
+  dense: {
+    name: '半开型',
+    emoji: '🚧',
+    tagline: '有些门开着。大多数锁着。',
+    cssClass: 'result-dense',
+    color: '#B5847A',
+    colorLight: '#C9A89E',
+    description: '<p>你存在于一个奇怪的中间空间：不是完全开放，也不是完全关闭。你让人们进入门厅，也许客厅——但更深的房间保持锁定。总是。</p><p>这与僵硬不同，那里的墙明显很高。你的墙有门，但它们不会完全打开，或者不会长时间打开。接近你的人经常觉得他们在处理一张有缺失部分的地图——足够接近看到一些真实的东西，但从未完全<em>进入</em>。</p><p>密度边界的痛苦是真实的：你想要深度连接，但你内心有些东西保留——不是出于冷漠，而是出于一种扩散的、匿名的谨慎，永远不会完全解除。</p>',
+    traits: [
+      '你的人际关系感觉部分完成——你给自己的一些部分访问，但其他部分感觉永久保护',
+      '人们经常说他们不完全"了解"你——你不确定这是可以还是孤独',
+      '你经历过让你害怕的亲密，和让你失望的距离——你不完全信任两者',
+      '你曾经被伤害过，没有完全愈合，所以你学会了保持在部分状态'
+    ],
+    growthTitle: '你的成长空间',
+    growthText: '邀请不是一次打开所有的门——那会让人不知所措并重新创伤。开始注意哪些房间被锁定，为什么，以及锁是否仍在为其原始保护目的服务。有些锁仍然有效。有些很久以前就把同样的威胁挡在外面了，以至于威胁本身已经改变。',
+    dose: [
+      { time: '早晨', text: '问自己：目前我保持锁定的哪个房间我希望可以打开——只是一点点？命名它，不强迫任何事情。' },
+      { time: '中午', text: '注意：谁让我比其他人更进一步，为什么？什么让他们感觉更安全？（这是你关于什么解锁你的数据。）' },
+      { time: '晚上', text: '注意今天你感到"几乎进入"的任何时刻——接近连接但然后拉回。发生了什么？你不必改变它。只是看它。' }
+    ],
+    shareText: '我是半开型——不开放，不关闭。只是...部分可用。我在大厅已经太久，忘记了其他房间是什么样子。测测你的：[链接] #边界蓝图 #半开边界 #部分可用 #关系模式'
+  },
+  shifting: {
+    name: '波动型',
+    emoji: '🔀',
+    tagline: '我的边界没有单一的设置。',
+    cssClass: 'result-shifting',
+    color: '#9B8AA6',
+    colorLight: '#B5A5C0',
+    description: '<p>你的边界风格会转变——有时按天，有时按关系。</p><p>与某些人，你是海纳：你给得太多，吸收太多，找不到你的边缘。与其他人，你是僵硬：墙起来了，什么都进不来。你可能在同一对话中两者之间摇摆——开放然后关闭，温暖然后冻结。</p><p>如果你在这里，你已经注意到你的边界没有单一、稳定的设置——而这种不一致本身令人疲惫。</p><p>这不是混乱。这是一个神经系统学会了对不同威胁的不同反应，尚未将它们整合成连贯策略。你没有坏。你是适应性的。</p>',
+    traits: [
+      '你经常觉得在不同关系中你是不同的人——你不确定哪一个是"真实的"',
+      '你的边界在某些上下文很好，在其他上下文崩溃',
+      '有人说你"不一致"——这很刺痛，因为你也不完全理解它',
+      '你已经厌倦了拉扯——无论是内在的还是人们在周围感受到的那种'
+    ],
+    growthTitle: '你的成长空间',
+    growthText: '目标不是僵硬的 consistency——是<em>连贯性</em>。你需要一个适应性但不混乱、响应但不波动的边界系统。这里的工作是整合：理解什么触发了开放和封闭之间的摇摆，并建立一个更有规律的中间范围。你不是要成为一种类型——你要变得<em>整合</em>。把它想象成少像选择一条车道，多像开发一个完整的仪表板——你可以看到你所有的状态，选择你的反应，而不是被它们选择。',
+    dose: [
+      { time: '早晨', text: '命名你今天的默认：你在倾向于海纳还是僵硬？只是注意——不评判。' },
+      { time: '中午', text: '识别一个将你拉向你不太喜欢的状态的关系或触发因素。觉察创造选择的可能性。' },
+      { time: '晚上', text: '反思：你今天感觉更像自己还是更不像自己？答案告诉你哪里是你的工作。' }
+    ],
+    shareText: '我的边界根据我是与谁而转变——对某些人开放，对其他人关闭。我从拉扯中精疲力竭。测测你的：[链接] #边界蓝图 #混合边界 #边界工作 #关系模式'
+  }
+};
+
+// ══════════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════════
+
+let currentQuestion = 0;
+let answers = [];
+let quizStarted = false;
+
+const STORAGE_KEY = 'boundary_blueprint_quiz_progress';
+
+// ══════════════════════════════════════════════════════════════
+// DOM REFS
+// ══════════════════════════════════════════════════════════════
+
+const screens = {
+  entry: document.getElementById('screen-entry'),
+  disclaimer: document.getElementById('screen-disclaimer'),
+  quiz: document.getElementById('screen-quiz'),
+  loading: document.getElementById('screen-loading'),
+  result: document.getElementById('screen-result'),
+  privacy: document.getElementById('screen-privacy')
+};
+
+const progressFill = document.getElementById('progress-fill');
+const progressLabel = document.getElementById('progress-label');
+
+// ══════════════════════════════════════════════════════════════
+// SCREEN MANAGEMENT
+// ══════════════════════════════════════════════════════════════
+
+function showScreen(name) {
+  Object.values(screens).forEach(s => s.classList.remove('active'));
+  if (screens[name]) screens[name].classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ══════════════════════════════════════════════════════════════
+// QUIZ RENDERING
+// ══════════════════════════════════════════════════════════════
+
+function renderQuestions() {
+  const body = document.querySelector('.quiz-body');
+  body.innerHTML = '';
+
+  QUESTIONS.forEach((q, qIndex) => {
+    const container = document.createElement('div');
+    container.className = 'question-container';
+    container.id = `question-${qIndex}`;
+    container.setAttribute('role', 'group');
+    container.setAttribute('aria-labelledby', `q-${qIndex}-text`);
+
+    const numberEl = document.createElement('p');
+    numberEl.className = 'question-number';
+    numberEl.textContent = `问题 ${qIndex + 1}`;
+
+    const textEl = document.createElement('h2');
+    textEl.className = 'question-text';
+    textEl.id = `q-${qIndex}-text`;
+    textEl.textContent = q.text;
+
+    const optionsList = document.createElement('div');
+    optionsList.className = 'options-list';
+    optionsList.setAttribute('role', 'radiogroup');
+    optionsList.setAttribute('aria-label', `问题 ${qIndex + 1} 的选项`);
+
+    q.options.forEach((opt, optIndex) => {
+      const card = document.createElement('div');
+      card.className = 'option-card';
+      card.setAttribute('role', 'radio');
+      card.setAttribute('aria-checked', 'false');
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('aria-label', `${opt.letter}. ${opt.label}${opt.sublabel ? '. ' + opt.sublabel : ''}`);
+      card.dataset.type = opt.type;
+      card.dataset.question = qIndex;
+      card.dataset.option = optIndex;
+
+      const letter = document.createElement('span');
+      letter.className = 'option-letter';
+      letter.textContent = opt.letter;
+      letter.setAttribute('aria-hidden', 'true');
+
+      const content = document.createElement('div');
+      content.className = 'option-content';
+
+      const label = document.createElement('p');
+      label.className = 'option-label';
+      label.textContent = opt.label;
+
+      content.appendChild(label);
+
+      if (opt.sublabel) {
+        const sublabel = document.createElement('p');
+        sublabel.className = 'option-sublabel';
+        sublabel.textContent = opt.sublabel;
+        content.appendChild(sublabel);
+      }
+
+      const check = document.createElement('span');
+      check.className = 'option-check';
+      check.setAttribute('aria-hidden', 'true');
+      check.innerHTML = '<svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"></polyline></svg>';
+
+      card.appendChild(letter);
+      card.appendChild(content);
+      card.appendChild(check);
+
+      card.addEventListener('click', () => selectOption(qIndex, optIndex, opt.type, card));
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          selectOption(qIndex, optIndex, opt.type, card);
+        }
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+          e.preventDefault();
+          const next = optionsList.querySelectorAll('.option-card')[optIndex + 1] || optionsList.querySelector('.option-card');
+          next?.focus();
+        }
+        if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          const all = optionsList.querySelectorAll('.option-card');
+          const prev = all[optIndex - 1] || all[all.length - 1];
+          prev?.focus();
+        }
+      });
+
+      optionsList.appendChild(card);
+    });
+
+    container.appendChild(numberEl);
+    container.appendChild(textEl);
+    container.appendChild(optionsList);
+    body.appendChild(container);
+  });
+}
+
+function showQuestion(index) {
+  document.querySelectorAll('.question-container').forEach(c => c.classList.remove('active'));
+  const el = document.getElementById(`question-${index}`);
+  if (el) {
+    el.classList.add('active');
+    el.focus();
+  }
+
+  const pct = ((index) / QUESTIONS.length) * 100;
+  progressFill.style.width = `${pct}%`;
+  progressLabel.textContent = `问题 ${index + 1} / ${QUESTIONS.length}`;
+
+  // Update ARIA
+  const progressBar = document.querySelector('.progress-container');
+  progressBar.setAttribute('aria-valuenow', index + 1);
+}
+
+function selectOption(qIndex, optIndex, type, card) {
+  // Visual selection
+  const allCards = document.querySelectorAll(`#question-${qIndex} .option-card`);
+  allCards.forEach(c => {
+    c.classList.remove('selected');
+    c.setAttribute('aria-checked', 'false');
+  });
+  card.classList.add('selected');
+  card.setAttribute('aria-checked', 'true');
+
+  // Record answer
+  answers[qIndex] = type;
+
+  // Auto advance after brief delay
+  setTimeout(() => {
+    if (qIndex < QUESTIONS.length - 1) {
+      showQuestion(qIndex + 1);
+    } else {
+      finishQuiz();
+    }
+  }, 250);
+}
+
+// ══════════════════════════════════════════════════════════════
+// SCORING
+// ══════════════════════════════════════════════════════════════
+
+function calculateResult() {
+  const counts = { porous: 0, rigid: 0, flexible: 0, dense: 0 };
+
+  answers.forEach(ans => {
+    if (ans && counts.hasOwnProperty(ans)) {
+      counts[ans]++;
+    }
+  });
+
+  const { porous, rigid, flexible, dense } = counts;
+
+  // Check for dominant type (9+)
+  if (porous >= 9) return 'porous';
+  if (rigid >= 9) return 'rigid';
+  if (flexible >= 9) return 'flexible';
+  if (dense >= 9) return 'dense';
+
+  // Check for Shifting patterns
+  const isShifting =
+    (porous >= 7 && porous <= 8 && rigid >= 7 && rigid <= 8) ||
+    (porous >= 7 && porous <= 8 && dense >= 7 && dense <= 8) ||
+    (rigid >= 7 && rigid <= 8 && dense >= 7 && dense <= 8) ||
+    (porous < 7 && rigid < 7 && flexible < 7 && dense < 7);
+
+  if (isShifting) return 'shifting';
+
+  // Check for Balanced with traits
+  if (flexible >= 6) {
+    const others = [porous, rigid, dense];
+    if (others.some(o => o >= 5)) return 'flexible';
+  }
+
+  // Otherwise highest count wins
+  const max = Math.max(porous, rigid, flexible, dense);
+  if (porous === max) return porous >= 5 ? 'porous' : 'shifting';
+  if (rigid === max) return rigid >= 5 ? 'rigid' : 'shifting';
+  if (flexible === max) return flexible >= 5 ? 'flexible' : 'shifting';
+  if (dense === max) return dense >= 5 ? 'dense' : 'shifting';
+
+  return 'shifting';
+}
+
+// ══════════════════════════════════════════════════════════════
+// RESULT RENDERING
+// ══════════════════════════════════════════════════════════════
+
+function renderResult(typeKey) {
+  const r = RESULT_TYPES[typeKey];
+  if (!r) return;
+
+  const header = document.getElementById('result-header');
+  const body = document.getElementById('result-body');
+  const shareSection = document.getElementById('share-section');
+  const retakeSection = document.getElementById('retake-section');
+
+  // Clear result screen classes and add type class
+  const resultScreen = document.getElementById('screen-result');
+  resultScreen.className = `screen result-screen ${r.cssClass}`;
+
+  // Header
+  header.className = `result-header ${r.cssClass}`;
+  header.style.setProperty('--result-color', r.color);
+  header.style.setProperty('--result-color-light', r.colorLight);
+  header.innerHTML = `
+    <p class="result-label">你的边界类型</p>
+    <span class="result-emoji" aria-hidden="true">${r.emoji}</span>
+    <h1 class="result-type-name">${r.name}</h1>
+    <p class="result-tagline">"${r.tagline}"</p>
+  `;
+
+  // Body
+  let traitsHtml = r.traits.map(t => `<li class="result-trait">${t}</li>`).join('');
+
+  let doseHtml = r.dose.map(d => `
+    <div class="result-dose-item">
+      <p class="result-dose-time">${d.time}</p>
+      <p class="result-dose-text">${d.text}</p>
+    </div>
+  `).join('');
+
+  body.innerHTML = `
+    <div class="result-section">
+      <p class="result-section-title">这解释了关于你的什么</p>
+      <ul class="result-traits">${traitsHtml}</ul>
+    </div>
+
+    <div class="result-section">
+      <div class="result-growth">
+        <p class="result-growth-title">${r.growthTitle}</p>
+        <p class="result-growth-text">${r.growthText}</p>
+      </div>
+    </div>
+
+    <div class="result-section">
+      <p class="result-section-title">你的边界安全剂量</p>
+      <div class="result-dose">${doseHtml}</div>
+    </div>
+
+    <div class="result-divider"></div>
+
+    <div class="result-section">
+      <p class="result-section-title">这测试是什么</p>
+      <div class="result-description">
+        <p>边界蓝图测试是一个基于边界理论、家庭系统、依恋研究和关系心理学的自我觉察工具。它不是临床诊断，也不旨在取代专业的心理健康支持。</p>
+        <p>无论你的类型是什么，它是一个适应——你的神经系统或历史建立来保护你的。一路上它服务了你。现在你在这里，想要更好地理解它——这是一切的开始。</p>
+      </div>
+    </div>
+
+    <!-- Professional Support -->
+    <div class="support-banner">
+      <p class="support-banner-title">需要更多支持？</p>
+      <p class="support-banner-text">如果边界工作引发了创伤、悲伤或不知所措，或者如果你处于让你感到不安全的关系中，寻求 licensed 治疗师或咨询师的支持可能会有所帮助。</p>
+      <button class="support-banner-link" id="btn-support-link">找到专业帮助 →</button>
+    </div>
+
+    <!-- Privacy -->
+    <div style="text-align:center; margin-bottom: 20px;">
+      <a class="btn-ghost" id="btn-privacy" role="button" style="font-size:13px">隐私政策</a>
+    </div>
+  `;
+
+  // Show sections
+  header.style.display = '';
+  body.style.display = '';
+  shareSection.style.display = '';
+  retakeSection.style.display = '';
+
+  // Bind support link
+  setTimeout(() => {
+    document.getElementById('btn-privacy')?.addEventListener('click', () => showScreen('privacy'));
+    document.getElementById('btn-support-link')?.addEventListener('click', () => {
+      window.open('https://psychologytoday.com', '_blank', 'noopener,noreferrer');
+    });
+  }, 0);
+}
+
+// ══════════════════════════════════════════════════════════════
+// QUIZ FLOW
+// ══════════════════════════════════════════════════════════════
+
+function startQuiz() {
+  answers = [];
+  currentQuestion = 0;
+  quizStarted = true;
+  saveProgress();
+  renderQuestions();
+  showScreen('quiz');
+  showQuestion(0);
+}
+
+function finishQuiz() {
+  quizStarted = false;
+  clearProgress();
+  showScreen('loading');
+  setTimeout(() => {
+    const resultType = calculateResult();
+    showScreen('result');
+    renderResult(resultType);
+  }, 1800);
+}
+
+// ══════════════════════════════════════════════════════════════
+// SHARE CARD (Canvas)
+// ══════════════════════════════════════════════════════════════
+
+function generateShareCard(typeKey) {
+  const r = RESULT_TYPES[typeKey];
+  const canvas = document.getElementById('share-card-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = 1080, H = 1350;
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Gradient background
+  const grad = ctx.createLinearGradient(0, 0, W, H);
+  grad.addColorStop(0, r.colorLight);
+  grad.addColorStop(1, r.color);
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  // Darker overlay for readability
+  ctx.fillStyle = 'rgba(0,0,0,0.08)';
+  ctx.fillRect(0, 0, W, H);
+
+  // Brand
+  ctx.fillStyle = 'rgba(255,255,255,0.7)';
+  ctx.font = 'bold 24px "DM Sans", "Noto Sans SC", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('PSYCHOMASTER', W / 2, 80);
+
+  // Label
+  ctx.fillStyle = 'rgba(255,255,255,0.85)';
+  ctx.font = '500 28px "DM Sans", "Noto Sans SC", sans-serif';
+  ctx.letterSpacing = '0.15em';
+  ctx.fillText('我的边界类型', W / 2, 340);
+
+  // Emoji
+  ctx.font = '160px sans-serif';
+  ctx.fillText(r.emoji, W / 2, 600);
+
+  // Type name
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = 'bold 96px "Noto Sans SC", "DM Sans", sans-serif';
+  ctx.fillText(r.name, W / 2, 740);
+
+  // Tagline
+  ctx.font = '500 36px "Noto Sans SC", "DM Sans", sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.9)';
+  ctx.fillText(`"${r.tagline}"`, W / 2, 830);
+
+  // Divider
+  ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(W * 0.2, 900);
+  ctx.lineTo(W * 0.8, 900);
+  ctx.stroke();
+
+  // CTA
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = '32px "Noto Sans SC", "DM Sans", sans-serif';
+  ctx.fillText('发现你的 → boundaryblueprint.com', W / 2, 980);
+
+  // Hashtag
+  ctx.font = '500 28px "DM Sans", sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.7)';
+  ctx.fillText('#边界蓝图', W / 2, 1080);
+
+  // PsychoMaster bottom
+  ctx.font = '500 24px "DM Sans", "Noto Sans SC", sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.fillText('by PsychoMaster', W / 2, 1280);
+}
+
+function showShareCardPreview(typeKey) {
+  generateShareCard(typeKey);
+  document.getElementById('share-card-preview').classList.add('active');
+}
+
+function hideShareCardPreview() {
+  document.getElementById('share-card-preview').classList.remove('active');
+}
+
+function downloadShareCard() {
+  const canvas = document.getElementById('share-card-canvas');
+  const link = document.createElement('a');
+  link.download = 'my-boundary-type.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+// ══════════════════════════════════════════════════════════════
+// PROGRESS PERSISTENCE
+// ══════════════════════════════════════════════════════════════
+
+function saveProgress() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      startedAt: new Date().toISOString(),
+      currentQuestion,
+      answers,
+      completedAt: null
+    }));
+  } catch (e) { /* ignore */ }
+}
+
+function loadProgress() {
+  try {
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (!data) return null;
+    const ageHours = (Date.now() - new Date(data.startedAt).getTime()) / 3600000;
+    if (ageHours > 24) {
+      clearProgress();
+      return null;
+    }
+    return data;
+  } catch (e) {
+    return null;
+  }
+}
+
+function clearProgress() {
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch (e) { /* ignore */ }
+}
+
+// ══════════════════════════════════════════════════════════════
+// EVENT BINDING
+// ══════════════════════════════════════════════════════════════
+
+document.getElementById('btn-start').addEventListener('click', () => {
+  showScreen('disclaimer');
+});
+
+document.getElementById('btn-disclaimer-ready').addEventListener('click', () => {
+  startQuiz();
+});
+
+document.getElementById('btn-quiz-back').addEventListener('click', () => {
+  if (quizStarted) {
+    document.getElementById('modal-exit').classList.add('active');
+  } else {
+    showScreen('entry');
+  }
+});
+
+document.getElementById('btn-confirm-exit').addEventListener('click', () => {
+  quizStarted = false;
+  clearProgress();
+  document.getElementById('modal-exit').classList.remove('active');
+  showScreen('entry');
+});
+
+document.getElementById('btn-cancel-exit').addEventListener('click', () => {
+  document.getElementById('modal-exit').classList.remove('active');
+});
+
+document.getElementById('btn-privacy-back').addEventListener('click', () => {
+  showScreen('result');
+});
+
+document.getElementById('btn-retake').addEventListener('click', (e) => {
+  e.preventDefault();
+  answers = [];
+  currentQuestion = 0;
+  renderQuestions();
+  showScreen('quiz');
+  showQuestion(0);
+});
+
+document.getElementById('btn-share-wechat').addEventListener('click', () => {
+  const shareUrl = window.location.href;
+  if (/MicroMessenger/i.test(navigator.userAgent)) {
+    if (navigator.share) {
+      navigator.share({ title: '边界蓝图测试', text: RESULT_TYPES[calculateResult()]?.shareText || '', url: shareUrl }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(shareUrl).then(() => alert('链接已复制到剪贴板，请在微信中粘贴分享。'));
+    }
+  } else {
+    alert('请在微信中打开此页面，然后使用右上角菜单分享。\n\n或者复制链接发送给朋友。');
+  }
+});
+
+document.getElementById('btn-share-telegram').addEventListener('click', () => {
+  const typeKey = calculateResult();
+  const r = RESULT_TYPES[typeKey];
+  const text = `我的边界类型是：${r.name} ${r.emoji}\n\n${r.shareText.replace('[链接]', window.location.href)}`;
+  const url = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`;
+  window.open(url, '_blank', 'noopener,noreferrer');
+});
+
+document.getElementById('btn-share-copy').addEventListener('click', () => {
+  const typeKey = calculateResult();
+  const r = RESULT_TYPES[typeKey];
+  const text = `我的边界类型是：${r.name} ${r.emoji}\n\n"${r.tagline}"\n\n${r.shareText.replace('[链接]', window.location.href)}`;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('btn-share-copy');
+    const orig = btn.textContent;
+    btn.textContent = '已复制 ✓';
+    setTimeout(() => { btn.textContent = orig; }, 2000);
+  }).catch(() => {
+    alert('复制失败，请手动复制。');
+  });
+});
+
+document.getElementById('btn-download-card').addEventListener('click', downloadShareCard);
+document.getElementById('btn-cancel-share').addEventListener('click', hideShareCardPreview);
+
+document.getElementById('share-card-preview').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) hideShareCardPreview();
+});
+
+// Share card generation after result loads
+const originalRenderResult = renderResult;
+renderResult = function(typeKey) {
+  originalRenderResult(typeKey);
+
+  setTimeout(() => {
+    const type = calculateResult();
+    const shareCardBtn = document.createElement('button');
+    shareCardBtn.className = 'share-btn';
+    shareCardBtn.id = 'btn-share-card';
+    shareCardBtn.setAttribute('aria-label', '生成分享图片');
+    shareCardBtn.innerHTML = `
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+        <polyline points="21 15 16 10 5 21"></polyline>
+      </svg>
+      生成分享图
+    `;
+    shareCardBtn.addEventListener('click', () => showShareCardPreview(type));
+    const shareBtns = document.querySelector('.share-buttons');
+    if (shareBtns) shareBtns.appendChild(shareCardBtn);
+  }, 100);
+};
+
+// ══════════════════════════════════════════════════════════════
+// INIT — Check for existing progress
+// ══════════════════════════════════════════════════════════════
+
+(function init() {
+  const progress = loadProgress();
+  if (progress && progress.answers && progress.answers.length > 0) {
+    answers = progress.answers;
+    currentQuestion = progress.currentQuestion || 0;
+  }
+})();
+</script>
+</body>
+</html>
