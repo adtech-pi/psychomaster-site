@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How Precise Are Your Emotions? | Emotional Granularity Quiz</title>
+  <meta name="description" content="A 2-minute check-in based on emotional granularity science. Discover how finely you can distinguish and name your emotions.">
+  <meta property="og:title" content="How Precise Are Your Emotions?">
+  <meta property="og:description" content="A 2-minute check-in based on emotional granularity science.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #F5F3F7;
+      --surface: #FAFAFA;
+      --primary: #6B6BAF;
+      --primary-dark: #5A5A9A;
+      --secondary: #A8A3C7;
+      --accent: #C4A3B8;
+      --calm-blue: #8A9BB5;
+      --text: #2D2D35;
+      --text-secondary: #6E6E7A;
+      --border: #E8E4EE;
+      --success: #7BA58F;
+      --caution: #C9A87C;
+      --alert: #C4908A;
+      --neutral: #B5A8BC;
+      --radius: 16px;
+      --radius-sm: 12px;
+      --radius-pill: 24px;
+      --shadow: 0 4px 24px rgba(45,45,53,0.06);
+      --shadow-hover: 0 8px 32px rgba(45,45,53,0.10);
+      --transition: cubic-bezier(0.4, 0, 0.2, 1);
+      --space-xs: 8px;
+      --space-sm: 16px;
+      --space-md: 24px;
+      --space-lg: 40px;
+      --space-xl: 64px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(160deg, #F5F3F7 0%, #EDE9F2 100%);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3 { font-family: 'Fraunces', serif; }
+
+    .screen {
+      display: none;
+      opacity: 0;
+      min-height: 100vh;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-md);
+    }
+
+    .screen.active {
+      display: flex;
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.6; }
+      50% { transform: scale(1.05); opacity: 1; }
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* Landing */
+    .landing-inner {
+      max-width: 560px;
+      text-align: center;
+      padding: var(--space-xl) var(--space-md);
+    }
+
+    .landing-deco {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto var(--space-lg);
+      opacity: 0.3;
+    }
+
+    .landing-deco svg { width: 100%; height: 100%; }
+
+    .landing h1 {
+      font-size: clamp(28px, 5vw, 36px);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: var(--space-sm);
+      line-height: 1.2;
+    }
+
+    .landing-sub {
+      font-size: 17px;
+      color: var(--text-secondary);
+      margin-bottom: var(--space-lg);
+      line-height: 1.6;
+    }
+
+    .landing-note {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-style: italic;
+      margin-top: var(--space-sm);
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-xs);
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-pill);
+      padding: 16px 40px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      min-height: 52px;
+      min-width: 160px;
+      text-decoration: none;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .btn-primary:active { transform: scale(0.98); }
+
+    .btn-primary:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 3px;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-xs);
+      background: transparent;
+      color: var(--primary);
+      border: 1.5px solid var(--primary);
+      border-radius: var(--radius-pill);
+      padding: 12px 28px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-height: 44px;
+    }
+
+    .btn-secondary:hover { background: rgba(107,107,175,0.08); }
+
+    .btn-secondary:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 3px;
+    }
+
+    .btn-ghost {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+      padding: var(--space-xs);
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+      transition: color 0.2s ease;
+    }
+
+    .btn-ghost:hover { color: var(--primary); }
+
+    .btn-ghost:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    /* Quiz */
+    #quiz {
+      padding-top: 60px;
+      padding-bottom: var(--space-lg);
+      justify-content: flex-start;
+    }
+
+    .quiz-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      background: var(--bg);
+      padding: var(--space-sm) var(--space-md);
+    }
+
+    .progress-track {
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 2px;
+      transition: width 0.6s var(--transition);
+      width: 0%;
+    }
+
+    .quiz-content {
+      width: 100%;
+      max-width: 640px;
+      padding: var(--space-lg) var(--space-sm);
+    }
+
+    .quiz-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-md);
+    }
+
+    .question-caption {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .scenario-text {
+      font-size: clamp(18px, 4vw, 20px);
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: var(--space-lg);
+      line-height: 1.6;
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      list-style: none;
+    }
+
+    .option-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--space-sm) var(--space-md);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-sm);
+      min-height: 60px;
+      position: relative;
+      box-shadow: var(--shadow);
+    }
+
+    .option-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--secondary);
+    }
+
+    .option-card:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    .option-card.selected {
+      background: rgba(107,107,175,0.10);
+      border-color: var(--primary);
+    }
+
+    .option-card.selected::after {
+      content: '';
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+      background-size: 12px;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .option-letter {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--secondary);
+      min-width: 28px;
+      padding-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .option-card.selected .option-letter { color: var(--primary); }
+
+    .option-text {
+      font-size: clamp(15px, 3.5vw, 17px);
+      color: var(--text);
+      line-height: 1.5;
+      padding-right: 36px;
+    }
+
+    .next-btn-wrap {
+      margin-top: var(--space-lg);
+      text-align: center;
+    }
+
+    .next-btn-wrap .btn-primary {
+      width: 100%;
+      max-width: 320px;
+    }
+
+    /* Processing */
+    .processing-inner {
+      text-align: center;
+    }
+
+    .breathing-circle {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--secondary), var(--accent));
+      margin: 0 auto var(--space-md);
+      animation: breathe 2.4s ease-in-out infinite;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .breathing-circle { animation: none; opacity: 0.7; }
+    }
+
+    .processing-text {
+      font-style: italic;
+      color: var(--text-secondary);
+      font-size: 16px;
+    }
+
+    /* Results */
+    #results {
+      justify-content: flex-start;
+      align-items: center;
+      padding: var(--space-lg) var(--space-sm);
+    }
+
+    .results-inner {
+      width: 100%;
+      max-width: 640px;
+    }
+
+    .results-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: 8px 20px;
+      border-radius: var(--radius-pill);
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: var(--space-md);
+      animation: slideUp 0.5s ease-out forwards;
+    }
+
+    .results-badge.high { background: rgba(123,165,143,0.15); color: var(--success); }
+    .results-badge.moderate { background: rgba(201,168,124,0.15); color: var(--caution); }
+    .results-badge.low { background: rgba(196,144,138,0.15); color: var(--alert); }
+    .results-badge.alexithymia { background: rgba(181,168,188,0.15); color: var(--neutral); }
+
+    .results-headline {
+      font-size: clamp(22px, 5vw, 28px);
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: var(--space-md);
+      line-height: 1.3;
+      animation: slideUp 0.5s 0.15s ease-out both;
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: var(--space-sm);
+      margin-top: var(--space-lg);
+    }
+
+    .traits-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      animation: slideUp 0.5s 0.3s ease-out both;
+    }
+
+    .trait-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 16px;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .trait-icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      color: var(--secondary);
+      margin-top: 2px;
+    }
+
+    .growth-edge {
+      background: var(--surface);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: var(--space-md);
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text);
+      animation: slideUp 0.5s 0.45s ease-out both;
+    }
+
+    .growth-edge-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: var(--space-xs);
+    }
+
+    .action-steps {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      animation: slideUp 0.5s 0.6s ease-out both;
+    }
+
+    .action-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--space-md);
+      display: flex;
+      gap: var(--space-sm);
+      box-shadow: var(--shadow);
+    }
+
+    .action-card.high { border-left: 3px solid var(--success); }
+    .action-card.moderate { border-left: 3px solid var(--caution); }
+    .action-card.low { border-left: 3px solid var(--alert); }
+    .action-card.alexithymia { border-left: 3px solid var(--neutral); }
+
+    .action-num {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      font-size: 22px;
+      color: var(--primary);
+      min-width: 32px;
+      flex-shrink: 0;
+    }
+
+    .action-body strong {
+      display: block;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .action-body p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .disclosure {
+      margin-top: var(--space-lg);
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-style: italic;
+      line-height: 1.6;
+      padding: var(--space-md);
+      background: rgba(168,163,199,0.1);
+      border-radius: var(--radius);
+      animation: slideUp 0.5s 0.75s ease-out both;
+    }
+
+    .share-section {
+      margin-top: var(--space-lg);
+      text-align: center;
+      animation: slideUp 0.5s 0.9s ease-out both;
+    }
+
+    .share-card-canvas-wrap {
+      margin: var(--space-md) auto;
+      max-width: 270px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    #shareCardCanvas {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .share-btns {
+      display: flex;
+      gap: var(--space-sm);
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: var(--space-md);
+    }
+
+    .footer-nav {
+      margin-top: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      align-items: center;
+      animation: slideUp 0.5s 1.05s ease-out both;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: var(--space-md);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .footer-link {
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-decoration: underline;
+      text-decoration-color: transparent;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+      transition: text-decoration-color 0.2s ease, color 0.2s ease;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 var(--space-xs);
+    }
+
+    .footer-link:hover { color: var(--primary); text-decoration-color: var(--primary); }
+
+    .footer-link:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(45,45,53,0.5);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-md);
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: var(--space-lg);
+      max-width: 540px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-hover);
+      animation: slideUp 0.3s ease-out;
+    }
+
+    .modal h2 {
+      font-size: 22px;
+      margin-bottom: var(--space-md);
+      color: var(--text);
+    }
+
+    .modal p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: var(--space-sm);
+    }
+
+    .modal-close {
+      margin-top: var(--space-md);
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .trigger-warning-box {
+      background: rgba(196,144,138,0.1);
+      border: 1px solid rgba(196,144,138,0.3);
+      border-radius: var(--radius);
+      padding: var(--space-md);
+      margin-bottom: var(--space-md);
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .trigger-warning-box strong { color: var(--alert); }
+
+    .support-cta {
+      background: rgba(107,107,175,0.08);
+      border-radius: var(--radius);
+      padding: var(--space-md);
+      margin-top: var(--space-md);
+      text-align: center;
+    }
+
+    .support-cta p {
+      font-size: 15px;
+      margin-bottom: var(--space-sm);
+    }
+
+    /* Responsive */
+    @media (max-width: 767px) {
+      .landing-inner { padding: var(--space-lg) var(--space-sm); }
+      .quiz-content { padding: var(--space-md) var(--space-xs); }
+      .options-list { gap: 10px; }
+      .option-card { padding: 14px var(--space-sm); }
+      .action-card { padding: var(--space-sm); }
+    }
+
+    @media (min-width: 768px) {
+      .quiz-content { padding: var(--space-xl) var(--space-md); }
+    }
+
+    /* Accessibility */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--text);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: var(--radius-pill);
+      font-size: 14px;
+      z-index: 200;
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Landing Screen -->
+  <div id="landing" class="screen active" role="region" aria-label="Quiz Introduction">
+    <div class="landing-inner">
+      <div class="landing-deco" aria-hidden="true">
+        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="32" stroke="#A8A3C7" stroke-width="1.5"/>
+          <circle cx="40" cy="40" r="22" stroke="#A8A3C7" stroke-width="1" stroke-dasharray="4 4"/>
+          <circle cx="40" cy="40" r="10" fill="#C4A3B8" opacity="0.4"/>
+          <circle cx="40" cy="30" r="3" fill="#6B6BAF"/>
+        </svg>
+      </div>
+      <h1>How Precise Are Your Emotions?<span style="font-weight:400;display:block;font-size:0.75em;margin-top:8px;color:var(--text-secondary)">And Why It Matters</span></h1>
+      <p class="landing-sub">A 2-minute check-in based on emotional granularity science.<br>Take a moment to check in with yourself — no right or wrong answers, just honest ones.</p>
+      <button class="btn-primary" id="startBtn" aria-label="Start the Emotional Granularity Quiz">
+        Start the Quiz
+      </button>
+      <p class="landing-note">You can pause anytime and your progress will be saved.</p>
+    </div>
+  </div>
+
+  <!-- Quiz Screen -->
+  <div id="quiz" class="screen" role="region" aria-label="Quiz Questions">
+    <div class="quiz-header">
+      <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0" id="progressBar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+    <div class="quiz-content">
+      <div class="quiz-nav">
+        <button class="btn-ghost" id="backBtn" aria-label="Go to previous question" style="visibility:hidden">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          Back
+        </button>
+        <span class="question-caption" id="questionCaption">Question 1 of 12</span>
+      </div>
+      <p class="scenario-text" id="scenarioText"></p>
+      <ul class="options-list" id="optionsList" role="list" aria-label="Answer options"></ul>
+      <div class="next-btn-wrap">
+        <button class="btn-primary" id="nextBtn" aria-label="Go to next question" style="display:none">
+          Next
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Processing Screen -->
+  <div id="processing" class="screen" role="region" aria-label="Calculating your results">
+    <div class="processing-inner">
+      <div class="breathing-circle" aria-hidden="true"></div>
+      <p class="processing-text">Looking at your patterns…</p>
+    </div>
+  </div>
+
+  <!-- Results Screen -->
+  <div id="results" class="screen" role="region" aria-label="Your results">
+    <div class="results-inner">
+      <div id="resultsContent"></div>
+    </div>
+  </div>
+
+  <!-- Trigger Warning Modal -->
+  <div id="triggerModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="triggerTitle">
+    <div class="modal">
+      <h2 id="triggerTitle">A Quick Note Before You Begin</h2>
+      <div class="trigger-warning-box">
+        <strong>Emotional content ahead.</strong> This quiz asks you to reflect on your emotional experiences. If you're going through a particularly difficult time or experiencing overwhelming emotions, this may not be the right moment. There's no pressure to take it now — you can always come back later.
+      </div>
+      <p>This quiz is a <strong>psychoeducational tool</strong>, not a clinical assessment or diagnosis. Results reflect your current emotional awareness patterns — and these can shift over time with practice and support.</p>
+      <div class="modal-close">
+        <button class="btn-secondary" id="triggerClose" aria-label="I understand, proceed to quiz">I Understand, Let's Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Privacy Policy Modal -->
+  <div id="privacyModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="privacyTitle">
+    <div class="modal">
+      <h2 id="privacyTitle">Privacy Policy</h2>
+      <p>This quiz is designed with your privacy in mind. All your responses stay on your device — nothing is sent to any server.</p>
+      <p><strong>Data stored:</strong> Your quiz progress is saved in your browser's local storage so you can pause and resume. This data never leaves your device.</p>
+      <p><strong>No tracking:</strong> We don't use analytics, cookies, or third-party trackers on this page.</p>
+      <p><strong>Share cards:</strong> The canvas-generated share card is created entirely in your browser. No image data is uploaded anywhere.</p>
+      <p>If you'd like to clear your saved progress, you can do so from your browser's settings or by refreshing the page without answering.</p>
+      <div class="modal-close">
+        <button class="btn-secondary" id="privacyClose" aria-label="Close privacy policy">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Professional Support Modal -->
+  <div id="supportModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="supportTitle">
+    <div class="modal">
+      <h2 id="supportTitle">Looking for More Support?</h2>
+      <p>This quiz is a starting point for reflection — not a substitute for professional care.</p>
+      <p>If you're finding that difficulty identifying or experiencing emotions is affecting your daily life, speaking with a licensed therapist can be genuinely helpful. Therapists trained in emotional processing, alexithymia, or somatic experiencing can offer tailored support.</p>
+      <div class="support-cta">
+        <p><strong>Need to talk to someone?</strong></p>
+        <p style="font-size:13px;color:var(--text-secondary)">If you're in a crisis, please contact a mental health professional or a crisis helpline in your area immediately.</p>
+      </div>
+      <div class="modal-close">
+        <button class="btn-secondary" id="supportClose" aria-label="Close support information">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (function() {
+      'use strict';
+
+      // ─── Content Data ─────────────────────────────────────────────────────────
+      const QUESTIONS = [
+        {
+          scenario: "Your partner cancels plans you were looking forward to at the last minute.",
+          options: [
+            { letter: "A", text: "I feel bad. That's it — I just feel <em>bad</em>." },
+            { letter: "B", text: "I feel hurt and rejected, but also a little relieved because I was a bit tired anyway." },
+            { letter: "C", text: "I feel angry. No — actually, I'm not sure what I feel. Something heavy." },
+            { letter: "D", text: "I don't really feel much of anything. It is what it is." }
+          ]
+        },
+        {
+          scenario: "You're scrolling through social media and see your old classmate's life looking perfect — new job, new city, lots of friends.",
+          options: [
+            { letter: "A", text: "I feel jealous. That's the word. Maybe also inadequate." },
+            { letter: "B", text: "I feel something uncomfortable in my chest, but I'd need a few minutes to figure out what it is exactly." },
+            { letter: "C", text: "I feel bad about myself. I always compare and I always feel worse." },
+            { letter: "D", text: "I see it, I move on. Doesn't really affect me." }
+          ]
+        },
+        {
+          scenario: "A friend shares exciting news about something they've accomplished.",
+          options: [
+            { letter: "A", text: "I'm genuinely happy for them. I can feel it clearly." },
+            { letter: "B", text: "I'm happy, but there's also a small twinge — maybe envy? I'm aware of both." },
+            { letter: "C", text: "I think I'm happy for them? I want to be supportive, so I say congratulations." },
+            { letter: "D", text: "I don't feel much either way. It's neutral information to me." }
+          ]
+        },
+        {
+          scenario: "You have a hard conversation with a close friend and afterward you feel mentally exhausted.",
+          options: [
+            { letter: "A", text: "I feel drained. That covers it perfectly." },
+            { letter: "B", text: "I feel drained, but also relieved the air is cleared — and a little sad about what was said." },
+            { letter: "C", text: "I feel off. Something's not right but I can't put my finger on it." },
+            { letter: "D", text: "I feel nothing in particular. Conversations tire me out — that's normal." }
+          ]
+        },
+        {
+          scenario: "You finally finish a project you've been working on for weeks.",
+          options: [
+            { letter: "A", text: "I feel good. Satisfied. That feels right." },
+            { letter: "B", text: "I feel proud, relieved, and a little anxious about what comes next — all at once." },
+            { letter: "C", text: "I feel... okay? I think I should feel more than I do." },
+            { letter: "D", text: "I don't really register it. It's done, moving on." }
+          ]
+        },
+        {
+          scenario: "Someone interrupts you mid-sentence in a meeting and takes over.",
+          options: [
+            { letter: "A", text: "I feel irritated. That's the word." },
+            { letter: "B", text: "I feel irritated, dismissed, and a little flare of embarrassment — and I can notice all three." },
+            { letter: "C", text: "I feel something reactive inside me, but I'm not sure what to call it." },
+            { letter: "D", text: "It happens. Doesn't bother me much." }
+          ]
+        },
+        {
+          scenario: "You're alone in the evening and suddenly feel a wave of heaviness with no clear trigger.",
+          options: [
+            { letter: "A", text: "I know that feeling — it's a mix of loneliness and low-grade anxiety, usually passes." },
+            { letter: "B", text: "I feel something heavy. I don't know what it is. I just sit with it." },
+            { letter: "C", text: "I'm sad. Or maybe anxious. I'm never sure which it is." },
+            { letter: "D", text: "I feel nothing. I either distract myself or go to sleep." }
+          ]
+        },
+        {
+          scenario: "Your boss gives you vague, inconsistent feedback on your work.",
+          options: [
+            { letter: "A", text: "I feel confused and a bit frustrated. Those two are clear to me." },
+            { letter: "B", text: "I feel confused, frustrated, and slightly anxious about my performance — I can name all three." },
+            { letter: "C", text: "I feel bad. I don't know if it's about the feedback or about me." },
+            { letter: "D", text: "I don't really take it in. Feedback is just part of work." }
+          ]
+        },
+        {
+          scenario: "You spend a full day with friends and when you get home you feel like you need to be alone.",
+          options: [
+            { letter: "A", text: "I feel socially full — I loved it, but I need to recharge alone. Clear." },
+            { letter: "B", text: "I feel satisfied and content, but also aware I need solitude to process the day." },
+            { letter: "C", text: "I feel off. Good day but something's not sitting right." },
+            { letter: "D", text: "I don't feel anything specific. I just like being home." }
+          ]
+        },
+        {
+          scenario: "You're about to do something that scares you — public speaking, a difficult conversation, trying something new.",
+          options: [
+            { letter: "A", text: "I feel nervous. The word fits perfectly." },
+            { letter: "B", text: "I feel nervous, excited, and self-doubt mixed together — I can distinguish them." },
+            { letter: "C", text: "I feel scared. Or maybe just uncomfortable. Hard to tell." },
+            { letter: "D", text: "I either don't feel much or I feel completely overwhelmed. Nothing in between." }
+          ]
+        },
+        {
+          scenario: "Someone you care about does something thoughtful that you didn't expect.",
+          options: [
+            { letter: "A", text: "I feel loved and appreciated. The words are exact." },
+            { letter: "B", text: "I feel loved, surprised, and a little teary — touched in multiple ways." },
+            { letter: "C", text: "I feel something warm but I can't quite name it." },
+            { letter: "D", text: "I notice it and register it, but the feeling doesn't land strongly." }
+          ]
+        },
+        {
+          scenario: "You make a mistake at work and it's pointed out in front of others.",
+          options: [
+            { letter: "A", text: "I feel ashamed and embarrassed. Both are clear and distinct." },
+            { letter: "B", text: "I feel ashamed, embarrassed, and also a bit defensive — all three, at once." },
+            { letter: "C", text: "I feel awful. But I couldn't tell you if it's shame, anger, or something else." },
+            { letter: "D", text: "I don't really feel anything strongly. Mistakes happen." }
+          ]
+        }
+      ];
+
+      // A=4, B=3, C=2, D=1
+      const SCORE_MAP = { A: 4, B: 3, C: 2, D: 1 };
+
+      const RESULTS = {
+        high: {
+          type: "high",
+          label: "High Granularity",
+          scoreRange: "40–48",
+          headline: "Your emotional world is remarkably precise — and that's a genuine strength.",
+          traits: [
+            "You have a rich, precise emotional vocabulary and can often identify multiple feelings at once",
+            "You can sense emotions in their early stages, before they intensify",
+            "You're skilled at distinguishing between similar feelings (e.g., disappointment vs. betrayal, nervousness vs. excitement)",
+            "You tend to use specific emotional language rather than general words like \"bad\" or \"okay\""
+          ],
+          growthEdge: "Your emotional precision is a genuine strength — it gives you remarkable self-awareness and relationship intelligence. Your growth edge isn't about fixing something; it's about deepening your capacity to <em>use</em> this clarity. Consider exploring how you act on your emotional data: precision without self-compassion can sometimes tip into over-analysis or self-judgment. Also, sharing your emotional world with others (not just understanding it internally) can deepen your connections.",
+          actions: [
+            { title: "Name it twice a day.", desc: "Pick one moment each morning and one in the evening where you consciously label your emotional state in writing. Use Barrett's granularity approach: name the emotion and its \"background emotion\" (e.g., \"anxious + restless,\" \"content + wistful\"). This keeps your vocabulary sharp." },
+            { title: "Notice the blend.", desc: "When you feel something intense, pause and ask: \"What's in this feeling besides the headline emotion?\" Often there's a quieter secondary feeling that deserves attention. This prevents emotional overwhelm from hiding in plain sight." },
+            { title: "Practice emotional agility in conversation.", desc: "Share your emotional states with someone you trust — not to problem-solve, just to be seen. High granularity is powerful internally, but its full potential unlocks when expressed." }
+          ],
+          shareSubtitle: "I can name every shade of feeling — what's yours?",
+          colorAccent: "#7BA58F",
+          badgeClass: "high",
+          badgeIcon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 6v6l4 2"/></svg>`
+        },
+        moderate: {
+          type: "moderate",
+          label: "Moderate Granularity",
+          scoreRange: "28–39",
+          headline: "Your emotional world has a solid foundation — and room to grow.",
+          traits: [
+            "You can identify your broad emotional categories (happy, sad, anxious, irritated) most of the time",
+            "You sometimes notice \"secondary\" feelings but aren't always sure what they are",
+            "You can usually tell the difference between major emotional states, but nuance sometimes eludes you",
+            "You sometimes use vague language like \"off,\" \"weird,\" or \"not myself\" when words fail you"
+          ],
+          growthEdge: "You're in a great place — you have the foundation and the awareness to grow without needing to rebuild from scratch. Your edge is building tolerance for the grey zones: those moments when you know <em>something</em> is happening but you can't quite name it. Rather than rushing to fix or dismiss it, sitting with that ambiguity is where your granularity will deepen naturally. Think of it as emotional stretching — comfortable discomfort that builds capacity.",
+          actions: [
+            { title: "Borrow a feeling word.", desc: "When you're \"feeling off\" and can't find the word, keep a short reference list nearby (the 54-emotion word list or a feeling wheel). Don't force a perfect match — pick the <em>closest</em> word and notice if it fits. Over time, you'll find more precise ones on your own." },
+            { title: "Check in, literally.", desc: "Set a twice-daily alarm to ask yourself: \"What am I actually feeling right now?\" Write it down in one phrase. Even 10 seconds of this habit builds the neural pathway for emotional awareness." },
+            { title: "Practice the \"and also\" reframe.", desc: "When you name an emotion, pause and ask: \"Is there something else I'm feeling alongside this?\" Common combinations: anxious <em>and</em> excited, sad <em>and</em> relieved, irritated <em>and</em> disappointed. Letting emotions coexist without choosing one is a sign of growing granularity." }
+          ],
+          shareSubtitle: "I feel the full spectrum — sometimes all at once.",
+          colorAccent: "#C9A87C",
+          badgeClass: "moderate",
+          badgeIcon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>`
+        },
+        low: {
+          type: "low",
+          label: "Low Granularity",
+          scoreRange: "18–27",
+          headline: "Your emotional world is there — it just needs a little more light to come into focus.",
+          traits: [
+            "You often know you're feeling <em>something</em>, but finding the right word feels slippery or impossible",
+            "You tend to experience emotions in broad, undifferentiated states — either \"fine\" or \"not fine\"",
+            "You sometimes feel emotionally \"blunt\" — like you're not quite in touch with what's happening inside you",
+            "You may rely on external cues (other people's reactions, situations) to figure out how you \"should\" be feeling"
+          ],
+          growthEdge: "This is a skill gap, not a personality flaw — and it's one of the most addressable ones in emotional intelligence. Your emotional brain isn't broken; it just hasn't had much practice building fine-grained emotional categories. The good news: emotional granularity is trainable. Every time you pause to name what you're feeling, even roughly, you're laying down a new neural path. The growth edge here is patience with yourself during the learning curve — this takes time and that's completely okay.",
+          actions: [
+            { title: "Start with three basics.", desc: "Before trying to name complex blends, get comfortable with these three levels: <em>pleasant / unpleasant / neutral</em>. Once that's automatic, try expanding: pleasant → happy, content, excited, hopeful. Unpleasant → sad, anxious, angry, frustrated. You're building categories first, then subcategories." },
+            { title: "Use the \"body check-in\" shortcut.", desc: "When words fail, scan your body: tight chest might be anxiety, heaviness in your stomach might be sadness, heat in your face might be anger. Your body often knows before your brain finds the word. Body awareness is a legitimate pathway to emotional granularity." },
+            { title: "Name it to tame it.", desc: "When you feel something unclear and overwhelming, say out loud (or write): \"I'm feeling something I can't name right now, and that's okay.\" This simple acknowledgment is an act of emotional self-care, even without the precise word yet. The naming muscle builds with practice." }
+          ],
+          shareSubtitle: "I'm learning to name what I feel — what's your granularity?",
+          colorAccent: "#C4908A",
+          badgeClass: "low",
+          badgeIcon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12C2 6.5 6.5 2 12 2a10 10 0 0 1 8 4"/><path d="M5 19.5C5.5 18 6 15 6 12c0-.7.12-1.37.34-2"/><path d="M17.29 21.02c.12-.6.43-2.3.5-3.02"/><path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"/><path d="M8.65 22c.21-.66.45-1.32.57-2"/><path d="M14 13.12c0 2.38 0 6.38-1 8.88"/><path d="M2 16h.01"/><path d="M21.8 16c.2-2 .131-5.354 0-6"/><path d="M9 6.8a6 6 0 0 1 9 5.2c0 .47 0 1.17-.02 2"/></svg>`
+        },
+        alexithymia: {
+          type: "alexithymia",
+          label: "Alexithymia-Prone",
+          scoreRange: "12–17",
+          headline: "Your inner world may work differently — and that's a valid starting point.",
+          traits: [
+            "You frequently feel like emotions are \"muted,\" hard to access, or absent altogether",
+            "You may struggle to know what you feel even in situations where others clearly react emotionally",
+            "You might experience physical sensations (tightness, heaviness, numbness) without an emotional label",
+            "You may have noticed that feelings in your body and feelings in your mind don't always connect clearly"
+          ],
+          growthEdge: "This result is an invitation, not a label. Many people in this range have learned to function brilliantly through logic, structure, and problem-solving — and that's a real strength. The growth edge here is curiosity, not criticism. You don't need to become a person who \"feels everything deeply\" — but developing even a small bridge between your inner experience and your ability to name it can reduce daily stress, improve relationships, and help you understand why certain situations affect you in ways you can't explain. Go gently. Small steps matter.",
+          actions: [
+            { title: "Start with physical sensations, not emotions.", desc: "Before trying to name feelings, name sensations: \"My shoulders are tight,\" \"There's pressure in my chest,\" \"I feel heavy.\" This is valid data. Over time, you may notice these physical patterns connect to emotional states — you're building the bridge in small pieces." },
+            { title: "Try \"I feel ___\" with only one word.", desc: "You don't need a perfect vocabulary right now. \"I feel tired,\" \"I feel fine,\" \"I feel not good\" are all starting points. The act of pausing to say something is the practice." },
+            { title: "Consider this an exploration, not a test.", desc: "If you're curious about understanding your inner world more, this quiz is a beginning — not an ending. Many people in this range find it helpful to explore with a therapist who specializes in alexithymia or emotional processing. That's not a sign of something being wrong; it's a sign of self-awareness and courage." }
+          ],
+          shareSubtitle: "I'm exploring my inner world — what's yours like?",
+          colorAccent: "#B5A8BC",
+          badgeClass: "alexithymia",
+          badgeIcon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`
+        }
+      };
+
+      const STORAGE_KEY = 'eg-quiz-progress';
+
+      // ─── State ───────────────────────────────────────────────────────────────
+      let state = {
+        currentQuestion: 0,
+        answers: [],
+        phase: 'landing' // landing | quiz | processing | results
+      };
+
+      // ─── DOM ─────────────────────────────────────────────────────────────────
+      const $ = (id) => document.getElementById(id);
+      const landing = $('landing');
+      const quiz = $('quiz');
+      const processing = $('processing');
+      const results = $('results');
+      const scenarioText = $('scenarioText');
+      const optionsList = $('optionsList');
+      const nextBtn = $('nextBtn');
+      const backBtn = $('backBtn');
+      const questionCaption = $('questionCaption');
+      const progressFill = $('progressFill');
+      const progressBar = $('progressBar');
+      const resultsContent = $('resultsContent');
+      const startBtn = $('startBtn');
+      const toast = $('toast');
+
+      // Modals
+      const triggerModal = $('triggerModal');
+      const privacyModal = $('privacyModal');
+      const supportModal = $('supportModal');
+
+      // ─── Helpers ─────────────────────────────────────────────────────────────
+      function showScreen(screen) {
+        [landing, quiz, processing, results].forEach(s => {
+          s.classList.remove('active');
+          s.setAttribute('aria-hidden', 'true');
+        });
+        screen.classList.add('active');
+        screen.setAttribute('aria-hidden', 'false');
+        screen.scrollTop = 0;
+      }
+
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2800);
+      }
+
+      function getResultType(score) {
+        if (score >= 40) return 'high';
+        if (score >= 28) return 'moderate';
+        if (score >= 18) return 'low';
+        return 'alexithymia';
+      }
+
+      function saveProgress() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            currentQuestion: state.currentQuestion,
+            answers: state.answers
+          }));
+        } catch(e) {}
+      }
+
+      function loadProgress() {
+        try {
+          const saved = localStorage.getItem(STORAGE_KEY);
+          if (saved) {
+            const data = JSON.parse(saved);
+            if (data.answers && data.answers.length > 0) {
+              state.currentQuestion = data.currentQuestion || 0;
+              state.answers = data.answers;
+              return true;
+            }
+          }
+        } catch(e) {}
+        return false;
+      }
+
+      function clearProgress() {
+        try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+      }
+
+      // ─── Screens ─────────────────────────────────────────────────────────────
+      function showLanding() {
+        state.phase = 'landing';
+        showScreen(landing);
+      }
+
+      function showQuiz() {
+        state.phase = 'quiz';
+        showScreen(quiz);
+        renderQuestion();
+      }
+
+      function showProcessing() {
+        state.phase = 'processing';
+        showScreen(processing);
+        setTimeout(() => {
+          renderResults();
+          state.phase = 'results';
+          showScreen(results);
+        }, 2000);
+      }
+
+      function showResults() {
+        renderResults();
+        showScreen(results);
+      }
+
+      // ─── Quiz Logic ───────────────────────────────────────────────────────────
+      function renderQuestion() {
+        const q = state.currentQuestion;
+        const total = QUESTIONS.length;
+        const pct = (q / total) * 100;
+        progressFill.style.width = pct + '%';
+        progressBar.setAttribute('aria-valuenow', q);
+
+        questionCaption.textContent = `Question ${q + 1} of ${total}`;
+        scenarioText.innerHTML = QUESTIONS[q].scenario;
+
+        // Back button visibility
+        backBtn.style.visibility = q > 0 ? 'visible' : 'hidden';
+
+        // Options
+        optionsList.innerHTML = '';
+        QUESTIONS[q].options.forEach((opt) => {
+          const li = document.createElement('li');
+          const isSelected = state.answers[q] === opt.letter;
+          li.className = 'option-card' + (isSelected ? ' selected' : '');
+          li.setAttribute('role', 'listitem');
+          li.setAttribute('tabindex', '0');
+          li.setAttribute('aria-label', `Option ${opt.letter}: ${opt.text.replace(/<[^>]+>/g, '')}`);
+          li.dataset.letter = opt.letter;
+
+          const letterSpan = document.createElement('span');
+          letterSpan.className = 'option-letter';
+          letterSpan.textContent = opt.letter;
+
+          const textSpan = document.createElement('span');
+          textSpan.className = 'option-text';
+          textSpan.innerHTML = opt.text;
+
+          li.appendChild(letterSpan);
+          li.appendChild(textSpan);
+
+          li.addEventListener('click', () => selectOption(opt.letter));
+          li.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              selectOption(opt.letter);
+            }
+          });
+
+          optionsList.appendChild(li);
+        });
+
+        // Next button
+        const hasAnswer = state.answers[q] !== undefined;
+        nextBtn.style.display = hasAnswer ? 'inline-flex' : 'none';
+        nextBtn.disabled = !hasAnswer;
+
+        // If re-entering with an existing answer, highlight it
+        if (hasAnswer) {
+          const cards = optionsList.querySelectorAll('.option-card');
+          cards.forEach(c => {
+            if (c.dataset.letter === state.answers[q]) {
+              c.classList.add('selected');
+            }
+          });
+        }
+      }
+
+      function selectOption(letter) {
+        state.answers[state.currentQuestion] = letter;
+        saveProgress();
+
+        // Visual selection
+        const cards = optionsList.querySelectorAll('.option-card');
+        cards.forEach(c => {
+          c.classList.remove('selected');
+          if (c.dataset.letter === letter) c.classList.add('selected');
+        });
+
+        nextBtn.style.display = 'inline-flex';
+        nextBtn.disabled = false;
+
+        // Auto-advance after 400ms
+        setTimeout(() => {
+          if (state.currentQuestion < QUESTIONS.length - 1) {
+            advanceToNext();
+          } else {
+            // Last question — go to processing
+            showProcessing();
+          }
+        }, 400);
+      }
+
+      function advanceToNext() {
+        if (state.currentQuestion < QUESTIONS.length - 1) {
+          state.currentQuestion++;
+          saveProgress();
+          renderQuestion();
+        }
+      }
+
+      // ─── Results ─────────────────────────────────────────────────────────────
+      function renderResults() {
+        const totalScore = state.answers.reduce((sum, a) => sum + (SCORE_MAP[a] || 0), 0);
+        const resultType = getResultType(totalScore);
+        const r = RESULTS[resultType];
+
+        // Calculate trait icons (inline SVG per item)
+        const traitIcons = [
+          `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>`,
+          `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>`,
+          `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
+          `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>`
+        ];
+
+        let html = `
+          <div class="results-badge ${r.badgeClass}">
+            ${r.badgeIcon}
+            <span>${r.label} · ${r.scoreRange} pts</span>
+          </div>
+          <h2 class="results-headline">${r.headline}</h2>
+          <p class="section-title">What We Observed</p>
+          <ul class="traits-list">
+            ${r.traits.map((t, i) => `
+              <li class="trait-row">
+                <span class="trait-icon">${traitIcons[i]}</span>
+                <span>${t}</span>
+              </li>
+            `).join('')}
+          </ul>
+          <p class="section-title" style="margin-top:var(--space-lg)">Your Growth Edge</p>
+          <div class="growth-edge">
+            <div class="growth-edge-label">Growth Edge</div>
+            ${r.growthEdge}
+          </div>
+          <p class="section-title" style="margin-top:var(--space-lg)">3 Steps to Deepen Your Awareness</p>
+          <div class="action-steps">
+            ${r.actions.map((a, i) => `
+              <div class="action-card ${r.badgeClass}">
+                <span class="action-num">${i + 1}</span>
+                <div class="action-body">
+                  <strong>${a.title}</strong>
+                  <p>${a.desc}</p>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+          <div class="disclosure">
+            This quiz is a psychoeducational tool based on Lisa Feldman Barrett's research on emotional granularity. It is not a clinical assessment or diagnostic instrument. Results reflect your current emotional awareness patterns — and these can change over time with practice and support. If you're finding daily life significantly affected by difficulty identifying or experiencing emotions, speaking with a licensed therapist may be helpful.
+          </div>
+          <div class="share-section">
+            <p class="section-title" style="margin-top:var(--space-md)">Share Your Result</p>
+            <div class="share-card-canvas-wrap">
+              <canvas id="shareCardCanvas" width="540" height="960" aria-label="Share card preview"></canvas>
+            </div>
+            <div class="share-btns">
+              <button class="btn-secondary" id="downloadShareBtn" aria-label="Download share card as image">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Save Image
+              </button>
+              <button class="btn-secondary" id="copyShareBtn" aria-label="Copy share text to clipboard">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                Copy Caption
+              </button>
+            </div>
+          </div>
+          <div class="footer-nav">
+            <p style="font-size:14px;color:var(--text-secondary);font-style:italic;margin-bottom:var(--space-xs)">Emotional awareness shifts over time. Come back in a few months and see what's changed.</p>
+            <div class="footer-links">
+              <button class="footer-link" id="retakeBtn">Retake Quiz</button>
+              <button class="footer-link" id="privacyBtn">Privacy Policy</button>
+              <button class="footer-link" id="supportBtn">Looking for Support?</button>
+            </div>
+          </div>
+        `;
+
+        resultsContent.innerHTML = html;
+
+        // Draw canvas
+        setTimeout(() => drawShareCard(r, totalScore), 50);
+
+        // Bind result-page events
+        $('downloadShareBtn').addEventListener('click', downloadShareCard);
+        $('copyShareBtn').addEventListener('click', copyShareText);
+        $('retakeBtn').addEventListener('click', () => {
+          clearProgress();
+          state.currentQuestion = 0;
+          state.answers = [];
+          showQuiz();
+        });
+        $('privacyBtn').addEventListener('click', () => openModal(privacyModal));
+        $('supportBtn').addEventListener('click', () => openModal(supportModal));
+      }
+
+      // ─── Share Card Canvas ────────────────────────────────────────────────────
+      function drawShareCard(r, score) {
+        const canvas = $('shareCardCanvas');
+        const ctx = canvas.getContext('2d');
+        const W = 540, H = 960;
+
+        // Background gradient
+        const grad = ctx.createLinearGradient(0, 0, 0, H);
+        grad.addColorStop(0, '#F5F3F7');
+        grad.addColorStop(1, '#EDE9F2');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, W, H);
+
+        // Noise-like dots (decorative)
+        ctx.fillStyle = 'rgba(168,163,199,0.2)';
+        for (let i = 0; i < 30; i++) {
+          const x = Math.random() * W;
+          const y = Math.random() * H * 0.35;
+          const r2 = Math.random() * 30 + 10;
+          ctx.beginPath();
+          ctx.arc(x, y, r2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Decorative circles (top)
+        ctx.strokeStyle = 'rgba(168,163,199,0.25)';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(160, 120, 80, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(380, 180, 100, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.fillStyle = 'rgba(196,163,184,0.15)';
+        ctx.beginPath();
+        ctx.arc(270, 200, 60, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Result type label
+        ctx.font = '700 52px Fraunces, Georgia, serif';
+        ctx.fillStyle = '#2D2D35';
+        ctx.textAlign = 'center';
+        ctx.fillText(r.label, W / 2, H * 0.40);
+
+        // Score
+        ctx.font = '400 22px "DM Sans", sans-serif';
+        ctx.fillStyle = '#6E6E7A';
+        ctx.fillText(`${score} / 48 points`, W / 2, H * 0.40 + 56);
+
+        // Subtitle
+        ctx.font = 'italic 400 24px "DM Sans", sans-serif';
+        ctx.fillStyle = '#6E6E7A';
+        ctx.fillText(r.shareSubtitle, W / 2, H * 0.40 + 108);
+
+        // Divider
+        ctx.strokeStyle = 'rgba(168,163,199,0.4)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(W * 0.2, H * 0.57);
+        ctx.lineTo(W * 0.8, H * 0.57);
+        ctx.stroke();
+
+        // Quiz title
+        ctx.font = '600 20px "DM Sans", sans-serif';
+        ctx.fillStyle = '#6B6BAF';
+        ctx.fillText('How Precise Are Your Emotions?', W / 2, H * 0.62);
+
+        ctx.font = '400 15px "DM Sans", sans-serif';
+        ctx.fillStyle = '#A8A3C7';
+        ctx.fillText('Emotional Granularity Quiz', W / 2, H * 0.62 + 30);
+
+        // Bottom branding
+        ctx.font = '400 14px "DM Sans", sans-serif';
+        ctx.fillStyle = '#A8A3C7';
+        ctx.fillText('psychomaster · emotionalgranularityquiz.com', W / 2, H * 0.92);
+
+        // Accent line at bottom
+        ctx.fillStyle = r.colorAccent;
+        ctx.fillRect(W * 0.35, H * 0.88, W * 0.3, 3);
+      }
+
+      function downloadShareCard() {
+        const canvas = $('shareCardCanvas');
+        const link = document.createElement('a');
+        link.download = 'my-emotional-granularity-result.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        showToast('Image saved!');
+      }
+
+      function copyShareText() {
+        const totalScore = state.answers.reduce((sum, a) => sum + (SCORE_MAP[a] || 0), 0);
+        const resultType = getResultType(totalScore);
+        const r = RESULTS[resultType];
+
+        const caption = `I just took this 2-minute quiz about emotional precision — and honestly, it made me think.\n\nI got: ${r.label}\n\nWhat's YOUR emotional granularity?\nemotionalgranularityquiz.com`;
+
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(caption).then(() => {
+            showToast('Caption copied!');
+          }).catch(() => {
+            fallbackCopy(caption);
+          });
+        } else {
+          fallbackCopy(caption);
+        }
+      }
+
+      function fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        try {
+          document.execCommand('copy');
+          showToast('Caption copied!');
+        } catch(e) {
+          showToast('Could not copy — please select and copy manually');
+        }
+        document.body.removeChild(ta);
+      }
+
+      // ─── Modals ───────────────────────────────────────────────────────────────
+      function openModal(modal) {
+        modal.classList.add('active');
+        const closeBtn = modal.querySelector('.btn-secondary, .btn-ghost');
+        if (closeBtn) closeBtn.focus();
+        modal.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') closeModal(modal);
+        });
+      }
+
+      function closeModal(modal) {
+        modal.classList.remove('active');
+      }
+
+      // Close modals on overlay click
+      [triggerModal, privacyModal, supportModal].forEach(m => {
+        m.addEventListener('click', (e) => {
+          if (e.target === m) closeModal(m);
+        });
+      });
+
+      // ─── Event Bindings ───────────────────────────────────────────────────────
+      startBtn.addEventListener('click', () => {
+        openModal(triggerModal);
+      });
+
+      $('triggerClose').addEventListener('click', () => {
+        closeModal(triggerModal);
+        clearProgress();
+        state.currentQuestion = 0;
+        state.answers = [];
+        showQuiz();
+      });
+
+      nextBtn.addEventListener('click', () => {
+        if (state.currentQuestion < QUESTIONS.length - 1) {
+          advanceToNext();
+        } else {
+          showProcessing();
+        }
+      });
+
+      backBtn.addEventListener('click', () => {
+        if (state.currentQuestion > 0) {
+          state.currentQuestion--;
+          saveProgress();
+          renderQuestion();
+        }
+      });
+
+      $('privacyClose').addEventListener('click', () => closeModal(privacyModal));
+      $('supportClose').addEventListener('click', () => closeModal(supportModal));
+
+      // ─── Init ─────────────────────────────────────────────────────────────────
+      (function init() {
+        const hasProgress = loadProgress();
+        if (hasProgress && state.answers.length > 0) {
+          // Show landing with option to resume
+          showLanding();
+          const resumeNote = document.createElement('p');
+          resumeNote.className = 'landing-note';
+          resumeNote.style.marginTop = '12px';
+          resumeNote.style.cursor = 'pointer';
+          resumeNote.style.textDecoration = 'underline';
+          resumeNote.textContent = `You have saved progress (${state.answers.length}/${QUESTIONS.length} answered). Click here to continue.`;
+          resumeNote.addEventListener('click', () => {
+            showQuiz();
+          });
+          startBtn.parentElement.appendChild(resumeNote);
+        } else {
+          showLanding();
+        }
+      })();
+    })();
+  </script>
+</body>
+</html>
