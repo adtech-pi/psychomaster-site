@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>你为什么总是「做不到」？| 自我破坏模式测验</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #1A1A2E;
+      --surface: #252542;
+      --surface-elevated: #2E2E4A;
+      --text-primary: #F0EDE8;
+      --text-secondary: #8A8A9E;
+      --text-tertiary: #5A5A6E;
+      --border: #353555;
+      --accent: #E07A5F;
+      --accent-glow: rgba(224, 122, 95, 0.3);
+      --type-perfectionism: #F2CC8F;
+      --type-comfortzone: #81B29A;
+      --type-procrastination: #7FAFD4;
+      --type-selffulfilling: #D4A5A5;
+      --result-color: var(--accent);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'Noto Sans SC', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    body { display: flex; justify-content: center; align-items: flex-start; }
+
+    .app {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* SCREENS */
+    .screen { display: none; flex-direction: column; flex: 1; min-height: 100dvh; }
+    .screen.active { display: flex; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50%       { transform: scale(1.12); opacity: 1; }
+    }
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    /* WELCOME SCREEN */
+    .screen-welcome { justify-content: center; align-items: center; text-align: center; padding: 40px 28px; }
+    .welcome-icon { font-size: 64px; margin-bottom: 28px; animation: pulse 2.5s ease-in-out infinite; filter: grayscale(0.2); }
+    .welcome-title { font-family: 'Noto Sans SC', sans-serif; font-size: 28px; font-weight: 700; line-height: 1.3; margin-bottom: 16px; letter-spacing: -0.02em; }
+    .welcome-subtitle { font-size: 15px; line-height: 1.8; color: var(--text-secondary); margin-bottom: 36px; max-width: 340px; }
+    .how-it-works { display: flex; gap: 20px; justify-content: center; margin-bottom: 36px; }
+    .how-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .how-icon { font-size: 22px; }
+    .how-text { font-size: 11px; color: var(--text-tertiary); font-family: 'Space Mono', monospace; }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 16px 40px;
+      background: var(--accent);
+      color: #fff;
+      border: none; border-radius: 50px;
+      font-family: 'Noto Sans SC', sans-serif; font-size: 16px; font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 4px 24px var(--accent-glow);
+      letter-spacing: 0.02em;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px var(--accent-glow); }
+    .btn-primary:active { transform: scale(0.96); }
+
+    .privacy-note { margin-top: 24px; font-size: 11px; color: var(--text-tertiary); font-family: 'Space Mono', monospace; }
+
+    /* DISCLAIMER SCREEN */
+    .screen-disclaimer { justify-content: center; align-items: center; text-align: center; padding: 32px 24px; }
+    .disclaimer-icon { font-size: 56px; margin-bottom: 24px; animation: pulse 2.5s ease-in-out infinite; }
+    .disclaimer-title { font-size: 22px; font-weight: 700; margin-bottom: 16px; line-height: 1.3; }
+    .disclaimer-text { font-size: 14px; line-height: 1.8; color: var(--text-secondary); margin-bottom: 32px; max-width: 360px; }
+    .disclaimer-text strong { color: var(--accent); }
+    .disclaimer-actions { display: flex; flex-direction: column; gap: 12px; }
+    .btn-secondary {
+      padding: 14px 32px; background: var(--surface); color: var(--text-primary);
+      border: 1.5px solid var(--border); border-radius: 50px;
+      font-size: 15px; font-weight: 500; cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .btn-secondary:hover { border-color: var(--accent); background: var(--surface-elevated); }
+
+    /* QUIZ SCREEN */
+    .progress-bar-wrap { padding: 20px 24px 0; }
+    .progress-meta { display: flex; justify-content: space-between; font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--text-tertiary); margin-bottom: 8px; }
+    .progress-track { height: 3px; background: var(--surface); border-radius: 3px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--result-color), color-mix(in srgb, var(--result-color) 60%, #fff)); border-radius: 3px; transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); width: 0%; }
+
+    .question-wrap { padding: 28px 24px 0; flex: 1; display: flex; flex-direction: column; }
+    .question-label { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 12px; }
+    .question-text { font-size: 20px; font-weight: 600; line-height: 1.5; margin-bottom: 28px; }
+
+    .options { display: flex; flex-direction: column; gap: 12px; padding-bottom: 24px; }
+    .option {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 16px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative; overflow: hidden;
+    }
+    .option:hover { background: var(--surface-elevated); border-color: rgba(255,255,255,0.12); transform: translateX(4px); }
+    .option:active { transform: scale(0.97); }
+    .option.selected { border-color: var(--result-color); background: var(--surface-elevated); }
+    .option.selected .option-letter { background: var(--result-color); color: #fff; }
+    .option.dimmed { opacity: 0.4; }
+    .option-letter {
+      flex-shrink: 0; width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--surface-elevated); border-radius: 8px;
+      font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700;
+      color: var(--text-secondary); transition: all 0.25s ease;
+    }
+    .option-text { font-size: 15px; line-height: 1.5; color: var(--text-primary); padding-top: 3px; }
+
+    /* PROCESSING SCREEN */
+    .screen-processing { justify-content: center; align-items: center; text-align: center; padding: 40px 24px; }
+    .processing-circle {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: radial-gradient(circle, var(--surface-elevated) 0%, var(--surface) 100%);
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 32px;
+      animation: pulse 1.8s ease-in-out infinite;
+      box-shadow: 0 0 40px var(--accent-glow);
+    }
+    .processing-icon { font-size: 36px; animation: pulse 1.8s ease-in-out infinite; }
+    .processing-text { font-size: 15px; line-height: 1.8; color: var(--text-secondary); max-width: 300px; }
+    .processing-step {
+      height: 22px; margin: 4px 0;
+      font-family: 'Space Mono', monospace; font-size: 12px;
+      color: var(--text-tertiary); letter-spacing: 0.05em;
+      opacity: 0; transition: opacity 0.5s ease;
+    }
+    .processing-step.active { opacity: 1; color: var(--accent); }
+
+    /* RESULT SCREEN */
+    .screen-result { align-items: center; padding: 0 0 40px; overflow-y: auto; }
+    .result-hero {
+      width: 100%; padding: 40px 24px 32px;
+      text-align: center;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--result-color) 12%, transparent) 0%, transparent 100%);
+      animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .result-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      background: color-mix(in srgb, var(--result-color) 15%, transparent);
+      border: 1px solid color-mix(in srgb, var(--result-color) 40%, transparent);
+      border-radius: 50px;
+      font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--result-color); margin-bottom: 16px;
+    }
+    .result-type-name { font-size: 26px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.01em; }
+    .result-type-en { font-size: 13px; color: var(--text-tertiary); font-family: 'Space Mono', monospace; margin-bottom: 20px; }
+    .result-headline {
+      font-size: 17px; font-weight: 500; line-height: 1.6;
+      color: var(--text-secondary); max-width: 320px; margin: 0 auto;
+    }
+
+    .result-content { width: 100%; padding: 0 24px; }
+    .result-section { margin-bottom: 32px; animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+    .result-section:nth-child(1) { animation-delay: 0.1s; }
+    .result-section:nth-child(2) { animation-delay: 0.2s; }
+    .result-section:nth-child(3) { animation-delay: 0.3s; }
+    .result-section:nth-child(4) { animation-delay: 0.4s; }
+    .result-section:nth-child(5) { animation-delay: 0.5s; }
+    .result-section:nth-child(6) { animation-delay: 0.6s; }
+    .result-section:nth-child(7) { animation-delay: 0.7s; }
+
+    .section-title { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 12px; font-family: 'Space Mono', monospace; }
+    .section-divider { height: 1px; background: var(--border); margin: 28px 0; }
+
+    .trait-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .trait-item { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; line-height: 1.6; color: var(--text-secondary); }
+    .trait-icon { flex-shrink: 0; font-size: 16px; margin-top: 1px; }
+
+    .why-text { font-size: 14px; line-height: 1.9; color: var(--text-secondary); }
+
+    .chain-box {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px;
+      font-size: 13px; line-height: 2; color: var(--text-secondary);
+    }
+    .chain-step { display: flex; align-items: center; gap: 8px; }
+    .chain-arrow { color: var(--text-tertiary); font-size: 12px; }
+
+    .action-list { display: flex; flex-direction: column; gap: 12px; }
+    .action-item { display: flex; gap: 12px; }
+    .action-num {
+      flex-shrink: 0; width: 24px; height: 24px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--result-color); color: #fff;
+      border-radius: 50%; font-size: 11px; font-weight: 700;
+      margin-top: 1px;
+    }
+    .action-text { font-size: 14px; line-height: 1.6; color: var(--text-secondary); }
+
+    .alarm-box {
+      background: linear-gradient(135deg, color-mix(in srgb, var(--result-color) 10%, var(--surface)) 0%, var(--surface) 100%);
+      border: 1px solid color-mix(in srgb, var(--result-color) 30%, transparent);
+      border-radius: 14px; padding: 16px 18px;
+    }
+    .alarm-label { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--result-color); margin-bottom: 8px; }
+    .alarm-text { font-size: 14px; line-height: 1.7; color: var(--text-secondary); }
+
+    .share-section { margin-top: 8px; }
+    .btn-share {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 16px;
+      background: var(--accent); color: #fff;
+      border: none; border-radius: 14px;
+      font-family: 'Noto Sans SC', sans-serif; font-size: 15px; font-weight: 700;
+      cursor: pointer; transition: all 0.3s ease;
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+    .btn-share:hover { transform: translateY(-2px); box-shadow: 0 8px 28px var(--accent-glow); }
+    .btn-share:active { transform: scale(0.97); }
+    .share-note { text-align: center; font-size: 11px; color: var(--text-tertiary); margin-top: 12px; font-family: 'Space Mono', monospace; }
+    .btn-replay {
+      display: block; margin: 16px auto 0;
+      background: none; border: none; cursor: pointer;
+      font-size: 13px; color: var(--text-tertiary);
+      font-family: 'Noto Sans SC', sans-serif;
+      text-decoration: underline; text-underline-offset: 3px;
+      transition: color 0.2s;
+    }
+    .btn-replay:hover { color: var(--text-secondary); }
+
+    /* SHARE CARD MODAL */
+    .screen-share-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
+    .screen-share-modal.active { display: flex; }
+    .share-modal-inner { background: var(--surface); border-radius: 20px; padding: 24px; max-width: 360px; width: 100%; animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .share-modal-title { font-size: 16px; font-weight: 700; text-align: center; margin-bottom: 16px; }
+    .share-card-preview { width: 100%; aspect-ratio: 2/3; border-radius: 12px; overflow: hidden; margin-bottom: 16px; }
+    .share-card-preview canvas { width: 100%; height: 100%; }
+    .share-actions { display: flex; flex-direction: column; gap: 10px; }
+    .btn-download {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 14px; background: var(--accent); color: #fff;
+      border: none; border-radius: 12px;
+      font-family: 'Noto Sans SC', sans-serif; font-size: 15px; font-weight: 600;
+      cursor: pointer; transition: all 0.25s ease;
+    }
+    .btn-copy {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 14px; background: var(--surface-elevated); color: var(--text-primary);
+      border: 1px solid var(--border); border-radius: 12px;
+      font-family: 'Noto Sans SC', sans-serif; font-size: 15px; font-weight: 600;
+      cursor: pointer; transition: all 0.25s ease;
+    }
+    .btn-close-modal {
+      background: none; border: none; cursor: pointer;
+      color: var(--text-tertiary); font-size: 13px;
+      font-family: 'Noto Sans SC', sans-serif;
+      display: block; margin: 12px auto 0;
+      text-decoration: underline;
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- WELCOME SCREEN -->
+  <div class="screen screen-welcome active" id="screen-welcome">
+    <div class="welcome-icon">🌀</div>
+    <h1 class="welcome-title">你为什么总是<br>「做不到」？</h1>
+    <p class="welcome-subtitle">你已经制定计划了。你知道该做什么。你甚至准备好了。<br>但最后关头，你总是用一种意想不到的方式——毁掉自己。</p>
+    <div class="how-it-works">
+      <div class="how-item"><span class="how-icon">📋</span><span class="how-text">12道题</span></div>
+      <div class="how-item"><span class="how-icon">🧠</span><span class="how-text">4种类型</span></div>
+      <div class="how-item"><span class="how-icon">⚡</span><span class="how-text">即时解锁</span></div>
+    </div>
+    <button class="btn-primary" id="btn-start">开始测验 →</button>
+    <p class="privacy-note">🔒 不收集任何数据，纯本地运行</p>
+  </div>
+
+  <!-- DISCLAIMER SCREEN -->
+  <div class="screen screen-disclaimer" id="screen-disclaimer">
+    <div class="disclaimer-icon">⚠️</div>
+    <h2 class="disclaimer-title">测验开始前请知悉</h2>
+    <p class="disclaimer-text">这份测验探讨<strong>自我破坏行为模式</strong>——包括拖延、回避、自我设限等主题。<br><br>如果你目前正在经历严重的情绪困扰或心理健康危机，<strong>请优先寻求专业帮助</strong>。<br><br>这份测验是<strong>自我探索工具</strong>，不是诊断产品。</p>
+    <div class="disclaimer-actions">
+      <button class="btn-primary" id="btn-proceed">我理解了，继续 →</button>
+      <button class="btn-secondary" id="btn-exit">返回</button>
+    </div>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div class="screen screen-quiz" id="screen-quiz">
+    <div class="progress-bar-wrap">
+      <div class="progress-meta">
+        <span id="progress-count">Q 1 / 12</span>
+        <span id="progress-pct">8%</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+    <div class="question-wrap">
+      <div class="question-label" id="question-label">问题 1</div>
+      <div class="question-text" id="question-text"></div>
+      <div class="options" id="options-list"></div>
+    </div>
+  </div>
+
+  <!-- PROCESSING SCREEN -->
+  <div class="screen screen-processing" id="screen-processing">
+    <div class="processing-circle"><span class="processing-icon">🧩</span></div>
+    <div class="processing-text">正在解码你的自我破坏模式…</div>
+    <div style="height:12px"></div>
+    <div class="processing-step active" id="step1">识别你的破坏触发器…</div>
+    <div class="processing-step" id="step2">映射你的破坏连锁反应…</div>
+    <div class="processing-step" id="step3">生成你的个人化解码…</div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div class="screen screen-result" id="screen-result">
+    <div class="result-hero">
+      <div class="result-badge" id="result-badge">拖延螺旋型</div>
+      <h2 class="result-type-name" id="result-type-name"></h2>
+      <div class="result-type-en" id="result-type-en"></div>
+      <p class="result-headline" id="result-headline"></p>
+    </div>
+    <div class="result-content">
+      <div class="result-section">
+        <div class="section-title">你的典型行为</div>
+        <ul class="trait-list" id="result-traits"></ul>
+      </div>
+      <div class="section-divider"></div>
+      <div class="result-section">
+        <div class="section-title">为什么你会这样做</div>
+        <p class="why-text" id="result-why"></p>
+      </div>
+      <div class="section-divider"></div>
+      <div class="result-section">
+        <div class="section-title">你的破坏触发器</div>
+        <p class="why-text" id="result-triggers"></p>
+      </div>
+      <div class="section-divider"></div>
+      <div class="result-section">
+        <div class="section-title">你的破坏连锁</div>
+        <div class="chain-box" id="result-chain"></div>
+      </div>
+      <div class="section-divider"></div>
+      <div class="result-section">
+        <div class="section-title">3个即时中断动作</div>
+        <div class="action-list" id="result-actions"></div>
+      </div>
+      <div class="section-divider"></div>
+      <div class="result-section">
+        <div class="alarm-box">
+          <div class="alarm-label">⏰ 每日破坏警报</div>
+          <p class="alarm-text" id="result-alarm"></p>
+        </div>
+      </div>
+      <div class="result-section share-section">
+        <button class="btn-share" id="btn-share">📤 分享我的结果</button>
+        <p class="share-note">结果图片可保存到相册</p>
+        <button class="btn-replay" id="btn-replay">重新测验</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHARE MODAL -->
+  <div class="screen-share-modal" id="share-modal">
+    <div class="share-modal-inner">
+      <div class="share-modal-title">分享你的结果</div>
+      <div class="share-card-preview"><canvas id="share-canvas" width="540" height="810"></canvas></div>
+      <div class="share-actions">
+        <button class="btn-download" id="btn-download">⬇️ 保存图片</button>
+        <button class="btn-copy" id="btn-copy">📋 复制分享文字</button>
+        <button class="btn-close-modal" id="btn-close-modal">关闭</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────
+const QUESTIONS = [
+  {
+    text: "你的一个重要项目明天就要交了，但你觉得还没准备好。你的第一反应是：",
+    options: [
+      { letter: "A", text: "我会立刻开始做，先有个版本出来，哪怕不完美。" },
+      { letter: "B", text: "我要再收集一些数据/信息，直到感觉"真正准备好了"才动笔。" },
+      { letter: "C", text: "我开始怀疑自己到底能不能完成这个项目——也许我真的不够好。" },
+      { letter: "D", text: "我决定不交了，反正这次状态不对，下次一定。" }
+    ]
+  },
+  {
+    text: "你的朋友告诉你，有一个行业交流活动，有一个你可以认识的重要人物，可以帮你推进你的某个目标。但活动明天截止报名。你的反应是：",
+    options: [
+      { letter: "A", text: "立刻报名，同时心里有点紧张——但这次要逼自己一把。" },
+      { letter: "B", text: "先把对方的资料研究透，做好充分准备，再决定要不要报名。" },
+      { letter: "C", text: "算了，反正我去了也不知道该说什么，这种场合不适合我。" },
+      { letter: "D", text: "报名了，但到了活动当天，找了个理由不去——明天再说。" }
+    ]
+  },
+  {
+    text: "你刚发了一条展示你个人作品/想法的帖子（朋友圈/小红书/微博）。发出后的第一个小时，你的内心状态是：",
+    options: [
+      { letter: "A", text: "不停刷新看有没有人点赞/评论，心里有点焦虑——但还是忍不住看。" },
+      { letter: "B", text: "一直在想：有没有更完美的表达方式？这张照片是不是不够好？" },
+      { letter: "C", text: "不敢看手机，想象各种负面反馈——有时候甚至想删掉。" },
+      { letter: "D", text: "算了，还是不发了吧，反正也没人真正关心我的东西。" }
+    ]
+  },
+  {
+    text: "你刚刚在一个场合表现很好，有人公开表扬了你。你的反应通常是：",
+    options: [
+      { letter: "A", text: "开心，但同时在想：他们只是客气，我还是知道自己几斤几两的。" },
+      { letter: "B", text: "谢谢，但我知道自己其实还有哪里没做好——下次要更完美。" },
+      { letter: "C", text: "有点不自在，不知道该怎么接——想快点转移话题或者离开这个场合。" },
+      { letter: "D", text: "开心，然后立刻开始想：下一个目标是什么？我要趁热打铁。" }
+    ]
+  },
+  {
+    text: "你已经制定了一个健身或学习计划，前三天都执行得很好。第四天，你的外卖到了/朋友约你出去玩/你感觉有点累。你的反应是：",
+    options: [
+      { letter: "A", text: "今天休息一下，明天一定补上——结果明天又重复这个模式。" },
+      { letter: "B", text: "还是去做了——但脑子里一直在想"今天状态不够好，效果肯定打折了"。" },
+      { letter: "C", text: "既然状态不好，不如等一个"完美的日子"再开始。" },
+      { letter: "D", text: "算了，反正我本来就不擅长坚持——我就是这样的人。" }
+    ]
+  },
+  {
+    text: "凌晨一点，你躺在床上，回顾今天。你发现自己其实有很多可以完成的事情，但你把时间花在了刷手机/看视频/无所事事上。你的感受是：",
+    options: [
+      { letter: "A", text: "内疚和自我批评——"我就是没有自制力，我永远都改不了。"。" },
+      { letter: "B", text: "有点后悔，但告诉自己：今天太累了，不公平——明天一定重新开始。" },
+      { letter: "C", text: "觉得那些事情也没那么重要，不做也没关系——反正也没人在乎。" },
+      { letter: "D", text: "立刻跳起来开始做点什么，但做了20分钟又放弃了——状态不对。" }
+    ]
+  },
+  {
+    text: "你和你的伴侣/家人/好友发生了分歧，对方表达了不满。你的反应通常是：",
+    options: [
+      { letter: "A", text: "立刻道歉、认错，哪怕不是你的错——只要和平就好。" },
+      { letter: "B", text: "开始在脑子里反复回放：我刚才哪句话说错了？哪里可以表达得更好？" },
+      { letter: "C", text: "假装什么都没发生，转移话题——不想正面面对这个冲突。" },
+      { letter: "D", text: "心想：看吧，他们迟早会觉得我不够好——这就是我。" }
+    ]
+  },
+  {
+    text: "你的老板/老师/客户给了你一个新项目——比你之前的任务更有挑战性，你不确定自己能不能做好。你的反应是：",
+    options: [
+      { letter: "A", text: "接了，但立刻开始担心——万一做不好怎么办？我会被看穿的。" },
+      { letter: "B", text: "接了，然后花大量时间研究、准备，害怕任何一个细节出错。" },
+      { letter: "C", text: "犹豫很久，最后以"我最近太忙了"为理由推掉了。" },
+      { letter: "D", text: "先拖着不做，老板催了再说——反正ddl还没到。" }
+    ]
+  },
+  {
+    text: "当有人真诚地夸赞你的能力或成果时，你通常会：",
+    options: [
+      { letter: "A", text: "说"哪里哪里，还差得远呢"——他们不了解真实的我。" },
+      { letter: "B", text: "接受并开始想：他们不知道我背后花了多少时间，运气成分有多大。" },
+      { letter: "C", text: "谢谢，但不知道该怎么继续这个对话——想快点结束这个话题。" },
+      { letter: "D", text: "感到有点飘飘然，然后立刻去找下一件能让自己被夸的事情。" }
+    ]
+  },
+  {
+    text: "你面临一个重要的人生决定（比如换工作、去某个城市、开始/结束一段关系）。你发现自己通常会：",
+    options: [
+      { letter: "A", text: "无限期地收集信息、权衡利弊、做更多研究——永远感觉准备不够。" },
+      { letter: "B", text: "干脆不做决定，或者让事情自己决定自己（不做任何行动）。" },
+      { letter: "C", text: "凭直觉冲动做了决定，事后又后悔——觉得自己太草率了。" },
+      { letter: "D", text: "做了决定，但一边做一边想：我一定会后悔的——然后果然后悔了。" }
+    ]
+  },
+  {
+    text: "你经历了一次明显的失败（考试没考好、面试没通过、项目搞砸了）。之后你会：",
+    options: [
+      { letter: "A", text: "一边消沉一边分析：我哪里做错了？下次怎么改进？——分析到自己精疲力竭。" },
+      { letter: "B", text: "告诉自己：没关系，失败是成功之母，下次一定会更好。（但下次遇到类似情境，还是会掉进同样的陷阱。）" },
+      { letter: "C", text: "先刷几天手机/追剧/躺平，什么都不想面对——等感觉好点再说。" },
+      { letter: "D", text: "算了，这不适合我，不是我的赛道——我要找另一条路。（但下一条路也会遇到类似问题。）" }
+    ]
+  },
+  {
+    text: "你为自己制定了一个目标（减肥/学习新技能/存钱），坚持了两周，但第三周你明显懈怠了。你的第一反应是：",
+    options: [
+      { letter: "A", text: "无所谓，反正计划赶不上变化——从明天（或下个月）重新开始。" },
+      { letter: "B", text: "对自己很失望，开始疯狂自责：为什么我总是这样？——然后陷入负面情绪螺旋。" },
+      { letter: "C", text: "告诉自己：我本来就不是一个能坚持的人——接受现实吧。" },
+      { letter: "D", text: "无所谓，反正也没人监督，休息一下也没什么大不了的。" }
+    ]
+  }
+];
+
+const RESULTS = {
+  procrastination: {
+    id: "procrastination",
+    nameCn: "拖延螺旋型",
+    nameEn: "The Procrastination Spiral",
+    headline: "你知道该做，但大脑只想现在爽。",
+    color: "#7FAFD4",
+    traits: [
+      "📱 你的待办和你的行动之间有一道鸿沟——而手机永远是跨越这道鸿沟最快的逃避工具",
+      "🌀 你不是不知道该做什么——你只是在大脑里把"感觉"和"行动"搞混了：感觉不对就不做",
+      "🎭 你的拖延通常伴随着强烈的自我批评——拖延之后，你比大多数人更恨自己",
+      "🔄 每次拖延后你都会发誓"下次一定早点开始"——然后下次又重蹈覆辙"
+    ],
+    why: "拖延不是时间管理问题，而是情绪调节问题。你的大脑有两套系统：一套是"现在就要"的即时奖励系统（多巴胺驱动），另一套是"未来目标"的前额叶规划系统。当一项任务让你感到无聊、困难、焦虑时，第一套系统会接管——它会寻找即时的多巴胺刺激（刷手机、吃东西、发呆）来缓解不适。你的大脑不是在追求快乐，它是在逃避不适。",
+    triggers: "你的破坏模式通常在以下情境中被激活：任务让你感到无聊（你不感兴趣但必须做）、任务让你感到焦虑（太重要了，压力太大）、任务让你感到不确定（你不知道从哪里开始）、环境中有太多即时刺激源（手机就在旁边）。",
+    chain: "任务出现 → 感到无聊/焦虑/困难 → "等一下感觉好点再开始" → 打开手机"休息一下" → 10分钟变成了1小时 → 内疚感上升 → 自我批评启动 → "明天一定" → 重复",
+    actions: [
+      "感觉不管用，用"物理"启动：不要等"感觉对了"才行动——改成用物理提示启动：把手机放到另一个房间，设置2分钟计时器，只工作2分钟。",
+      "焦虑解耦练习：当你因为任务太重要而无法开始时，停下来问自己：我在害怕什么？把那个害怕写下来。如果这个害怕成真了，最坏的结果是什么？",
+      ""只做这件事"规则：告诉自己要做的不是"完成这个项目"，而是"只做这件事"。把任务分解到"不可能失败"的小步骤。"
+    ],
+    alarm: "今天，你用什么活动来"休息一下"？那个活动真的让你放松了，还是让你更焦虑？设一个5分钟计时器，用那5分钟开始你一直拖延的那件事——不是为了完成它，只是为了开始。"
+  },
+  perfectionism: {
+    id: "perfectionism",
+    nameCn: "完美主义瘫痪型",
+    nameEn: "The Perfectionist Paralysis",
+    headline: "你永远在准备，从未真正开始。",
+    color: "#F2CC8F",
+    traits: [
+      "🔍 你的标准总是比行动快一步——计划可以永远更完善，但项目永远不会"真正准备好"",
+      "⏳ 你花大量时间在"准备工作"上——收集、研究、规划，但这些都是拖延的伪装形式",
+      "🛡️ 你用"我还没准备好"来保护自己免受失败的羞耻——但这恰恰让你永远不会知道自己能走多远",
+      "💔 你对自己完成的事情的满意度，远低于你对自己未完成想法的估值"
+    ],
+    why: "完美主义不是骄傲，而是恐惧的产物。当你还是个孩子的时候，可能有人告诉你"要么做到最好，要么不要做"。或者你曾经因为做得不够好而被批评、否定。于是你学会了把自我价值绑定在结果上——只有完美的结果才能证明你有价值。但问题是：完美是不存在的。所以你永远无法通过"完美"来确认自己的价值。你用"准备"来代替"行动"，因为准备永远不会失败，但行动会。",
+    triggers: "你的破坏模式通常在以下情境中被激活：任务足够重要（失败意味着被评判）、结果会被他人看到（有外部评价）、你在乎这件事超过你愿意承认的程度、你感觉"还没研究透"。",
+    chain: ""这个任务很重要" → "我必须做到完美" → "我还没准备好" → "再收集一些信息/再想想" → "还是感觉不够好" → "算了，等一个更好的时机" → 截止日期来了 → "来不及了" → "我早该开始" → 羞耻 + 自我批评",
+    actions: [
+      ""完成比完美重要"原则：告诉自己先交一个60分的版本。你永远不会因为交了一份60分的作业而失去机会，但你可能因为没交作业而失去一切。",
+      "2分钟启动法：不要想着"完成整个任务"。只要求自己：坐下，做这件事，2分钟。不管做得好不好，2分钟后就停下来。你会发现，一旦开始，你就会继续下去。",
+      "信息收集设上限：给"准备"阶段设一个严格的时间限制（比如2小时或1天）。时间一到，立刻进入执行阶段。你的准备工作在达到这个上限之后，边际收益已经趋近于零。"
+    ],
+    alarm: "今天，有什么事情你在用"准备"来拖延？你的"完美"到底在保护你免受什么？设一个下午4点的闹钟，写下这个问题，然后强制自己在那之前开始那个你一直在"准备"的事情。"
+  },
+  selfFulfilling: {
+    id: "selfFulfilling",
+    nameCn: "自证预言型",
+    nameEn: "The Self-Fulfilling Prophecy",
+    headline: "你在写一个你已经知道结局的剧本。",
+    color: "#D4A5A5",
+    traits: [
+      "🔮 你在事情开始之前就已经"知道"它会失败——这个预判会微妙地影响你的行为，最终真的导致失败",
+      "🪞 你的自我预期就像一面镜子：你对自己说什么，大脑就会让那件事发生——你既是编剧、又是导演、还是演员",
+      "😔 你用悲观来保护自己免受失望——但代价是你也失去了让自己惊喜的可能性",
+      "⛓️ 你的预言是自我强化的：你相信自己不行 → 你不自觉地创造符合预期的行为 → 结果印证了你的预期 → 你更加相信"我不行""
+    ],
+    why: "自我预言是一种无意识的自我保护机制。如果你在过去经历过多次失败（尤其是来自重要他人的否定、批评或忽视），你的大脑学会了一个信念："我不够好。"这个信念太痛苦了，于是你开始提前"预演"失败——这样当失败真的发生时，你就不会感到措手不及。你告诉自己"我早知道会这样"——这让你感觉你控制着什么，即使那种控制是通过自我破坏来实现的。这是一种对失望的上瘾：你宁可被自己的预言伤害，也不愿意被出乎意料地伤害。",
+    triggers: "你的破坏模式通常在以下情境中被激活：在你真正在意的事情上（失败意味着证明你"不够好"）、当他人对你表达信心或期待时（这让你感到压力而不是激励）、在需要展示自己能力的情境中（考试、面试、演讲）、在你曾经失败过的类似领域。",
+    chain: "一个挑战出现了 → "我肯定做不好/他们最终会失望的" → 这个预判降低了你的动力和信心 → 你不自觉地创造让预言实现的行为（准备不充分、过度紧张、提前放弃） → 结果失败了 → "看吧，我早就说了" → 预言被强化 → 下一次循环",
+    actions: [
+      "预言检验法：当你发现自己有一个负面预期时，把它写下来。然后问自己：这是我基于证据的判断，还是我的感觉？有没有反例？那个预言是关于未来的——未来还没有发生，你没有证据证明它一定会发生。",
+      "外部视角练习：问自己：如果是我最好的朋友处于这个情境，有这样的预判，你会对他说什么？你会告诉他"看吧，你就是这样的人，认命吧"——还是会告诉他"你比你想象的更有能力"？把那个建议给自己。",
+      ""假装成功"实验：下次遇到一个挑战，假装你是一个对这件事很有信心的人——带着好奇去尝试：让我看看这次会发生什么。把你的注意力从"保护自己"转向"探索可能性"。"
+    ],
+    alarm: "今天，你有没有对自己说过"反正我……"这样的话？把它写下来，然后问自己：这是真的吗？这是关于未来的事实，还是关于过去的信念？那个已经发生的过去，能决定你还没开始的未来吗？"
+  },
+  comfortZone: {
+    id: "comfortZone",
+    nameCn: "舒适区牢笼型",
+    nameEn: "The Comfort Zone Cage",
+    headline: "你不是做不到——你是不敢让自己做到。",
+    color: "#81B29A",
+    traits: [
+      "🚪 你主动回避那些可能让你成长、让你暴露在不确定中的机会——然后告诉自己"我不想要"",
+      "🎭 你用"我没兴趣/这不适合我"来合理化回避行为——但真相是你害怕失败，或者害怕成功之后更高的期待",
+      "🛡️ 你的"安全"是有代价的——你的世界在慢慢变小，而你身边的人都在成长",
+      "💭 你会在机会窗口关上之后，立刻找到一个让自己释怀的理由——但内心深处，你知道那个理由不是真正的原因"
+    ],
+    why: "舒适区牢笼不是懒惰，而是生存策略。你的大脑（尤其是杏仁核）在某个时刻学会了：未知 = 危险，暴露自己 = 可能受伤。所以它一直在保护你——通过让你回避所有可能带来不适的机会。这曾经是一种适应性保护。但在某个时刻，你的安全区变得太小了，它开始阻碍你而不是保护你。你的大脑分不清"不适"和"危险"的区别——它只知道：回避 = 安全。",
+    triggers: "你的破坏模式通常在以下情境中被激活：一个真实的成长机会出现了（新的工作、项目、关系邀请）、有人对你表达了信心——这让你感到压力而不是激励、你必须做出一个不可逆的决定、你感到自己"即将被看到"——暴露在他人面前。",
+    chain: ""一个机会来了" → "这很好……但是" → "万一我不行呢？" → "万一我行了，然后呢？" → "还是算了，现在这样挺好的" → 机会窗口关闭 → "看吧，我早就知道这不适合我" → 短暂的释然 → 长期的空虚",
+    actions: [
+      ""最坏情况"暴露练习：当你想用"不适合我"来回避时，写下：如果我去了/做了，最坏的情况是什么？那个最坏情况真的会发生吗？它真的像你想象的那么可怕吗？大多数时候，你会发现最坏情况要么不会发生，要么你比想象中更能承受。",
+      "5%实验原则：不要给自己"去或不去"的选择——而是问自己：能不能只做5%？只去参加一次活动，只发一条消息，只迈出最小的一步。5%的行动足以打破大脑的威胁反应，让它意识到"没那么危险"。",
+      "区分"不喜欢"和"害怕"：问自己：我是真的不想要，还是害怕失败/被评判/不知道该怎么做？如果是后者，你的"不想要"是一个需要被质疑的信号，不是最终答案。"
+    ],
+    alarm: "今天，有没有一件你用"没兴趣/不适合我/算了"来回避的事情？写下那件事，然后问自己：这是我真的不想要，还是我害怕？设一个10分钟计时器，只做那件事的"5%实验"。"
+  }
+};
+
+const LETTER_MAP = { A: "procrastination", B: "perfectionism", C: "selfFulfilling", D: "comfortZone" };
+const STORAGE_KEY = "self_sabotage_quiz_v1";
+
+// ─── STATE ───────────────────────────────────────────────
+let currentQ = 0;
+let answers = [];
+let dominantResult = null;
+
+// ─── HELPERS ──────────────────────────────────────────────
+function showScreen(el) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function calculateResult() {
+  const scores = { procrastination: 0, perfectionism: 0, selfFulfilling: 0, comfortZone: 0 };
+  answers.forEach(a => { scores[LETTER_MAP[a]]++; });
+  let max = 0, maxKey = "procrastination";
+  // Apply weight of 3 per answer already implicit in counting
+  for (const [k, v] of Object.entries(scores)) {
+    if (v > max) { max = v; maxKey = k; }
+  }
+  return RESULTS[maxKey];
+}
+
+function generateShareCard(result) {
+  const canvas = document.getElementById('share-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = 540, H = 810;
+  ctx.clearRect(0, 0, W, H);
+  // Background
+  ctx.fillStyle = "#1A1A2E";
+  ctx.fillRect(0, 0, W, H);
+  // Gradient overlay
+  const grd = ctx.createLinearGradient(0, 0, 0, H);
+  grd.addColorStop(0, result.color + "22");
+  grd.addColorStop(1, "transparent");
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, W, H);
+  // Header
+  ctx.fillStyle = "#8A8A9E";
+  ctx.font = "500 20px 'Noto Sans SC', sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText("自我破坏模式测验", W / 2, 80);
+  // Divider
+  ctx.strokeStyle = result.color + "44";
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(60, 105); ctx.lineTo(W - 60, 105); ctx.stroke();
+  // Badge
+  ctx.fillStyle = result.color + "33";
+  ctx.strokeStyle = result.color + "88";
+  ctx.lineWidth = 1.5;
+  const badgeText = result.nameCn;
+  ctx.font = "700 14px 'Space Mono', monospace";
+  const bw = ctx.measureText(badgeText).width + 40;
+  const bx = W / 2 - bw / 2, by = 145, bh = 36;
+  ctx.fillRect(bx, by, bw, bh);
+  ctx.strokeRect(bx, by, bw, bh);
+  ctx.fillStyle = result.color;
+  ctx.fillText(badgeText, W / 2, by + 23);
+  // Main title
+  ctx.fillStyle = "#F0EDE8";
+  ctx.font = "700 36px 'Noto Sans SC', sans-serif";
+  ctx.fillText("你为什么总是", W / 2, 240);
+  ctx.fillText("「做不到」？", W / 2, 290);
+  // Headline
+  ctx.fillStyle = result.color;
+  ctx.font = "500 22px 'Noto Sans SC', sans-serif";
+  ctx.fillText(result.headline, W / 2, 370);
+  // Traits
+  ctx.fillStyle = "#8A8A9E";
+  ctx.font = "400 17px 'Noto Sans SC', sans-serif";
+  const lines = result.traits.map(t => t.replace(/^[^\s]+\s/, ""));
+  lines.slice(0, 2).forEach((line, i) => {
+    ctx.fillStyle = "#5A5A6E";
+    ctx.font = "400 28px sans-serif";
+    ctx.fillText("•", 80, 440 + i * 60);
+    ctx.fillStyle = "#8A8A9E";
+    ctx.font = "400 17px 'Noto Sans SC', sans-serif";
+    const words = line.split("");
+    let row = "", cols = 0;
+    for (const ch of words) {
+      row += ch;
+      if (ctx.measureText(row).width > W - 160) {
+        ctx.fillText(row, W / 2, 440 + i * 60 + 22);
+        row = ""; cols++;
+      }
+    }
+    if (row) ctx.fillText(row, W / 2, 440 + i * 60 + 22);
+  });
+  // Bottom divider
+  ctx.strokeStyle = "#353555";
+  ctx.beginPath(); ctx.moveTo(60, 610); ctx.lineTo(W - 60, 610); ctx.stroke();
+  // Attribution
+  ctx.fillStyle = "#5A5A6E";
+  ctx.font = "400 14px 'Space Mono', monospace";
+  ctx.fillText("psychomaster-site.github.io", W / 2, 760);
+  return canvas.toDataURL("image/png");
+}
+
+// ─── RENDER QUESTION ─────────────────────────────────────
+function renderQuestion(index) {
+  currentQ = index;
+  const q = QUESTIONS[index];
+  const pct = Math.round((index / QUESTIONS.length) * 100);
+  document.getElementById('progress-count').textContent = `Q ${index + 1} / ${QUESTIONS.length}`;
+  document.getElementById('progress-pct').textContent = `${pct}%`;
+  document.getElementById('progress-fill').style.width = `${pct}%`;
+  document.getElementById('question-label').textContent = `问题 ${index + 1}`;
+  document.getElementById('question-text').textContent = q.text;
+  const list = document.getElementById('options-list');
+  list.innerHTML = '';
+  q.options.forEach(opt => {
+    const card = document.createElement('div');
+    card.className = 'option';
+    card.dataset.letter = opt.letter;
+    card.innerHTML = `<div class="option-letter">${opt.letter}</div><div class="option-text">${opt.text}</div>`;
+    card.addEventListener('click', () => selectOption(card, opt.letter));
+    list.appendChild(card);
+  });
+}
+
+function selectOption(card, letter) {
+  document.querySelectorAll('.option').forEach(c => { c.classList.remove('selected', 'dimmed'); });
+  card.classList.add('selected');
+  document.querySelectorAll('.option').forEach(c => { if (c !== card) c.classList.add('dimmed'); });
+  // Set type color
+  const typeId = LETTER_MAP[letter];
+  const result = RESULTS[typeId];
+  document.documentElement.style.setProperty('--result-color', result.color);
+  setTimeout(() => {
+    answers.push(letter);
+    // Save progress
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ currentQ, answers })); } catch(e) {}
+    if (currentQ < QUESTIONS.length - 1) {
+      renderQuestion(currentQ + 1);
+    } else {
+      showScreen(document.getElementById('screen-processing'));
+      runProcessingSteps();
+    }
+  }, 350);
+}
+
+// ─── PROCESSING ANIMATION ────────────────────────────────
+function runProcessingSteps() {
+  const steps = [
+    document.getElementById('step1'),
+    document.getElementById('step2'),
+    document.getElementById('step3')
+  ];
+  let i = 0;
+  steps[0].classList.add('active');
+  const interval = setInterval(() => {
+    steps[i].classList.remove('active');
+    i++;
+    if (i >= steps.length) { clearInterval(interval); showResult(); }
+    else steps[i].classList.add('active');
+  }, 700);
+}
+
+// ─── SHOW RESULT ─────────────────────────────────────────
+function showResult() {
+  dominantResult = calculateResult();
+  const r = dominantResult;
+  document.documentElement.style.setProperty('--result-color', r.color);
+  document.getElementById('result-badge').textContent = r.nameCn;
+  document.getElementById('result-type-name').textContent = r.nameCn;
+  document.getElementById('result-type-en').textContent = r.nameEn;
+  document.getElementById('result-headline').textContent = r.headline;
+  // Traits
+  const traitsEl = document.getElementById('result-traits');
+  traitsEl.innerHTML = '';
+  r.traits.forEach(t => {
+    const li = document.createElement('li');
+    li.className = 'trait-item';
+    li.innerHTML = `<span class="trait-icon">${t.split(' ')[0]}</span><span>${t.substring(t.indexOf(' ') + 1)}</span>`;
+    traitsEl.appendChild(li);
+  });
+  document.getElementById('result-why').textContent = r.why;
+  document.getElementById('result-triggers').textContent = r.triggers;
+  // Chain
+  const chainEl = document.getElementById('result-chain');
+  const chainSteps = r.chain.split(' → ');
+  chainEl.innerHTML = '';
+  chainSteps.forEach((step, i) => {
+    if (i > 0) { const arrow = document.createElement('div'); arrow.className = 'chain-arrow'; arrow.textContent = '↓'; chainEl.appendChild(arrow); }
+    const div = document.createElement('div'); div.className = 'chain-step'; div.textContent = step; chainEl.appendChild(div);
+  });
+  // Actions
+  const actionsEl = document.getElementById('result-actions');
+  actionsEl.innerHTML = '';
+  r.actions.forEach((a, i) => {
+    const div = document.createElement('div'); div.className = 'action-item';
+    div.innerHTML = `<div class="action-num">${i + 1}</div><div class="action-text">${a}</div>`;
+    actionsEl.appendChild(div);
+  });
+  document.getElementById('result-alarm').textContent = r.alarm;
+  showScreen(document.getElementById('screen-result'));
+  // Clear localStorage
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+}
+
+// ─── SHARE ───────────────────────────────────────────────
+document.getElementById('btn-share').addEventListener('click', () => {
+  const dataUrl = generateShareCard(dominantResult);
+  document.getElementById('share-canvas').src = dataUrl;
+  document.getElementById('share-modal').classList.add('active');
+});
+
+document.getElementById('btn-download').addEventListener('click', () => {
+  const canvas = document.getElementById('share-canvas');
+  const link = document.createElement('a');
+  link.download = `self-sabotage-${dominantResult.id}.png`;
+  link.href = canvas.toDataURL("image/png");
+  link.click();
+});
+
+document.getElementById('btn-copy').addEventListener('click', () => {
+  const r = dominantResult;
+  const text = `🌀 自我破坏模式测验\n\n我的类型：${r.nameCn}\n"${r.headline}"\n\n${r.traits[0].substring(r.traits[0].indexOf(' ') + 1)}\n${r.traits[1].substring(r.traits[1].indexOf(' ') + 1)}\n\n👉 测测你是哪种类型：psychomaster-site.github.io`;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('btn-copy');
+    const orig = btn.textContent;
+    btn.textContent = "✅ 已复制！";
+    setTimeout(() => btn.textContent = orig, 2000);
+  });
+});
+
+document.getElementById('btn-close-modal').addEventListener('click', () => {
+  document.getElementById('share-modal').classList.remove('active');
+});
+
+// ─── INIT ────────────────────────────────────────────────
+document.getElementById('btn-start').addEventListener('click', () => {
+  showScreen(document.getElementById('screen-disclaimer'));
+});
+
+document.getElementById('btn-proceed').addEventListener('click', () => {
+  showScreen(document.getElementById('screen-quiz'));
+  renderQuestion(0);
+});
+
+document.getElementById('btn-exit').addEventListener('click', () => {
+  showScreen(document.getElementById('screen-welcome'));
+});
+
+document.getElementById('btn-replay').addEventListener('click', () => {
+  answers = []; currentQ = 0;
+  document.documentElement.style.setProperty('--result-color', '#E07A5F');
+  showScreen(document.getElementById('screen-quiz'));
+  renderQuestion(0);
+});
+
+// Resume from localStorage
+try {
+  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+  if (saved && saved.answers && saved.answers.length > 0) {
+    answers = saved.answers;
+    currentQ = saved.currentQ;
+    showScreen(document.getElementById('screen-quiz'));
+    renderQuestion(currentQ);
+  }
+} catch(e) {}
+</script>
+</body>
+</html>
