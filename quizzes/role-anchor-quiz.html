@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>身份锚点测验 · 你的人生以什么为锚？</title>
+<meta name="description" content="在退休、空巢、转型的路口，这个测验帮你重新认识自己是谁。找出定义你价值的核心角色。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ochre:#C48A5E;--ochre-dark:#A8724A;--ochre-light:rgba(196,138,94,0.08);
+  --deep-tea:#7B5B3A;--forest:#4A6741;--warm-white:#FAF7F2;--ivory:#F5EFE6;
+  --warm-gray:#8B7E74;--charcoal:#3D3530;--rose-gray:#D4A5A5;
+  --calm-blue:#7A9BB5;--soft-gold:#D4B896;
+  --amber:#D4956A;--terracotta:#B57B5E;--dusty-blue:#8B9DB5;--warm-mauve:#9B8AA5;--moss:#8A9B7A;
+  --type-career:#B57B5E;--type-family:#9B8AA5;--type-social:#8B9DB5;--type-free:#D4956A;--type-spirit:#8A9B7A;
+  --shadow-card:0 2px 12px rgba(61,53,48,0.08);--shadow-btn:0 4px 12px rgba(196,138,94,0.25);--shadow-hover:0 6px 20px rgba(61,53,48,0.12);
+  --radius-sm:4px;--radius-md:8px;--radius-lg:12px;--radius-xl:16px;
+  --font-serif:'Noto Serif SC',Georgia,serif;--font-sans:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+}
+html{font-size:16px}
+body{font-family:var(--font-sans);background:var(--warm-white);color:var(--charcoal);line-height:1.8;min-height:100vh;
+  -webkit-font-smoothing:antialiased}
+.screen{display:none;min-height:100vh;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px;opacity:0;transition:opacity 0.3s ease-out}
+.screen.active{display:flex;opacity:1}
+.container{max-width:640px;width:100%;margin:0 auto}
+
+/* Landing */
+.landing-bg{position:fixed;inset:0;z-index:-1;overflow:hidden}
+.landing-bg::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(196,138,94,0.12) 0%,transparent 60%),
+  radial-gradient(ellipse at 70% 80%,rgba(74,103,65,0.08) 0%,transparent 60%),var(--warm-white)}
+.landing-inner{text-align:center;padding-top:10vh}
+.landing-badge{display:inline-flex;align-items:center;gap:6px;background:var(--ivory);border:1px solid rgba(196,138,94,0.2);border-radius:var(--radius-full,9999px);
+  padding:6px 16px;font-size:13px;color:var(--warm-gray);margin-bottom:24px}
+.landing-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--ochre);animation:pulse-dot 2s infinite}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:0.4}}
+.landing-title{font-family:var(--font-serif);font-size:clamp(32px,8vw,44px);font-weight:700;color:var(--deep-tea);letter-spacing:2px;
+  line-height:1.3;margin-bottom:12px}
+.landing-subtitle{font-size:18px;color:var(--warm-gray);margin-bottom:32px;font-weight:400}
+.landing-desc{font-size:15px;color:var(--warm-gray);max-width:480px;margin:0 auto 40px;line-height:1.8}
+.landing-desc em{color:var(--charcoal);font-style:normal}
+
+/* Buttons */
+.btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--ochre);color:#fff;
+  border:none;border-radius:var(--radius-lg);padding:16px 40px;font-size:17px;font-weight:500;cursor:pointer;
+  box-shadow:var(--shadow-btn);transition:background 0.2s,transform 0.15s,box-shadow 0.2s;font-family:var(--font-sans);
+  min-height:56px;min-width:200px;text-decoration:none}
+.btn-primary:hover{background:var(--ochre-dark);transform:translateY(-1px);box-shadow:var(--shadow-hover)}
+.btn-primary:active{transform:translateY(0)}
+.btn-primary:focus-visible{outline:3px solid var(--ochre);outline-offset:3px}
+.btn-primary:disabled{background:#D4C4B0;color:#A09080;box-shadow:none;cursor:not-allowed;transform:none}
+.btn-secondary{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:transparent;
+  color:var(--ochre);border:1.5px solid var(--ochre);border-radius:var(--radius-lg);padding:14px 32px;font-size:16px;font-weight:500;
+  cursor:pointer;transition:background 0.2s,transform 0.15s;font-family:var(--font-sans);min-height:52px;text-decoration:none}
+.btn-secondary:hover{background:var(--ochre-light)}
+.btn-secondary:focus-visible{outline:3px solid var(--ochre);outline-offset:3px}
+.btn-text{background:none;border:none;color:var(--calm-blue);font-size:14px;cursor:pointer;text-decoration:underline;
+  padding:4px 8px;font-family:var(--font-sans)}
+.btn-text:hover{color:var(--charcoal)}
+.btn-icon{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:var(--radius-md);
+  border:1.5px solid var(--ochre);background:transparent;color:var(--ochre);cursor:pointer;transition:background 0.2s;font-size:18px}
+.btn-icon:hover{background:var(--ochre-light)}
+
+/* Warning */
+.trigger-warn{display:flex;gap:12px;background:rgba(212,165,165,0.1);border-left:4px solid var(--rose-gray);
+  border-radius:0 var(--radius-md) var(--radius-md) 0;padding:16px 20px;margin-top:24px;text-align:left;max-width:480px;margin-left:auto;margin-right:auto}
+.trigger-warn-icon{font-size:20px;flex-shrink:0;margin-top:2px}
+.trigger-warn p{font-size:13px;color:#7A6560;line-height:1.6}
+.warn-link{color:var(--calm-blue);cursor:pointer;text-decoration:underline;font-size:13px}
+.warn-link:hover{color:var(--charcoal)}
+
+/* Progress */
+.progress-wrap{width:100%;max-width:640px;margin:0 auto 32px}
+.progress-bar{height:4px;background:#E8DFD4;border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ochre);border-radius:2px;transition:width 0.4s ease-out;width:0%}
+.progress-label{font-size:13px;color:var(--warm-gray);margin-top:8px;text-align:center}
+
+/* Quiz */
+.quiz-card{background:var(--ivory);border-radius:var(--radius-xl);padding:clamp(24px,5vw,40px);box-shadow:var(--shadow-card)}
+.question-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.question-num{font-size:14px;color:var(--warm-gray);font-weight:500}
+.question-jump{display:flex;gap:6px;flex-wrap:wrap}
+.q-jump-btn{width:28px;height:28px;border-radius:var(--radius-sm);border:1px solid rgba(196,138,94,0.3);
+  background:transparent;font-size:12px;color:var(--warm-gray);cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;font-family:var(--font-sans)}
+.q-jump-btn.answered{background:var(--ochre);color:#fff;border-color:var(--ochre)}
+.q-jump-btn.current{background:var(--ochre-dark);color:#fff;border-color:var(--ochre-dark)}
+.q-jump-btn:hover{background:var(--ochre-light);border-color:var(--ochre)}
+.q-jump-btn:focus-visible{outline:2px solid var(--ochre);outline-offset:1px}
+.scenario-text{font-size:clamp(16px,4vw,18px);font-weight:600;color:var(--deep-tea);line-height:1.7;margin-bottom:24px;padding-left:16px;
+  border-left:3px solid var(--ochre);font-family:var(--font-serif)}
+.options-list{display:flex;flex-direction:column;gap:12px;margin-bottom:28px}
+.option-card{display:flex;align-items:flex-start;gap:14px;background:var(--warm-white);border:2px solid transparent;
+  border-radius:var(--radius-lg);padding:16px 20px;cursor:pointer;transition:all 0.2s;min-height:56px}
+.option-card:hover{background:rgba(245,239,230,0.8);border-color:rgba(196,138,94,0.5)}
+.option-card.selected{background:var(--ochre-light);border-color:var(--ochre);transform:scale(1.01)}
+.option-card:focus-visible{outline:3px solid var(--ochre);outline-offset:2px}
+.option-letter{flex-shrink:0;width:28px;height:28px;border-radius:50%;border:2px solid var(--warm-gray);display:flex;align-items:center;
+  justify-content:center;font-weight:600;font-size:13px;color:var(--warm-gray);transition:all 0.2s;margin-top:1px}
+.option-card.selected .option-letter{background:var(--ochre);border-color:var(--ochre);color:#fff}
+.option-text{flex:1;font-size:15px;color:var(--charcoal);line-height:1.7;padding-top:2px}
+.quiz-nav{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:8px}
+.quiz-nav .btn-secondary{padding:12px 24px;font-size:15px;min-height:48px}
+.quiz-nav .btn-primary{min-height:48px}
+
+/* Calculating */
+.calc-screen{text-align:center}
+.calc-icon{font-size:64px;margin-bottom:24px;animation:float 2s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.calc-dots{display:flex;justify-content:center;gap:8px;margin-top:20px}
+.calc-dot{width:10px;height:10px;border-radius:50%;background:var(--ochre-light);animation:calc-pulse 1.4s ease-in-out infinite}
+.calc-dot:nth-child(2){animation-delay:0.2s}
+.calc-dot:nth-child(3){animation-delay:0.4s}
+@keyframes calc-pulse{0%,80%,100%{transform:scale(0.6);opacity:0.4}40%{transform:scale(1);opacity:1}}
+.calc-text{font-size:16px;color:var(--warm-gray);margin-top:16px}
+
+/* Results */
+.result-header{text-align:center;margin-bottom:32px}
+.result-type-tag{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:var(--radius-full,9999px);
+  font-size:13px;font-weight:500;margin-bottom:16px;color:#fff}
+.result-type-tag.career{background:var(--type-career)}
+.result-type-tag.family{background:var(--type-family)}
+.result-type-tag.social{background:var(--type-social)}
+.result-type-tag.free{background:var(--type-free)}
+.result-type-tag.spirit{background:var(--type-spirit)}
+.result-name{font-family:var(--font-serif);font-size:clamp(28px,7vw,38px);font-weight:700;color:var(--deep-tea);
+  letter-spacing:1px;margin-bottom:10px}
+.result-tagline{font-size:16px;color:var(--warm-gray);font-style:italic;max-width:420px;margin:0 auto}
+.result-divider{width:60px;height:3px;background:var(--ochre);border-radius:2px;margin:28px auto}
+.result-section{margin-bottom:28px}
+.result-section-title{font-family:var(--font-serif);font-size:17px;font-weight:600;color:var(--deep-tea);margin-bottom:14px;
+  display:flex;align-items:center;gap:8px}
+.traits-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.traits-list li{display:flex;align-items:flex-start;gap:10px;font-size:15px;color:var(--charcoal);line-height:1.6}
+.traits-list li .trait-icon{font-size:16px;flex-shrink:0;margin-top:2px}
+.growth-block{background:rgba(212,165,165,0.08);border-left:4px solid var(--rose-gray);border-radius:0 var(--radius-md) var(--radius-md) 0;
+  padding:20px 24px;margin:20px 0}
+.growth-block p{font-size:15px;color:#5A4A46;line-height:1.8;font-style:italic}
+.actions-list{list-style:none;counter-reset:action-counter;display:flex;flex-direction:column;gap:16px}
+.action-item{display:flex;gap:16px;counter-increment:action-counter}
+.action-num{flex-shrink:0;width:32px;height:32px;border-radius:50%;background:var(--ochre);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;margin-top:2px}
+.action-content h4{font-size:15px;font-weight:600;color:var(--deep-tea);margin-bottom:4px;font-family:var(--font-serif)}
+.action-content p{font-size:14px;color:var(--warm-gray);line-height:1.6}
+.result-ctas{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:32px}
+.result-footer{margin-top:40px;padding-top:24px;border-top:1px solid rgba(196,138,94,0.2)}
+
+/* Share */
+.share-card-wrap{position:relative;background:#fff;border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-card);
+  margin:24px 0;aspect-ratio:3/4;max-width:320px;margin-left:auto;margin-right:auto}
+.share-canvas{display:block;width:100%;height:auto}
+.share-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:20px}
+.share-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:var(--radius-md);
+  border:1.5px solid var(--ochre);background:transparent;color:var(--ochre);font-size:14px;font-weight:500;
+  cursor:pointer;transition:all 0.2s;font-family:var(--font-sans);min-height:44px}
+.share-btn:hover{background:var(--ochre-light)}
+.share-btn:focus-visible{outline:3px solid var(--ochre);outline-offset:2px}
+.share-btn.wechat{background:#07C160;color:#fff;border-color:#07C160}
+.share-btn.wechat:hover{background:#059B4A}
+.share-btn.copied{background:var(--forest);color:#fff;border-color:var(--forest)}
+.toast{position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--charcoal);
+  color:#fff;padding:12px 24px;border-radius:var(--radius-lg);font-size:14px;opacity:0;transition:all 0.3s;
+  pointer-events:none;z-index:999;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(61,53,48,0.5);display:none;align-items:center;justify-content:center;
+  z-index:1000;padding:24px;backdrop-filter:blur(4px)}
+.modal-overlay.show{display:flex}
+.modal{background:var(--warm-white);border-radius:var(--radius-xl);max-width:560px;width:100%;max-height:85vh;overflow-y:auto;
+  box-shadow:var(--shadow-hover);padding:clamp(28px,5vw,40px)}
+.modal-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.modal-hd h2{font-family:var(--font-serif);font-size:20px;font-weight:600;color:var(--deep-tea)}
+.modal-close{width:36px;height:36px;border-radius:var(--radius-md);border:none;background:transparent;
+  cursor:pointer;font-size:20px;color:var(--warm-gray);display:flex;align-items:center;justify-content:center}
+.modal-close:hover{background:var(--ivory)}
+.modal-close:focus-visible{outline:2px solid var(--ochre);outline-offset:1px}
+.modal-content{font-size:14px;color:var(--charcoal);line-height:1.8}
+.modal-content h3{font-family:var(--font-serif);font-size:16px;font-weight:600;margin:16px 0 8px;color:var(--deep-tea)}
+.modal-content h3:first-child{margin-top:0}
+.modal-content p{margin-bottom:12px}
+.support-modal{text-align:center}
+.support-modal p{text-align:left}
+.support-numbers{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0;text-align:left}
+.support-num-card{background:var(--ivory);border-radius:var(--radius-lg);padding:16px}
+.support-num-card .num-label{font-size:12px;color:var(--warm-gray);margin-bottom:4px}
+.support-num-card .num-value{font-size:18px;font-weight:600;color:var(--ochre);font-family:DM Sans,sans-serif}
+.support-resources{list-style:none;display:flex;flex-direction:column;gap:8px;text-align:left}
+.support-resources li{display:flex;align-items:flex-start;gap:8px;font-size:14px;color:var(--charcoal)}
+.support-resources li::before{content:'•';color:var(--ochre);font-weight:700;margin-top:1px}
+
+/* Utility */
+.text-center{text-align:center}
+.mt-16{margin-top:16px}.mt-24{margin-top:24px}.mt-32{margin-top:32px}
+.mb-16{margin-bottom:16px}.mb-24{margin-bottom:24px}
+.flex-center{display:flex;align-items:center;justify-content:center}
+.gap-8{gap:8px}.gap-12{gap:12px}
+
+/* Reduced motion */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;
+    transition-duration:0.01ms!important}
+  .progress-fill{transition:none}
+  .option-card{transition:none}
+  .btn-primary,.btn-secondary{transition:none}
+}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--ivory)}
+::-webkit-scrollbar-thumb{background:var(--soft-gold);border-radius:3px}
+
+/* Responsive */
+@media(max-width:480px){
+  .question-jump{display:none}
+  .quiz-nav{flex-wrap:wrap}
+  .quiz-nav .btn-secondary,.quiz-nav .btn-primary{flex:1}
+  .support-numbers{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="landing-bg"></div>
+
+<!-- Screen: Landing -->
+<div id="screen-landing" class="screen active">
+  <div class="container landing-inner">
+    <div class="landing-badge"><span class="landing-badge-dot"></span>心理自测 · 8分钟</div>
+    <h1 class="landing-title">你的人生以什么为锚？</h1>
+    <p class="landing-subtitle">找出定义你价值的核心角色</p>
+    <p class="landing-desc">
+      在<em>退休、空巢、转型的路口</em>，<br>这个测验帮你重新认识自己是谁。
+    </p>
+    <button class="btn-primary" id="btn-start" aria-label="开始测验">开始测验</button>
+    <div class="trigger-warn">
+      <span class="trigger-warn-icon" aria-hidden="true">⚠️</span>
+      <p>本测验涉及自我反思，可能触发对过往经历的情绪反应。如果感到不适，可以随时暂停或退出。</p>
+    </div>
+    <p class="mt-16"><span class="warn-link" id="link-warn" role="button" tabindex="0" aria-label="阅读触发警告详情">答题前请阅读说明 ›</span></p>
+  </div>
+</div>
+
+<!-- Screen: Quiz -->
+<div id="screen-quiz" class="screen">
+  <div class="container">
+    <div class="progress-wrap">
+      <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="12">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <div class="progress-label" id="progress-label">第 1 题 / 共 12 题</div>
+    </div>
+    <div class="quiz-card">
+      <div class="question-header">
+        <span class="question-num" id="question-num-label">第 1 题</span>
+        <div class="question-jump" id="question-jump" role="navigation" aria-label="题目导航"></div>
+      </div>
+      <p class="scenario-text" id="scenario-text" aria-live="polite"></p>
+      <div class="options-list" id="options-list" role="radiogroup" aria-label="选项"></div>
+      <div class="quiz-nav">
+        <button class="btn-secondary" id="btn-prev" aria-label="上一题" style="visibility:hidden">
+          <span aria-hidden="true">‹</span> 上一题
+        </button>
+        <button class="btn-primary" id="btn-next" aria-label="下一题" disabled>
+          下一题 <span aria-hidden="true">›</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Screen: Calculating -->
+<div id="screen-calc" class="screen calc-screen">
+  <div class="container">
+    <div class="calc-icon" aria-hidden="true">⚓</div>
+    <p class="calc-text">正在分析你的答案……</p>
+    <div class="calc-dots" aria-hidden="true">
+      <div class="calc-dot"></div><div class="calc-dot"></div><div class="calc-dot"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Screen: Result -->
+<div id="screen-result" class="screen">
+  <div class="container">
+    <div class="quiz-card" id="result-card"></div>
+  </div>
+</div>
+
+<!-- Modal: Warning -->
+<div class="modal-overlay" id="modal-warn" role="dialog" aria-modal="true" aria-labelledby="modal-warn-title">
+  <div class="modal">
+    <div class="modal-hd">
+      <h2 id="modal-warn-title">⚠️ 触发警告与免责声明</h2>
+      <button class="modal-close" id="modal-warn-close" aria-label="关闭">&times;</button>
+    </div>
+    <div class="modal-content">
+      <p>本测验涉及自我反思，可能触发对过往经历或当前困境的情绪反应。如果你在答题过程中感到不适，随时可以暂停或退出。</p>
+      <p>你的情绪感受是真实且重要的。如果需要，随时可以停止测验。</p>
+      <h3>专业支持</h3>
+      <p>本测验仅供参考，不构成专业心理诊断或治疗建议。如果你正在经历严重的情绪困扰、抑郁、焦虑或生活危机，请及时寻求专业心理支持：</p>
+      <div class="support-numbers">
+        <div class="support-num-card">
+          <div class="num-label">全国心理援助热线（24小时）</div>
+          <div class="num-value">400-161-9995</div>
+        </div>
+        <div class="support-num-card">
+          <div class="num-label">北京心理危机研究与干预中心</div>
+          <div class="num-value">010-82951332</div>
+        </div>
+      </div>
+      <p>可前往当地三甲医院心理科/精神科、高校心理咨询中心（面向校友及社会开放）、或正规心理咨询机构寻求帮助。</p>
+      <p>你不是一个人，寻求帮助是勇敢的表现。</p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Privacy -->
+<div class="modal-overlay" id="modal-privacy" role="dialog" aria-modal="true" aria-labelledby="modal-privacy-title">
+  <div class="modal">
+    <div class="modal-hd">
+      <h2 id="modal-privacy-title">隐私政策</h2>
+      <button class="modal-close" id="modal-privacy-close" aria-label="关闭">&times;</button>
+    </div>
+    <div class="modal-content">
+      <h3>1. 数据收集</h3>
+      <p>本测验仅收集你的答题数据，用于计算结果。我们不收集姓名、手机号、身份证号等个人身份信息。</p>
+      <h3>2. 数据存储</h3>
+      <p>你的答题记录存储在本地设备，答题完成后可随时清除。</p>
+      <h3>3. 数据使用</h3>
+      <p>你的数据仅用于生成个人测验报告，不会出售、共享给任何第三方广告商或商业机构。</p>
+      <h3>4. Cookie</h3>
+      <p>如使用网站版本，可能使用必要的Cookie来确保基本功能，不用于追踪或广告。</p>
+      <h3>5. 你的权利</h3>
+      <p>你可以随时清除本地数据（见浏览器设置）。</p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Support -->
+<div class="modal-overlay" id="modal-support" role="dialog" aria-modal="true" aria-labelledby="modal-support-title">
+  <div class="modal">
+    <div class="modal-hd">
+      <h2 id="modal-support-title">💬 如果你需要更多支持</h2>
+      <button class="modal-close" id="modal-support-close" aria-label="关闭">&times;</button>
+    </div>
+    <div class="modal-content support-modal">
+      <p>本测验不能替代专业心理咨询或治疗。如果你正在经历持续的情绪困扰，请及时寻求专业帮助：</p>
+      <div class="support-numbers">
+        <div class="support-num-card">
+          <div class="num-label">全国心理援助热线（24小时）</div>
+          <div class="num-value">400-161-9995</div>
+        </div>
+        <div class="support-num-card">
+          <div class="num-label">北京心理危机研究与干预中心</div>
+          <div class="num-value">010-82951332</div>
+        </div>
+      </div>
+      <h3>可前往以下机构寻求帮助</h3>
+      <ul class="support-resources">
+        <li>当地三甲医院心理科 / 精神科</li>
+        <li>高校心理咨询中心（面向校友及社会开放）</li>
+        <li>正规心理咨询机构（请确认咨询师资质）</li>
+      </ul>
+      <p class="mt-24"><em>你不是一个人，寻求帮助是勇敢的表现。</em></p>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+<script>
+// ─── Content Data ───────────────────────────────────────────────────────────
+const QUESTIONS = [
+  {
+    scenario:"你刚刚办完退休手续，走出公司大门的那一刻，你脑海里浮现的第一个念头是：",
+    options:[
+      {text:"我这些年积累的经验和人脉，接下来还能怎么用？我还打算做几个大项目。",dim:"career"},
+      {text:"终于有时间陪家人了，孙子孙女一定很想我。",dim:"family"},
+      {text:"同事们会怎么看我？我以后参加行业协会活动该怎么介绍自己？",dim:"social"},
+      {text:"终于自由了！我想学画画、到处旅行、好好读那些一直没时间读的书。",dim:"free"}
+    ]
+  },
+  {
+    scenario:"周末，你独自在家，微信里有人发来同学聚会的邀请，你会：",
+    options:[
+      {text:"犹豫一下：'我最近的工作进展/行业成就可以分享吗？'然后决定是否参加。",dim:"career"},
+      {text:"立刻报名：'好久没见大家了，正好和大家叙叙旧！'",dim:"family"},
+      {text:"仔细考虑：'这次聚会有哪些人会参加？我的状态够不够好？'",dim:"social"},
+      {text:"礼貌婉拒：'谢谢邀请，那天我有自己的安排。'然后享受一个人的安静时光。",dim:"free"}
+    ]
+  },
+  {
+    scenario:"你在朋友圈看到一位老同学分享了自己创业成功的文章，底下点赞评论无数，你会：",
+    options:[
+      {text:"由衷佩服，想主动联系看看有没有合作机会。",dim:"career"},
+      {text:"为朋友高兴，顺手点个赞，然后想起自己和孩子们的合照，发一张家庭照。",dim:"family"},
+      {text:"默默点了个赞，开始想着自己最近有没有什么值得分享的事。",dim:"social"},
+      {text:"划走，继续看手机里的旅行纪录片，觉得别人的成功和自己关系不大。",dim:"spirit"}
+    ]
+  },
+  {
+    scenario:"你的孩子已经上大学/结婚/在外地工作，家里只剩下你和伴侣，厨房变得安静了。你会：",
+    options:[
+      {text:"把书房重新布置了一下，开始规划'退休后还能做点什么事业'。",dim:"career"},
+      {text:"和伴侣商量：'我们是不是该多去看看爸妈/帮孩子带带孩子？'",dim:"family"},
+      {text:"参加一些社交活动，认识新朋友，让自己不那么'落单'。",dim:"social"},
+      {text:"开始思考一些以前没时间想的问题：'我到底想过什么样的生活？'",dim:"spirit"}
+    ]
+  },
+  {
+    scenario:"有人请你用三个词形容自己，你会说：",
+    options:[
+      {text:"专业、可靠、有执行力。",dim:"career"},
+      {text:"温暖、有爱、负责任。",dim:"family"},
+      {text:"有人缘、受尊重、善于交际。",dim:"social"},
+      {text:"自由、真诚、随性。",dim:"free"}
+    ]
+  },
+  {
+    scenario:"你面临一个选择：一份是稳定体面的工作机会，另一份是收入不确定但可以做自己热爱之事的机会。你会：",
+    options:[
+      {text:"认真评估哪个能让我的专业能力得到更大发挥，哪个更有'前途'。",dim:"career"},
+      {text:"哪个选择能让我更好地陪伴家人、维系家庭关系就选哪个。",dim:"family"},
+      {text:"哪个选择能让我在朋友圈/社交圈里更有面子、有地位就选哪个。",dim:"social"},
+      {text:"哪个选择让我心动、让我觉得'这就是我想要的'就选哪个。",dim:"free"}
+    ]
+  },
+  {
+    scenario:"你在一个社交场合，有人问你：'你现在是做什么的？'你的回答会是：",
+    options:[
+      {text:"详细介绍自己的职业背景、专业领域和行业影响力。",dim:"career"},
+      {text:"'我现在主要在家，帮忙带孙子/照顾家人。'",dim:"family"},
+      {text:"'我？我朋友可多了，平时social挺忙的！'",dim:"social"},
+      {text:"'嗯，我在寻找一些新的方向……'",dim:"free"}
+    ]
+  },
+  {
+    scenario:"深夜，你睡不着，脑子里反复想的是：",
+    options:[
+      {text:"'我还有哪些目标没有实现？我还能创造什么价值？'",dim:"career"},
+      {text:"'孩子在外地过得好不好？爸妈的身体最近怎么样？'",dim:"family"},
+      {text:"'今天聚会上我说的话是不是不太合适？那个人怎么看我？'",dim:"social"},
+      {text:"'我这辈子到底在追求什么？什么是真正重要的？'",dim:"spirit"}
+    ]
+  },
+  {
+    scenario:"你在商场看到一件很贵的衣服，设计独特但价格惊人，你会：",
+    options:[
+      {text:"犹豫后买下：'穿出去见客户/合作伙伴显得有品位，值得。'",dim:"career"},
+      {text:"拿起手机拍下来发给家人：'这衣服挺好看的，你们帮我看看适不适合？'",dim:"family"},
+      {text:"试穿后拍照发朋友圈，看大家点赞评论多不多，再决定买不买。",dim:"social"},
+      {text:"想了想，觉得自己在家穿什么都行，不买了，把钱留着旅行用。",dim:"free"}
+    ]
+  },
+  {
+    scenario:"你参加了一个公益活动，帮助孤儿院的孩子们。你最有成就感的时刻是：",
+    options:[
+      {text:"'我运用自己的专业经验，帮这个活动提升了影响力。'",dim:"career"},
+      {text:"看到孩子们拉着志愿者的手说'谢谢叔叔阿姨'，心里特别暖。",dim:"family"},
+      {text:"活动照片发出来后，朋友们纷纷点赞评论：'你真有大爱！'",dim:"social"},
+      {text:"在陪伴孩子的过程中，自己内心也获得了一种平静和满足感。",dim:"spirit"}
+    ]
+  },
+  {
+    scenario:"如果你有充足的时间和金钱，不用考虑任何现实限制，你最想做的第一件事是：",
+    options:[
+      {text:"创办一个自己的机构/品牌，把毕生经验传承下去。",dim:"career"},
+      {text:"和全家人一起去旅行，大家庭其乐融融在一起。",dim:"family"},
+      {text:"在某个领域成为有影响力的人物，受邀演讲、被媒体报道。",dim:"social"},
+      {text:"隐居一处，读书、写作、冥想，过内心平静的生活。",dim:"spirit"}
+    ]
+  },
+  {
+    scenario:"你希望自己的墓志铭上写着什么？",
+    options:[
+      {text:"'他/她的一生，创造了许多价值，培养了无数人才。'",dim:"career"},
+      {text:"'他/她是慈爱的父母/伴侣/子女，家庭是她/他最大的骄傲。'",dim:"family"},
+      {text:"'他/她活成了很多人羡慕的样子，朋友遍天下。'",dim:"social"},
+      {text:"'他/她一生真诚地活出了自己，找到了内心的安宁。'",dim:"free"}
+    ]
+  }
+];
+
+const RESULTS = {
+  career:{
+    typeTag:"职业成就型",tagClass:"career",
+    name:"价值创造者",
+    tagline:"你的意义，来自于你能创造什么",
+    traits:[
+      {icon:"🎯",text:"将个人价值等同于专业贡献和能力输出"},
+      {icon:"📊",text:"从成就、排名、影响力中获得安全感和满足感"},
+      {icon:"🏆",text:"习惯用'做了什么'来定义自己是谁"},
+      {icon:"💼",text:"退休/转型后最易感到身份空虚的群体"}
+    ],
+    growth:"你一直活在'有用'里。现在，是时候学习：**存在本身，就值得被爱。** 你不需要每分钟都创造价值，你值得仅仅因为'你'而被珍惜。",
+    actions:[
+      {title:"梳理你的'成就资产'",desc:"列出过去20年你积累的专业技能、人脉资源、可迁移能力——不是为找工作，而是确认：你拥有很多，你本身就是丰富的。"},
+      {title:"尝试一次'零产出'陪伴",desc:"这个月，找一天，不做任何'有用'的事，只是陪家人喝茶、散步、闲聊。观察自己能不能接受'什么都没做'却依然感觉良好。"},
+      {title:"寻找'传承'而非'延续'",desc:"与其想办法延续职场身份，不如想想：你的经验可以以什么新形式帮助到别人？mentorship、写作、分享……让价值流动起来，而非困在职位里。"}
+    ]
+  },
+  family:{
+    typeTag:"家庭关系型",tagClass:"family",
+    name:"爱的守护者",
+    tagline:"你的意义，来自于你与所爱之人的联结",
+    traits:[
+      {icon:"🏠",text:"核心身份认同建立在'父母/子女/伴侣'的角色上"},
+      {icon:"💞",text:"从照顾他人、被家人需要中获得自我价值感"},
+      {icon:"🤝",text:"家庭和睦、亲人健康是你最大的心安"},
+      {icon:"⚠️",text:"当家人有自己的生活、不再那么需要你时，最易感到失落"}
+    ],
+    growth:"你对家人的付出是真实的、无价的。但你也需要开始学习：**你不仅仅是谁的谁，你首先是你自己。** 找到自我，不意味着背叛家庭，而是让你对家人的爱更加从容。",
+    actions:[
+      {title:"重新定义你的'照顾'",desc:"从物理陪伴转向情感陪伴——发一条走心的微信，比强行介入孩子的决定更能表达你的爱。"},
+      {title:"每周给自己一段'专属时间'",desc:"选择一件纯粹属于自己的事（兴趣、学习、社交），不带任何'对家人有用'的目的，只是因为你自己喜欢。"},
+      {title:"拓展你的'家庭'边界",desc:"帮助邻居、参与社区活动、做志愿者——让你爱的能量流向更广阔的世界，你不会因此少爱家人，反而会让你的爱更丰盛。"}
+    ]
+  },
+  social:{
+    typeTag:"社会认可型",tagClass:"social",
+    name:"联结艺术家",
+    tagline:"你的意义，来自于你与他人的关系质量",
+    traits:[
+      {icon:"🌐",text:"自我价值感高度依赖外部反馈（点赞、评价、认可）"},
+      {icon:"🤳",text:"社交媒体对你情绪的影响比一般人更大"},
+      {icon:"🎭",text:"有时为了维持'人设'而感到疲惫"},
+      {icon:"🔍",text:"当掌声散去，独处时最易感到空虚"}
+    ],
+    growth:"你对人际关系的敏感度是一种天赋，让你擅长连接人与人的情感。但你需要开始区分：**被人喜欢**和**被人尊重**，**高朋满座**和**知己二三**。真正让你安心的，不是一百个人的点赞，而是一两个真正懂你的人。",
+    actions:[
+      {title:"做一次'数字排毒'实验",desc:"这周，选择一天不使用任何社交媒体。记录下那天的情绪变化——你有多频繁地想去看手机？当没有人点赞时，你感觉如何？觉知，是改变的第一步。"},
+      {title:"从'广度'转向'深度'",desc:"主动联系一个你真正欣赏、却久未联系的人，不是群发消息，而是认真地进行一次对话。关系的质量，比数量重要得多。"},
+      {title:"学会享受'安静的认可'",desc:"每天花5分钟，在睡前回顾今天，不问'谁认可了我'，而是问'我今天对谁有了一点正面的影响'。你的价值，不需要被全世界看见。"}
+    ]
+  },
+  free:{
+    typeTag:"自由探索型",tagClass:"free",
+    name:"生命探险家",
+    tagline:"你的意义，来自于你是否忠于内心",
+    traits:[
+      {icon:"🧭",text:"抗拒被定义，拒绝标签和固定身份"},
+      {icon:"✨",text:"从新鲜体验、自我突破中获得生命力"},
+      {icon:"🌱",text:"世俗意义的'成功'对你吸引力有限"},
+      {icon:"🌀",text:"有时因缺乏固定锚点而感到'飘着'"}
+    ],
+    growth:"你的自由灵魂是最珍贵的礼物。但自由也意味着责任——对自己人生方向的责任。找到内心的指南针，不是为了限制你，而是让你的自由更有方向感，让你的探索更有根。",
+    actions:[
+      {title:"绘制你的'可能地图'",desc:"拿一张纸，写下10件你这辈子最想体验的事（不考虑现实可行性）。然后圈出3件你现在就可以开始行动的。探索不需要等到'准备好了'，从今天开始。"},
+      {title:"找到一个'灵魂旅伴'",desc:"自由探险家有时会孤独。找一个志同道合的朋友，定期分享彼此的探索和困惑，让旅程有同行者。"},
+      {title:"给探索留一个'根'",desc:"选择一个你认同的价值观（环保、教育、公益……），让它成为你探索的稳定锚点。有根的探索，是最有力量的探索。"}
+    ]
+  },
+  spirit:{
+    typeTag:"精神意义型",tagClass:"spirit",
+    name:"内在觉醒者",
+    tagline:"你的意义，来自于你与内在的对话",
+    traits:[
+      {icon:"🕯️",text:"早早开始追问'我是谁''为什么而活'等根本问题"},
+      {icon:"📖",text:"对哲学、宗教、心理学等领域有天然的兴趣"},
+      {icon:"🧘",text:"重视内心平静胜过外在成就"},
+      {icon:"🌊",text:"有时因思考过于深刻而与主流社交圈有些距离"}
+    ],
+    growth:"你走在一条很有智慧的路上。但请注意：**过度向内可能让人脱离地面，活在头脑的云端里。** 真正的觉醒，不只发生在冥想垫上，也发生在厨房的烟火气里、在与孩子的拌嘴里、在生活的粗糙与真实里。",
+    actions:[
+      {title:"把'悟'化为'行'",desc:"你读过的道理、参加过的课程，不能只留在笔记本里。选择一件你已经知道但尚未做到的事，这周就行动。知行合一，才是真正的智慧。"},
+      {title:"参与一些'接地气'的活动",desc:"参加一次社区活动、做一天志愿者、帮朋友解决一个实际问题……让精神的追求落地，你的力量会加倍。"},
+      {title:"与他人分享你的'领悟'",desc:"把你对生命的思考写下来、说出来，即使你觉得别人可能听不懂。分享，是让精神成长继续深化最好的方式。"}
+    ]
+  }
+};
+
+// ─── State ───────────────────────────────────────────────────────────────────
+const TOTAL = 12;
+let currentQ = 0;
+let answers = new Array(TOTAL).fill(null); // null | 0|1|2|3 (option index)
+let clickCooldown = false;
+
+// ─── Storage ─────────────────────────────────────────────────────────────────
+const STORAGE_KEY = 'role_anchor_quiz';
+function saveProgress(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify({currentQ,answers}))}catch(e){}}
+function loadProgress(){
+  try{const d=JSON.parse(localStorage.getItem(STORAGE_KEY));if(d&&d.answers){currentQ=d.currentQ;answers=d.answers;return true}}catch(e){}
+  return false
+}
+function clearProgress(){try{localStorage.removeItem(STORAGE_KEY)}catch(e){}}
+
+// ─── Screen transitions ───────────────────────────────────────────────────────
+function showScreenFn(name){
+  document.querySelectorAll('.screen').forEach(s=>{
+    s.classList.remove('active');
+    s.style.display='none';
+    s.style.opacity='0';
+  });
+  const el=document.getElementById('screen-'+name);
+  if(el){
+    el.style.display='flex';
+    void el.offsetWidth;
+    requestAnimationFrame(()=>{
+      el.style.opacity='1';
+      el.classList.add('active');
+    });
+  }
+}
+
+// ─── Render Quiz ─────────────────────────────────────────────────────────────
+function renderQuestion(){
+  const q=QUESTIONS[currentQ];
+  $('scenario-text').textContent=q.scenario;
+  $('question-num-label').textContent=`第 ${currentQ+1} 题`;
+
+  // Progress
+  const pct=(currentQ/TOTAL)*100;
+  const fill=document.getElementById('progress-fill');
+  fill.style.width=`${pct}%`;
+  fill.parentElement.setAttribute('aria-valuenow',currentQ+1);
+  $('progress-label').textContent=`第 ${currentQ+1} 题 / 共 ${TOTAL} 题`;
+
+  // Options
+  const list=document.getElementById('options-list');
+  list.innerHTML='';
+  const letters=['A','B','C','D'];
+  q.options.forEach((opt,i)=>{
+    const card=document.createElement('div');
+    card.className='option-card'+(answers[currentQ]===i?' selected':'');
+    card.setAttribute('role','radio');
+    card.setAttribute('aria-checked',answers[currentQ]===i?'true':'false');
+    card.setAttribute('tabindex','0');
+    card.setAttribute('aria-label',`选项${letters[i]}：${opt.text}`);
+    card.innerHTML=`<span class="option-letter">${letters[i]}</span><span class="option-text">${opt.text}</span>`;
+    card.addEventListener('click',()=>selectOption(i));
+    card.addEventListener('keydown',(e)=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectOption(i)}});
+    list.appendChild(card);
+  });
+
+  // Jump buttons
+  const jump=document.getElementById('question-jump');
+  jump.innerHTML='';
+  for(let i=0;i<TOTAL;i++){
+    const btn=document.createElement('button');
+    btn.className='q-jump-btn';
+    if(answers[i]!==null) btn.classList.add('answered');
+    if(i===currentQ) btn.classList.add('current');
+    btn.textContent=i+1;
+    btn.setAttribute('aria-label',`跳转到第${i+1}题${answers[i]!==null?'（已答）':'（未答）'}`);
+    btn.addEventListener('click',()=>jumpTo(i));
+    jump.appendChild(btn);
+  }
+
+  // Nav buttons
+  const prev=document.getElementById('btn-prev');
+  prev.style.visibility=currentQ===0?'hidden':'visible';
+  const next=document.getElementById('btn-next');
+  next.disabled=answers[currentQ]===null;
+  next.textContent=currentQ===TOTAL-1?'查看结果':'下一题 ';
+  next.innerHTML=currentQ===TOTAL-1?'查看结果 <span aria-hidden="true">›</span>':'下一题 <span aria-hidden="true">›</span>';
+}
+
+function selectOption(idx){
+  if(clickCooldown) return;
+  clickCooldown=true;
+  setTimeout(()=>clickCooldown=false,200);
+  answers[currentQ]=idx;
+  saveProgress();
+  // Update UI immediately
+  document.querySelectorAll('.option-card').forEach((c,i)=>{
+    const sel=i===idx;
+    c.classList.toggle('selected',sel);
+    c.setAttribute('aria-checked',sel?'true':'false');
+  });
+  document.getElementById('btn-next').disabled=false;
+  // Update jump btn
+  const btns=document.querySelectorAll('.q-jump-btn');
+  if(btns[currentQ]) btns[currentQ].classList.add('answered');
+}
+
+function jumpTo(idx){
+  currentQ=idx;
+  renderQuestion();
+  // Focus scenario for screen readers
+  $('scenario-text').focus();
+}
+
+// ─── Scoring ──────────────────────────────────────────────────────────────────
+function scoreAnswers(){
+  const dims={career:0,family:0,social:0,free:0,spirit:0};
+  answers.forEach((aIdx,qIdx)=>{
+    if(aIdx===null) return;
+    const dim=QUESTIONS[qIdx].options[aIdx].dim;
+    dims[dim]=(dims[dim]||0)+1;
+  });
+  // Find dominant
+  let maxDim='';
+  let maxVal=-1;
+  const tieKeys=[];
+  for(const [k,v] of Object.entries(dims)){
+    if(v>maxVal){maxVal=v;maxDim=k;tieKeys.length=0;tieKeys.push(k)}
+    else if(v===maxVal){tieKeys.push(k)}
+  }
+  // Tie-break: spirit > free > others
+  if(tieKeys.length>1){
+    if(tieKeys.includes('spirit')) maxDim='spirit';
+    else if(tieKeys.includes('free')) maxDim='free';
+    else maxDim=tieKeys[0];
+  }
+  return {result:maxDim,scores:dims};
+}
+
+// ─── Render Result ────────────────────────────────────────────────────────────
+function renderResult(domResult){
+  const r=RESULTS[domResult];
+  const card=document.getElementById('result-card');
+
+  // Build share card canvas data
+  const canvas=document.createElement('canvas');
+  canvas.width=810;canvas.height=1080;
+  drawShareCard(canvas,domResult,r);
+
+  card.innerHTML=`
+    <div class="result-header">
+      <div class="result-type-tag ${r.tagClass}">${r.typeTag}</div>
+      <h2 class="result-name">${r.name}</h2>
+      <p class="result-tagline">"${r.tagline}"</p>
+      <div class="result-divider"></div>
+    </div>
+
+    <div class="result-section">
+      <h3 class="result-section-title">🔍 核心特征</h3>
+      <ul class="traits-list">
+        ${r.traits.map(t=>`<li><span class="trait-icon" aria-hidden="true">${t.icon}</span><span>${t.text}</span></li>`).join('')}
+      </ul>
+    </div>
+
+    <div class="growth-block">
+      <p>${r.growth}</p>
+    </div>
+
+    <div class="result-section">
+      <h3 class="result-section-title">🚀 三步行动建议</h3>
+      <ul class="actions-list">
+        ${r.actions.map((a,i)=>`
+          <li class="action-item">
+            <span class="action-num" aria-hidden="true">${i+1}</span>
+            <div class="action-content">
+              <h4>${a.title}</h4>
+              <p>${a.desc}</p>
+            </div>
+          </li>`).join('')}
+      </ul>
+    </div>
+
+    <div class="result-ctas">
+      <button class="btn-secondary" id="btn-retake">重新测试</button>
+      <button class="btn-primary" id="btn-share">分享结果</button>
+    </div>
+
+    <div class="result-footer">
+      <button class="btn-text" id="btn-privacy">隐私政策</button>
+      <span aria-hidden="true" style="color:var(--warm-gray);margin:0 8px">|</span>
+      <button class="btn-text" id="btn-support">需要专业支持</button>
+    </div>
+
+    <div style="margin-top:24px">
+      <div class="share-card-wrap" id="share-card-wrap" style="display:none">
+        <canvas id="share-canvas" class="share-canvas"></canvas>
+      </div>
+      <div class="share-actions" id="share-actions" style="display:none">
+        <button class="share-btn wechat" id="btn-wechat-share" aria-label="分享到微信">
+          <span aria-hidden="true">💬</span> 微信分享
+        </button>
+        <button class="share-btn" id="btn-copy-link" aria-label="复制分享链接">
+          <span aria-hidden="true">🔗</span> 复制链接
+        </button>
+        <button class="share-btn" id="btn-save-img" aria-label="保存图片">
+          <span aria-hidden="true">📥</span> 保存图片
+        </button>
+      </div>
+    </div>
+  `;
+
+  // Draw share canvas
+  const shareCanvas=document.getElementById('share-canvas');
+  if(shareCanvas){
+    shareCanvas.width=810;shareCanvas.height=1080;
+    const ctx=shareCanvas.getContext('2d');
+    // Copy from offscreen
+    ctx.drawImage(canvas,0,0);
+  }
+
+  // Bind events
+  document.getElementById('btn-retake').addEventListener('click',()=>{
+    clearProgress();
+    currentQ=0;answers=new Array(TOTAL).fill(null);
+    showScreenFn('landing');
+  });
+
+  document.getElementById('btn-share').addEventListener('click',()=>{
+    const wrap=document.getElementById('share-card-wrap');
+    const acts=document.getElementById('share-actions');
+    wrap.style.display='block';
+    acts.style.display='flex';
+    wrap.scrollIntoView({behavior:'smooth',block:'nearest'});
+    // Re-draw
+    const sc=document.getElementById('share-canvas');
+    sc.width=810;sc.height=1080;
+    sc.getContext('2d').drawImage(canvas,0,0);
+  });
+
+  document.getElementById('btn-wechat-share').addEventListener('click',()=>showToast('微信分享请长按保存图片后发送'));
+  document.getElementById('btn-copy-link').addEventListener('click',()=>{
+    navigator.clipboard.writeText(window.location.href.split('?')[0]).then(()=>showToast('链接已复制到剪贴板')).catch(()=>showToast('复制失败，请手动复制'));
+  });
+  document.getElementById('btn-save-img').addEventListener('click',()=>{
+    const link=document.createElement('a');
+    link.download=`身份锚点测验_${r.name}.png`;
+    link.href=canvas.toDataURL('image/png');
+    link.click();
+    showToast('图片已保存');
+  });
+  document.getElementById('btn-privacy').addEventListener('click',()=>openModal('modal-privacy'));
+  document.getElementById('btn-support').addEventListener('click',()=>openModal('modal-support'));
+}
+
+function drawShareCard(canvas,domResult,r){
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+
+  // Background
+  ctx.fillStyle='#FAF7F2';
+  ctx.fillRect(0,0,W,H);
+
+  // Top gradient accent
+  const grad=ctx.createRadialGradient(W*0.3,0,0,W*0.3,0,H*0.6);
+  grad.addColorStop(0,'rgba(196,138,94,0.15)');
+  grad.addColorStop(1,'rgba(196,138,94,0)');
+  ctx.fillStyle=grad;
+  ctx.fillRect(0,0,W,H);
+
+  const centerX=W/2;
+
+  // Brand
+  ctx.fillStyle='#8B7E74';
+  ctx.font='500 22px Noto Sans SC,sans-serif';
+  ctx.textAlign='center';
+  ctx.fillText('身份锚点测验',centerX,80);
+
+  // Main title
+  ctx.fillStyle='#7B5B3A';
+  ctx.font='700 52px Noto Serif SC,serif';
+  ctx.textAlign='center';
+  ctx.fillText('你的人生以什么为锚？',centerX,160);
+
+  // Type color
+  const typeColors={career:'#B57B5E',family:'#9B8AA5',social:'#8B9DB5',free:'#D4956A',spirit:'#8A9B7A'};
+  const tc=typeColors[domResult]||'#C48A5E';
+
+  // Type name
+  ctx.fillStyle=tc;
+  ctx.font='700 80px Noto Serif SC,serif';
+  ctx.textAlign='center';
+  ctx.fillText(r.name,centerX,300);
+
+  // Tagline
+  ctx.fillStyle='#8B7E74';
+  ctx.font='400 30px Noto Serif SC,serif';
+  ctx.fillText(`"${r.tagline}"`,centerX,370);
+
+  // Divider
+  ctx.fillStyle=tc;
+  ctx.fillRect(centerX-60,400,120,4);
+
+  // Traits (first 2)
+  ctx.textAlign='center';
+  const traitY=[470,540];
+  r.traits.slice(0,2).forEach((t,i)=>{
+    ctx.font='400 26px Noto Sans SC,sans-serif';
+    ctx.fillStyle='#3D3530';
+    ctx.fillText(`${t.icon} ${t.text}`,centerX,traitY[i]);
+  });
+
+  // Bottom brand
+  ctx.fillStyle='#C4B8AC';
+  ctx.font='400 20px Noto Sans SC,sans-serif';
+  ctx.fillText('© 2026 身份锚点测验',centerX,H-60);
+}
+
+// ─── Navigation ──────────────────────────────────────────────────────────────
+document.getElementById('btn-start').addEventListener('click',()=>{
+  showScreenFn('quiz');
+  renderQuestion();
+});
+
+document.getElementById('btn-prev').addEventListener('click',()=>{
+  if(currentQ>0){currentQ--;renderQuestion()}
+});
+
+document.getElementById('btn-next').addEventListener('click',()=>{
+  if(answers[currentQ]===null) return;
+  if(currentQ<TOTAL-1){currentQ++;renderQuestion()}
+  else{
+    showScreenFn('calc');
+    clearProgress();
+    setTimeout(()=>{
+      const {result}=scoreAnswers();
+      showScreenFn('result');
+      renderResult(result);
+    },2200);
+  }
+});
+
+// ─── Modals ───────────────────────────────────────────────────────────────────
+function openModal(id){
+  const m=document.getElementById(id);
+  if(m){m.classList.add('show');m.querySelector('.modal-close,.btn-primary').focus()}
+}
+function closeModal(id){
+  const m=document.getElementById(id);
+  if(m)m.classList.remove('show');
+}
+
+$('link-warn')&&$('link-warn').addEventListener('click',()=>openModal('modal-warn'));
+$('link-warn')&&$('link-warn').addEventListener('keydown',(e)=>{if(e.key==='Enter')openModal('modal-warn')});
+$('modal-warn-close').addEventListener('click',()=>closeModal('modal-warn'));
+$('modal-privacy-close').addEventListener('click',()=>closeModal('modal-privacy'));
+$('modal-support-close').addEventListener('click',()=>closeModal('modal-support'));
+
+document.querySelectorAll('.modal-overlay').forEach(m=>{
+  m.addEventListener('click',(e)=>{if(e.target===m)m.classList.remove('show')});
+  m.addEventListener('keydown',(e)=>{if(e.key==='Escape')m.classList.remove('show')});
+});
+
+// ─── Toast ───────────────────────────────────────────────────────────────────
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+(function init(){
+  document.querySelectorAll('.screen').forEach(s=>{
+    s.style.display='none';
+    s.style.opacity='0';
+    s.style.transition='opacity 0.3s ease-out';
+  });
+  if(loadProgress()){
+    showScreenFn('quiz');
+    renderQuestion();
+  } else {
+    const landing=document.getElementById('screen-landing');
+    if(landing){
+      landing.style.display='flex';
+      requestAnimationFrame(()=>{
+        landing.style.opacity='1';
+        landing.classList.add('active');
+      });
+    }
+  }
+})();
+</script>
+</body>
+</html>
