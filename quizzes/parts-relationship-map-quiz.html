@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>关系角色图谱测验 / Parts Relationship Map Quiz</title>
+  <meta name="description" content="Discover the roles you naturally play in relationships — Caretaker, Avoider, Controller, Pleaser, or Challenger. 12 questions. Based on relational schema theory.">
+  <meta name="theme-color" content="#7A9E7E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+/* ── Reset & Base ──────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #FAF7F4;
+  --surface: #FFFFFF;
+  --text-primary: #2C2C2C;
+  --text-secondary: #6B6560;
+  --text-muted: #9E9890;
+  --border: #E8E4E0;
+  --border-strong: #D4CFC8;
+  --disabled: #F0ECE8;
+
+  --primary: #7A9E7E;
+  --primary-light: #9DB89F;
+  --primary-dark: #5E8060;
+  --primary-glow: rgba(122, 158, 126, 0.25);
+  --accent: #E8A598;
+  --accent-light: #F2C4BB;
+  --warm: #D4A84B;
+  --secondary: #5B8FA8;
+  --secondary-light: #8BB0C2;
+
+  --font-display: 'Fraunces', 'Noto Serif SC', Georgia, serif;
+  --font-body: 'Inter', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 9999px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  --transition-fast: 180ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  --transition-normal: 320ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition-slow: 500ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html { font-size: 16px; }
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.65;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Screens ───────────────────────────────────────────────────────────── */
+.quiz-screen {
+  display: none;
+  min-height: 100dvh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6) var(--space-4);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+.quiz-screen.active {
+  display: flex;
+  opacity: 1;
+}
+
+.screen-inner {
+  width: 100%;
+  max-width: 540px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  text-align: center;
+}
+
+/* ── Language Toggle ─────────────────────────────────────────────────── */
+.lang-toggle {
+  position: fixed;
+  top: var(--space-3);
+  right: var(--space-3);
+  z-index: 100;
+  display: flex;
+  gap: 3px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 3px;
+  box-shadow: 0 2px 12px rgba(44, 44, 44, 0.06);
+}
+
+.lang-btn {
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 5px 14px;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  letter-spacing: 0.04em;
+}
+
+.lang-btn.active {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* ── Landing Screen ──────────────────────────────────────────────────── */
+.screen-landing {
+  justify-content: center;
+}
+
+.landing-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--primary);
+}
+
+.landing-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 9vw, 3rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.landing-subtitle {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  max-width: 400px;
+  line-height: 1.65;
+}
+
+.landing-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 6px 16px;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.landing-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  text-align: left;
+  width: 100%;
+  max-width: 480px;
+}
+
+.landing-card h3 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
+}
+
+.landing-card ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.landing-card li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.landing-card li::before {
+  content: '✦';
+  color: var(--primary);
+  flex-shrink: 0;
+  margin-top: 1px;
+  font-size: 0.65rem;
+}
+
+.landing-privacy {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* ── Welcome Screen ─────────────────────────────────────────────────── */
+.screen-welcome {
+  justify-content: center;
+}
+
+.welcome-text {
+  font-size: clamp(0.92rem, 4vw, 1.05rem);
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 460px;
+  white-space: pre-line;
+  text-align: left;
+}
+
+/* ── Quiz Screen ─────────────────────────────────────────────────────── */
+.screen-quiz {
+  justify-content: flex-start;
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-8);
+  gap: var(--space-5);
+}
+
+.quiz-header {
+  width: 100%;
+  max-width: 540px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.progress-track {
+  width: 100%;
+  height: 4px;
+  background: var(--border);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+  border-radius: var(--radius-pill);
+  transition: width 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.q-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.question-container {
+  width: 100%;
+  max-width: 540px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.q-text {
+  font-size: clamp(0.95rem, 4vw, 1.1rem);
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--text-primary);
+  text-align: left;
+}
+
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 540px;
+}
+
+.option-btn {
+  width: 100%;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  line-height: 1.55;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.option-btn:hover {
+  background: rgba(122, 158, 126, 0.06);
+  border-color: var(--primary);
+  box-shadow: 0 2px 12px rgba(122, 158, 126, 0.12);
+}
+
+.option-btn:active {
+  transform: scale(0.985);
+}
+
+.option-btn.selected {
+  background: rgba(122, 158, 126, 0.1);
+  border-color: var(--primary);
+  box-shadow: 0 2px 16px rgba(122, 158, 126, 0.18);
+}
+
+.option-btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.opt-letter {
+  font-weight: 700;
+  color: var(--primary);
+  flex-shrink: 0;
+  min-width: 1.5em;
+  font-size: 0.82rem;
+  margin-top: 2px;
+}
+
+.opt-text {
+  color: var(--text-primary);
+}
+
+.quiz-nav {
+  width: 100%;
+  max-width: 540px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.back-btn {
+  display: none;
+  align-items: center;
+  gap: var(--space-1);
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast);
+}
+
+.back-btn:hover { color: var(--text-primary); }
+
+/* ── Calculating Screen ─────────────────────────────────────────────── */
+.screen-calculating {
+  justify-content: center;
+  gap: var(--space-5);
+}
+
+.calc-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 5vw, 1.7rem);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.calc-dots {
+  display: flex;
+  gap: 10px;
+}
+
+.calc-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--primary);
+  animation: dotPulse 1.4s ease-in-out infinite;
+}
+
+.calc-dots span:nth-child(2) { animation-delay: 0.2s; }
+.calc-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotPulse {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.35; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+/* ── Results Screen ─────────────────────────────────────────────────── */
+.screen-result {
+  justify-content: flex-start;
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-8);
+  gap: var(--space-5);
+  align-items: center;
+}
+
+.result-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 540px;
+}
+
+.result-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--primary);
+}
+
+.result-title-main {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 9vw, 3rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.result-title-cn {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--primary);
+}
+
+.result-role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: rgba(122, 158, 126, 0.1);
+  border: 1.5px solid rgba(122, 158, 126, 0.3);
+  border-radius: var(--radius-pill);
+  padding: 6px 18px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.result-divider {
+  width: 48px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  border-radius: 2px;
+}
+
+.result-description {
+  width: 100%;
+  max-width: 540px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.result-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  text-align: left;
+}
+
+.result-card h3 {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--primary);
+  margin-bottom: var(--space-3);
+}
+
+.result-card p {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+.result-card ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.result-card li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.result-card li::before {
+  content: '→';
+  color: var(--primary);
+  flex-shrink: 0;
+  margin-top: 1px;
+  font-size: 0.75rem;
+}
+
+.result-growth-card {
+  background: rgba(232, 165, 152, 0.08);
+  border: 1px solid rgba(232, 165, 152, 0.3);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  text-align: left;
+}
+
+.result-growth-card h3 {
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--space-3);
+}
+
+.result-growth-card p {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+.result-blend-card {
+  background: rgba(91, 143, 168, 0.06);
+  border: 1px solid rgba(91, 143, 168, 0.25);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  text-align: left;
+}
+
+.result-blend-card h3 {
+  color: var(--secondary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--space-3);
+}
+
+.result-blend-card p {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  margin-bottom: var(--space-3);
+}
+
+.result-blend-card p:last-child {
+  margin-bottom: 0;
+}
+
+.result-blend-card blockquote {
+  font-style: italic;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.65;
+  border-left: 2px solid var(--secondary);
+  padding-left: var(--space-3);
+}
+
+.result-share-section {
+  width: 100%;
+  max-width: 540px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.share-quote {
+  border-left: 3px solid var(--primary);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  font-style: italic;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.65;
+  text-align: left;
+  width: 100%;
+}
+
+.share-row {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.share-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  box-shadow: 0 2px 12px rgba(122, 158, 126, 0.12);
+}
+
+.share-btn.primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.share-btn.primary:hover {
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
+  box-shadow: 0 4px 16px rgba(122, 158, 126, 0.25);
+}
+
+.result-footer {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  max-width: 380px;
+  line-height: 1.6;
+}
+
+.retake-btn {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  padding: 8px 22px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.retake-btn:hover {
+  border-color: var(--primary);
+  color: var(--text-primary);
+}
+
+.result-sources {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  max-width: 400px;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.result-sources strong {
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+/* ── Primary CTA Button ──────────────────────────────────────────────── */
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  font-weight: 600;
+  padding: 14px 36px;
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+  letter-spacing: 0.02em;
+  min-width: 180px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(122, 158, 126, 0.28);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* ── Animations ──────────────────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.screen-landing.active .screen-inner { animation: fadeInUp 480ms cubic-bezier(0.4, 0, 0.6, 1) both; }
+.screen-landing.active .landing-eyebrow { animation: fadeInUp 480ms cubic-bezier(0.4, 0, 0.6, 1) 40ms both; }
+.screen-landing.active .landing-title { animation: fadeInUp 480ms cubic-bezier(0.4, 0, 0.6, 1) 80ms both; }
+.screen-landing.active .landing-subtitle { animation: fadeInUp 480ms cubic-bezier(0.4, 0, 0.6, 1) 140ms both; }
+.screen-landing.active .landing-badge { animation: fadeInUp 480ms cubic-bezier(0.4, 0, 0.6, 1) 200ms both; }
+.screen-landing.active .landing-card { animation: fadeInUp 480ms cubic-bezier(0.4, 0, 0.6, 1) 260ms both; }
+.screen-landing.active .btn-primary { animation: fadeInUp 480ms cubic-bezier(0.4, 0, 0.6, 1) 320ms both; }
+.screen-landing.active .landing-privacy { animation: fadeInUp 480ms cubic-bezier(0.4, 0, 0.6, 1) 380ms both; }
+
+.screen-welcome.active .screen-inner { animation: fadeInUp 480ms cubic-bezier(0.4, 0, 0.6, 1) both; }
+
+.screen-quiz.active .quiz-header { animation: fadeInUp 400ms cubic-bezier(0.4, 0, 0.6, 1) both; }
+.screen-quiz.active .question-container { animation: fadeInUp 400ms cubic-bezier(0.4, 0, 0.6, 1) 80ms both; }
+
+.screen-calculating.active .screen-inner { animation: fadeInUp 400ms ease both; }
+.screen-calculating.active .calc-dots { animation: fadeIn 300ms ease 200ms both; }
+.screen-calculating.active .calc-title { animation: fadeInUp 400ms ease 100ms both; }
+
+.screen-result .result-header { animation: fadeInUp 600ms cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.screen-result .result-description { animation: fadeInUp 500ms ease 150ms both; }
+.screen-result .result-share-section { animation: fadeInUp 500ms ease 250ms both; }
+.screen-result .result-footer { animation: fadeInUp 500ms ease 350ms both; }
+
+/* ── Share Card Modal ───────────────────────────────────────────────── */
+.share-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(250, 247, 244, 0.95);
+  z-index: 300;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-5);
+  backdrop-filter: blur(6px);
+  gap: var(--space-5);
+}
+
+.share-modal.active {
+  display: flex;
+}
+
+.share-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 360px;
+}
+
+.share-modal-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.share-modal-close {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 1.5rem;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast);
+  line-height: 1;
+}
+
+.share-modal-close:hover { color: var(--text-primary); }
+
+.share-card-preview {
+  width: 240px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(44, 44, 44, 0.15);
+}
+
+.share-card-canvas {
+  display: block;
+  width: 100%;
+}
+
+.share-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 280px;
+}
+
+.share-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 12px 20px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.share-action-btn:hover {
+  background: var(--primary-dark);
+  box-shadow: 0 4px 16px rgba(122, 158, 126, 0.25);
+}
+
+.share-action-btn.secondary {
+  background: var(--surface);
+  color: var(--text-primary);
+  border: 1.5px solid var(--border);
+}
+
+.share-action-btn.secondary:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  box-shadow: none;
+}
+
+/* ── Accessibility ──────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────── */
+@media (min-width: 640px) {
+  body { font-size: 17px; }
+  .quiz-screen { padding: var(--space-7) var(--space-6); }
+}
+
+@media (min-width: 1025px) {
+  .quiz-screen { padding: var(--space-8) var(--space-6); }
+  .screen-inner { max-width: 640px; }
+  .result-description { max-width: 640px; }
+}
+  </style>
+</head>
+<body>
+
+<!-- Language Toggle -->
+<div class="lang-toggle" id="lang-toggle" style="display:none;">
+  <button class="lang-btn active" id="lang-en" aria-label="English" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" id="lang-cn" aria-label="中文" onclick="setLang('cn')">中文</button>
+</div>
+
+<!-- ── LANDING SCREEN ─────────────────────────────────────────────── -->
+<div id="screen-landing" class="quiz-screen screen-landing active" role="region" aria-label="Welcome">
+  <div class="screen-inner">
+    <span class="landing-eyebrow" id="landing-eyebrow">Self-Reflection Quiz</span>
+    <h1 class="landing-title" id="landing-title">Parts Relationship Map</h1>
+    <p class="landing-subtitle" id="landing-subtitle">Discover the invisible role patterns that shape how you show up in every relationship.</p>
+    <div class="landing-badge" id="landing-badge">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span id="landing-time-text">12 questions · ~5 minutes</span>
+    </div>
+    <div class="landing-card">
+      <h3 id="landing-outcomes-title">What you'll discover</h3>
+      <ul>
+        <li id="landing-outcome-1">Your primary and secondary relationship roles</li>
+        <li id="landing-outcome-2">How your roles shape your connections with others</li>
+        <li id="landing-outcome-3">A personalized growth edge for deeper relationships</li>
+      </ul>
+    </div>
+    <button id="start-btn" class="btn-primary" onclick="startQuiz()">Begin →</button>
+    <p class="landing-privacy" id="landing-privacy">Your responses are private. Self-reflection, not diagnosis.</p>
+  </div>
+</div>
+
+<!-- ── WELCOME SCREEN ──────────────────────────────────────────────── -->
+<div id="screen-welcome" class="quiz-screen screen-welcome" role="region" aria-label="Introduction">
+  <div class="screen-inner">
+    <p class="welcome-text" id="welcome-text"></p>
+    <button id="welcome-btn" class="btn-primary" onclick="showQuiz()">Start Exploring →</button>
+  </div>
+</div>
+
+<!-- ── QUIZ SCREEN ─────────────────────────────────────────────────── -->
+<div id="screen-quiz" class="quiz-screen screen-quiz" role="region" aria-label="Quiz">
+  <div class="quiz-header">
+    <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-bar">
+      <div id="progress-fill" class="progress-fill"></div>
+    </div>
+    <span id="q-number" class="q-label" aria-live="polite"></span>
+  </div>
+  <div class="question-container">
+    <p id="q-text" class="q-text"></p>
+    <div id="options-container" class="options-list" role="radiogroup" aria-label="Answer options"></div>
+  </div>
+  <div class="quiz-nav">
+    <button id="back-btn" class="back-btn" onclick="goBack()" aria-label="Previous question">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      <span id="back-label">Back</span>
+    </button>
+    <div></div>
+  </div>
+</div>
+
+<!-- ── CALCULATING SCREEN ─────────────────────────────────────────── -->
+<div id="screen-calculating" class="quiz-screen screen-calculating" role="region" aria-label="Analyzing">
+  <div class="screen-inner">
+    <div class="calc-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+    <p class="calc-title" id="calc-title">Looking at your patterns...</p>
+  </div>
+</div>
+
+<!-- ── RESULT SCREEN ──────────────────────────────────────────────── -->
+<div id="screen-result" class="quiz-screen screen-result" role="region" aria-label="Your Results">
+  <div class="screen-inner" style="gap:var(--space-6);">
+    <div class="result-header">
+      <span class="result-eyebrow" id="result-eyebrow">Your Primary Role</span>
+      <h1 class="result-title-main" id="result-title-main"></h1>
+      <p class="result-title-cn" id="result-title-cn"></p>
+      <div class="result-role-badge" id="result-role-badge" aria-label="Role type">
+        <span id="result-role-icon"></span>
+        <span id="result-role-name"></span>
+      </div>
+      <div class="result-divider"></div>
+    </div>
+
+    <div id="result-description" class="result-description"></div>
+
+    <div class="result-share-section">
+      <blockquote id="share-quote" class="share-quote"></blockquote>
+      <div class="share-row">
+        <button class="share-btn primary" onclick="openShareModal()" id="share-card-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          <span id="share-card-btn-text">Share My Result</span>
+        </button>
+      </div>
+      <button class="retake-btn" onclick="retakeQuiz()" id="retake-btn">Take Again</button>
+    </div>
+
+    <div class="result-footer">
+      <p id="result-footer-note">If this brings up things that feel heavy, you're not alone. Speaking with a trusted friend or mental health professional can help.</p>
+      <div class="result-sources" id="result-sources">
+        <strong>Theoretical Foundations:</strong>
+        Transactional Analysis (Berne) · Driver Theory (Kahler) · Attachment Theory (Bowlby) · Relational Schema Theory (Young)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SHARE MODAL ───────────────────────────────────────────────── -->
+<div id="share-modal" class="share-modal" role="dialog" aria-label="Share your result" aria-modal="true">
+  <div class="share-modal-header">
+    <span class="share-modal-title" id="share-modal-title">Share Your Result</span>
+    <button class="share-modal-close" onclick="closeShareModal()" aria-label="Close">&times;</button>
+  </div>
+  <div class="share-card-preview">
+    <canvas id="share-card-canvas" width="540" height="960" class="share-card-canvas" role="img" aria-label="Share card preview"></canvas>
+  </div>
+  <div class="share-actions">
+    <button class="share-action-btn" onclick="downloadShareCard()" id="download-card-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <span id="download-card-text">Save Image</span>
+    </button>
+    <button class="share-action-btn secondary" onclick="closeShareModal()" id="share-modal-close-btn">Close</button>
+  </div>
+</div>
+
+<script>
+// ─── Quiz Data ───────────────────────────────────────────────────────────
+const QUIZ_DATA = {
+  title: "关系角色图谱测验 / Parts Relationship Map Quiz",
+  questions: [
+    { id:1, text:"朋友向你倾诉最近的烦恼，说觉得自己什么都做不好。你会怎么回应？", options:[
+      { id:"A", text:"耐心倾听，然后分享自己类似的经历，告诉他他也曾这样安慰过你", scores:{caretaker:1,avoider:0,controller:0,pleaser:2,challenger:0} },
+      { id:"B", text:"安慰他说「没关系的，都会好起来的」，然后岔开话题聊点轻松的", scores:{caretaker:0,avoider:1,controller:0,pleaser:3,challenger:0} },
+      { id:"C", text:"直接帮他分析问题，提出具体的解决方案和下一步行动计划", scores:{caretaker:1,avoider:0,controller:3,pleaser:0,challenger:1} },
+      { id:"D", text:"对他说「你就是想太多了」，然后用更激烈的言辞「骂醒」他", scores:{caretaker:0,avoider:0,controller:0,pleaser:0,challenger:3} }
+    ]},
+    { id:2, text:"伴侣今天下班回来情绪很低落，什么都不想说。你通常会怎么做？", options:[
+      { id:"A", text:"默默给他倒杯水，安静地陪在他身边，不打扰但让他知道你在", scores:{caretaker:3,avoider:0,controller:0,pleaser:1,challenger:0} },
+      { id:"B", text:"觉得气氛太压抑，找个借口去忙自己的事，给他空间消化", scores:{caretaker:0,avoider:3,controller:0,pleaser:0,challenger:0} },
+      { id:"C", text:"追问原因，告诉他「有事就说出来，别闷着」，坚持要他开口", scores:{caretaker:0,avoider:0,controller:3,pleaser:0,challenger:1} },
+      { id:"D", text:"开玩笑说「是不是被老板骂了？来来来，跟我说说」，试图让他放松", scores:{caretaker:0,avoider:0,controller:0,pleaser:3,challenger:0} }
+    ]},
+    { id:3, text:"团队项目中，组员们的进度明显落后，你会怎么做？", options:[
+      { id:"A", text:"主动承担更多工作，确保项目按时完成，不让任何人为难", scores:{caretaker:3,avoider:0,controller:1,pleaser:1,challenger:0} },
+      { id:"B", text:"做好自己分内的事，别人没进度是他们的问题，你不多管", scores:{caretaker:0,avoider:3,controller:0,pleaser:0,challenger:0} },
+      { id:"C", text:"召集会议，明确每个人的任务和截止时间，制定严格的工作流程", scores:{caretaker:0,avoider:0,controller:3,pleaser:0,challenger:1} },
+      { id:"D", text:"直接问负责人：「你们是能力有问题还是态度有问题？」", scores:{caretaker:0,avoider:0,controller:0,pleaser:0,challenger:3} }
+    ]},
+    { id:4, text:"父母总是对你的生活选择指手画脚，这次又批评你的职业规划。你会？", options:[
+      { id:"A", text:"忍着不反驳，点头应和，避免让他们生气或担心", scores:{caretaker:1,avoider:0,controller:0,pleaser:3,challenger:0} },
+      { id:"B", text:"沉默应对，不解释不争辩，之后该怎么过还怎么过", scores:{caretaker:0,avoider:3,controller:0,pleaser:0,challenger:0} },
+      { id:"C", text:"冷静地列出你的规划依据，试图用逻辑说服他们接受你的决定", scores:{caretaker:0,avoider:0,controller:2,pleaser:0,challenger:1} },
+      { id:"D", text:"反驳说「这是我的人生，你们那套早就过时了」，表明立场", scores:{caretaker:0,avoider:0,controller:0,pleaser:0,challenger:3} }
+    ]},
+    { id:5, text:"约会时，伴侣迟到了半小时而且没有提前通知你。你的第一反应是？", options:[
+      { id:"A", text:"担心是不是出了什么事，先打电话确认他是否安全", scores:{caretaker:3,avoider:0,controller:0,pleaser:0,challenger:0} },
+      { id:"B", text:"内心不高兴但没说出口，等他来了假装什么都没发生", scores:{caretaker:0,avoider:1,controller:0,pleaser:3,challenger:0} },
+      { id:"C", text:"等伴侣到后，明确告诉他这让你感到不受重视，下次不能这样", scores:{caretaker:0,avoider:0,controller:2,pleaser:0,challenger:1} },
+      { id:"D", text:"直接黑脸说「你根本不重视我」，表达强烈不满", scores:{caretaker:0,avoider:0,controller:0,pleaser:0,challenger:3} }
+    ]},
+    { id:6, text:"一个同事经常在背后说你坏话，最近你偶然听到了。你怎么办？", options:[
+      { id:"A", text:"当作不知道，继续对他友善，不让关系变僵", scores:{caretaker:1,avoider:1,controller:0,pleaser:2,challenger:0} },
+      { id:"B", text:"减少和他的接触，保持距离，懒得纠缠", scores:{caretaker:0,avoider:3,controller:0,pleaser:0,challenger:0} },
+      { id:"C", text:"直接找他当面对质，问清楚原因，让他知道你的底线", scores:{caretaker:0,avoider:0,controller:3,pleaser:0,challenger:1} },
+      { id:"D", text:"在合适的时机也「提醒」他一下，让他知道你不是好欺负的", scores:{caretaker:0,avoider:0,controller:0,pleaser:0,challenger:3} }
+    ]},
+    { id:7, text:"朋友邀请你参加一个你并不想去的聚会，你会怎么说？", options:[
+      { id:"A", text:"虽然不想去，但还是答应，去了之后默默待一会儿再找借口离开", scores:{caretaker:0,avoider:0,controller:0,pleaser:3,challenger:0} },
+      { id:"B", text:"说「那天有事」，用一个善意的谎言婉拒", scores:{caretaker:0,avoider:2,controller:0,pleaser:1,challenger:0} },
+      { id:"C", text:"直接说「我对这种聚会没兴趣」，拒绝得很干脆", scores:{caretaker:0,avoider:1,controller:0,pleaser:0,challenger:2} },
+      { id:"D", text:"提出一个替代方案：「不如我们单独吃个饭？」", scores:{caretaker:2,avoider:0,controller:0,pleaser:1,challenger:0} }
+    ]},
+    { id:8, text:"亲密关系中，对方提出了一个让你不太舒服的要求，你会？", options:[
+      { id:"A", text:"先答应下来，试着去配合，委屈自己来维持关系和谐", scores:{caretaker:1,avoider:0,controller:0,pleaser:3,challenger:0} },
+      { id:"B", text:"假装没听到，不正面回应，寄希望于对方自己忘掉", scores:{caretaker:0,avoider:3,controller:0,pleaser:0,challenger:0} },
+      { id:"C", text:"平静但坚定地说明你的界限，解释为什么这个要求让你不舒服", scores:{caretaker:0,avoider:0,controller:2,pleaser:0,challenger:1} },
+      { id:"D", text:"生气地反问：「为什么每次都是我要迁就你？」", scores:{caretaker:0,avoider:0,controller:0,pleaser:0,challenger:3} }
+    ]},
+    { id:9, text:"家庭聚会上，亲戚们又开始拿你和「别人家的孩子」比较。你心里很烦躁，表面上会？", options:[
+      { id:"A", text:"笑着点头应和，不扫大家的兴，聚会结束后自己消化情绪", scores:{caretaker:0,avoider:1,controller:0,pleaser:3,challenger:0} },
+      { id:"B", text:"找个借口离开一会儿，在阳台或角落自己待着等聚会结束", scores:{caretaker:0,avoider:3,controller:0,pleaser:0,challenger:0} },
+      { id:"C", text:"当场反驳：「比较没有意义，每个人情况不同」，试图改变话题", scores:{caretaker:0,avoider:0,controller:1,pleaser:0,challenger:2} },
+      { id:"D", text:"回击：「那你们去看看他父母给了什么条件」，怼到对方哑口无言", scores:{caretaker:0,avoider:0,controller:0,pleaser:0,challenger:3} }
+    ]},
+    { id:10, text:"下属在重要项目上犯了错误，影响了团队进度。你作为负责人会？", options:[
+      { id:"A", text:"自己加班补救，不给下属太大压力，私下再帮他复盘改进", scores:{caretaker:3,avoider:0,controller:0,pleaser:1,challenger:0} },
+      { id:"B", text:"把任务分配调整一下，让他做力所能及的部分，减少他的挫败感", scores:{caretaker:2,avoider:1,controller:0,pleaser:1,challenger:0} },
+      { id:"C", text:"分析问题根源，制定严格的流程和规范，防止类似错误再次发生", scores:{caretaker:0,avoider:0,controller:3,pleaser:0,challenger:0} },
+      { id:"D", text:"当场指出他的问题，让他意识到事情的严重性，促使他成长", scores:{caretaker:0,avoider:0,controller:0,pleaser:0,challenger:3} }
+    ]},
+    { id:11, text:"和新认识的人聊天时，你通常更倾向于？", options:[
+      { id:"A", text:"主动关心对方的生活、工作，表现出对他人的浓厚兴趣", scores:{caretaker:3,avoider:0,controller:0,pleaser:1,challenger:0} },
+      { id:"B", text:"对方问什么答什么，不主动延伸，保持适当距离", scores:{caretaker:0,avoider:3,controller:0,pleaser:0,challenger:0} },
+      { id:"C", text:"主导话题方向，聊自己擅长的领域，展示自己的能力和见解", scores:{caretaker:0,avoider:0,controller:3,pleaser:0,challenger:0} },
+      { id:"D", text:"抛出有挑战性的话题或观点，看看对方怎么接，试探对方的思维", scores:{caretaker:0,avoider:0,controller:0,pleaser:0,challenger:3} }
+    ]},
+    { id:12, text:"当一段关系（友情/爱情）让你感到越来越疲惫，你会？", options:[
+      { id:"A", text:"先反思是不是自己哪里做得不够好，尝试改变自己来修复关系", scores:{caretaker:2,avoider:0,controller:0,pleaser:2,challenger:0} },
+      { id:"B", text:"慢慢疏远，不说破也不告别，自然地减少联系", scores:{caretaker:0,avoider:3,controller:0,pleaser:0,challenger:0} },
+      { id:"C", text:"坦诚沟通，明确告诉对方你的感受，一起找出解决方案", scores:{caretaker:0,avoider:0,controller:2,pleaser:0,challenger:1} },
+      { id:"D", text:"直接告诉对方：「我觉得我们不适合做朋友了」，快刀斩乱麻", scores:{caretaker:0,avoider:0,controller:0,pleaser:0,challenger:3} }
+    ]}
+  ],
+  resultTypes: {
+    caretaker: {
+      title: "照顾者",
+      titleEn: "The Caretaker",
+      description: "你就像关系中的「安全港湾」——敏感于他人的需求，总是愿意先放下自己来回应别人。你的善意是真实的，你对亲密感有深刻的需要，只是有时候会忘记照顾自己。",
+      strengths:["善解人意，能敏锐察觉他人的情绪变化","值得信赖，是朋友和伴侣心中的「定心丸」","无私付出，在关系中给予而不求即时回报","富有同理心，能真正站在他人角度理解问题"],
+      blindSpots:["容易过度付出，把自己掏空","难以拒绝，可能承担不属于自己的责任","有时会忽略自己的需求和感受","可能吸引依赖型的人，让自己越陷越深"],
+      growthEdge:"学会在说「好」之前，先问自己：「我这次想要什么？」设定界限不是自私，而是让照顾可持续。",
+      shareCard:"我的关系角色：照顾者 💝 在关系中，我是最愿意先付出的人。我相信善意，也相信每一份温暖都会被记得。",
+      icon: "🌿"
+    },
+    avoider: {
+      title: "回避者",
+      titleEn: "The Avoider",
+      description: "你像关系中的「独立岛屿」——重视自我空间和边界，善于在混乱中保持情绪稳定。你懂得保护自己的能量，但有时候这份距离感也会让真正亲密变得困难。",
+      strengths:["情绪稳定，不容易被关系中的冲突带走","尊重边界，既能保护自己也不越界他人","独立自主，不过度依赖任何人","善于在压力下保持冷静和理性"],
+      blindSpots:["可能被视为冷漠或疏远","回避冲突的同时也回避了深度连接","不擅长处理情感问题，容易「冷处理」","可能用距离来保护自己，也隔离了真正的亲密"],
+      growthEdge:"尝试在安全的关系中打开一点点。亲密不等于失去自我，真正的连接反而会让你更完整。",
+      shareCard:"我的关系角色：回避者 🏝 在关系中，我是那个需要空间的人。我不是不爱，只是更懂得保护自己的能量。",
+      icon: "🏝"
+    },
+    controller: {
+      title: "控制者",
+      titleEn: "The Controller",
+      description: "你像关系中的「导航系统」——目标清晰，行动力强，擅长在复杂局面中找到方向。你为关系带来结构和安全感，但有时候对「按计划发展」的执念会让你忽略了其他人的节奏。",
+      strengths:["决策果断，能在关键时刻推动事情向前","有责任感，愿意为关系的走向承担责任","逻辑清晰，善于分析和解决关系中的实际问题","有全局观，不容易被眼前的情绪带偏"],
+      blindSpots:["可能让对方感到被管控或不被信任","难以接受「计划外」的情感表达","有时把「解决」置于「理解」之前","可能用控制感来掩盖内心的不安全感"],
+      growthEdge:"学会放下「正确答案」，允许关系有自己的节奏。有时候，陪伴比指导更重要，理解比解决更亲密。",
+      shareCard:"我的关系角色：控制者 🎯 在关系中，我是那个想让一切变好的人。我相信有方向的前进，也相信每一段关系都值得被认真对待。",
+      icon: "🎯"
+    },
+    pleaser: {
+      title: "讨好者",
+      titleEn: "The Pleaser",
+      description: "你像关系中的「和平使者」——天然地想要每个人开心，害怕冲突和否定。你让周围的人感到愉快和受欢迎，但你的妥协有时是以牺牲自己的声音为代价的。",
+      strengths:["社交能力强，让人感到受欢迎和被接纳","善于察觉氛围，擅长调节尴尬的社交局面","谦逊低调，不抢风头","富有耐心，愿意为关系做出调整"],
+      blindSpots:["难以表达真实需求，害怕让对方失望","容易积累怨恨，表面的和谐下暗藏压抑的情绪","可能吸引控制型或不懂感恩的人","「不真实」的关系互动可能让双方都感到空虚"],
+      growthEdge:"你的好意值得被珍惜，但只有当它也包括对自己公平的时候。练习说出「这次我想……」，你会发现，真正的亲密建立在真实之上。",
+      shareCard:"我的关系角色：讨好者 🌈 在关系中，我总是希望每个人都开心。我相信和谐的力量，也相信真心的付出终会被看见。",
+      icon: "🌈"
+    },
+    challenger: {
+      title: "挑战者",
+      titleEn: "The Challenger",
+      description: "你像关系中的「催化剂」——直接、犀利、不喜欢绕弯子。你推动自己和身边的人不断成长，不允许关系中的虚假和敷衍，但这份坦率有时候也会刺痛他人。",
+      strengths:["真实直接，不做作，不装","有勇气指出问题，推动关系中的真诚对话","激励人心，能推动他人走出舒适区","不怕冲突，敢于直面关系中的阴暗面"],
+      blindSpots:["表达方式可能让对方感到被攻击或不被尊重","有时把「挑战」当成了「关心」的代名词","可能忽视了对方的情感需求，只关注成长","直接不等于无情，犀利可能变成伤害"],
+      growthEdge:"力量和温柔并不对立。试试在说出真相之前，先让对方知道你在乎他——因为你在乎，才要说出来。",
+      shareCard:"我的关系角色：挑战者 ⚡ 在关系中，我是那个说真话的人。我可能不够温柔，但我相信真正的在乎，是愿意让彼此变得更好。",
+      icon: "⚡"
+    }
+  },
+  resultBlending: {
+    caretaker_avoider:   { title:"温柔的守护者", description:"你既能敏锐察觉他人的需求，又懂得在必要时保持距离。你是那种「需要我在，我在；但你好了，我就退」的人。", insight:"你适合需要支持但也尊重空间的伴侣。在亲密关系中，你既能给予温暖，又能保持自我，这让你既能深度连接，又不失去平衡。" },
+    caretaker_controller:{ title:"温暖的领航者", description:"你既有照顾他人的柔软，也有推动事情向前的力量。你不只是被动地回应需求，而是主动创造让彼此成长的环境。", insight:"你擅长在关系中制定共同成长的「计划」。但要小心，别让「为你好」变成控制，尊重对方的节奏和选择同样重要。" },
+    caretaker_pleaser:   { title:"无私的给予者", description:"你把照顾和讨好融合在一起，对他人的需求极其敏感，付出时不求回报。但你的挑战是：学会也为自己开口。", insight:"你吸引了需要被照顾的人，而你也从中获得价值感。但要小心：健康的关系需要双向流动。试着观察，你给了多少，对方又给了多少？" },
+    caretaker_challenger:{ title:"严慈并济的支持者", description:"你的照顾带着力量，你不只是安慰，更希望推动对方真正改变。你相信「疼痛是成长的一部分」，但方式需要更柔软。", insight:"你可能会被视为「高标准」但「真关心」的人。在表达期望之前，先表达相信——这会让你的挑战变成真正的激励。" },
+    avoider_controller:  { title:"冷静的决策者", description:"你既能保持距离不被情绪淹没，又有能力在需要时站出来做决定。你是危机中的「定海神针」，但可能让人觉得难以接近。", insight:"你不太需要亲密感来获得安全感，但长期关系需要你主动打破距离。偶尔主动分享一点脆弱，会让对方感到被信任。" },
+    avoider_pleaser:     { title:"被动的调停者", description:"你既想保持距离，又不想让对方不高兴，所以你选择沉默和顺从来避免冲突。这让你在关系中常常感到疲惫和被动。", insight:"你的回避和讨好都是自我保护的方式。但请记得：沉默不等于和平，你真实的感受同样值得被表达。" },
+    avoider_challenger:  { title:"独立的挑战者", description:"你既不需要依赖他人，也不害怕冲突。你是关系中最「做自己」的人，但也可能因为太强调独立而显得有些疏离。", insight:"你的独立性是一大优势，但也许你比自己以为的更需要连接。允许自己偶尔依赖，不是否定自己，而是让关系更完整。" },
+    controller_pleaser:  { title:"隐形的控制者", description:"你通过让对方开心来维持关系的走向——表面是讨好，内核是控制。你不直接说「听我的」，而是用「好」来引导事情按你的方式进行。", insight:"你的挑战是觉察自己的动机：是真的为对方好，还是在用柔和的方式让对方按你的方式走？尝试直接表达需求，而不是绕道。" },
+    controller_challenger:{ title:"强势的推动者", description:"你有明确的方向和强大的行动力，不怕冲突，也不轻易妥协。你在关系中常常扮演「主导者」的角色，但方式可能过于强硬。", insight:"你的推动力是改变的关键，但方式决定了它是激励还是压迫。放慢一点，听听对方的声音——真正的领导力包括尊重。" },
+    pleaser_challenger:  { title:"矛盾的表达者", description:"你内心有冲突——既想讨好、维持和谐，又忍不住要说真话、挑战现状。这种张力让你在关系中时而顺从、时而对抗。", insight:"你对自己的矛盾感到困惑，但这也是你的一部分。试着在挑战之前先连接——让对方知道你在乎这段关系，话语会更容易被接受。" }
+  }
+};
+
+// ─── Strings ──────────────────────────────────────────────────────────────
+const STR = {
+  landing: {
+    eyebrow:{en:"Self-Reflection Quiz",cn:"自我探索测验"},
+    title:{en:"Parts Relationship Map",cn:"关系角色图谱"},
+    subtitle:{en:"Discover the invisible role patterns that shape how you show up in every relationship.",cn:"发现那些在每段关系里悄然塑造你的角色模式。"},
+    time:{en:"12 questions · ~5 minutes",cn:"12道题 · 约5分钟"},
+    outcomesTitle:{en:"What you'll discover",cn:"你将发现"},
+    outcome1:{en:"Your primary and secondary relationship roles",cn:"你在关系中的主要角色和次要角色"},
+    outcome2:{en:"How your roles shape your connections with others",cn:"你的角色如何影响你与他人的连接方式"},
+    outcome3:{en:"A personalized growth edge for deeper relationships",cn:"属于你的成长方向，让关系更深入"},
+    privacy:{en:"Your responses are private. Self-reflection, not diagnosis.",cn:"你的回答是私密的。这是自我反思，不是诊断。"}
+  },
+  welcome: {
+    en:`每段关系里，我们都扮演着某种角色。有些角色让我们感到安全，有些却让我们疲惫不堪。
+
+这个测验不是为了给你贴标签，而是帮助你看见自己在各种关系中默认的「角色模式」——那些帮助你走到今天的行为习惯。
+
+准备好探索自己了吗？`,
+    cn:`每段关系里，我们都扮演着某种角色。有些角色让我们感到安全，有些却让我们疲惫不堪。
+
+这个测验不是为了给你贴标签，而是帮助你看见自己在各种关系中默认的「角色模式」——那些帮助你走到今天的行为习惯。
+
+准备好探索自己了吗？`
+  },
+  quiz: {
+    qNum:{en:"Question %d of 12",cn:"第 %d 题，共 12 题"},
+    back:{en:"Back",cn:"返回"}
+  },
+  calc: {
+    title:{en:"Looking at your patterns...",cn:"正在分析你的模式..."}
+  },
+  result: {
+    eyebrow:{en:"Your Primary Role",cn:"你的主要角色"},
+    descTitle:{en:"What this means",cn:"这意味着什么"},
+    strengthsTitle:{en:"Your Strengths",cn:"你的优势"},
+    blindSpotsTitle:{en:"Your Blind Spots",cn:"你的盲点"},
+    growthTitle:{en:"Your Growth Edge",cn:"你成长的方向"},
+    blendTitle:{en:"Your Role Blend",cn:"你的角色组合"},
+    shareBtn:{en:"Share My Result",cn:"分享我的结果"},
+    retake:{en:"Take Again",cn:"重新测试"},
+    footerNote:{en:"If this brings up things that feel heavy, you're not alone. Speaking with a trusted friend or mental health professional can help.",cn:"如果这让你感到沉重，你并不孤单。与信任的朋友或心理健康专业人士交谈可能会有所帮助。"}
+  },
+  share: {
+    title:{en:"Share Your Result",cn:"分享你的结果"},
+    save:{en:"Save Image",cn:"保存图片"},
+    close:{en:"Close",cn:"关闭"}
+  }
+};
+
+function t(key) {
+  const keys = key.split('.');
+  let v = STR;
+  for (const k of keys) v = v[k];
+  if (typeof v === 'object') return v[currentLang] || v.en || '';
+  return v;
+}
+
+function tf(key, n) {
+  return t(key).replace('%d', n);
+}
+
+// ─── App State ─────────────────────────────────────────────────────────────
+let currentLang = 'en';
+let state = {
+  screen: 'landing',
+  answers: {},
+  currentQuestion: 1,
+  result: null
+};
+
+const TOTAL_QUESTIONS = 12;
+const STORAGE_KEY = 'psycho_parts_relmap_v1';
+
+// ─── Language ──────────────────────────────────────────────────────────────
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+  document.getElementById('lang-cn').classList.toggle('active', lang === 'cn');
+  document.documentElement.lang = lang === 'cn' ? 'zh-CN' : 'en';
+  renderAllStrings();
+  if (state.screen === 'quiz') renderQuestion();
+  if (state.screen === 'result') renderResult();
+}
+
+function renderAllStrings() {
+  document.getElementById('landing-eyebrow').textContent = t('landing.eyebrow');
+  document.getElementById('landing-title').textContent = t('landing.title');
+  document.getElementById('landing-subtitle').textContent = t('landing.subtitle');
+  document.getElementById('landing-time-text').textContent = t('landing.time');
+  document.getElementById('landing-outcomes-title').textContent = t('landing.outcomesTitle');
+  document.getElementById('landing-outcome-1').textContent = t('landing.outcome1');
+  document.getElementById('landing-outcome-2').textContent = t('landing.outcome2');
+  document.getElementById('landing-outcome-3').textContent = t('landing.outcome3');
+  document.getElementById('landing-privacy').textContent = t('landing.privacy');
+  document.getElementById('welcome-text').textContent = t('welcome');
+  document.getElementById('back-label').textContent = t('quiz.back');
+  document.getElementById('calc-title').textContent = t('calc.title');
+  document.getElementById('result-eyebrow').textContent = t('result.eyebrow');
+  document.getElementById('share-card-btn-text').textContent = t('result.shareBtn');
+  document.getElementById('download-card-text').textContent = t('share.save');
+  document.getElementById('share-modal-title').textContent = t('share.title');
+  document.getElementById('share-modal-close-btn').textContent = t('share.close');
+  document.getElementById('retake-btn').textContent = t('result.retake');
+  document.getElementById('result-footer-note').textContent = t('result.footerNote');
+}
+
+// ─── Navigation ────────────────────────────────────────────────────────────
+function showScreen(name) {
+  document.querySelectorAll('.quiz-screen').forEach(s => s.classList.remove('active'));
+  const s = document.getElementById('screen-' + name);
+  if (s) s.classList.add('active');
+  state.screen = name;
+  const langToggle = document.getElementById('lang-toggle');
+  langToggle.style.display = (name === 'landing') ? 'none' : 'flex';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── Storage ────────────────────────────────────────────────────────────────
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      answers: state.answers,
+      currentQuestion: state.currentQuestion
+    }));
+  } catch(e) {}
+}
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const data = JSON.parse(saved);
+      if (data.answers && Object.keys(data.answers).length > 0) {
+        return data;
+      }
+    }
+  } catch(e) {}
+  return null;
+}
+
+function clearState() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+}
+
+// ─── Quiz Start ────────────────────────────────────────────────────────────
+function startQuiz() {
+  const saved = loadState();
+  if (saved && Object.keys(saved.answers).length > 0) {
+    state.answers = saved.answers;
+    state.currentQuestion = saved.currentQuestion;
+    showQuiz();
+  } else {
+    state.answers = {};
+    state.currentQuestion = 1;
+    showScreen('welcome');
+  }
+}
+
+function showQuiz() {
+  state.answers = {};
+  state.currentQuestion = 1;
+  clearState();
+  renderQuestion();
+  showScreen('quiz');
+}
+
+function goBack() {
+  if (state.currentQuestion > 1) {
+    state.currentQuestion--;
+    saveState();
+    renderQuestion();
+  }
+}
+
+// ─── Question Rendering ────────────────────────────────────────────────────
+function renderQuestion() {
+  const q = QUIZ_DATA.questions[state.currentQuestion - 1];
+  const progress = (state.currentQuestion - 1) / TOTAL_QUESTIONS * 100;
+
+  document.getElementById('progress-fill').style.width = progress + '%';
+  document.getElementById('progress-bar').setAttribute('aria-valuenow', Math.round(progress));
+  document.getElementById('q-number').textContent = tf('quiz.qNum', state.currentQuestion);
+  document.getElementById('q-text').textContent = q.text;
+
+  const optionsEl = document.getElementById('options-container');
+  optionsEl.innerHTML = '';
+  optionsEl.setAttribute('aria-label', currentLang === 'cn' ? '答案选项' : 'Answer options');
+
+  const letters = ['A','B','C','D'];
+  letters.forEach((letter, idx) => {
+    const opt = q.options[idx];
+    if (!opt) return;
+    const selected = state.answers[state.currentQuestion] === letter;
+    const btn = document.createElement('button');
+    btn.className = 'option-btn' + (selected ? ' selected' : '');
+    btn.setAttribute('role', 'radio');
+    btn.setAttribute('aria-checked', selected ? 'true' : 'false');
+    btn.setAttribute('data-letter', letter);
+    btn.innerHTML = `<span class="opt-letter">${letter}.</span><span class="opt-text">${opt.text}</span>`;
+    btn.addEventListener('click', () => selectOption(letter));
+    optionsEl.appendChild(btn);
+  });
+
+  document.getElementById('back-btn').style.display = state.currentQuestion > 1 ? 'inline-flex' : 'none';
+}
+
+function selectOption(letter) {
+  const q = QUIZ_DATA.questions[state.currentQuestion - 1];
+  const optIdx = ['A','B','C','D'].indexOf(letter);
+  state.answers[state.currentQuestion] = q.options[optIdx].scores;
+  saveState();
+
+  document.querySelectorAll('.option-btn').forEach(b => {
+    const isSelected = b.getAttribute('data-letter') === letter;
+    b.classList.toggle('selected', isSelected);
+    b.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+  });
+
+  setTimeout(() => {
+    if (state.currentQuestion < TOTAL_QUESTIONS) {
+      state.currentQuestion++;
+      saveState();
+      renderQuestion();
+    } else {
+      showCalculating();
+    }
+  }, 350);
+}
+
+// ─── Calculating ───────────────────────────────────────────────────────────
+function showCalculating() {
+  showScreen('calculating');
+  setTimeout(() => {
+    calculateResult();
+    renderResult();
+    clearState();
+    showScreen('result');
+  }, 2400);
+}
+
+// ─── Result Calculation ────────────────────────────────────────────────────
+function calculateResult() {
+  const totals = { caretaker:0, avoider:0, controller:0, pleaser:0, challenger:0 };
+  for (const qIdx in state.answers) {
+    const scores = state.answers[qIdx];
+    for (const role in scores) {
+      if (totals.hasOwnProperty(role)) totals[role] += scores[role];
+    }
+  }
+
+  const sorted = Object.entries(totals).sort((a, b) => b[1] - a[1]);
+  const primary = sorted[0][0];
+  const secondary = sorted[1][0];
+
+  const blendKey = [primary, secondary].sort().join('_');
+  const blend = QUIZ_DATA.resultBlending[blendKey] || null;
+
+  state.result = { primary, secondary, totals, blend };
+}
+
+// ─── Result Rendering ──────────────────────────────────────────────────────
+function renderResult() {
+  const r = state.result;
+  const primaryType = QUIZ_DATA.resultTypes[r.primary];
+  const secondaryType = QUIZ_DATA.resultTypes[r.secondary];
+  const isCN = currentLang === 'cn';
+
+  document.getElementById('result-title-main').textContent = primaryType.titleEn;
+  document.getElementById('result-title-cn').textContent = primaryType.title;
+  document.getElementById('result-role-icon').textContent = primaryType.icon;
+  document.getElementById('result-role-name').textContent = isCN ? primaryType.titleEn : primaryType.title;
+
+  const descEl = document.getElementById('result-description');
+  let html = '';
+
+  // Description
+  html += `<div class="result-card">
+    <h3>${t('result.descTitle')}</h3>
+    <p>${primaryType.description}</p>
+  </div>`;
+
+  // Strengths
+  html += `<div class="result-card">
+    <h3>${t('result.strengthsTitle')}</h3>
+    <ul>${primaryType.strengths.map(s => `<li>${s}</li>`).join('')}</ul>
+  </div>`;
+
+  // Blind spots
+  html += `<div class="result-card">
+    <h3>${t('result.blindSpotsTitle')}</h3>
+    <ul>${primaryType.blindSpots.map(s => `<li>${s}</li>`).join('')}</ul>
+  </div>`;
+
+  // Growth
+  html += `<div class="result-growth-card">
+    <h3>${t('result.growthTitle')}</h3>
+    <p>${primaryType.growthEdge}</p>
+  </div>`;
+
+  // Blend
+  if (r.blend) {
+    html += `<div class="result-blend-card">
+    <h3>${t('result.blendTitle')}: ${r.blend.title}</h3>
+    <p>${r.blend.description}</p>
+    <blockquote>${r.blend.insight}</blockquote>
+  </div>`;
+  }
+
+  descEl.innerHTML = html;
+
+  // Share quote
+  document.getElementById('share-quote').textContent = `"${primaryType.shareCard}"`;
+
+  // Render share card canvas now that result is ready
+  renderShareCard();
+}
+
+// ─── Share Card Canvas ─────────────────────────────────────────────────────
+function renderShareCard() {
+  const canvas = document.getElementById('share-card-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = 540, H = 960;
+  ctx.clearRect(0, 0, W, H);
+
+  const r = state.result;
+  const primaryType = QUIZ_DATA.resultTypes[r.primary];
+  const isCN = currentLang === 'cn';
+
+  // Background gradient
+  const grad = ctx.createLinearGradient(0, 0, W, H);
+  grad.addColorStop(0, '#FAF7F4');
+  grad.addColorStop(0.5, '#F5F0EA');
+  grad.addColorStop(1, '#F0EBE4');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  // Top decorative circle
+  ctx.beginPath();
+  ctx.arc(W/2, -80, 280, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(122, 158, 126, 0.12)';
+  ctx.fill();
+
+  // Bottom decorative circle
+  ctx.beginPath();
+  ctx.arc(W/2, H + 100, 320, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(232, 165, 152, 0.1)';
+  ctx.fill();
+
+  // Icon emoji
+  ctx.font = '72px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(primaryType.icon, W/2, 200);
+
+  // Role name EN
+  ctx.font = 'bold 44px "Fraunces", Georgia, serif';
+  ctx.fillStyle = '#2C2C2C';
+  ctx.textAlign = 'center';
+  ctx.fillText(primaryType.titleEn, W/2, 290);
+
+  // Role name CN
+  ctx.font = '600 32px "Noto Serif SC", "SimSun", serif';
+  ctx.fillStyle = '#7A9E7E';
+  ctx.fillText(primaryType.title, W/2, 340);
+
+  // Divider
+  ctx.beginPath();
+  ctx.moveTo(W/2 - 60, 370);
+  ctx.lineTo(W/2 + 60, 370);
+  ctx.strokeStyle = 'rgba(122, 158, 126, 0.4)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Description (wrapped)
+  const desc = primaryType.description;
+  ctx.font = '26px "Noto Sans SC", "Microsoft YaHei", sans-serif';
+  ctx.fillStyle = '#6B6560';
+  ctx.textAlign = 'center';
+  const maxW = W - 80;
+  wrapText(ctx, desc, W/2, 430, maxW, 38);
+
+  // Share card text
+  const shareText = primaryType.shareCard;
+  ctx.font = '500 24px "Noto Sans SC", "Microsoft YaHei", sans-serif';
+  ctx.fillStyle = '#5B8FA8';
+  ctx.textAlign = 'center';
+  wrapText(ctx, shareText, W/2, 680, maxW, 34);
+
+  // Brand footer
+  ctx.font = '500 22px "Inter", "Noto Sans SC", sans-serif';
+  ctx.fillStyle = '#9E9890';
+  ctx.fillText('Parts Relationship Map', W/2, 820);
+
+  ctx.font = '400 20px "Noto Sans SC", sans-serif';
+  ctx.fillText('心理测评 · 关系角色图谱', W/2, 855);
+
+  // Small watermark
+  ctx.font = '18px "Inter", sans-serif';
+  ctx.fillStyle = '#C4BFB8';
+  ctx.fillText('psycho-master.com', W/2, 900);
+}
+
+function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+  const paragraphs = text.split('\n');
+  let currentY = y;
+  for (const paragraph of paragraphs) {
+    if (paragraph.trim() === '') {
+      currentY += lineHeight * 0.5;
+      continue;
+    }
+    const words = paragraph.split('');
+    let line = '';
+    for (let i = 0; i < words.length; i++) {
+      const testLine = line + words[i];
+      const metrics = ctx.measureText(testLine);
+      if (metrics.width > maxWidth && line.length > 0) {
+        ctx.fillText(line, x, currentY);
+        line = words[i];
+        currentY += lineHeight;
+      } else {
+        line = testLine;
+      }
+    }
+    if (line.length > 0) {
+      ctx.fillText(line, x, currentY);
+      currentY += lineHeight;
+    }
+  }
+}
+
+function openShareModal() {
+  renderShareCard();
+  document.getElementById('share-modal').classList.add('active');
+  document.getElementById('share-modal-close-btn').focus();
+}
+
+function closeShareModal() {
+  document.getElementById('share-modal').classList.remove('active');
+  document.getElementById('share-card-btn').focus();
+}
+
+function downloadShareCard() {
+  const canvas = document.getElementById('share-card-canvas');
+  const r = state.result;
+  const primaryType = QUIZ_DATA.resultTypes[r.primary];
+  const filename = `relationship-role-${primaryType.titleEn.toLowerCase().replace(/\s+/g,'-')}-${currentLang}.png`;
+  const link = document.createElement('a');
+  link.download = filename;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+// ─── Retake ────────────────────────────────────────────────────────────────
+function retakeQuiz() {
+  state.answers = {};
+  state.currentQuestion = 1;
+  state.result = null;
+  clearState();
+  showScreen('landing');
+}
+
+// ─── Init ──────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  renderAllStrings();
+  showScreen('landing');
+
+  // Close modal on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeShareModal();
+  });
+
+  // Close modal on backdrop click
+  document.getElementById('share-modal').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) closeShareModal();
+  });
+});
+</script>
+</body>
+</html>
