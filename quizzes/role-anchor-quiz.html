@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>身份锚点测验 · 你的人生以什么为锚？</title>
-<meta name="description" content="在退休、空巢、转型的路口，这个测验帮你重新认识自己是谁。找出定义你价值的核心角色。">
+<title>Role Anchor Quiz — What Defines Your Sense of Self?</title>
+<meta name="description" content="At the crossroads of retirement, empty nesting, and transition, this quiz helps you rediscover who you are. Find the core roles that define your worth.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -19,7 +19,7 @@
   --type-career:#B57B5E;--type-family:#9B8AA5;--type-social:#8B9DB5;--type-free:#D4956A;--type-spirit:#8A9B7A;
   --shadow-card:0 2px 12px rgba(61,53,48,0.08);--shadow-btn:0 4px 12px rgba(196,138,94,0.25);--shadow-hover:0 6px 20px rgba(61,53,48,0.12);
   --radius-sm:4px;--radius-md:8px;--radius-lg:12px;--radius-xl:16px;
-  --font-serif:'Noto Serif SC',Georgia,serif;--font-sans:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+  --font-serif:'Merriweather',Georgia,serif;--font-sans:'Inter','Helvetica Neue',Arial,sans-serif;
 }
 html{font-size:16px}
 body{font-family:var(--font-sans);background:var(--warm-white);color:var(--charcoal);line-height:1.8;min-height:100vh;
@@ -186,7 +186,7 @@ body{font-family:var(--font-sans);background:var(--warm-white);color:var(--charc
 .support-numbers{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0;text-align:left}
 .support-num-card{background:var(--ivory);border-radius:var(--radius-lg);padding:16px}
 .support-num-card .num-label{font-size:12px;color:var(--warm-gray);margin-bottom:4px}
-.support-num-card .num-value{font-size:18px;font-weight:600;color:var(--ochre);font-family:DM Sans,sans-serif}
+.support-num-card .num-value{font-size:18px;font-weight:600;color:var(--ochre);font-family:'Inter',sans-serif}
 .support-resources{list-style:none;display:flex;flex-direction:column;gap:8px;text-align:left}
 .support-resources li{display:flex;align-items:flex-start;gap:8px;font-size:14px;color:var(--charcoal)}
 .support-resources li::before{content:'•';color:var(--ochre);font-weight:700;margin-top:1px}
@@ -227,18 +227,18 @@ body{font-family:var(--font-sans);background:var(--warm-white);color:var(--charc
 <!-- Screen: Landing -->
 <div id="screen-landing" class="screen active">
   <div class="container landing-inner">
-    <div class="landing-badge"><span class="landing-badge-dot"></span>心理自测 · 8分钟</div>
-    <h1 class="landing-title">你的人生以什么为锚？</h1>
-    <p class="landing-subtitle">找出定义你价值的核心角色</p>
+    <div class="landing-badge"><span class="landing-badge-dot"></span>Self-Assessment · 8 min</div>
+    <h1 class="landing-title">What Defines Your Sense of Self?</h1>
+    <p class="landing-subtitle">Discover the core roles that define your worth</p>
     <p class="landing-desc">
-      在<em>退休、空巢、转型的路口</em>，<br>这个测验帮你重新认识自己是谁。
+      At the crossroads of <em>retirement, empty nesting, and transition</em>,<br>this quiz helps you rediscover who you are.
     </p>
-    <button class="btn-primary" id="btn-start" aria-label="开始测验">开始测验</button>
+    <button class="btn-primary" id="btn-start" aria-label="Start the quiz">Start the Quiz</button>
     <div class="trigger-warn">
       <span class="trigger-warn-icon" aria-hidden="true">⚠️</span>
-      <p>本测验涉及自我反思，可能触发对过往经历的情绪反应。如果感到不适，可以随时暂停或退出。</p>
+      <p>This quiz involves self-reflection and may trigger emotional responses related to past experiences. If you feel uncomfortable, you may pause or exit at any time.</p>
     </div>
-    <p class="mt-16"><span class="warn-link" id="link-warn" role="button" tabindex="0" aria-label="阅读触发警告详情">答题前请阅读说明 ›</span></p>
+    <p class="mt-16"><span class="warn-link" id="link-warn" role="button" tabindex="0" aria-label="Read the trigger warning details">Please read the instructions before proceeding ›</span></p>
   </div>
 </div>
 
@@ -249,21 +249,21 @@ body{font-family:var(--font-sans);background:var(--warm-white);color:var(--charc
       <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="12">
         <div class="progress-fill" id="progress-fill"></div>
       </div>
-      <div class="progress-label" id="progress-label">第 1 题 / 共 12 题</div>
+      <div class="progress-label" id="progress-label">Question 1 of 12</div>
     </div>
     <div class="quiz-card">
       <div class="question-header">
-        <span class="question-num" id="question-num-label">第 1 题</span>
-        <div class="question-jump" id="question-jump" role="navigation" aria-label="题目导航"></div>
+        <span class="question-num" id="question-num-label">Question 1</span>
+        <div class="question-jump" id="question-jump" role="navigation" aria-label="Question navigation"></div>
       </div>
       <p class="scenario-text" id="scenario-text" aria-live="polite"></p>
-      <div class="options-list" id="options-list" role="radiogroup" aria-label="选项"></div>
+      <div class="options-list" id="options-list" role="radiogroup" aria-label="Options"></div>
       <div class="quiz-nav">
-        <button class="btn-secondary" id="btn-prev" aria-label="上一题" style="visibility:hidden">
-          <span aria-hidden="true">‹</span> 上一题
+        <button class="btn-secondary" id="btn-prev" aria-label="Previous question" style="visibility:hidden">
+          <span aria-hidden="true">‹</span> Previous
         </button>
-        <button class="btn-primary" id="btn-next" aria-label="下一题" disabled>
-          下一题 <span aria-hidden="true">›</span>
+        <button class="btn-primary" id="btn-next" aria-label="Next question" disabled>
+          Next <span aria-hidden="true">›</span>
         </button>
       </div>
     </div>
@@ -274,7 +274,7 @@ body{font-family:var(--font-sans);background:var(--warm-white);color:var(--charc
 <div id="screen-calc" class="screen calc-screen">
   <div class="container">
     <div class="calc-icon" aria-hidden="true">⚓</div>
-    <p class="calc-text">正在分析你的答案……</p>
+    <p class="calc-text">Analyzing your answers…</p>
     <div class="calc-dots" aria-hidden="true">
       <div class="calc-dot"></div><div class="calc-dot"></div><div class="calc-dot"></div>
     </div>
@@ -292,26 +292,26 @@ body{font-family:var(--font-sans);background:var(--warm-white);color:var(--charc
 <div class="modal-overlay" id="modal-warn" role="dialog" aria-modal="true" aria-labelledby="modal-warn-title">
   <div class="modal">
     <div class="modal-hd">
-      <h2 id="modal-warn-title">⚠️ 触发警告与免责声明</h2>
-      <button class="modal-close" id="modal-warn-close" aria-label="关闭">&times;</button>
+      <h2 id="modal-warn-title">⚠️ Trigger Warning & Disclaimer</h2>
+      <button class="modal-close" id="modal-warn-close" aria-label="Close">&times;</button>
     </div>
     <div class="modal-content">
-      <p>本测验涉及自我反思，可能触发对过往经历或当前困境的情绪反应。如果你在答题过程中感到不适，随时可以暂停或退出。</p>
-      <p>你的情绪感受是真实且重要的。如果需要，随时可以停止测验。</p>
-      <h3>专业支持</h3>
-      <p>本测验仅供参考，不构成专业心理诊断或治疗建议。如果你正在经历严重的情绪困扰、抑郁、焦虑或生活危机，请及时寻求专业心理支持：</p>
+      <p>This quiz involves self-reflection and may trigger emotional responses related to past experiences or current challenges. If you feel uncomfortable during the quiz, you may pause or exit at any time.</p>
+      <p>Your emotional responses are real and important. If you need to, please stop the quiz at any time.</p>
+      <h3>Professional Support</h3>
+      <p>This quiz is for reference only and does not constitute professional psychological diagnosis or treatment. If you are experiencing significant emotional distress, depression, anxiety, or a life crisis, please seek professional psychological support promptly:</p>
       <div class="support-numbers">
         <div class="support-num-card">
-          <div class="num-label">全国心理援助热线（24小时）</div>
+          <div class="num-label">Crisis Helpline (24/7, China)</div>
           <div class="num-value">400-161-9995</div>
         </div>
         <div class="support-num-card">
-          <div class="num-label">北京心理危机研究与干预中心</div>
+          <div class="num-label">Beijing Crisis Prevention & Intervention Center</div>
           <div class="num-value">010-82951332</div>
         </div>
       </div>
-      <p>可前往当地三甲医院心理科/精神科、高校心理咨询中心（面向校友及社会开放）、或正规心理咨询机构寻求帮助。</p>
-      <p>你不是一个人，寻求帮助是勇敢的表现。</p>
+      <p>You may also seek help at your local top-tier hospital's psychology or psychiatry department, university counseling center (open to alumni and the public), or a reputable counseling practice.</p>
+      <p>You are not alone — reaching out for help takes courage.</p>
     </div>
   </div>
 </div>
@@ -320,20 +320,20 @@ body{font-family:var(--font-sans);background:var(--warm-white);color:var(--charc
 <div class="modal-overlay" id="modal-privacy" role="dialog" aria-modal="true" aria-labelledby="modal-privacy-title">
   <div class="modal">
     <div class="modal-hd">
-      <h2 id="modal-privacy-title">隐私政策</h2>
-      <button class="modal-close" id="modal-privacy-close" aria-label="关闭">&times;</button>
+      <h2 id="modal-privacy-title">Privacy Policy</h2>
+      <button class="modal-close" id="modal-privacy-close" aria-label="Close">&times;</button>
     </div>
     <div class="modal-content">
-      <h3>1. 数据收集</h3>
-      <p>本测验仅收集你的答题数据，用于计算结果。我们不收集姓名、手机号、身份证号等个人身份信息。</p>
-      <h3>2. 数据存储</h3>
-      <p>你的答题记录存储在本地设备，答题完成后可随时清除。</p>
-      <h3>3. 数据使用</h3>
-      <p>你的数据仅用于生成个人测验报告，不会出售、共享给任何第三方广告商或商业机构。</p>
-      <h3>4. Cookie</h3>
-      <p>如使用网站版本，可能使用必要的Cookie来确保基本功能，不用于追踪或广告。</p>
-      <h3>5. 你的权利</h3>
-      <p>你可以随时清除本地数据（见浏览器设置）。</p>
+      <h3>1. Data Collection</h3>
+      <p>This quiz only collects your answer data for calculating results. We do not collect personal identification information such as name, phone number, or ID number.</p>
+      <h3>2. Data Storage</h3>
+      <p>Your answer records are stored on your local device and can be cleared at any time after completing the quiz.</p>
+      <h3>3. Data Use</h3>
+      <p>Your data is used solely to generate your personal quiz report. It will not be sold, shared with, or provided to any third-party advertisers or commercial entities.</p>
+      <h3>4. Cookies</h3>
+      <p>If using the website version, only essential cookies may be used to ensure basic functionality — no tracking or advertising cookies are used.</p>
+      <h3>5. Your Rights</h3>
+      <p>You may clear your local data at any time (see your browser settings).</p>
     </div>
   </div>
 </div>
@@ -342,28 +342,28 @@ body{font-family:var(--font-sans);background:var(--warm-white);color:var(--charc
 <div class="modal-overlay" id="modal-support" role="dialog" aria-modal="true" aria-labelledby="modal-support-title">
   <div class="modal">
     <div class="modal-hd">
-      <h2 id="modal-support-title">💬 如果你需要更多支持</h2>
-      <button class="modal-close" id="modal-support-close" aria-label="关闭">&times;</button>
+      <h2 id="modal-support-title">💬 If You Need More Support</h2>
+      <button class="modal-close" id="modal-support-close" aria-label="Close">&times;</button>
     </div>
     <div class="modal-content support-modal">
-      <p>本测验不能替代专业心理咨询或治疗。如果你正在经历持续的情绪困扰，请及时寻求专业帮助：</p>
+      <p>This quiz cannot replace professional psychological counseling or treatment. If you are experiencing persistent emotional distress, please seek professional help:</p>
       <div class="support-numbers">
         <div class="support-num-card">
-          <div class="num-label">全国心理援助热线（24小时）</div>
+          <div class="num-label">Crisis Helpline (24/7, China)</div>
           <div class="num-value">400-161-9995</div>
         </div>
         <div class="support-num-card">
-          <div class="num-label">北京心理危机研究与干预中心</div>
+          <div class="num-label">Beijing Crisis Prevention & Intervention Center</div>
           <div class="num-value">010-82951332</div>
         </div>
       </div>
-      <h3>可前往以下机构寻求帮助</h3>
+      <h3>Where to Seek Help</h3>
       <ul class="support-resources">
-        <li>当地三甲医院心理科 / 精神科</li>
-        <li>高校心理咨询中心（面向校友及社会开放）</li>
-        <li>正规心理咨询机构（请确认咨询师资质）</li>
+        <li>Local top-tier hospital — Psychology or Psychiatry department</li>
+        <li>University counseling center (open to alumni and the public)</li>
+        <li>Reputable psychological counseling practice (verify counselor credentials)</li>
       </ul>
-      <p class="mt-24"><em>你不是一个人，寻求帮助是勇敢的表现。</em></p>
+      <p class="mt-24"><em>You are not alone — reaching out for help takes courage.</em></p>
     </div>
   </div>
 </div>
@@ -375,199 +375,199 @@ body{font-family:var(--font-sans);background:var(--warm-white);color:var(--charc
 // ─── Content Data ───────────────────────────────────────────────────────────
 const QUESTIONS = [
   {
-    scenario:"你刚刚办完退休手续，走出公司大门的那一刻，你脑海里浮现的第一个念头是：",
+    scenario:"You just finished your retirement procedures. The moment you walk out of the company gates, the first thought that comes to mind is:",
     options:[
-      {text:"我这些年积累的经验和人脉，接下来还能怎么用？我还打算做几个大项目。",dim:"career"},
-      {text:"终于有时间陪家人了，孙子孙女一定很想我。",dim:"family"},
-      {text:"同事们会怎么看我？我以后参加行业协会活动该怎么介绍自己？",dim:"social"},
-      {text:"终于自由了！我想学画画、到处旅行、好好读那些一直没时间读的书。",dim:"free"}
+      {text:"The experience and connections I've built over the years — how can I still put them to use? I still plan to take on a few major projects.",dim:"career"},
+      {text:"Finally, I have time for family. My grandchildren must have missed me so much.",dim:"family"},
+      {text:"What will my colleagues think of me? How should I introduce myself at industry events from now on?",dim:"social"},
+      {text:"Finally free! I want to learn painting, travel everywhere, and finally read all those books I've never had time for.",dim:"free"}
     ]
   },
   {
-    scenario:"周末，你独自在家，微信里有人发来同学聚会的邀请，你会：",
+    scenario:"It's the weekend and you're home alone. Someone sends you an invitation to a classmates' reunion in the group chat. You would:",
     options:[
-      {text:"犹豫一下：'我最近的工作进展/行业成就可以分享吗？'然后决定是否参加。",dim:"career"},
-      {text:"立刻报名：'好久没见大家了，正好和大家叙叙旧！'",dim:"family"},
-      {text:"仔细考虑：'这次聚会有哪些人会参加？我的状态够不够好？'",dim:"social"},
-      {text:"礼貌婉拒：'谢谢邀请，那天我有自己的安排。'然后享受一个人的安静时光。",dim:"free"}
+      {text:"Hesitate: 'Do I have any recent work progress or industry achievements to share?' Then decide whether to go.",dim:"career"},
+      {text:"Sign up immediately: 'Haven't seen everyone in so long! Perfect time to catch up!'",dim:"family"},
+      {text:"Think carefully: 'Who will be at this reunion? Am I in good enough shape for it?'",dim:"social"},
+      {text:"Politely decline: 'Thanks for the invite, but I have my own plans that day.' Then enjoy a quiet afternoon alone.",dim:"free"}
     ]
   },
   {
-    scenario:"你在朋友圈看到一位老同学分享了自己创业成功的文章，底下点赞评论无数，你会：",
+    scenario:"You see an old classmate share an article about their entrepreneurial success on social media, receiving countless likes and comments. You would:",
     options:[
-      {text:"由衷佩服，想主动联系看看有没有合作机会。",dim:"career"},
-      {text:"为朋友高兴，顺手点个赞，然后想起自己和孩子们的合照，发一张家庭照。",dim:"family"},
-      {text:"默默点了个赞，开始想着自己最近有没有什么值得分享的事。",dim:"social"},
-      {text:"划走，继续看手机里的旅行纪录片，觉得别人的成功和自己关系不大。",dim:"spirit"}
+      {text:"Truly admire them and consider reaching out to explore potential collaboration.",dim:"career"},
+      {text:"Feel happy for your friend, give it a like, then think of that photo of you with your kids and share a family picture instead.",dim:"family"},
+      {text:"Silently liked it, then start wondering if there's anything noteworthy happening in your own life worth sharing.",dim:"social"},
+      {text:"Scroll past it, continue watching a travel documentary on your phone — other people's success doesn't feel relevant to you.",dim:"spirit"}
     ]
   },
   {
-    scenario:"你的孩子已经上大学/结婚/在外地工作，家里只剩下你和伴侣，厨房变得安静了。你会：",
+    scenario:"Your child has gone off to college, gotten married, or started working in another city. Now it's just you and your partner at home, and the kitchen feels too quiet. You would:",
     options:[
-      {text:"把书房重新布置了一下，开始规划'退休后还能做点什么事业'。",dim:"career"},
-      {text:"和伴侣商量：'我们是不是该多去看看爸妈/帮孩子带带孩子？'",dim:"family"},
-      {text:"参加一些社交活动，认识新朋友，让自己不那么'落单'。",dim:"social"},
-      {text:"开始思考一些以前没时间想的问题：'我到底想过什么样的生活？'",dim:"spirit"}
+      {text:"Redecorate your study and start planning: 'What else can I accomplish in retirement?'",dim:"career"},
+      {text:"Discuss with your partner: 'Should we visit our parents more often / help our kids take care of the grandkids?'",dim:"family"},
+      {text:"Join social activities, meet new friends, so you don't feel so 'left alone.'",dim:"social"},
+      {text:"Start reflecting on questions you've never had time to consider: 'What kind of life do I actually want to live?'",dim:"spirit"}
     ]
   },
   {
-    scenario:"有人请你用三个词形容自己，你会说：",
+    scenario:"Someone asks you to describe yourself in three words. You would say:",
     options:[
-      {text:"专业、可靠、有执行力。",dim:"career"},
-      {text:"温暖、有爱、负责任。",dim:"family"},
-      {text:"有人缘、受尊重、善于交际。",dim:"social"},
-      {text:"自由、真诚、随性。",dim:"free"}
+      {text:"Professional, reliable, results-driven.",dim:"career"},
+      {text:"Warm, caring, responsible.",dim:"family"},
+      {text:"Well-connected, respected, socially skilled.",dim:"social"},
+      {text:"Free, authentic, easygoing.",dim:"free"}
     ]
   },
   {
-    scenario:"你面临一个选择：一份是稳定体面的工作机会，另一份是收入不确定但可以做自己热爱之事的机会。你会：",
+    scenario:"You're facing a choice: one is a stable, respectable job opportunity; the other is an opportunity to pursue what you love, but with uncertain income. You would:",
     options:[
-      {text:"认真评估哪个能让我的专业能力得到更大发挥，哪个更有'前途'。",dim:"career"},
-      {text:"哪个选择能让我更好地陪伴家人、维系家庭关系就选哪个。",dim:"family"},
-      {text:"哪个选择能让我在朋友圈/社交圈里更有面子、有地位就选哪个。",dim:"social"},
-      {text:"哪个选择让我心动、让我觉得'这就是我想要的'就选哪个。",dim:"free"}
+      {text:"Carefully evaluate which one allows my professional abilities to be better utilized and which has more 'future' potential.",dim:"career"},
+      {text:"Choose whichever option lets me spend more time with family and maintain family bonds.",dim:"family"},
+      {text:"Choose whichever option gives me more prestige and status among my friends and social circles.",dim:"social"},
+      {text:"Choose whichever option excites me and feels like 'this is exactly what I want.'",dim:"free"}
     ]
   },
   {
-    scenario:"你在一个社交场合，有人问你：'你现在是做什么的？'你的回答会是：",
+    scenario:"You're at a social event and someone asks you: 'What do you do now?' Your answer would be:",
     options:[
-      {text:"详细介绍自己的职业背景、专业领域和行业影响力。",dim:"career"},
-      {text:"'我现在主要在家，帮忙带孙子/照顾家人。'",dim:"family"},
-      {text:"'我？我朋友可多了，平时social挺忙的！'",dim:"social"},
-      {text:"'嗯，我在寻找一些新的方向……'",dim:"free"}
+      {text:"Give a detailed introduction of your professional background, area of expertise, and industry influence.",dim:"career"},
+      {text:"'Right now I mainly help out at home, taking care of grandchildren and family.'",dim:"family"},
+      {text:"'Me? I have so many friends, I'm pretty busy with social stuff!'",dim:"social"},
+      {text:"'Well, I'm exploring some new directions…'",dim:"free"}
     ]
   },
   {
-    scenario:"深夜，你睡不着，脑子里反复想的是：",
+    scenario:"Late at night, you can't sleep. What keeps replaying in your mind is:",
     options:[
-      {text:"'我还有哪些目标没有实现？我还能创造什么价值？'",dim:"career"},
-      {text:"'孩子在外地过得好不好？爸妈的身体最近怎么样？'",dim:"family"},
-      {text:"'今天聚会上我说的话是不是不太合适？那个人怎么看我？'",dim:"social"},
-      {text:"'我这辈子到底在追求什么？什么是真正重要的？'",dim:"spirit"}
+      {text:"'What goals haven't I achieved yet? What more value can I create?'",dim:"career"},
+      {text:"'Is my child doing okay in that other city? How are my parents' health lately?'",dim:"family"},
+      {text:"'Was what I said at the gathering today not quite appropriate? What does that person think of me?'",dim:"social"},
+      {text:"'What am I really chasing in this life? What truly matters?'",dim:"spirit"}
     ]
   },
   {
-    scenario:"你在商场看到一件很贵的衣服，设计独特但价格惊人，你会：",
+    scenario:"You see a very expensive piece of clothing at a department store — unique design but staggering price tag. You would:",
     options:[
-      {text:"犹豫后买下：'穿出去见客户/合作伙伴显得有品位，值得。'",dim:"career"},
-      {text:"拿起手机拍下来发给家人：'这衣服挺好看的，你们帮我看看适不适合？'",dim:"family"},
-      {text:"试穿后拍照发朋友圈，看大家点赞评论多不多，再决定买不买。",dim:"social"},
-      {text:"想了想，觉得自己在家穿什么都行，不买了，把钱留着旅行用。",dim:"free"}
+      {text:"Hesitate, then buy it: 'Wearing it to meet clients/partners shows good taste — it's worth it.'",dim:"career"},
+      {text:"Take a photo and send it to your family: 'This is quite nice, what do you think — would it suit me?'",dim:"family"},
+      {text:"Try it on, take a photo, post it on social media to see if the likes and comments are plentiful, then decide whether to buy.",dim:"social"},
+      {text:"Think about it and realize you can wear whatever at home anyway, skip the purchase, and save the money for travel instead.",dim:"free"}
     ]
   },
   {
-    scenario:"你参加了一个公益活动，帮助孤儿院的孩子们。你最有成就感的时刻是：",
+    scenario:"You participate in a charity event helping children at an orphanage. Your most fulfilling moment is:",
     options:[
-      {text:"'我运用自己的专业经验，帮这个活动提升了影响力。'",dim:"career"},
-      {text:"看到孩子们拉着志愿者的手说'谢谢叔叔阿姨'，心里特别暖。",dim:"family"},
-      {text:"活动照片发出来后，朋友们纷纷点赞评论：'你真有大爱！'",dim:"social"},
-      {text:"在陪伴孩子的过程中，自己内心也获得了一种平静和满足感。",dim:"spirit"}
+      {text:"'I leveraged my professional experience to help this event gain greater visibility.'",dim:"career"},
+      {text:"Seeing the children hold the volunteers' hands and say 'Thank you, uncle and auntie' — it warms your heart.",dim:"family"},
+      {text:"After the photos are posted, friends flood the comments: 'You have such a big heart!'",dim:"social"},
+      {text:"In the process of being with the children, you find a sense of inner peace and fulfillment within yourself.",dim:"spirit"}
     ]
   },
   {
-    scenario:"如果你有充足的时间和金钱，不用考虑任何现实限制，你最想做的第一件事是：",
+    scenario:"If you had ample time and money, with no practical constraints whatsoever, the very first thing you'd want to do is:",
     options:[
-      {text:"创办一个自己的机构/品牌，把毕生经验传承下去。",dim:"career"},
-      {text:"和全家人一起去旅行，大家庭其乐融融在一起。",dim:"family"},
-      {text:"在某个领域成为有影响力的人物，受邀演讲、被媒体报道。",dim:"social"},
-      {text:"隐居一处，读书、写作、冥想，过内心平静的生活。",dim:"spirit"}
+      {text:"Found my own institution or brand, passing on everything I've learned over the years.",dim:"career"},
+      {text:"Travel together with the whole family — everyone together, family bliss.",dim:"family"},
+      {text:"Become an influential figure in some field, giving speeches and being featured in media coverage.",dim:"social"},
+      {text:"Seclude myself somewhere, reading, writing, meditating — living a life of inner peace.",dim:"spirit"}
     ]
   },
   {
-    scenario:"你希望自己的墓志铭上写着什么？",
+    scenario:"What would you want written on your epitaph?",
     options:[
-      {text:"'他/她的一生，创造了许多价值，培养了无数人才。'",dim:"career"},
-      {text:"'他/她是慈爱的父母/伴侣/子女，家庭是她/他最大的骄傲。'",dim:"family"},
-      {text:"'他/她活成了很多人羡慕的样子，朋友遍天下。'",dim:"social"},
-      {text:"'他/她一生真诚地活出了自己，找到了内心的安宁。'",dim:"free"}
+      {text:"'He/She created tremendous value and nurtured countless talents.'",dim:"career"},
+      {text:"'He/She was a loving parent/partner/child — family was their greatest pride.'",dim:"family"},
+      {text:"'He/She lived the life many envied, with friends across the world.'",dim:"social"},
+      {text:"'He/She lived authentically and found inner peace.'",dim:"free"}
     ]
   }
 ];
 
 const RESULTS = {
   career:{
-    typeTag:"职业成就型",tagClass:"career",
-    name:"价值创造者",
-    tagline:"你的意义，来自于你能创造什么",
+    typeTag:"Career Achievement Type",tagClass:"career",
+    name:"Value Creator",
+    tagline:"Your meaning comes from what you can create",
     traits:[
-      {icon:"🎯",text:"将个人价值等同于专业贡献和能力输出"},
-      {icon:"📊",text:"从成就、排名、影响力中获得安全感和满足感"},
-      {icon:"🏆",text:"习惯用'做了什么'来定义自己是谁"},
-      {icon:"💼",text:"退休/转型后最易感到身份空虚的群体"}
+      {icon:"🎯",text:"You equate personal worth with professional contribution and capability output"},
+      {icon:"📊",text:"You find security and fulfillment in achievements, rankings, and influence"},
+      {icon:"🏆",text:"You define who you are by 'what you've accomplished'"},
+      {icon:"💼",text:"One of the groups most prone to identity void after retirement or transition"}
     ],
-    growth:"你一直活在'有用'里。现在，是时候学习：**存在本身，就值得被爱。** 你不需要每分钟都创造价值，你值得仅仅因为'你'而被珍惜。",
+    growth:"You've been living in 'being useful.' Now it's time to learn: **being itself is worthy of love.** You don't need to create value every minute — you deserve to be valued simply for being 'you.'",
     actions:[
-      {title:"梳理你的'成就资产'",desc:"列出过去20年你积累的专业技能、人脉资源、可迁移能力——不是为找工作，而是确认：你拥有很多，你本身就是丰富的。"},
-      {title:"尝试一次'零产出'陪伴",desc:"这个月，找一天，不做任何'有用'的事，只是陪家人喝茶、散步、闲聊。观察自己能不能接受'什么都没做'却依然感觉良好。"},
-      {title:"寻找'传承'而非'延续'",desc:"与其想办法延续职场身份，不如想想：你的经验可以以什么新形式帮助到别人？mentorship、写作、分享……让价值流动起来，而非困在职位里。"}
+      {title:"Take inventory of your 'achievement assets'",desc:"List the professional skills, networks, and transferable abilities you've built over 20 years — not to find a job, but to affirm: you have so much, you are already rich."},
+      {title:"Try a day of 'zero output' companionship",desc:"This month, set aside one day with no 'productive' agenda — just tea, walks, and conversation with family. Observe whether you can feel good doing 'nothing at all.'"},
+      {title:"Seek 'legacy' rather than 'continuation'",desc:"Instead of clinging to your professional identity, ask yourself: in what new form can your experience help others? Mentorship, writing, speaking… let value flow, rather than staying trapped in a job title."}
     ]
   },
   family:{
-    typeTag:"家庭关系型",tagClass:"family",
-    name:"爱的守护者",
-    tagline:"你的意义，来自于你与所爱之人的联结",
+    typeTag:"Family Connection Type",tagClass:"family",
+    name:"Guardian of Love",
+    tagline:"Your meaning comes from your bond with loved ones",
     traits:[
-      {icon:"🏠",text:"核心身份认同建立在'父母/子女/伴侣'的角色上"},
-      {icon:"💞",text:"从照顾他人、被家人需要中获得自我价值感"},
-      {icon:"🤝",text:"家庭和睦、亲人健康是你最大的心安"},
-      {icon:"⚠️",text:"当家人有自己的生活、不再那么需要你时，最易感到失落"}
+      {icon:"🏠",text:"Your core identity is anchored in the role of parent, child, or partner"},
+      {icon:"💞",text:"You derive self-worth from caring for others and being needed by family"},
+      {icon:"🤝",text:"Family harmony and loved ones' health are your greatest sources of peace"},
+      {icon:"⚠️",text:"Most vulnerable to feelings of loss when family members build independent lives and need you less"}
     ],
-    growth:"你对家人的付出是真实的、无价的。但你也需要开始学习：**你不仅仅是谁的谁，你首先是你自己。** 找到自我，不意味着背叛家庭，而是让你对家人的爱更加从容。",
+    growth:"Your dedication to family is real and invaluable. But you also need to learn: **you are not only someone's someone — you are first and foremost yourself.** Finding yourself doesn't mean betraying your family; it makes your love for them more grounded.",
     actions:[
-      {title:"重新定义你的'照顾'",desc:"从物理陪伴转向情感陪伴——发一条走心的微信，比强行介入孩子的决定更能表达你的爱。"},
-      {title:"每周给自己一段'专属时间'",desc:"选择一件纯粹属于自己的事（兴趣、学习、社交），不带任何'对家人有用'的目的，只是因为你自己喜欢。"},
-      {title:"拓展你的'家庭'边界",desc:"帮助邻居、参与社区活动、做志愿者——让你爱的能量流向更广阔的世界，你不会因此少爱家人，反而会让你的爱更丰盛。"}
+      {title:"Redefine your 'care'",desc:"Shift from physical presence to emotional presence — a heartfelt message means more than overstepping into your child's decisions. Love can be expressed through space, not intrusion."},
+      {title:"Claim a weekly 'me-time' ritual",desc:"Choose something that belongs entirely to you — a hobby, learning, socializing — with no purpose of being 'useful to family.' Simply because you enjoy it."},
+      {title:"Expand the boundaries of your 'family'",desc:"Help a neighbor, join community events, volunteer — let your capacity for love flow to a wider world. You won't love your family any less; instead, your love will become more abundant."}
     ]
   },
   social:{
-    typeTag:"社会认可型",tagClass:"social",
-    name:"联结艺术家",
-    tagline:"你的意义，来自于你与他人的关系质量",
+    typeTag:"Social Recognition Type",tagClass:"social",
+    name:"Connection Artist",
+    tagline:"Your meaning comes from the quality of your connections with others",
     traits:[
-      {icon:"🌐",text:"自我价值感高度依赖外部反馈（点赞、评价、认可）"},
-      {icon:"🤳",text:"社交媒体对你情绪的影响比一般人更大"},
-      {icon:"🎭",text:"有时为了维持'人设'而感到疲惫"},
-      {icon:"🔍",text:"当掌声散去，独处时最易感到空虚"}
+      {icon:"🌐",text:"Your self-worth heavily depends on external validation (likes, approval, recognition)"},
+      {icon:"🤳",text:"Social media affects your emotions more than the average person"},
+      {icon:"🎭",text:"Sometimes you feel exhausted maintaining your 'personal brand'"},
+      {icon:"🔍",text:"When the applause fades, solitude brings on the deepest emptiness"}
     ],
-    growth:"你对人际关系的敏感度是一种天赋，让你擅长连接人与人的情感。但你需要开始区分：**被人喜欢**和**被人尊重**，**高朋满座**和**知己二三**。真正让你安心的，不是一百个人的点赞，而是一两个真正懂你的人。",
+    growth:"Your sensitivity to relationships is a genuine gift — it enables you to connect people's emotions. But you need to start distinguishing: **being liked** vs. **being respected**, **a room full of acquaintances** vs. **one or two true confidants**. What truly calms your heart isn't a hundred likes — it's one person who truly understands you.",
     actions:[
-      {title:"做一次'数字排毒'实验",desc:"这周，选择一天不使用任何社交媒体。记录下那天的情绪变化——你有多频繁地想去看手机？当没有人点赞时，你感觉如何？觉知，是改变的第一步。"},
-      {title:"从'广度'转向'深度'",desc:"主动联系一个你真正欣赏、却久未联系的人，不是群发消息，而是认真地进行一次对话。关系的质量，比数量重要得多。"},
-      {title:"学会享受'安静的认可'",desc:"每天花5分钟，在睡前回顾今天，不问'谁认可了我'，而是问'我今天对谁有了一点正面的影响'。你的价值，不需要被全世界看见。"}
+      {title:"Conduct a 'digital detox' experiment",desc:"This week, go one full day without any social media. Record how your mood changes — how often do you reach for your phone? How do you feel when no one likes your posts? Awareness is the first step to change."},
+      {title:"Shift from 'breadth' to 'depth'",desc:"Reach out to someone you truly admire but haven't connected with in a long time — not a mass message, but a genuine conversation. The quality of relationships matters far more than the quantity."},
+      {title:"Learn to savor 'quiet validation'",desc:"Each night, take 5 minutes to reflect on your day — not asking 'who approved of me' but 'who did I positively impact today.' Your worth doesn't need the whole world to witness it."}
     ]
   },
   free:{
-    typeTag:"自由探索型",tagClass:"free",
-    name:"生命探险家",
-    tagline:"你的意义，来自于你是否忠于内心",
+    typeTag:"Free Explorer Type",tagClass:"free",
+    name:"Life Explorer",
+    tagline:"Your meaning comes from staying true to your inner self",
     traits:[
-      {icon:"🧭",text:"抗拒被定义，拒绝标签和固定身份"},
-      {icon:"✨",text:"从新鲜体验、自我突破中获得生命力"},
-      {icon:"🌱",text:"世俗意义的'成功'对你吸引力有限"},
-      {icon:"🌀",text:"有时因缺乏固定锚点而感到'飘着'"}
+      {icon:"🧭",text:"You resist being defined, rejecting labels and fixed identities"},
+      {icon:"✨",text:"You draw vitality from fresh experiences and personal breakthroughs"},
+      {icon:"🌱",text:"Conventional 'success' holds limited appeal for you"},
+      {icon:"🌀",text:"Sometimes the lack of a fixed anchor leaves you feeling adrift"}
     ],
-    growth:"你的自由灵魂是最珍贵的礼物。但自由也意味着责任——对自己人生方向的责任。找到内心的指南针，不是为了限制你，而是让你的自由更有方向感，让你的探索更有根。",
+    growth:"Your free spirit is the most precious gift. But freedom also comes with responsibility — the responsibility of owning your life's direction. Finding your inner compass isn't about limiting yourself — it's about giving your freedom a sense of direction, your exploration a sense of roots.",
     actions:[
-      {title:"绘制你的'可能地图'",desc:"拿一张纸，写下10件你这辈子最想体验的事（不考虑现实可行性）。然后圈出3件你现在就可以开始行动的。探索不需要等到'准备好了'，从今天开始。"},
-      {title:"找到一个'灵魂旅伴'",desc:"自由探险家有时会孤独。找一个志同道合的朋友，定期分享彼此的探索和困惑，让旅程有同行者。"},
-      {title:"给探索留一个'根'",desc:"选择一个你认同的价值观（环保、教育、公益……），让它成为你探索的稳定锚点。有根的探索，是最有力量的探索。"}
+      {title:"Map out your 'map of possibilities'",desc:"Grab a piece of paper and write down 10 things you most want to experience in this lifetime (ignoring practicality). Then circle 3 you could start working on right now. Exploration doesn't wait until you're 'ready' — start today."},
+      {title:"Find a 'soul companion for the journey'",desc:"Explorers can feel lonely too. Find a like-minded friend and regularly share your discoveries and confusions — having a fellow traveler makes all the difference."},
+      {title:"Give your exploration a 'root'",desc:"Choose a value you believe in (environment, education, community service…) and let it serve as your stable anchor. Exploration rooted in values is the most powerful kind."}
     ]
   },
   spirit:{
-    typeTag:"精神意义型",tagClass:"spirit",
-    name:"内在觉醒者",
-    tagline:"你的意义，来自于你与内在的对话",
+    typeTag:"Spiritual Meaning Type",tagClass:"spirit",
+    name:"Inner Awakener",
+    tagline:"Your meaning comes from your dialogue with your inner self",
     traits:[
-      {icon:"🕯️",text:"早早开始追问'我是谁''为什么而活'等根本问题"},
-      {icon:"📖",text:"对哲学、宗教、心理学等领域有天然的兴趣"},
-      {icon:"🧘",text:"重视内心平静胜过外在成就"},
-      {icon:"🌊",text:"有时因思考过于深刻而与主流社交圈有些距离"}
+      {icon:"🕯️",text:"You've been asking fundamental questions — 'Who am I?' 'What do I live for?' — since early on"},
+      {icon:"📖",text:"You feel a natural draw toward philosophy, religion, and psychology"},
+      {icon:"🧘",text:"You value inner peace far more than external achievement"},
+      {icon:"🌊",text:"Sometimes your depth of thought creates distance from mainstream social circles"}
     ],
-    growth:"你走在一条很有智慧的路上。但请注意：**过度向内可能让人脱离地面，活在头脑的云端里。** 真正的觉醒，不只发生在冥想垫上，也发生在厨房的烟火气里、在与孩子的拌嘴里、在生活的粗糙与真实里。",
+    growth:"You're on a deeply wise path. But please watch out: **excessive inward focus can disconnect you from the ground beneath your feet, leaving you living in the clouds of your own mind.** True awakening doesn't only happen on a meditation cushion — it also happens in the warmth of a kitchen, in the bickering with your child, in the roughness and realness of daily life.",
     actions:[
-      {title:"把'悟'化为'行'",desc:"你读过的道理、参加过的课程，不能只留在笔记本里。选择一件你已经知道但尚未做到的事，这周就行动。知行合一，才是真正的智慧。"},
-      {title:"参与一些'接地气'的活动",desc:"参加一次社区活动、做一天志愿者、帮朋友解决一个实际问题……让精神的追求落地，你的力量会加倍。"},
-      {title:"与他人分享你的'领悟'",desc:"把你对生命的思考写下来、说出来，即使你觉得别人可能听不懂。分享，是让精神成长继续深化最好的方式。"}
+      {title:"Transform 'insight' into 'action'",desc:"The wisdom you've gained, the courses you've taken — don't let them stay trapped in notebooks. Choose one thing you already know but haven't yet done, and act on it this week. Integrating knowledge with action is true wisdom."},
+      {title:"Participate in some 'grounded' activities",desc:"Join a community event, volunteer for a day, help a friend solve a practical problem… Let your spiritual pursuits take root in the real world, and your strength will multiply."},
+      {title:"Share your 'awakenings' with others",desc:"Write down or speak aloud your reflections on life — even if you feel others may not understand. Sharing is the best way to deepen your spiritual growth."}
     ]
   }
 };
@@ -586,6 +586,9 @@ function loadProgress(){
   return false
 }
 function clearProgress(){try{localStorage.removeItem(STORAGE_KEY)}catch(e){}}
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+function $(id){return document.getElementById(id)}
 
 // ─── Screen transitions ───────────────────────────────────────────────────────
 function showScreenFn(name){
@@ -609,14 +612,14 @@ function showScreenFn(name){
 function renderQuestion(){
   const q=QUESTIONS[currentQ];
   $('scenario-text').textContent=q.scenario;
-  $('question-num-label').textContent=`第 ${currentQ+1} 题`;
+  $('question-num-label').textContent=`Question ${currentQ+1}`;
 
   // Progress
   const pct=(currentQ/TOTAL)*100;
   const fill=document.getElementById('progress-fill');
   fill.style.width=`${pct}%`;
   fill.parentElement.setAttribute('aria-valuenow',currentQ+1);
-  $('progress-label').textContent=`第 ${currentQ+1} 题 / 共 ${TOTAL} 题`;
+  $('progress-label').textContent=`Question ${currentQ+1} of ${TOTAL}`;
 
   // Options
   const list=document.getElementById('options-list');
@@ -628,7 +631,7 @@ function renderQuestion(){
     card.setAttribute('role','radio');
     card.setAttribute('aria-checked',answers[currentQ]===i?'true':'false');
     card.setAttribute('tabindex','0');
-    card.setAttribute('aria-label',`选项${letters[i]}：${opt.text}`);
+    card.setAttribute('aria-label',`Option ${letters[i]}: ${opt.text}`);
     card.innerHTML=`<span class="option-letter">${letters[i]}</span><span class="option-text">${opt.text}</span>`;
     card.addEventListener('click',()=>selectOption(i));
     card.addEventListener('keydown',(e)=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectOption(i)}});
@@ -644,7 +647,7 @@ function renderQuestion(){
     if(answers[i]!==null) btn.classList.add('answered');
     if(i===currentQ) btn.classList.add('current');
     btn.textContent=i+1;
-    btn.setAttribute('aria-label',`跳转到第${i+1}题${answers[i]!==null?'（已答）':'（未答）'}`);
+    btn.setAttribute('aria-label',`Go to question ${i+1}${answers[i]!==null?' (answered)':''}`);
     btn.addEventListener('click',()=>jumpTo(i));
     jump.appendChild(btn);
   }
@@ -654,8 +657,8 @@ function renderQuestion(){
   prev.style.visibility=currentQ===0?'hidden':'visible';
   const next=document.getElementById('btn-next');
   next.disabled=answers[currentQ]===null;
-  next.textContent=currentQ===TOTAL-1?'查看结果':'下一题 ';
-  next.innerHTML=currentQ===TOTAL-1?'查看结果 <span aria-hidden="true">›</span>':'下一题 <span aria-hidden="true">›</span>';
+  next.setAttribute('aria-label',currentQ===TOTAL-1?'View results':'Next question');
+  next.innerHTML=currentQ===TOTAL-1?'View Results <span aria-hidden="true">›</span>':'Next <span aria-hidden="true">›</span>';
 }
 
 function selectOption(idx){
@@ -727,7 +730,7 @@ function renderResult(domResult){
     </div>
 
     <div class="result-section">
-      <h3 class="result-section-title">🔍 核心特征</h3>
+      <h3 class="result-section-title">🔍 Core Traits</h3>
       <ul class="traits-list">
         ${r.traits.map(t=>`<li><span class="trait-icon" aria-hidden="true">${t.icon}</span><span>${t.text}</span></li>`).join('')}
       </ul>
@@ -738,7 +741,7 @@ function renderResult(domResult){
     </div>
 
     <div class="result-section">
-      <h3 class="result-section-title">🚀 三步行动建议</h3>
+      <h3 class="result-section-title">🚀 Three Action Steps</h3>
       <ul class="actions-list">
         ${r.actions.map((a,i)=>`
           <li class="action-item">
@@ -752,14 +755,14 @@ function renderResult(domResult){
     </div>
 
     <div class="result-ctas">
-      <button class="btn-secondary" id="btn-retake">重新测试</button>
-      <button class="btn-primary" id="btn-share">分享结果</button>
+      <button class="btn-secondary" id="btn-retake">Retake Quiz</button>
+      <button class="btn-primary" id="btn-share">Share Results</button>
     </div>
 
     <div class="result-footer">
-      <button class="btn-text" id="btn-privacy">隐私政策</button>
+      <button class="btn-text" id="btn-privacy">Privacy Policy</button>
       <span aria-hidden="true" style="color:var(--warm-gray);margin:0 8px">|</span>
-      <button class="btn-text" id="btn-support">需要专业支持</button>
+      <button class="btn-text" id="btn-support">Need Professional Support</button>
     </div>
 
     <div style="margin-top:24px">
@@ -767,14 +770,14 @@ function renderResult(domResult){
         <canvas id="share-canvas" class="share-canvas"></canvas>
       </div>
       <div class="share-actions" id="share-actions" style="display:none">
-        <button class="share-btn wechat" id="btn-wechat-share" aria-label="分享到微信">
-          <span aria-hidden="true">💬</span> 微信分享
+        <button class="share-btn wechat" id="btn-wechat-share" aria-label="Share to WeChat">
+          <span aria-hidden="true">💬</span> WeChat
         </button>
-        <button class="share-btn" id="btn-copy-link" aria-label="复制分享链接">
-          <span aria-hidden="true">🔗</span> 复制链接
+        <button class="share-btn" id="btn-copy-link" aria-label="Copy share link">
+          <span aria-hidden="true">🔗</span> Copy Link
         </button>
-        <button class="share-btn" id="btn-save-img" aria-label="保存图片">
-          <span aria-hidden="true">📥</span> 保存图片
+        <button class="share-btn" id="btn-save-img" aria-label="Save image">
+          <span aria-hidden="true">📥</span> Save Image
         </button>
       </div>
     </div>
@@ -785,7 +788,6 @@ function renderResult(domResult){
   if(shareCanvas){
     shareCanvas.width=810;shareCanvas.height=1080;
     const ctx=shareCanvas.getContext('2d');
-    // Copy from offscreen
     ctx.drawImage(canvas,0,0);
   }
 
@@ -808,16 +810,16 @@ function renderResult(domResult){
     sc.getContext('2d').drawImage(canvas,0,0);
   });
 
-  document.getElementById('btn-wechat-share').addEventListener('click',()=>showToast('微信分享请长按保存图片后发送'));
+  document.getElementById('btn-wechat-share').addEventListener('click',()=>showToast('For WeChat sharing: long-press the saved image to send'));
   document.getElementById('btn-copy-link').addEventListener('click',()=>{
-    navigator.clipboard.writeText(window.location.href.split('?')[0]).then(()=>showToast('链接已复制到剪贴板')).catch(()=>showToast('复制失败，请手动复制'));
+    navigator.clipboard.writeText(window.location.href.split('?')[0]).then(()=>showToast('Link copied to clipboard')).catch(()=>showToast('Copy failed, please copy manually'));
   });
   document.getElementById('btn-save-img').addEventListener('click',()=>{
     const link=document.createElement('a');
-    link.download=`身份锚点测验_${r.name}.png`;
+    link.download=`RoleAnchorQuiz_${r.name}.png`;
     link.href=canvas.toDataURL('image/png');
     link.click();
-    showToast('图片已保存');
+    showToast('Image saved');
   });
   document.getElementById('btn-privacy').addEventListener('click',()=>openModal('modal-privacy'));
   document.getElementById('btn-support').addEventListener('click',()=>openModal('modal-support'));
@@ -842,15 +844,15 @@ function drawShareCard(canvas,domResult,r){
 
   // Brand
   ctx.fillStyle='#8B7E74';
-  ctx.font='500 22px Noto Sans SC,sans-serif';
+  ctx.font='500 22px Inter,sans-serif';
   ctx.textAlign='center';
-  ctx.fillText('身份锚点测验',centerX,80);
+  ctx.fillText('Role Anchor Quiz',centerX,80);
 
   // Main title
   ctx.fillStyle='#7B5B3A';
-  ctx.font='700 52px Noto Serif SC,serif';
+  ctx.font='700 52px Merriweather,serif';
   ctx.textAlign='center';
-  ctx.fillText('你的人生以什么为锚？',centerX,160);
+  ctx.fillText('What Defines Your Sense of Self?',centerX,160);
 
   // Type color
   const typeColors={career:'#B57B5E',family:'#9B8AA5',social:'#8B9DB5',free:'#D4956A',spirit:'#8A9B7A'};
@@ -858,13 +860,13 @@ function drawShareCard(canvas,domResult,r){
 
   // Type name
   ctx.fillStyle=tc;
-  ctx.font='700 80px Noto Serif SC,serif';
+  ctx.font='700 80px Merriweather,serif';
   ctx.textAlign='center';
   ctx.fillText(r.name,centerX,300);
 
   // Tagline
   ctx.fillStyle='#8B7E74';
-  ctx.font='400 30px Noto Serif SC,serif';
+  ctx.font='400 30px Merriweather,serif';
   ctx.fillText(`"${r.tagline}"`,centerX,370);
 
   // Divider
@@ -875,15 +877,15 @@ function drawShareCard(canvas,domResult,r){
   ctx.textAlign='center';
   const traitY=[470,540];
   r.traits.slice(0,2).forEach((t,i)=>{
-    ctx.font='400 26px Noto Sans SC,sans-serif';
+    ctx.font='400 26px Inter,sans-serif';
     ctx.fillStyle='#3D3530';
     ctx.fillText(`${t.icon} ${t.text}`,centerX,traitY[i]);
   });
 
   // Bottom brand
   ctx.fillStyle='#C4B8AC';
-  ctx.font='400 20px Noto Sans SC,sans-serif';
-  ctx.fillText('© 2026 身份锚点测验',centerX,H-60);
+  ctx.font='400 20px Inter,sans-serif';
+  ctx.fillText('© 2026 Role Anchor Quiz',centerX,H-60);
 }
 
 // ─── Navigation ──────────────────────────────────────────────────────────────

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>悲伤地形图测验</title>
-  <meta name="description" content="在这段旅程中，我们将一起理解你的悲伤。每个人的悲伤都有它独特的形状。">
+  <title>Grief Landscape Quiz</title>
+  <meta name="description" content="On this journey, we will understand your grief together. Everyone's grief has its own unique shape.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Merriweather:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 
   <style>
     *, *::before, *::after {
@@ -30,8 +30,8 @@
       --cta-text: #FFFFFF;
       --error: #B07A6E;
 
-      --font-serif: 'Noto Serif SC', serif;
-      --font-sans: 'Noto Sans SC', sans-serif;
+      --font-serif: 'Merriweather', serif;
+      --font-sans: 'Inter', sans-serif;
 
       --radius-sm: 10px;
       --radius-md: 12px;
@@ -958,7 +958,7 @@
 <body>
 
   <!-- Progress Bar (visible during questions) -->
-  <div class="progress-container" id="progressContainer" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="10" aria-label="测验进度">
+  <div class="progress-container" id="progressContainer" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="10" aria-label="Quiz progress">
     <div class="progress-bar">
       <div class="progress-fill" id="progressFill"></div>
     </div>
@@ -976,35 +976,35 @@
         <path d="M20 55 Q25 50 30 55" stroke="#8FA885" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.7"/>
       </svg>
 
-      <h1 class="intro-title" id="intro-title">悲伤地形图测验</h1>
-      <p class="intro-subtitle">在这段旅程中，我们将一起理解你的悲伤。</p>
+      <h1 class="intro-title" id="intro-title">Grief Landscape Quiz</h1>
+      <p class="intro-subtitle">On this journey, we will understand your grief together.</p>
 
-      <p class="intro-description">每个人的悲伤都有它独特的形状。
-它可能是沉重的、破碎的、迟缓的，
-或者正在慢慢找到新的位置。
+      <p class="intro-description">Everyone's grief has its own unique shape.
+It can be heavy, shattered, slow,
+or slowly finding a new place.
 
-这不是一个诊断工具。
-它是一面镜子，帮助你更看清自己。</p>
+This is not a diagnostic tool.
+It is a mirror, helping you see yourself more clearly.</p>
 
-      <p class="intro-note">你的回答不会被保存或分享。</p>
+      <p class="intro-note">Your responses will not be saved or shared.</p>
 
-      <button class="btn-primary" id="btn-start" aria-label="开始探索悲伤地形图测验">开始探索</button>
+      <button class="btn-primary" id="btn-start" aria-label="Begin exploring the Grief Landscape Quiz">Begin Exploration</button>
     </div>
   </div>
 
   <!-- ==================== CONSENT SCREEN ==================== -->
   <div class="screen" id="screen-consent" role="group" aria-labelledby="consent-title">
     <div class="card" style="box-shadow:none; background:transparent;">
-      <h2 class="consent-title" id="consent-title">关于你的隐私</h2>
-      <p class="consent-body">在开始之前，我们想诚实告诉你：
+      <h2 class="consent-title" id="consent-title">About Your Privacy</h2>
+      <p class="consent-body">Before we begin, we want to be honest with you:
 
-• 你的回答会即时计算，但不会上传到任何服务器
-• 除非你主动分享，我们无法看到你的结果
-• 整个测验可以在任何时刻停止</p>
+• Your responses are calculated instantly but are never uploaded to any server
+• Unless you actively share, we cannot see your results
+• The quiz can be stopped at any moment</p>
 
       <div class="consent-buttons">
-        <button class="btn-primary" id="btn-consent">我理解，继续</button>
-        <button class="btn-ghost" id="btn-back-intro">返回</button>
+        <button class="btn-primary" id="btn-consent">I understand, continue</button>
+        <button class="btn-ghost" id="btn-back-intro">Go back</button>
       </div>
     </div>
   </div>
@@ -1024,16 +1024,16 @@
         <span id="triggerWarningText"></span>
       </div>
 
-      <p class="question-instruction" id="question-instruction">请根据你最近两周的感受作答</p>
-      <p class="question-number" id="question-number">第 1 题，共 10 题</p>
+      <p class="question-instruction" id="question-instruction">Please answer based on how you have been feeling over the past two weeks</p>
+      <p class="question-number" id="question-number">Question 1 of 10</p>
       <p class="question-text" id="question-text-label"></p>
 
       <div class="question-divider"></div>
 
-      <div class="options-list" id="options-list" role="radiogroup" aria-label="请选择最符合你的选项"></div>
+      <div class="options-list" id="options-list" role="radiogroup" aria-label="Please select the option that best describes you"></div>
 
       <div class="next-btn-wrapper">
-        <button class="btn-primary" id="btn-next" aria-label="下一题" disabled>下一题</button>
+        <button class="btn-primary" id="btn-next" aria-label="Next question" disabled>Next</button>
       </div>
     </div>
   </div>
@@ -1043,17 +1043,17 @@
     <div class="processing-icon-wrap" aria-hidden="true">
       <div class="processing-circle"></div>
     </div>
-    <p class="processing-title">正在整理你的答案...</p>
-    <p class="processing-sub">这需要几秒钟</p>
+    <p class="processing-title">Organizing your responses...</p>
+    <p class="processing-sub">This will take a few seconds</p>
   </div>
 
   <!-- ==================== RESULTS SCREEN ==================== -->
   <div class="screen" id="screen-results">
-    <article class="results-card" id="resultsCard" aria-label="测验结果">
+    <article class="results-card" id="resultsCard" aria-label="Quiz results">
 
       <div class="result-header">
         <div class="result-icon" id="resultIcon" aria-hidden="true"></div>
-        <p class="result-label">你的结果：</p>
+        <p class="result-label">Your result:</p>
         <h2 class="result-type-name" id="resultTypeName"></h2>
         <p class="result-tagline" id="resultTagline"></p>
       </div>
@@ -1061,31 +1061,31 @@
       <div class="result-divider"></div>
 
       <div class="result-section">
-        <p class="result-section-title">特征</p>
+        <p class="result-section-title">Characteristics</p>
         <ul class="characteristics-list" id="resultCharacteristics"></ul>
       </div>
 
       <div class="result-divider"></div>
 
       <div class="result-section">
-        <p class="result-section-title">它如何影响你现在的生活</p>
+        <p class="result-section-title">How it affects your life now</p>
         <p class="impact-text" id="resultImpact"></p>
       </div>
 
       <div class="result-divider"></div>
 
       <div class="result-section">
-        <p class="action-label">你可以尝试</p>
+        <p class="action-label">You could try</p>
         <ol class="action-list" id="resultActions"></ol>
       </div>
 
       <div class="result-divider"></div>
 
       <div class="share-section">
-        <p class="share-title">分享你的悲伤地形图</p>
-        <p class="share-sub">也许有人此刻也需要被理解</p>
+        <p class="share-title">Share Your Grief Landscape</p>
+        <p class="share-sub">Perhaps someone else also needs to be understood right now</p>
         <div class="share-buttons">
-          <button class="btn-secondary" id="btn-share-wechat" aria-label="分享到微信">
+          <button class="btn-secondary" id="btn-share-wechat" aria-label="Share to WeChat">
             <svg class="icon-wechat" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M8.5 11.5C8.5 10.4 9.4 9.5 10.5 9.5C11.6 9.5 12.5 10.4 12.5 11.5C12.5 12.6 11.6 13.5 10.5 13.5C9.4 13.5 8.5 12.6 8.5 11.5Z" fill="#8FA885"/>
               <path d="M15.5 11.5C15.5 10.4 16.4 9.5 17.5 9.5C18.6 9.5 19.5 10.4 19.5 11.5C19.5 12.6 18.6 13.5 17.5 13.5C16.4 13.5 15.5 12.6 15.5 11.5Z" fill="#8FA885"/>
@@ -1094,28 +1094,28 @@
               <path d="M2 8C2 5 4.5 3 8 3C11.5 3 14 5 14 8C14 11 11.5 13 8 13C4.5 13 2 11 2 8Z" fill="none" stroke="#8FA885" stroke-width="1.2"/>
               <path d="M14 8C14 5.5 15.5 4 17.5 4C19.5 4 21 5.5 21 8C21 10.5 19.5 12 17.5 12C15.5 12 14 10.5 14 8Z" fill="none" stroke="#8FA885" stroke-width="1.2"/>
             </svg>
-            微信分享
+            Share to WeChat
           </button>
-          <button class="btn-secondary" id="btn-copy" aria-label="复制结果链接">
+          <button class="btn-secondary" id="btn-copy" aria-label="Copy result link">
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
               <rect x="7" y="7" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/>
               <path d="M13 7V5C13 4 12 3 11 3H5C4 3 3 4 3 5V11C3 12 4 13 5 13H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
             </svg>
-            复制链接
+            Copy Link
           </button>
         </div>
       </div>
 
       <div class="support-section">
         <div class="support-cta-wrap">
-          <button class="btn-primary" id="btn-support" aria-label="寻找专业支持">寻找专业支持</button>
+          <button class="btn-primary" id="btn-support" aria-label="Find professional support">Find Professional Support</button>
         </div>
-        <p class="support-note">帮助是一种力量，而非软弱</p>
+        <p class="support-note">Seeking help is a strength, not a weakness</p>
       </div>
 
       <div class="retake-link">
-        <button class="btn-ghost" id="btn-retake">重新测试</button>
-        <p style="font-size:0.75rem;color:var(--secondary-text);margin-top:4px;">你的经历可能会改变，这个地图也会。</p>
+        <button class="btn-ghost" id="btn-retake">Retake the Quiz</button>
+        <p style="font-size:0.75rem;color:var(--secondary-text);margin-top:4px;">Your experience may change, and so will this map.</p>
       </div>
     </article>
   </div>
@@ -1123,22 +1123,22 @@
   <!-- ==================== EXIT MODAL ==================== -->
   <div class="modal-overlay" id="exitModal" role="dialog" aria-modal="true" aria-labelledby="exitModalTitle">
     <div class="modal-card">
-      <button class="modal-close" id="exitModalClose" aria-label="关闭">&times;</button>
-      <h3 class="modal-title" id="exitModalTitle">确定要离开吗？</h3>
-      <p class="modal-body">你的悲伤值得被好好对待。
-如果你现在离开，下次可以从头开始。</p>
+      <button class="modal-close" id="exitModalClose" aria-label="Close">&times;</button>
+      <h3 class="modal-title" id="exitModalTitle">Are you sure you want to leave?</h3>
+      <p class="modal-body">Your grief deserves to be treated with care.
+If you leave now, you can always start over from the beginning next time.</p>
       <div class="modal-buttons">
-        <button class="btn-ghost" id="btn-continue-question">继续作答</button>
-        <button class="btn-primary" id="btn-confirm-exit">确认离开</button>
+        <button class="btn-ghost" id="btn-continue-question">Continue</button>
+        <button class="btn-primary" id="btn-confirm-exit">Confirm Exit</button>
       </div>
     </div>
   </div>
 
   <!-- ==================== SUPPORT PANEL ==================== -->
-  <div class="support-panel" id="supportPanel" role="dialog" aria-modal="true" aria-label="专业支持资源">
+  <div class="support-panel" id="supportPanel" role="dialog" aria-modal="true" aria-label="Professional support resources">
     <div style="text-align:center; margin-bottom:24px;">
-      <p style="font-family:var(--font-serif);font-size:1.125rem;font-weight:600;margin-bottom:4px;">寻求帮助是一种力量</p>
-      <p style="font-size:0.875rem;color:var(--secondary-text);">你不是一个人。以下资源可以为你提供支持。</p>
+      <p style="font-family:var(--font-serif);font-size:1.125rem;font-weight:600;margin-bottom:4px;">Asking for help is a strength</p>
+      <p style="font-size:0.875rem;color:var(--secondary-text);">You are not alone. These resources can provide support for you.</p>
     </div>
 
     <div class="support-resource">
@@ -1150,8 +1150,8 @@
         </svg>
       </div>
       <div>
-        <p class="support-resource-name">生命热线</p>
-        <p class="support-resource-desc">全国24小时心理援助 · 400-161-9995</p>
+        <p class="support-resource-name">Crisis Hotline (China)</p>
+        <p class="support-resource-desc">24-hour nationwide mental health support · 400-161-9995</p>
       </div>
     </div>
 
@@ -1163,8 +1163,8 @@
         </svg>
       </div>
       <div>
-        <p class="support-resource-name">简单心理</p>
-        <p class="support-resource-desc">认证心理咨询师目录 · jiqing.org</p>
+        <p class="support-resource-name">Jiandan Psychology</p>
+        <p class="support-resource-desc">Certified counselor directory · jiqing.org</p>
       </div>
     </div>
 
@@ -1177,12 +1177,12 @@
         </svg>
       </div>
       <div>
-        <p class="support-resource-name">壹心理</p>
-        <p class="support-resource-desc">专业心理服务平台 · xinli001.com</p>
+        <p class="support-resource-name">Yixinli</p>
+        <p class="support-resource-desc">Professional psychology platform · xinli001.com</p>
       </div>
     </div>
 
-    <button class="btn-primary" id="btn-close-support" style="margin-top:8px;">我知道了</button>
+    <button class="btn-primary" id="btn-close-support" style="margin-top:8px;">I understand</button>
   </div>
 
   <!-- Toast -->
@@ -1192,111 +1192,111 @@
     // ===================== QUIZ DATA =====================
     const QUESTIONS = [
       {
-        text: "失去之后，我常常感觉时间好像停滞了，周围的一切都不太真实。",
+        text: "After the loss, I often feel like time has stopped, and everything around me feels unreal.",
         options: [
-          { label: "完全不符合", score: 1 },
-          { label: "不太符合", score: 2 },
-          { label: "比较符合", score: 3 },
-          { label: "完全符合", score: 4 }
+          { label: "Does not describe me at all", score: 1 },
+          { label: "Does not describe me well", score: 2 },
+          { label: "Describes me somewhat", score: 3 },
+          { label: "Describes me perfectly", score: 4 }
         ],
         dimensions: ["shock", "suppressed"],
         warning: null
       },
       {
-        text: "我会刻意回避与失去相关的话题、场景，或是某些能够唤起回忆的物品。",
+        text: "I deliberately avoid topics, places, or objects that are connected to my loss.",
         options: [
-          { label: "完全不符合", score: 1 },
-          { label: "不太符合", score: 2 },
-          { label: "比较符合", score: 3 },
-          { label: "完全符合", score: 4 }
+          { label: "Does not describe me at all", score: 1 },
+          { label: "Does not describe me well", score: 2 },
+          { label: "Describes me somewhat", score: 3 },
+          { label: "Describes me perfectly", score: 4 }
         ],
         dimensions: ["avoidant"],
-        warning: "接下来的问题可能涉及你失去的人"
+        warning: "The following questions may touch on the person you lost"
       },
       {
-        text: "我发现自己很难向他人谈论这段失去，甚至会感到说不出口。",
+        text: "I find it very difficult to talk to others about this loss — it feels impossible to put into words.",
         options: [
-          { label: "完全不符合", score: 1 },
-          { label: "不太符合", score: 2 },
-          { label: "比较符合", score: 3 },
-          { label: "完全符合", score: 4 }
+          { label: "Does not describe me at all", score: 1 },
+          { label: "Does not describe me well", score: 2 },
+          { label: "Describes me somewhat", score: 3 },
+          { label: "Describes me perfectly", score: 4 }
         ],
         dimensions: ["suppressed"],
-        warning: "接下来我们会问一些关于内心感受的问题"
+        warning: "Next we will ask some questions about your inner feelings"
       },
       {
-        text: "失去之后，我常常陷入回忆，反复回想与那个人或那段关系有关的往事。",
+        text: "After the loss, I often find myself lost in memories, going over and over memories of that person or relationship.",
         options: [
-          { label: "完全不符合", score: 1 },
-          { label: "不太符合", score: 2 },
-          { label: "比较符合", score: 3 },
-          { label: "完全符合", score: 4 }
+          { label: "Does not describe me at all", score: 1 },
+          { label: "Does not describe me well", score: 2 },
+          { label: "Describes me somewhat", score: 3 },
+          { label: "Describes me perfectly", score: 4 }
         ],
         dimensions: ["prolonged"],
         warning: null
       },
       {
-        text: "我觉得自己已经开始慢慢接受失去的事实，并尝试适应新的生活状态。",
+        text: "I feel that I have started to gradually accept the reality of my loss and am trying to adapt to a new state of life.",
         options: [
-          { label: "完全不符合", score: 4 },
-          { label: "不太符合", score: 3 },
-          { label: "比较符合", score: 2 },
-          { label: "完全符合", score: 1 }
+          { label: "Does not describe me at all", score: 4 },
+          { label: "Does not describe me well", score: 3 },
+          { label: "Describes me somewhat", score: 2 },
+          { label: "Describes me perfectly", score: 1 }
         ],
         dimensions: ["integrating"],
         warning: null
       },
       {
-        text: "我常常想，如果当初做了不同的事情，结果会不会不一样。",
+        text: "I often wonder, if I had done things differently, would the outcome have been different.",
         options: [
-          { label: "完全不符合", score: 1 },
-          { label: "不太符合", score: 2 },
-          { label: "比较符合", score: 3 },
-          { label: "完全符合", score: 4 }
+          { label: "Does not describe me at all", score: 1 },
+          { label: "Does not describe me well", score: 2 },
+          { label: "Describes me somewhat", score: 3 },
+          { label: "Describes me perfectly", score: 4 }
         ],
         dimensions: ["prolonged", "suppressed"],
         warning: null
       },
       {
-        text: "在人群中，我常常感到格外孤独，仿佛没有人能够理解我的感受。",
+        text: "In crowds, I often feel especially alone, as if no one could understand my feelings.",
         options: [
-          { label: "完全不符合", score: 1 },
-          { label: "不太符合", score: 2 },
-          { label: "比较符合", score: 3 },
-          { label: "完全符合", score: 4 }
+          { label: "Does not describe me at all", score: 1 },
+          { label: "Does not describe me well", score: 2 },
+          { label: "Describes me somewhat", score: 3 },
+          { label: "Describes me perfectly", score: 4 }
         ],
         dimensions: ["suppressed"],
-        warning: "接下来的问题涉及你的社交感受"
+        warning: "The next question touches on your social feelings"
       },
       {
-        text: "即使事情已经过去很久，我仍然会在某些时刻强烈地感受到悲伤涌上来。",
+        text: "Even though a long time has passed, I still feel waves of grief hit me strongly at certain moments.",
         options: [
-          { label: "完全不符合", score: 1 },
-          { label: "不太符合", score: 2 },
-          { label: "比较符合", score: 3 },
-          { label: "完全符合", score: 4 }
+          { label: "Does not describe me at all", score: 1 },
+          { label: "Does not describe me well", score: 2 },
+          { label: "Describes me somewhat", score: 3 },
+          { label: "Describes me perfectly", score: 4 }
         ],
         dimensions: ["prolonged"],
         warning: null
       },
       {
-        text: "我努力让自己保持正常的生活节奏，不愿在他人面前表现出脆弱。",
+        text: "I push myself to maintain a normal life rhythm, unwilling to appear vulnerable in front of others.",
         options: [
-          { label: "完全不符合", score: 1 },
-          { label: "不太符合", score: 2 },
-          { label: "比较符合", score: 3 },
-          { label: "完全符合", score: 4 }
+          { label: "Does not describe me at all", score: 1 },
+          { label: "Does not describe me well", score: 2 },
+          { label: "Describes me somewhat", score: 3 },
+          { label: "Describes me perfectly", score: 4 }
         ],
         dimensions: ["avoidant", "suppressed"],
         warning: null
       },
       {
-        text: "我开始能够回忆过去，而不是只有痛苦，偶尔也能感受到一丝平静。",
+        text: "I am starting to be able to recall the past without only feeling pain, and occasionally I can even feel a moment of peace.",
         options: [
-          { label: "完全不符合", score: 4 },
-          { label: "不太符合", score: 3 },
-          { label: "比较符合", score: 2 },
-          { label: "完全符合", score: 1 }
+          { label: "Does not describe me at all", score: 4 },
+          { label: "Does not describe me well", score: 3 },
+          { label: "Describes me somewhat", score: 2 },
+          { label: "Describes me perfectly", score: 1 }
         ],
         dimensions: ["integrating"],
         warning: null
@@ -1306,8 +1306,8 @@
     const GRIEF_TYPES = {
       accumulated: {
         key: "accumulated",
-        name: "积压型",
-        tagline: "你的悲伤沉甸甸的，被安静地收藏在心底",
+        name: "Accumulated",
+        tagline: "Your grief is heavy, quietly kept deep in your heart",
         accent: "#C4A9A9",
         icon: `<svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <ellipse cx="36" cy="56" rx="24" ry="6" fill="#C4A9A9" opacity="0.15"/>
@@ -1318,22 +1318,22 @@
           <ellipse cx="44" cy="24" rx="8" ry="6" stroke="#C4A9A9" stroke-width="1.5" fill="none"/>
         </svg>`,
         characteristics: [
-          "悲伤被你深深地压在心里，没有太多机会或空间去表达",
-          "你可能习惯了独自承受，把情绪留给自己",
-          "身体上可能也会感受到沉重，比如胸闷或疲惫",
-          "你或许觉得自己需要坚强，不愿给身边的人增加负担"
+          "Your grief is deeply buried inside you, without much opportunity or space to express it",
+          "You may be used to bearing it alone, keeping emotions to yourself",
+          "You might also feel it physically — heaviness in your chest, or exhaustion",
+          "You may feel you need to be strong, unwilling to add burden to those around you"
         ],
-        impact: "长期的压抑会让悲伤在内心不断累积。它没有消失，只是换了一种方式存在。也许是深夜的失眠，也许是某首歌突然触发的眼泪。给自己一个出口，哪怕很小，悲伤也需要被看见。",
+        impact: "Long-term suppression causes grief to keep accumulating inside. It doesn't disappear — it just finds another way to exist. Maybe it's insomnia at night, maybe it's tears triggered unexpectedly by a song. Give yourself an outlet, even a small one. Grief also needs to be seen.",
         actions: [
-          "尝试用书写的方式记录下此刻的感受，不需要给别人看",
-          "找一个安全的空间，让眼泪自然地流淌，不要评判自己",
-          "温和地关注身体的感觉，散步或轻柔的伸展也能带来释放"
+          "Try writing down your feelings in this moment — it doesn't need to be for anyone else",
+          "Find a safe space and let tears flow naturally, without judging yourself",
+          "Gently notice physical sensations — a walk or gentle stretching can also bring release"
         ]
       },
       shocked: {
         key: "shocked",
-        name: "冲击型",
-        tagline: "那一刻仿佛被按下了暂停键，世界变得不太真实",
+        name: "Shock",
+        tagline: "That moment felt like a pause button was pressed — the world feels unreal",
         accent: "#7B9BAD",
         icon: `<svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M8 52 Q20 48 28 40 Q36 32 30 24 Q24 16 36 14 Q48 12 50 22 Q52 32 44 38 Q36 44 42 52 Q48 60 36 60 Q24 60 16 56 Q8 52 8 52Z" stroke="#7B9BAD" stroke-width="1.5" fill="none"/>
@@ -1344,22 +1344,22 @@
           <circle cx="32" cy="58" r="2.5" fill="#7B9BAD" opacity="0.3"/>
         </svg>`,
         characteristics: [
-          "失去发生得很突然，你可能还在某种程度上感到不真实",
-          "震惊和麻木是身体给你的保护，让你不被瞬间的情绪淹没",
-          "你可能不确定自己到底有什么感受，或者感受来得很慢",
-          "日常生活的节奏可能暂时变得模糊，需要时间慢慢恢复"
+          "The loss happened suddenly — you may still feel a sense of unreality on some level",
+          "Shock and numbness are your body's protection, keeping you from being overwhelmed by emotions in an instant",
+          "You may not be sure what you are feeling, or feelings may come very slowly",
+          "Daily routines may have become blurred for now — it takes time to gradually recover"
         ],
-        impact: "冲击型悲伤就像海浪突然拍上岸——最初你可能感觉不到疼痛，因为身体在保护你。随着时间推移，真实的感受才会慢慢浮现。不要着急让自己'好起来'，给自己足够的空间去慢慢感受。",
+        impact: "Shock-type grief is like a wave crashing suddenly onto shore — at first you may not feel the pain, because your body is protecting you. As time passes, your true feelings will slowly emerge. Don't rush to 'get better.' Give yourself plenty of space to slowly feel things through.",
         actions: [
-          "不要强迫自己立刻理解或接受发生了什么",
-          "允许自己感到麻木或困惑，这不是软弱，是自然的反应",
-          "如果可能，找一个信任的人待在身边，不需要说什么"
+          "Don't force yourself to immediately understand or accept what has happened",
+          "Allow yourself to feel numb or confused — this is not weakness, it is a natural response",
+          "If possible, stay close to someone you trust — you don't need to say anything"
         ]
       },
       prolonged: {
         key: "prolonged",
-        name: "延展型",
-        tagline: "悲伤没有边界，它延伸到你以为已经愈合的地方",
+        name: "Prolonged",
+        tagline: "Grief has no boundaries — it extends into places you thought had already healed",
         accent: "#8FA885",
         icon: `<svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M4 44 Q18 38 32 42 Q46 46 60 40 Q72 36 72 36" stroke="#8FA885" stroke-width="1.5" stroke-linecap="round" fill="none"/>
@@ -1369,22 +1369,22 @@
           <circle cx="52" cy="30" r="2" fill="#8FA885" opacity="0.4"/>
         </svg>`,
         characteristics: [
-          "悲伤的期限比你想象的更长，它没有按时离开",
-          "你可能在某些时刻觉得自己已经好了，然后又突然回到原点",
-          "反复回想是这一类型常见的特征，回忆像潮水一样反复涌来",
-          "你可能感到困惑——为什么别人似乎已经move on，只有你还在原地"
+          "The timeline of your grief is longer than you expected — it hasn't left on schedule",
+          "Sometimes you feel like you've already healed, then suddenly you're back at the beginning",
+          "Rumination is a common feature of this type — memories come back like the tide, again and again",
+          "You may feel confused — why does it seem like everyone else has moved on, while you're still standing still"
         ],
-        impact: "延展型的悲伤没有做错什么。它只是在提醒你，这段失去对你很重要。允许自己慢慢走，不需要按照别人的时间表来愈合。悲伤的期限，只有你自己知道。",
+        impact: "Prolonged grief isn't doing anything wrong. It's just reminding you how much this loss matters to you. Allow yourself to take it slowly — there's no need to follow someone else's healing schedule. The timeline for grief is yours alone to know.",
         actions: [
-          "记录情绪起伏的规律，这能帮你看见自己的节奏而不是被它控制",
-          "尝试在回忆中寻找一丝温暖，而不只是痛苦",
-          "允许自己有'坏日子'，也有'还不错'的日子，不必强求每天都在进步"
+          "Track the patterns of your emotional ups and downs — this can help you see your rhythm rather than be controlled by it",
+          "Try to find a trace of warmth within the memories, not just pain",
+          "Allow yourself to have 'bad days' and also 'not bad' days — there's no need to force progress every single day"
         ]
       },
       avoidant: {
         key: "avoidant",
-        name: "回避型",
-        tagline: "有些路，你想绕过去。也许还没准备好，也许永远不想走。",
+        name: "Avoidant",
+        tagline: "There are some roads you want to go around. Maybe you're not ready yet — maybe you never will be.",
         accent: "#C4A07A",
         icon: `<svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <rect x="16" y="20" width="40" height="40" rx="2" stroke="#C4A07A" stroke-width="1.5" fill="none"/>
@@ -1394,22 +1394,22 @@
           <path d="M34 46 L38 46" stroke="#C4A07A" stroke-width="1.2" stroke-linecap="round"/>
         </svg>`,
         characteristics: [
-          "你倾向于回避与失去相关的话题、场景或任何可能触发痛苦的事物",
-          "这并不是否认，而是一种自我保护的方式",
-          "你可能已经在生活中建立了新的节奏，悲伤被安静地放在了一旁",
-          "偶尔在不经意的时候，那些被回避的感受可能会突然出现"
+          "You tend to avoid topics, places, or anything that might trigger pain related to the loss",
+          "This isn't denial — it's a way of self-protection",
+          "You may have already built a new rhythm in life, with grief quietly set aside",
+          "Occasionally, when you least expect it, the feelings you've been avoiding may suddenly surface"
         ],
-        impact: "回避是身体在告诉你：现在还不是时候。给自己时间，不必勉强自己去做还没准备好的事。但偶尔也要问问自己——回避是让你更轻松，还是让你更孤独？",
+        impact: "Avoidance is your body telling you: the time isn't right yet. Give yourself time — there's no need to push yourself to do what you're not yet ready for. But occasionally ask yourself — is avoidance making you feel lighter, or more alone?",
         actions: [
-          "不需要立刻面对，给回避留出空间，但保持一点觉察",
-          "也许可以尝试一个很小的、不那么可怕的'接触'，比如看一张照片",
-          "如果你感到回避开始影响日常生活，考虑寻求专业的支持"
+          "There's no need to face it immediately — give avoidance its space, but stay a little aware",
+          "Maybe you could try a very small, less scary 'contact' — like looking at one photo",
+          "If you feel avoidance is beginning to affect your daily life, consider seeking professional support"
         ]
       },
       integrating: {
         key: "integrating",
-        name: "整合型",
-        tagline: "悲伤还在，但它开始有了一个位置，你们正在学会共存",
+        name: "Integrating",
+        tagline: "Grief is still here, but it's beginning to find a place — you two are learning to coexist",
         accent: "#8FA885",
         icon: `<svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M12 60 L28 40 L38 50 L50 30 L62 60" stroke="#8FA885" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
@@ -1418,16 +1418,16 @@
           <path d="M44 18 Q52 12 58 18" stroke="#8FA885" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.5"/>
         </svg>`,
         characteristics: [
-          "你正在经历一个重要的转变——悲伤不再是全部，它开始有了边界",
-          "你可以在想念的同时，继续生活，这是很重要的一步",
-          "偶尔的脆弱还在，但你不再被它完全淹没",
-          "你开始能够在失去中找到某种意义，或是与自己和解的可能"
+          "You are going through an important transition — grief is no longer everything, it is beginning to have boundaries",
+          "You can miss someone and still continue living — this is a significant step",
+          "Occasional vulnerability still exists, but you are no longer completely overwhelmed by it",
+          "You are beginning to find some meaning in the loss, or the possibility of making peace with yourself"
         ],
-        impact: "整合不是忘记，也不是放弃。它是一种温柔的能力——允许悲伤成为生命故事的一部分，而不是全部。你正在用自己的方式，走出一条属于你的路。",
+        impact: "Integration is not forgetting, and it's not giving up. It's a gentle capacity — allowing grief to become part of your life's story, not the whole story. You are walking your own path, in your own way.",
         actions: [
-          "继续保持这种觉察，你已经在正确的方向上",
-          "可以试着把这段经历用你自己的方式记录下来，写下你的故事",
-          "如果愿意，分享你的感受——你的经验可能正在帮助其他人"
+          "Keep up this awareness — you are already on the right path",
+          "Try recording this experience in your own way — write your story down",
+          "If you're willing, share your feelings — your experience may be helping someone else right now"
         ]
       }
     };
@@ -1491,7 +1491,7 @@
       $('progressContainer').setAttribute('aria-valuenow', num);
 
       // Question text
-      $('question-number').textContent = `第 ${num} 题，共 ${total} 题`;
+      $('question-number').textContent = `Question ${num} of ${total}`;
       $('question-text-label').textContent = q.text;
 
       // Trigger warning
@@ -1514,6 +1514,7 @@
         btn.className = 'option-btn';
         btn.setAttribute('role', 'radio');
         btn.setAttribute('aria-checked', 'false');
+
         btn.setAttribute('aria-label', opt.label);
         btn.innerHTML = `<span class="option-indicator"></span><span class="option-label">${opt.label}</span>`;
         btn.addEventListener('click', () => selectOption(i, opt.score, q.dimensions, btn));
@@ -1687,11 +1688,11 @@
       // WeChat SDK detection - simplified fallback
       if (typeof wx !== 'undefined' && wx.onMenuShareTimeline) {
         wx.onMenuShareTimeline({
-          title: `我的悲伤地形图：${getResultName()}`,
-          desc: '也许有人此刻也需要被理解',
+          title: `My Grief Landscape: ${getResultName()}`,
+          desc: 'Perhaps someone else also needs to be understood right now',
           link: window.location.href,
           imgUrl: window.location.origin + '/og-image.jpg',
-          success: () => showToast('分享成功')
+          success: () => showToast('Shared successfully')
         });
       } else {
         // Fallback: copy link
@@ -1702,9 +1703,9 @@
     $('btn-copy').addEventListener('click', copyToClipboard);
 
     function copyToClipboard() {
-      const text = `我的悲伤地形图测验结果：${getResultName()}\n${getResultTagline()}\n\n也许有人此刻也需要被理解\n${window.location.href}`;
+      const text = `My Grief Landscape Quiz result: ${getResultName()}\n${getResultTagline()}\n\nPerhaps someone else also needs to be understood\n${window.location.href}`;
       navigator.clipboard.writeText(text).then(() => {
-        showToast('已复制，去分享给朋友吧');
+        showToast('Copied! Go ahead and share it.');
       }).catch(() => {
         // Fallback
         const ta = document.createElement('textarea');
@@ -1713,7 +1714,7 @@
         ta.select();
         document.execCommand('copy');
         document.body.removeChild(ta);
-        showToast('已复制');
+        showToast('Copied!');
       });
     }
 
