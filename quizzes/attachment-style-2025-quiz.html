@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What's Your Attachment Style? (And How It Shapes Every Relationship)</title>
+  <meta name="description" content="Discover your adult romantic attachment style in this 12-question quiz. Understand how your patterns shape every relationship — and how to grow.">
+  <meta property="og:title" content="What's Your Attachment Style?">
+  <meta property="og:description" content="Discover how your attachment style shapes every relationship you have.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #D4853F;
+      --primary-dark: #B5682E;
+      --bg: #FAF6F1;
+      --surface: #FFFFFF;
+      --text: #2D2A26;
+      --text-secondary: #6B6560;
+      --text-muted: #9E9892;
+      --border: #E5E0DA;
+      --success-fill: #FDF3E7;
+      --disorganized: #B08B9A;
+      --secure-accent: #5A9A7A;
+      --anxious-accent: #C97B6B;
+      --avoidant-accent: #6B8FA8;
+      --disorganized-accent: #B08B9A;
+      --radius: 12px;
+      --shadow: 0 2px 12px rgba(45,42,38,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3 { font-family: 'Playfair Display', serif; line-height: 1.3; }
+
+    /* ── Screen management ── */
+    .screen {
+      display: none;
+      min-height: 100vh;
+      animation: fadeIn 0.35s ease;
+    }
+    .screen.active { display: flex; flex-direction: column; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideLeft {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slideRight {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.15); }
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(0.85); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
+
+    @keyframes progressPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(212,133,63,0.4); }
+      50% { box-shadow: 0 0 0 6px rgba(212,133,63,0); }
+    }
+
+    /* ── Landing ── */
+    .landing {
+      background: linear-gradient(155deg, #FAF0E6 0%, #F5E8DA 40%, #EDD9CC 100%);
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .landing::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      background: radial-gradient(ellipse, rgba(212,133,63,0.12) 0%, transparent 70%);
+      top: -100px; right: -100px;
+      pointer-events: none;
+    }
+    .landing::after {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px;
+      background: radial-gradient(ellipse, rgba(176,139,154,0.1) 0%, transparent 70%);
+      bottom: -80px; left: -80px;
+      pointer-events: none;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: 0.15;
+      pointer-events: none;
+    }
+    .blob-1 { width: 300px; height: 300px; background: var(--primary); top: 10%; left: 5%; }
+    .blob-2 { width: 200px; height: 200px; background: var(--disorganized); bottom: 15%; right: 10%; }
+
+    .landing-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 600px;
+    }
+
+    .overline {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 1.25rem;
+    }
+
+    .landing h1 {
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .landing-sub {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      color: var(--text-secondary);
+      font-style: italic;
+      margin-bottom: 1.5rem;
+    }
+
+    .landing-body {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      margin-bottom: 2.5rem;
+      line-height: 1.7;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 1rem 2.5rem;
+      border-radius: var(--radius);
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(212,133,63,0.25);
+    }
+    .btn-primary:hover { background: var(--primary-dark); transform: scale(1.02); box-shadow: 0 6px 20px rgba(212,133,63,0.3); }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
+
+    .micro-copy {
+      margin-top: 1rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* ── Intro ── */
+    .intro {
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      background: var(--bg);
+    }
+
+    .intro-content {
+      max-width: 560px;
+      text-align: center;
+    }
+
+    .intro-icon {
+      width: 64px; height: 64px;
+      margin: 0 auto 1.5rem;
+      opacity: 0.7;
+    }
+
+    .intro h2 {
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      margin-bottom: 1.5rem;
+      color: var(--text);
+    }
+
+    .intro-body p {
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    .intro-body p:last-of-type { margin-bottom: 2rem; }
+
+    /* ── Quiz ── */
+    .quiz-screen {
+      padding: 0;
+      background: var(--bg);
+    }
+
+    .progress-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--bg);
+      padding: 1rem 1.5rem 0.5rem;
+    }
+
+    .progress-bar-container {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .back-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 1.25rem;
+      padding: 0.25rem;
+      border-radius: 6px;
+      transition: color 0.2s;
+      flex-shrink: 0;
+    }
+    .back-btn:hover { color: var(--text); }
+    .back-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+    .progress-bar-bg {
+      flex: 1;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+
+    .progress-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .question-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2rem 1.5rem 3rem;
+      max-width: 680px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .question-text {
+      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      list-style: none;
+    }
+
+    .option-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s, box-shadow 0.2s;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      min-height: 56px;
+      position: relative;
+    }
+    .option-card:hover {
+      border-color: var(--primary);
+      transform: scale(1.01);
+      box-shadow: 0 4px 16px rgba(212,133,63,0.1);
+    }
+    .option-card:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
+    .option-card.selected {
+      border-color: var(--primary);
+      background: var(--success-fill);
+    }
+    .option-card.selected .option-check { opacity: 1; transform: scale(1); }
+
+    .option-letter {
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--primary);
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(212,133,63,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .option-card.selected .option-letter {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .option-text {
+      font-size: 1rem;
+      color: var(--text);
+      line-height: 1.55;
+      padding-top: 1px;
+    }
+
+    .option-check {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%) scale(0);
+      opacity: 0;
+      transition: opacity 0.2s, transform 0.2s;
+      color: var(--primary);
+      font-size: 1.1rem;
+    }
+
+    /* ── Processing ── */
+    .processing {
+      background: var(--bg);
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .processing-ring {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .processing-dot {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: var(--primary);
+      border-radius: 50%;
+      animation: breathe 2s ease-in-out infinite;
+    }
+    .processing-dot:nth-child(1) { animation-delay: 0s; }
+    .processing-dot:nth-child(2) { animation-delay: 0.3s; top: auto; bottom: auto; left: auto; right: auto; }
+    .processing-dot:nth-child(3) { animation-delay: 0.6s; }
+
+    .processing-ring-inner {
+      width: 40px;
+      height: 40px;
+      border: 2px solid rgba(212,133,63,0.2);
+      border-radius: 50%;
+      animation: breathe 2s ease-in-out infinite;
+    }
+
+    .processing p { font-size: 1.1rem; font-weight: 500; color: var(--text); margin-bottom: 0.5rem; }
+    .processing .sub { font-size: 0.85rem; color: var(--text-muted); }
+
+    /* ── Result ── */
+    .result {
+      background: var(--bg);
+      padding: 0 1.5rem 4rem;
+    }
+
+    .result-inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .result-hero {
+      text-align: center;
+      padding: 3rem 0 2rem;
+    }
+
+    .result-overline {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .result-type-name {
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    .result-tagline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      font-style: italic;
+      color: var(--text-secondary);
+    }
+
+    .result-icon {
+      width: 72px;
+      height: 72px;
+      margin: 1.5rem auto;
+      opacity: 0.75;
+    }
+
+    .result-section {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      margin-bottom: 1.25rem;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .result-section h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .trait-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .trait-item strong {
+      color: var(--primary);
+    }
+
+    .growth-edge {
+      background: linear-gradient(135deg, rgba(212,133,63,0.06) 0%, rgba(176,139,154,0.06) 100%);
+      border-left: 3px solid var(--primary);
+    }
+
+    .action-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .action-step {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .step-number {
+      width: 32px;
+      height: 32px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .step-content h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      color: var(--text);
+    }
+
+    .step-content p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Share card */
+    .share-section {
+      text-align: center;
+      padding: 1.5rem;
+    }
+
+    .share-section h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .share-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      max-width: 500px;
+      margin: 0 auto 1.25rem;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .share-card-quote {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      line-height: 1.6;
+    }
+
+    .share-card-source {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .share-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: var(--primary);
+    }
+
+    .share-btns {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-share {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+      text-decoration: none;
+    }
+    .btn-share:hover { background: var(--success-fill); border-color: var(--primary); transform: scale(1.02); }
+    .btn-share:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+    .btn-retake {
+      display: inline-block;
+      margin-top: 1.25rem;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      text-decoration: underline;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .btn-retake:hover { color: var(--text); }
+    .btn-retake:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+    /* Canvas share card */
+    #shareCanvas { display: none; }
+
+    /* Disclaimer & Footer */
+    .result-footer {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .disclaimer {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .footer-links a:hover { color: var(--text); }
+    .footer-links a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+    /* Trigger warning modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(45,42,38,0.6);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.active { display: flex; }
+
+    .modal {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 2rem;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(45,42,38,0.2);
+      animation: fadeIn 0.25s ease;
+    }
+
+    .modal h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .modal p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: flex-end;
+    }
+
+    .btn-ghost {
+      background: none;
+      border: 1.5px solid var(--border);
+      color: var(--text-secondary);
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .btn-ghost:hover { background: var(--bg); border-color: var(--text-muted); }
+    .btn-ghost:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--text);
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      z-index: 200;
+      transition: transform 0.3s ease;
+      pointer-events: none;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* WeChat modal */
+    .wechat-modal .modal { text-align: center; }
+    .wechat-qr {
+      width: 180px;
+      height: 180px;
+      background: var(--border);
+      border-radius: var(--radius);
+      margin: 0 auto 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+    .wechat-modal p { text-align: center; font-size: 0.9rem; }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+      .progress-bar-fill { transition: none; }
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+      .question-wrap { padding: 1.5rem 1rem 2.5rem; }
+      .option-card { padding: 0.85rem 1rem; }
+      .result-section { padding: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Landing ── -->
+<div class="screen landing active" id="landing">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="landing-content">
+    <p class="overline">Relationship Self-Awareness Quiz</p>
+    <h1>What's Your Attachment Style?</h1>
+    <p class="landing-sub">And How It Shapes Every Relationship</p>
+    <p class="landing-body">You've been told you're "too needy" or "too distant."<br>What if there was a reason — and a path forward?</p>
+    <button class="btn-primary" onclick="showScreen('intro')" aria-label="Start the attachment style quiz">Discover Your Style</button>
+    <p class="micro-copy">12 questions · 3 minutes · Free</p>
+  </div>
+</div>
+
+<!-- ── Intro ── -->
+<div class="screen intro" id="intro">
+  <div class="intro-content">
+    <svg class="intro-icon" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <circle cx="32" cy="32" r="28" stroke="#D4853F" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.4"/>
+      <path d="M20 32 C20 24 26 18 32 18 C38 18 44 24 44 32" stroke="#D4853F" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      <path d="M20 32 C20 40 26 46 32 46 C38 46 44 40 44 32" stroke="#B08B9A" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      <circle cx="32" cy="32" r="3" fill="#D4853F" opacity="0.6"/>
+    </svg>
+    <h2>Before We Begin</h2>
+    <div class="intro-body">
+      <p>Attachment styles are patterns, not prisons. Your style was shaped by early experiences — and it can evolve.</p>
+      <p>There's no "good" or "bad" result. Every style has strengths and growth edges.</p>
+      <p>Answer honestly — not how you wish you were, but how you actually show up.</p>
+    </div>
+    <button class="btn-primary" onclick="showScreen('quiz')" aria-label="Begin the quiz">I'm Ready</button>
+  </div>
+</div>
+
+<!-- ── Quiz ── -->
+<div class="screen quiz-screen" id="quiz">
+  <div class="progress-wrap">
+    <div class="progress-bar-container">
+      <button class="back-btn" id="backBtn" onclick="navigateQuestion(-1)" aria-label="Go to previous question" style="display:none">&#8592;</button>
+      <div class="progress-bar-bg" role="progressbar" aria-label="Quiz progress" aria-valuenow="1" aria-valuemin="1" aria-valuemax="12" id="progressBar">
+        <div class="progress-bar-fill" id="progressFill" style="width:8.33%"></div>
+      </div>
+      <span class="progress-label" id="progressLabel">Q 1 / 12</span>
+    </div>
+  </div>
+  <div class="question-wrap" id="questionWrap">
+    <!-- Injected by JS -->
+  </div>
+</div>
+
+<!-- ── Processing ── -->
+<div class="screen processing" id="processing">
+  <div class="processing-ring">
+    <div class="processing-ring-inner"></div>
+    <div class="processing-dot"></div>
+  </div>
+  <p>Analyzing your patterns...</p>
+  <p class="sub">Looking at how you connect, protect, and trust.</p>
+</div>
+
+<!-- ── Result ── -->
+<div class="screen result" id="result">
+  <div class="result-inner" id="resultContent">
+    <!-- Injected by JS -->
+  </div>
+</div>
+
+<!-- Trigger Warning Modal -->
+<div class="modal-overlay" id="twModal" role="dialog" aria-modal="true" aria-labelledby="twTitle">
+  <div class="modal">
+    <h3 id="twTitle">A Note Before You Begin</h3>
+    <p>This quiz explores relationship patterns and may surface emotions tied to past experiences. If you feel overwhelmed, you're encouraged to pause and reach out to a trusted friend or mental health professional. This content is for self-reflection, not crisis support.</p>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeTWModal()">I'll Keep That in Mind</button>
+    </div>
+  </div>
+</div>
+
+<!-- WeChat Share Modal -->
+<div class="modal-overlay wechat-modal" id="wechatModal" role="dialog" aria-modal="true" aria-labelledby="wechatTitle">
+  <div class="modal">
+    <h3 id="wechatTitle">Share to WeChat</h3>
+    <div class="wechat-qr" aria-label="QR code placeholder">QR Code</div>
+    <p>Scan with WeChat to share your result</p>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeWeChatModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Privacy Modal -->
+<div class="modal-overlay" id="privacyModal" role="dialog" aria-modal="true" aria-labelledby="privacyTitle">
+  <div class="modal">
+    <h3 id="privacyTitle">Privacy Policy</h3>
+    <p>This quiz stores your progress locally on your device (localStorage). No personal data is collected, transmitted, or stored on any server. Your responses are anonymous. This quiz is for self-reflection purposes only and does not constitute psychological advice or diagnosis.</p>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closePrivacyModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- Hidden canvas for share card -->
+<canvas id="shareCanvas" width="600" height="400"></canvas>
+
+<script>
+  /* ── State ── */
+  const TOTAL_QS = 12;
+  let currentQ = 0;
+  let answers = JSON.parse(localStorage.getItem('att-quiz-answers') || '[]');
+  let quizDirection = 1; // 1=forward, -1=back
+
+  /* ── Questions data ── */
+  const questions = [
+    {
+      text: "Your partner cancels plans at the last minute due to a work emergency. What happens inside you?",
+      options: [
+        { letter: "A", text: "You feel a pang of rejection, then immediately wonder if they're losing interest. You send a checking-in text and feel restless until they respond." },
+        { letter: "B", text: "You're a little disappointed, but you trust them. You reschedule happily and give them space to handle their thing." },
+        { letter: "C", text: "You're relieved they cancelled — now you have the evening to yourself. You don't really need to hear from them tonight." },
+        { letter: "D", text: "You feel panic and rejection at the same time. Part of you wants to bolt; part of you wants to call them fifty times. You're internally conflicted for hours." }
+      ]
+    },
+    {
+      text: "Early in dating, your partner takes three days to text back. You...",
+      options: [
+        { letter: "A", text: "Spiral. You re-read the conversation, analyze every word, and feel physically anxious. You might double-text." },
+        { letter: "B", text: "Text them something light and easy, trusting they'll respond when they're free. The wait doesn't bother you much." },
+        { letter: "C", text: "Don't think much of it. You've got plenty going on. You respond when you feel like it too." },
+        { letter: "D", text: "Feel deeply abandoned and then furious at yourself for caring. You swing between reaching out and deciding to just \"not care.\"" }
+      ]
+    },
+    {
+      text: "You're in a heated argument with your partner. They've said something that hurt you. You...",
+      options: [
+        { letter: "A", text: "Feel overwhelmed, cry, and need reassurance right away. You fear they'll leave if you express how hurt you are." },
+        { letter: "B", text: "Pause, take a breath, and try to articulate what hurt without attacking. You're generally able to stay regulated." },
+        { letter: "C", text: "Shut down, go quiet, and need physical space. You won't reach out until you've fully processed — which might take a while." },
+        { letter: "D", text: "Feel terrified and split — you want to scream and run away at the same time. You might say things you don't mean just to create distance." }
+      ]
+    },
+    {
+      text: "Your partner shares something vulnerable with you — a fear, a shame, a wound. You...",
+      options: [
+        { letter: "A", text: "Feel deeply connected when they open up. You want to comfort them and draw even closer." },
+        { letter: "B", text: "Receive it with care and respect. You offer support without losing your own equilibrium." },
+        { letter: "C", text: "Feel a flicker of discomfort with so much emotional intensity. You try to fix it or redirect rather than sit with it." },
+        { letter: "D", text: "Feel overwhelmed by their pain and your own. You might freeze, panic, or mirror their distress. You're not sure if you can hold this." }
+      ]
+    },
+    {
+      text: "You've been dating someone for a few months. They're starting to talk about \"us\" and future plans. You feel...",
+      options: [
+        { letter: "A", text: "Excited and want more! You crave this kind of commitment and can't wait to be official." },
+        { letter: "B", text: "Warm and genuinely happy about it. You're ready for this step and feel good about it." },
+        { letter: "C", text: "Uncomfortable. The \"talk\" feels pressuring. You start to pull back mentally, even if you like them." },
+        { letter: "D", text: "Terrified. You want it and fear it at the same time. You might start sabotaging things without knowing why." }
+      ]
+    },
+    {
+      text: "You recall your childhood. One dominant memory surfaces. It's...",
+      options: [
+        { letter: "A", text: "Learning that expressing needs got you dismissed or punished. You learned to need people but distrust they would come." },
+        { letter: "B", text: "Generally safe and warm, with some normal bumps. You feel okay asking for help." },
+        { letter: "C", text: "Learning that emotions were a burden. Self-sufficiency became your armor." },
+        { letter: "D", text: "Chaotic, unpredictable, or frightening. You didn't know which version of your caregiver you'd get." }
+      ]
+    },
+    {
+      text: "A friend tells you your partner has been flirting with someone else at a party. You...",
+      options: [
+        { letter: "A", text: "Feel your heart race. You confront your partner immediately, needing reassurance. You can't breathe until this is resolved." },
+        { letter: "B", text: "Feel hurt and confused. You bring it up calmly with your partner and listen to their perspective before reacting." },
+        { letter: "C", text: "Feel vaguely unsurprised. You've always suspected they weren't that into you. You detach rather than confront." },
+        { letter: "D", text: "Feel the floor collapse beneath you. You spiral between rage and despair. You don't know what to believe." }
+      ]
+    },
+    {
+      text: "You're in a long-distance phase. Your partner sends you a sweet good-morning text. You feel...",
+      options: [
+        { letter: "A", text: "Touched — but anxious. You're already wondering when you'll see them next and counting down the days." },
+        { letter: "B", text: "Warm and connected. Small gestures like this keep you feeling close even from afar." },
+        { letter: "C", text: "Indifferent. Words are nice, but you'd rather not have the expectation of daily check-ins." },
+        { letter: "D", text: "Overwhelmed. The intimacy of the gesture is too much. You don't know how to receive softness." }
+      ]
+    },
+    {
+      text: "You notice you've been choosing partners who are...",
+      options: [
+        { letter: "A", text: "Emotionally unavailable, inconsistent, or hot-and-cold. You keep trying to \"earn\" their consistency." },
+        { letter: "B", text: "Generally available and kind. You don't have a pattern of picking unavailable people." },
+        { letter: "C", text: "Independent, strong, sometimes distant. You're attracted to people who don't need you too much." },
+        { letter: "D", text: "Intense and chaotic — either very close or very far. The relationship feels like a rollercoaster." }
+      ]
+    },
+    {
+      text: "When a relationship ends, you tend to...",
+      options: [
+        { letter: "A", text: "Ruminate for months. You can't stop replaying what you could have done differently. You miss them and miss the version of yourself you were with them." },
+        { letter: "B", text: "Grieve genuinely but move forward. You feel sad but don't lose your sense of self." },
+        { letter: "C", text: "Recover quickly — or never really let yourself grieve. You tell yourself you didn't need them anyway." },
+        { letter: "D", text: "Feel shattered. The pain is deep and confusing. You might go back and forth between missing them and hating them." }
+      ]
+    },
+    {
+      text: "Your partner asks for more space — maybe they need a weekend alone. You...",
+      options: [
+        { letter: "A", text: "Feel a wave of anxiety. Space feels like abandonment. You need to know why and when." },
+        { letter: "B", text: "Respect their need and use the time for yourself. You trust they'll come back." },
+        { letter: "C", text: "Feel secretly relieved. This is how relationships should be — not too entangled." },
+        { letter: "D", text: "Feel panicky and split. You want to give space but are terrified of what it means. You might simultaneously agree and sulk." }
+      ]
+    },
+    {
+      text: "Think about your inner voice when you're alone with your partner — not talking, just existing in the same room. Most of the time, you feel...",
+      options: [
+        { letter: "A", text: "A quiet anxiety underneath. You're fine when they're engaged, but silence feels like something is wrong." },
+        { letter: "B", text: "Peaceful and content. You don't need to perform or check in. Just being together is enough." },
+        { letter: "C", text: "Uncomfortable. Too much closeness feels suffocating. You might get up and busy yourself with something." },
+        { letter: "D", text: "Hyper-aware and activated. You're monitoring their mood, their body language — always on high alert for danger." }
+      ]
+    }
+  ];
+
+  /* ── Results data ── */
+  const results = {
+    secure: {
+      name: "Secure",
+      tagline: "You Trust Openly — and Stay Whole",
+      accent: "#5A9A7A",
+      icon: `<svg viewBox="0 0 72 72" fill="none" aria-hidden="true"><circle cx="36" cy="36" r="28" stroke="#5A9A7A" stroke-width="2" fill="none"/><path d="M24 36 C24 28 30 22 36 22 C42 22 48 28 48 36" stroke="#5A9A7A" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M24 36 C24 44 30 50 36 50 C42 50 48 44 48 36" stroke="#5A9A7A" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.5"/></svg>`,
+      traits: [
+        { lead: "You trust without constant proof.", detail: "You don't need your partner to prove their love daily — you take their actions as evidence." },
+        { lead: "You can tolerate closeness and distance.", detail: "Alone time doesn't feel like abandonment; connection doesn't feel like engulfment." },
+        { lead: "You communicate needs without fear of rejection.", detail: "When something bothers you, you say it — because you trust the relationship can handle it." },
+        { lead: "You process conflict without losing yourself.", detail: "Disagree, apologize, forgive, return to equilibrium. Rupture and repair is part of your vocabulary." }
+      ],
+      growthEdge: "Even secure attachers have blind spots. Your challenge is not learning to connect — it's ensuring you don't override your own needs to maintain peace. Secure doesn't mean perfect. Some secure types become so focused on being \"the healthy one\" that they suppress their own needs, dismiss red flags too quickly, or absorb their partner's dysregulation unexamined.",
+      actions: [
+        { title: "Check In With Yourself, Not Just Your Partner.", desc: "Once a week, ask: What am I actually feeling right now? What do I need? Secure types often bypass their own internal world to stay \"fine.\"" },
+        { title: "Name Red Flags Early.", desc: "Because you're so comfortable with closeness, you may tolerate patterns a more anxious partner would flag. Practice naming small boundary violations before they compound." },
+        { title: "Allow Others to Be Insecure — Without Fixing Them.", desc: "Not everyone you love will have your attachment stability — and that's okay. Your growth isn't about making others secure; it's about holding your own center." }
+      ]
+    },
+    anxious: {
+      name: "Anxious",
+      tagline: "You Love Deeply — and Fear Losing What You Love",
+      accent: "#C97B6B",
+      icon: `<svg viewBox="0 0 72 72" fill="none" aria-hidden="true"><path d="M36 14 C24 14 16 24 16 34 C16 50 36 58 36 58 C36 58 56 50 56 34 C56 24 48 14 36 14Z" stroke="#C97B6B" stroke-width="2" fill="none"/><path d="M28 34 C28 30 32 27 36 27 C40 27 44 30 44 34" stroke="#C97B6B" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="29" cy="32" r="2" fill="#C97B6B" opacity="0.5"/><circle cx="43" cy="32" r="2" fill="#C97B6B" opacity="0.5"/></svg>`,
+      traits: [
+        { lead: "You feel more, not less.", detail: "Your capacity for emotional intimacy and empathy is extraordinary. You care deeply and love with genuine intensity." },
+        { lead: "Your anxiety is a signal, not a verdict.", detail: "When you feel anxious about a relationship, you're picking up on something real — even if the interpretation is amplified." },
+        { lead: "You desperately want to be known.", detail: "Deep connection is not optional for you. You want someone who sees you — fully — and stays." },
+        { lead: "Your fear of abandonment was shaped by real experience.", detail: "You are not \"too much.\" You learned that people leave, and your system is trying to protect you from that pain again." }
+      ],
+      growthEdge: "Your challenge isn't learning to love — it's learning to trust that love is safe even when it doesn't feel frantic. Anxious types often recreate the emotional unpredictability of early relationships because predictability feels \"boring\" or \"not real love.\" Your next chapter: learning that calm is not a threat. Consistency isn't cold — it's care.",
+      actions: [
+        { title: "Build a \"Pause Ritual\" Before Reacting.", desc: "When you feel the spiral starting — take three slow breaths and wait 20 minutes before acting. Your nervous system is sending an old signal; you don't have to obey it in the present." },
+        { title: "Ground Yourself in Your Own Life.", desc: "Before seeking reassurance from a partner, check in with yourself first: What am I feeling? What do I actually need? Is this something a partner can provide — or something I can provide for myself?" },
+        { title: "Seek Patterns, Not Proof.", desc: "Instead of looking for evidence your partner is losing interest (which your brain will always find), look for patterns. Do they consistently show up? Trust the pattern, not the narrative your anxiety writes." }
+      ]
+    },
+    avoidant: {
+      name: "Avoidant",
+      tagline: "You Value Your Independence — and Worry About Losing Yourself",
+      accent: "#6B8FA8",
+      icon: `<svg viewBox="0 0 72 72" fill="none" aria-hidden="true"><circle cx="36" cy="36" r="20" stroke="#6B8FA8" stroke-width="2" fill="none"/><circle cx="36" cy="36" r="12" stroke="#6B8FA8" stroke-width="1" fill="none" stroke-dasharray="3 3" opacity="0.4"/><circle cx="36" cy="36" r="4" fill="#6B8FA8" opacity="0.6"/></svg>`,
+      traits: [
+        { lead: "You protect your autonomy fiercely.", detail: "Closeness can feel like a threat to your sense of self. You need to know you can survive without any given person." },
+        { lead: "You don't fear closeness — but you fear losing yourself in it.", detail: "When relationships get too intense, your instinct is to step back, not because you don't care, but because you're afraid of disappearing." },
+        { lead: "You often feel \"fine\" when partners express strong emotions.", detail: "This isn't coldness — it's your system lowering its own activation to avoid being overwhelmed." },
+        { lead: "Your independence is real, not always defensive.", detail: "You genuinely do many things well on your own. But there's a difference between \"I can be alone\" and \"I don't need anyone, ever.\"" }
+      ],
+      growthEdge: "Your challenge isn't connection — it's letting connection be real. Avoidant types often maintain intellectual connection while emotionally withdrawing at the moment vulnerability is required. Your next chapter: learning that intimacy doesn't erase you. Letting someone in doesn't mean letting them take over.",
+      actions: [
+        { title: "Notice When You're Dissociating From Yourself.", desc: "Build a practice of checking in: What am I feeling right now, underneath the urge to leave or shut down? Name the feeling — anger, fear, shame — before you rationalize it away." },
+        { title: "Practice Small Acts of Vulnerability.", desc: "Start small: share one thing you're nervous about this week, without buffering it with logic or minimizing it. Let someone see the feeling, not just the analysis." },
+        { title: "Distinguish \"Space to Think\" From \"Space to Escape.\"", desc: "Taking time to process is healthy. But if your pattern is to withdraw when things get close — and stay withdrawn — that's not processing. Set an intention: I will return to this conversation, even if it's uncomfortable." }
+      ]
+    },
+    disorganized: {
+      name: "Disorganized",
+      tagline: "You Want Closeness — and You're Terrified of It",
+      accent: "#B08B9A",
+      icon: `<svg viewBox="0 0 72 72" fill="none" aria-hidden="true"><path d="M20 36 C20 26 28 18 36 18 C44 18 52 26 52 36" stroke="#B08B9A" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M20 36 C20 46 28 54 36 54 C44 54 52 46 52 36" stroke="#B08B9A" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.4"/><path d="M32 28 L40 28" stroke="#B08B9A" stroke-width="1.5" stroke-linecap="round"/><path d="M32 44 L40 44" stroke="#B08B9A" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/></svg>`,
+      traits: [
+        { lead: "You feel everything at once.", detail: "Your relationships often have dramatic emotional swings — high highs and devastating lows. You're not \"moody\" — you're dysregulated." },
+        { lead: "You may oscillate between clinging and pushing away.", detail: "With the same partner, in the same conversation, you can want them desperately and need them gone simultaneously." },
+        { lead: "You have deep empathy and deep fear.", detail: "You sense other people's emotional states acutely — sometimes too acutely. You absorb other people's distress." },
+        { lead: "Your relationships may feel like a rollercoaster.", detail: "This isn't your fault, but it is your responsibility to work with." }
+      ],
+      growthEdge: "Your challenge is integration: learning to stay present in your own body, to tolerate emotional intensity without dissociating or acting out, and to gradually build a felt sense of safety within connection. True healing comes from developing your own internal capacity to co-regulate — with a partner, with a therapist, with a trusted support system.",
+      actions: [
+        { title: "Name the Two Feelings.", desc: "Disorganized types often feel two opposing emotions at once and get overwhelmed by the conflict. Practice naming both: \"I feel angry at him AND scared of losing him.\" Naming the dyad reduces its power." },
+        { title: "Build a \"Window of Tolerance\" Practice.", desc: "When you feel flooded, develop a personal toolkit: cold water on your face, holding ice, a physical anchor, a song that regulated you as a child. Practice these when calm so they're available when dysregulated." },
+        { title: "Seek Earned Security, Not a Perfect Partner.", desc: "Work with a therapist trained in attachment trauma (EMDR, Somatic Experiencing, AEDP) to develop earned security — a felt sense of safety that doesn't depend on anyone else being safe." }
+      ]
+    }
+  };
+
+  /* ── Scoring ── */
+  function getResult() {
+    const counts = { A: 0, B: 0, C: 0, D: 0 };
+    answers.forEach((a, i) => { if (a !== undefined && questions[i]) counts[a]++; });
+    let max = 0, dominant = 'secure';
+    const letters = ['B','A','C','D']; // tie-break priority: secure > anxious > avoidant > disorganized
+    for (const l of letters) { if (counts[l] >= max) { max = counts[l]; dominant = l === 'A' ? 'anxious' : l === 'B' ? 'secure' : l === 'C' ? 'avoidant' : 'disorganized'; } }
+    return dominant;
+  }
+
+  /* ── Screen navigation ── */
+  function showScreen(id) {
+    if (id === 'quiz') {
+      // Show trigger warning first
+      document.getElementById('twModal').classList.add('active');
+      return;
+    }
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if (id === 'quiz') renderQuestion();
+    if (id === 'result') renderResult();
+    if (id === 'intro') saveProgress();
+  }
+
+  function proceedToQuiz() {
+    closeTWModal();
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('quiz').classList.add('active');
+    currentQ = answers.length;
+    renderQuestion();
+  }
+
+  /* ── Render question ── */
+  function renderQuestion() {
+    const wrap = document.getElementById('questionWrap');
+    const q = questions[currentQ];
+    const dir = quizDirection === 1 ? 'slideLeft' : 'slideRight';
+
+    wrap.style.animation = 'none';
+    wrap.offsetHeight; // reflow
+    wrap.style.animation = dir + ' 0.3s ease';
+
+    const answered = answers[currentQ];
+    const optionsHtml = q.options.map(opt => `
+      <li role="button" tabindex="0"
+          class="option-card${answered === opt.letter ? ' selected' : ''}"
+          onclick="selectOption('${opt.letter}')"
+          onkeydown="if(event.key==='Enter'||event.key===' ')selectOption('${opt.letter}')"
+          aria-pressed="${answered === opt.letter}">
+        <span class="option-letter">${opt.letter}</span>
+        <span class="option-text">${opt.text}</span>
+        <span class="option-check" aria-hidden="true">&#10003;</span>
+      </li>
+    `).join('');
+
+    wrap.innerHTML = `
+      <p class="question-text" id="questionText">${q.text}</p>
+      <ul class="options-list" role="list">${optionsHtml}</ul>
+    `;
+
+    // Update progress
+    const pct = ((currentQ + 1) / TOTAL_QS) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = `Q ${currentQ + 1} / ${TOTAL_QS}`;
+    document.getElementById('progressBar').setAttribute('aria-valuenow', currentQ + 1);
+
+    // Back button
+    document.getElementById('backBtn').style.display = currentQ > 0 ? 'block' : 'none';
+  }
+
+  /* ── Select option ── */
+  function selectOption(letter) {
+    answers[currentQ] = letter;
+    localStorage.setItem('att-quiz-answers', JSON.stringify(answers));
+
+    // Visual feedback
+    document.querySelectorAll('.option-card').forEach(c => {
+      c.classList.toggle('selected', c.querySelector('.option-letter').textContent === letter);
+      c.setAttribute('aria-pressed', c.querySelector('.option-letter').textContent === letter);
+    });
+
+    setTimeout(() => {
+      if (currentQ < TOTAL_QS - 1) {
+        currentQ++;
+        quizDirection = 1;
+        renderQuestion();
+      } else {
+        showProcessing();
+      }
+    }, 320);
+  }
+
+  /* ── Navigate back ── */
+  function navigateQuestion(dir) {
+    if (dir === -1 && currentQ > 0) {
+      currentQ--;
+      quizDirection = -1;
+      renderQuestion();
+    }
+  }
+
+  /* ── Processing ── */
+  function showProcessing() {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('processing').classList.add('active');
+    setTimeout(() => {
+      const dominant = getResult();
+      localStorage.setItem('att-quiz-result', dominant);
+      showScreen('result');
+    }, 2500);
+  }
+
+  /* ── Render result ── */
+  function renderResult() {
+    const dominant = localStorage.getItem('att-quiz-result') || getResult();
+    const r = results[dominant];
+
+    document.getElementById('resultContent').innerHTML = `
+      <div class="result-hero">
+        <p class="result-overline">Your Attachment Style</p>
+        <h1 class="result-type-name" style="color:${r.accent}">${r.name}</h1>
+        <p class="result-tagline">"${r.tagline}"</p>
+        <div class="result-icon">${r.icon}</div>
+      </div>
+
+      <div class="result-section">
+        <h3>What Defines You</h3>
+        <ul class="trait-list">
+          ${r.traits.map(t => `<li class="trait-item"><strong>${t.lead}</strong> ${t.detail}</li>`).join('')}
+        </ul>
+      </div>
+
+      <div class="result-section growth-edge">
+        <h3>Your Growth Edge</h3>
+        <p>${r.growthEdge}</p>
+      </div>
+
+      <div class="result-section">
+        <h3>Your Action Steps</h3>
+        <div class="action-steps">
+          ${r.actions.map((a, i) => `
+            <div class="action-step">
+              <span class="step-number">${i + 1}</span>
+              <div class="step-content">
+                <h4>${a.title}</h4>
+                <p>${a.desc}</p>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <div class="share-section">
+        <h3>Share Your Result</h3>
+        <div class="share-card">
+          <p class="share-card-quote">"I got ${r.name} Attachment — and honestly, it explains so much about my relationships."</p>
+          <p class="share-card-source">What's Your Attachment Style? Quiz</p>
+        </div>
+        <div class="share-btns">
+          <button class="btn-share" onclick="downloadShareCard()" aria-label="Download share card">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Save Image
+          </button>
+          <button class="btn-share" onclick="copyShareText()" aria-label="Copy share text">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            Copy Text
+          </button>
+          <button class="btn-share" onclick="openWeChatModal()" aria-label="Share to WeChat">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.5 11a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm7 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm-3.5 7.5c-3.6 0-6.5-2.3-6.5-5.1 0-1.5.8-2.9 2-3.8L6.4 8.5C6.2 8.3 6.2 7.9 6.4 7.7c.2-.2.6-.2.8 0l1.1 1.1c.8-.3 1.6-.5 2.5-.5.3 0 .5.2.5.5s-.2.5-.5.5c-.7 0-1.4.2-2 .4L8 10.7C7.1 11.5 6.5 12.7 6.5 14c0 2.4 2.5 4.5 6 4.5 1 0 1.9-.2 2.8-.5.2-.1.5.1.5.4 0 .3-.2.4-.4.5-1 .4-2.1.6-3.1.6z"/></svg>
+            WeChat
+          </button>
+        </div>
+        <button class="btn-retake" onclick="retakeQuiz()" aria-label="Retake the quiz">Retake the Quiz</button>
+      </div>
+
+      <div class="result-footer">
+        <p class="disclaimer">This quiz is for self-reflection insight, not clinical diagnosis. Attachment styles are patterns, not prisons. If this content brought up difficult feelings, please speak with a licensed therapist or trusted support person.</p>
+        <div class="footer-links">
+          <a onclick="openPrivacyModal()" tabindex="0" role="button" aria-label="View privacy policy">Privacy Policy</a>
+          <a href="https://www.who.int/health-topics/mental-health" target="_blank" rel="noopener noreferrer" aria-label="Find professional mental health support">Find Professional Support</a>
+        </div>
+      </div>
+    `;
+  }
+
+  /* ── Share: Canvas card ── */
+  function downloadShareCard() {
+    const dominant = localStorage.getItem('att-quiz-result') || getResult();
+    const r = results[dominant];
+    const canvas = document.getElementById('shareCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Background
+    ctx.fillStyle = '#FAF6F1';
+    ctx.fillRect(0, 0, 600, 400);
+
+    // Accent bar
+    ctx.fillStyle = r.accent;
+    ctx.fillRect(0, 0, 600, 8);
+
+    // Title
+    ctx.fillStyle = '#2D2A26';
+    ctx.font = '600 22px "Playfair Display", serif';
+    ctx.fillText("What's Your Attachment Style?", 40, 70);
+
+    // Result type
+    ctx.fillStyle = r.accent;
+    ctx.font = 'bold 36px "Playfair Display", serif';
+    ctx.fillText(r.name + ' Attachment', 40, 130);
+
+    // Tagline
+    ctx.fillStyle = '#6B6560';
+    ctx.font = 'italic 18px "Playfair Display", serif';
+    ctx.fillText('"' + r.tagline + '"', 40, 165);
+
+    // Quote
+    ctx.fillStyle = '#2D2A26';
+    ctx.font = '15px Inter, sans-serif';
+    const quote = '"I got ' + r.name + ' Attachment — and honestly, it explains so much about my relationships."';
+    ctx.fillText(quote, 40, 230);
+
+    // Divider
+    ctx.strokeStyle = '#E5E0DA';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(40, 260);
+    ctx.lineTo(560, 260);
+    ctx.stroke();
+
+    // Footer
+    ctx.fillStyle = '#9E9892';
+    ctx.font = '12px Inter, sans-serif';
+    ctx.fillText('Attachment Style Quiz · Free · 12 Questions', 40, 290);
+
+    // CTA
+    ctx.fillStyle = r.accent;
+    ctx.font = '600 14px Inter, sans-serif';
+    ctx.fillText('Take the Quiz →', 40, 350);
+
+    // Download
+    const link = document.createElement('a');
+    link.download = 'attachment-style-result.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+
+    showToast('Share card downloaded!');
+  }
+
+  /* ── Share: Copy text ── */
+  function copyShareText() {
+    const dominant = localStorage.getItem('att-quiz-result') || getResult();
+    const r = results[dominant];
+    const text = `I got ${r.name} Attachment — "${r.tagline}"\n\nThis quiz explains so much about relationship patterns. Take it →`;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard!'));
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast('Copied to clipboard!');
+    }
+  }
+
+  /* ── WeChat modal ── */
+  function openWeChatModal() {
+    document.getElementById('wechatModal').classList.add('active');
+  }
+  function closeWeChatModal() {
+    document.getElementById('wechatModal').classList.remove('active');
+  }
+
+  /* ── Privacy modal ── */
+  function openPrivacyModal() {
+    document.getElementById('privacyModal').classList.add('active');
+  }
+  function closePrivacyModal() {
+    document.getElementById('privacyModal').classList.remove('active');
+  }
+
+  /* ── Trigger warning modal ── */
+  function closeTWModal() {
+    document.getElementById('twModal').classList.remove('active');
+  }
+
+  /* ── Toast ── */
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  /* ── Save progress ── */
+  function saveProgress() {
+    localStorage.setItem('att-quiz-answers', JSON.stringify(answers));
+  }
+
+  /* ── Retake ── */
+  function retakeQuiz() {
+    answers = [];
+    currentQ = 0;
+    quizDirection = 1;
+    localStorage.removeItem('att-quiz-answers');
+    localStorage.removeItem('att-quiz-result');
+    showScreen('landing');
+  }
+
+  /* ── Init: check for existing result ── */
+  if (answers.length === TOTAL_QS && localStorage.getItem('att-quiz-result')) {
+    // Already completed — go directly to result
+    // (don't auto-advance, let user see landing)
+  }
+</script>
+</body>
+</html>
