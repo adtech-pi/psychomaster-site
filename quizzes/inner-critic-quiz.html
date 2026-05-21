@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What's Your Inner Critic Saying? (And How to Respond)</title>
+  <meta name="description" content="Discover which inner critic archetype dominates your inner voice. 12 questions · 3 minutes · Free self-awareness quiz.">
+  <meta property="og:title" content="What's Your Inner Critic Saying?">
+  <meta property="og:description" content="That voice that says you're not trying hard enough. Take the quiz to find out which critic is speaking.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #B08B9A;
+      --primary-dark: #95778A;
+      --bg: #FAF6F1;
+      --surface: #FFFFFF;
+      --text: #2D2A26;
+      --text-secondary: #6B6560;
+      --text-muted: #9E9892;
+      --border: #E5E0DA;
+      --selected-fill: #FDF0F3;
+      --progress-start: #5B4F7D;
+      --progress-end: #B08B9A;
+      --processing-bg: #2D2A26;
+      --perfectionist: #C9A84C;
+      --worry: #6B8FA8;
+      --cop: #7A8694;
+      --impostor: #C4825A;
+      --moral: #5A8A6A;
+      --radius: 12px;
+      --shadow: 0 2px 12px rgba(45,42,38,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3 { font-family: 'Playfair Display', serif; line-height: 1.3; }
+
+    /* ── Screen management ── */
+    .screen {
+      display: none;
+      min-height: 100vh;
+      animation: fadeIn 0.35s ease;
+    }
+    .screen.active { display: flex; flex-direction: column; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideLeft {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideRight {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes breathe {
+      0%, 100% { transform: scale(0.7); opacity: 0.4; }
+      50% { transform: scale(1.3); opacity: 1; }
+    }
+    @keyframes breatheSlow {
+      0%, 100% { transform: scale(0.9); opacity: 0.6; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
+
+    /* ── Landing ── */
+    .landing {
+      background: linear-gradient(160deg, #F5F0EA 0%, #EDE6E0 40%, #E5D9D6 100%);
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .landing::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(ellipse, rgba(91,79,125,0.1) 0%, transparent 70%);
+      top: -150px; right: -150px;
+      pointer-events: none;
+    }
+    .landing::after {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px;
+      background: radial-gradient(ellipse, rgba(176,139,154,0.12) 0%, transparent 70%);
+      bottom: -100px; left: -100px;
+      pointer-events: none;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(50px);
+      opacity: 0.12;
+      pointer-events: none;
+    }
+    .blob-1 { width: 350px; height: 350px; background: #5B4F7D; top: 5%; left: 2%; }
+    .blob-2 { width: 250px; height: 250px; background: #B08B9A; bottom: 10%; right: 8%; }
+
+    .landing-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 600px;
+    }
+
+    .overline {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 1.25rem;
+    }
+
+    .landing h1 {
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .landing-sub {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      color: var(--text-secondary);
+      font-style: italic;
+      margin-bottom: 1.5rem;
+    }
+
+    .landing-body {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      margin-bottom: 2.5rem;
+      line-height: 1.75;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 1rem 2.5rem;
+      border-radius: var(--radius);
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(176,139,154,0.25);
+    }
+    .btn-primary:hover { background: var(--primary-dark); transform: scale(1.02); box-shadow: 0 6px 20px rgba(176,139,154,0.3); }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
+
+    .micro-copy {
+      margin-top: 1rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* ── Intro ── */
+    .intro {
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      background: var(--bg);
+    }
+
+    .intro-content {
+      max-width: 560px;
+      text-align: center;
+    }
+
+    .intro-icon {
+      width: 72px; height: 72px;
+      margin: 0 auto 1.5rem;
+      opacity: 0.7;
+    }
+
+    .intro h2 {
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      margin-bottom: 1.5rem;
+      color: var(--text);
+    }
+
+    .intro-body p {
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      line-height: 1.75;
+    }
+
+    .intro-body p:last-of-type { margin-bottom: 2rem; }
+
+    /* ── Quiz ── */
+    .quiz-screen {
+      padding: 0;
+      background: var(--bg);
+    }
+
+    .progress-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--bg);
+      padding: 1rem 1.5rem 0.5rem;
+    }
+
+    .progress-bar-container {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .back-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 1.25rem;
+      padding: 0.25rem;
+      border-radius: 6px;
+      transition: color 0.2s;
+      flex-shrink: 0;
+    }
+    .back-btn:hover { color: var(--text); }
+    .back-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+    .progress-bar-bg {
+      flex: 1;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--progress-start), var(--progress-end));
+      transition: width 0.4s ease;
+    }
+
+    .progress-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .question-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2rem 1.5rem 3rem;
+      max-width: 680px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .question-text {
+      font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      list-style: none;
+    }
+
+    .option-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.9rem 1.1rem;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s, box-shadow 0.2s;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      min-height: 52px;
+      position: relative;
+    }
+    .option-card:hover {
+      border-color: var(--primary);
+      transform: scale(1.01);
+      box-shadow: 0 4px 16px rgba(176,139,154,0.1);
+    }
+    .option-card:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
+    .option-card.selected {
+      border-color: var(--primary);
+      background: var(--selected-fill);
+    }
+    .option-card.selected .option-check { opacity: 1; transform: translateY(-50%) scale(1); }
+
+    .option-letter {
+      font-weight: 700;
+      font-size: 0.82rem;
+      color: var(--primary);
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(176,139,154,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .option-card.selected .option-letter {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .option-text {
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.55;
+      padding-top: 1px;
+    }
+
+    .option-check {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%) scale(0);
+      opacity: 0;
+      transition: opacity 0.2s, transform 0.2s;
+      color: var(--primary);
+      font-size: 1.05rem;
+    }
+
+    /* ── Processing ── */
+    .processing {
+      background: var(--processing-bg);
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .processing-ring {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .processing-circle {
+      position: absolute;
+      inset: 0;
+      border: 2px solid rgba(176,139,154,0.2);
+      border-radius: 50%;
+      animation: breatheSlow 2.5s ease-in-out infinite;
+    }
+    .processing-circle:nth-child(2) {
+      inset: 14px;
+      border-color: rgba(176,139,154,0.35);
+      animation-delay: 0.4s;
+    }
+    .processing-core {
+      width: 20px;
+      height: 20px;
+      background: var(--primary);
+      border-radius: 50%;
+      animation: breathe 2.5s ease-in-out infinite;
+    }
+
+    .processing { color: #E8E0DC; }
+    .processing p { font-size: 1.1rem; font-weight: 500; margin-bottom: 0.5rem; color: #E8E0DC; }
+    .processing .sub { font-size: 0.85rem; color: rgba(232,224,220,0.6); }
+
+    /* ── Result ── */
+    .result {
+      background: var(--bg);
+      padding: 0 1.5rem 4rem;
+    }
+
+    .result-inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .result-hero {
+      text-align: center;
+      padding: 3rem 0 2rem;
+    }
+
+    .result-overline {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .result-type-name {
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    .result-tagline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      font-style: italic;
+      color: var(--text-secondary);
+    }
+
+    .result-icon {
+      width: 72px;
+      height: 72px;
+      margin: 1.5rem auto;
+      opacity: 0.8;
+    }
+
+    .result-section {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      margin-bottom: 1.25rem;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .result-section h3 {
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .result-opening {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+
+    .trait-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .trait-item strong {
+      color: var(--primary);
+    }
+
+    .protecting-section {
+      background: linear-gradient(135deg, rgba(91,79,125,0.05) 0%, rgba(176,139,154,0.05) 100%);
+      border-left: 3px solid var(--primary);
+    }
+
+    .growth-edge {
+      background: linear-gradient(135deg, rgba(91,79,125,0.04) 0%, rgba(176,139,154,0.04) 100%);
+      border-left: 3px solid var(--primary);
+    }
+
+    .action-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .action-step {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .step-number {
+      width: 32px;
+      height: 32px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .step-content h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      color: var(--text);
+    }
+
+    .step-content p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Share */
+    .share-section {
+      text-align: center;
+      padding: 1.5rem;
+    }
+
+    .share-section h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .share-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      max-width: 500px;
+      margin: 0 auto 1.25rem;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .share-card-quote {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      line-height: 1.6;
+    }
+
+    .share-card-source {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .share-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: linear-gradient(180deg, var(--progress-start), var(--progress-end));
+    }
+
+    .share-btns {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-share {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+      text-decoration: none;
+    }
+    .btn-share:hover { background: var(--selected-fill); border-color: var(--primary); transform: scale(1.02); }
+    .btn-share:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+    .btn-retake {
+      display: inline-block;
+      margin-top: 1.25rem;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      text-decoration: underline;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .btn-retake:hover { color: var(--text); }
+    .btn-retake:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+    /* Footer */
+    .result-footer {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .disclaimer {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .footer-links a:hover { color: var(--text); }
+    .footer-links a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+    /* Modals */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(45,42,38,0.6);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.active { display: flex; }
+
+    .modal {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 2rem;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(45,42,38,0.2);
+      animation: fadeIn 0.25s ease;
+    }
+
+    .modal h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .modal p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: flex-end;
+    }
+
+    .btn-ghost {
+      background: none;
+      border: 1.5px solid var(--border);
+      color: var(--text-secondary);
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .btn-ghost:hover { background: var(--bg); border-color: var(--text-muted); }
+    .btn-ghost:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+    .wechat-modal .modal { text-align: center; }
+    .wechat-qr {
+      width: 180px;
+      height: 180px;
+      background: var(--border);
+      border-radius: var(--radius);
+      margin: 0 auto 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--text);
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      z-index: 200;
+      transition: transform 0.3s ease;
+      pointer-events: none;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    #shareCanvas { display: none; }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+      .progress-bar-fill { transition: none; }
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+      .question-wrap { padding: 1.5rem 1rem 2.5rem; }
+      .option-card { padding: 0.85rem 1rem; }
+      .result-section { padding: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Landing ── -->
+<div class="screen landing active" id="landing">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="landing-content">
+    <p class="overline">Inner Voice Self-Awareness Quiz</p>
+    <h1>What's Your Inner Critic Saying?</h1>
+    <p class="landing-sub">And How to Respond</p>
+    <p class="landing-body">That voice that says you're not trying hard enough.<br>The one that finds your flaws before anyone else does.<br>It's not you — but it's been speaking so long you've forgotten the difference.</p>
+    <button class="btn-primary" onclick="showScreen('intro')" aria-label="Start the inner critic quiz">Find Out Which Voice Is Dominant</button>
+    <p class="micro-copy">12 questions · 3 minutes · Free</p>
+  </div>
+</div>
+
+<!-- ── Intro ── -->
+<div class="screen intro" id="intro">
+  <div class="intro-content">
+    <svg class="intro-icon" viewBox="0 0 72 72" fill="none" aria-hidden="true">
+      <circle cx="36" cy="28" r="16" stroke="#B08B9A" stroke-width="1.5" fill="none"/>
+      <path d="M22 28 C22 18 28 12 36 12 C44 12 50 18 50 28" stroke="#5B4F7D" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      <circle cx="30" cy="26" r="2" fill="#B08B9A" opacity="0.5"/>
+      <circle cx="42" cy="26" r="2" fill="#B08B9A" opacity="0.5"/>
+      <path d="M28 34 C30 37 34 38 36 38 C38 38 42 37 44 34" stroke="#B08B9A" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.4"/>
+      <ellipse cx="36" cy="52" rx="12" ry="8" stroke="#5B4F7D" stroke-width="1.5" fill="none" stroke-dasharray="3 2" opacity="0.3"/>
+      <circle cx="36" cy="44" r="3" fill="#B08B9A" opacity="0.6"/>
+    </svg>
+    <h2>Here's What This Quiz Is</h2>
+    <div class="intro-body">
+      <p>Your inner critic is the voice you've been carrying — usually absorbed early, from caregivers, culture, or systems that taught you to be hard on yourself.</p>
+      <p>It's not your enemy. It's a protective mechanism that went overboard. Understanding it is the first step to responding to it.</p>
+      <p>There's no "bad" result. Every critic type has a reason, and every one has a path toward a gentler inner voice.</p>
+    </div>
+    <button class="btn-primary" onclick="showScreen('quiz')" aria-label="Begin the quiz">I'm Ready to Meet Mine</button>
+  </div>
+</div>
+
+<!-- ── Quiz ── -->
+<div class="screen quiz-screen" id="quiz">
+  <div class="progress-wrap">
+    <div class="progress-bar-container">
+      <button class="back-btn" id="backBtn" onclick="navigateQuestion(-1)" aria-label="Go to previous question" style="display:none">&#8592;</button>
+      <div class="progress-bar-bg" role="progressbar" aria-label="Quiz progress" aria-valuenow="1" aria-valuemin="1" aria-valuemax="12" id="progressBar">
+        <div class="progress-bar-fill" id="progressFill" style="width:8.33%"></div>
+      </div>
+      <span class="progress-label" id="progressLabel">Q 1 / 12</span>
+    </div>
+  </div>
+  <div class="question-wrap" id="questionWrap"></div>
+</div>
+
+<!-- ── Processing ── -->
+<div class="screen processing" id="processing">
+  <div class="processing-ring">
+    <div class="processing-circle"></div>
+    <div class="processing-circle"></div>
+    <div class="processing-core"></div>
+  </div>
+  <p>Identifying your critic's voice...</p>
+  <p class="sub">Listening past the noise.</p>
+</div>
+
+<!-- ── Result ── -->
+<div class="screen result" id="result">
+  <div class="result-inner" id="resultContent"></div>
+</div>
+
+<!-- Trigger Warning Modal -->
+<div class="modal-overlay" id="twModal" role="dialog" aria-modal="true" aria-labelledby="twTitle">
+  <div class="modal">
+    <h3 id="twTitle">A Note Before You Begin</h3>
+    <p>This quiz explores patterns of self-criticism and may surface uncomfortable feelings. If you feel distressed, you're encouraged to reach out to a trusted friend or mental health professional. This content is for self-reflection, not crisis support.</p>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeTWModal()">I'll Keep That in Mind</button>
+    </div>
+  </div>
+</div>
+
+<!-- WeChat Modal -->
+<div class="modal-overlay wechat-modal" id="wechatModal" role="dialog" aria-modal="true" aria-labelledby="wechatTitle">
+  <div class="modal">
+    <h3 id="wechatTitle">Share to WeChat</h3>
+    <div class="wechat-qr" aria-label="QR code placeholder">QR Code</div>
+    <p>Scan with WeChat to share your result</p>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeWeChatModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Privacy Modal -->
+<div class="modal-overlay" id="privacyModal" role="dialog" aria-modal="true" aria-labelledby="privacyTitle">
+  <div class="modal">
+    <h3 id="privacyTitle">Privacy Policy</h3>
+    <p>This quiz stores your progress locally on your device (localStorage). No personal data is collected, transmitted, or stored on any server. Your responses are anonymous. This quiz is for self-reflection purposes only and does not constitute psychological advice or diagnosis.</p>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closePrivacyModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<canvas id="shareCanvas" width="600" height="400"></canvas>
+
+<script>
+  /* ── State ── */
+  const TOTAL_QS = 12;
+  let currentQ = 0;
+  let answers = JSON.parse(localStorage.getItem('critic-quiz-answers') || '[]');
+  let quizDirection = 1;
+
+  /* ── Questions (A=Perfectionist, B=Worry Guard, C=Inner Cop, D=Impostor, E=Moral Compass) ── */
+  const questions = [
+    {
+      text: "You've just delivered a presentation at work. It went fine — not perfect, but solid feedback. Your first thought is:",
+      options: [
+        { letter: "A", text: "\"That was decent, but I stumbled on slide 4. I should have rehearsed more. Next time needs to be tighter.\"" },
+        { letter: "B", text: "\"They probably think I'm incompetent. Why did I say that thing about the budget? God, they're going to remember that mistake forever.\"" },
+        { letter: "C", text: "\"They probably only said it was fine to be nice. They don't really care. None of this matters anyway.\"" },
+        { letter: "D", text: "\"I should have said something more insightful. The Q&A was my chance to shine and I choked.\"" },
+        { letter: "E", text: "\"I feel guilty — I think I dominated the conversation. I should have let others speak more. They probably found me insufferable.\"" }
+      ]
+    },
+    {
+      text: "You receive a genuine compliment from a friend: \"You did such a great job planning that event.\" You:",
+      options: [
+        { letter: "A", text: "Feel a flicker of satisfaction — but your brain immediately adds, \"Well, it had to be good, or people would think I'm useless.\"" },
+        { letter: "B", text: "Feel uncomfortable and deflect. \"Oh it was nothing, anyone could have done it.\"" },
+        { letter: "C", text: "Feel suspicious. \"What do they want? Are they being sarcastic?\"" },
+        { letter: "D", text: "Feel briefly good — then remember something you could have done better, and mentally correct the record." },
+        { letter: "E", text: "Feel a wave of guilt. You appreciate the compliment but immediately start mentally cataloguing everyone who contributed more than you." }
+      ]
+    },
+    {
+      text: "You make a minor mistake — you forget to reply to an email for two days. Your inner voice says:",
+      options: [
+        { letter: "A", text: "\"Sloppy. You need to be more organized. If you can't handle small things, you'll never handle big things.\"" },
+        { letter: "B", text: "\"They're probably mad at me now. They probably think I'm rude. I've probably ruined the relationship.\"" },
+        { letter: "C", text: "\"Whatever. It's fine. I don't care. Emails aren't that important anyway. I'm fine.\"" },
+        { letter: "D", text: "\"Other people would never forget something like this. What's wrong with me? I'm so unreliable.\"" },
+        { letter: "E", text: "\"I let them down. I always do this. I should have set a reminder. I'm a bad friend/colleague.\"" }
+      ]
+    },
+    {
+      text: "You're scrolling through social media and see a former classmate's life update. They're doing incredibly well. You feel:",
+      options: [
+        { letter: "A", text: "Motivated — but also a tightening in your chest. \"I should be further along by now. My standards aren't high enough.\"" },
+        { letter: "B", text: "A spike of anxiety. \"Everyone else is ahead of me. I'm falling behind. I'll never catch up.\"" },
+        { letter: "C", text: "Indifferent, almost numb. You scroll past without really feeling it. \"Good for them, I guess. That world isn't for me anyway.\"" },
+        { letter: "D", text: "Jealous and ashamed of being jealous. You close the app and feel worse about yourself." },
+        { letter: "E", text: "Guilty. You feel like you should have done more with your life to honor the people who believed in you." }
+      ]
+    },
+    {
+      text: "You've been given a new opportunity at work — a chance to lead a project. Your reaction is:",
+      options: [
+        { letter: "A", text: "\"About time. I've been ready for this. But if I mess it up, I'll never get another chance.\"" },
+        { letter: "B", text: "\"What if I can't do it? What if everyone finds out I'm not actually that competent? I should have said no.\"" },
+        { letter: "C", text: "\"Meh. I'm not really interested in leading. I prefer doing my own thing quietly. This doesn't really matter.\"" },
+        { letter: "D", text: "\"I want this so badly — but I know I'll sabotage it. I'll find a way to ruin it before I even start.\"" },
+        { letter: "E", text: "\"I feel like a fraud taking credit for this. I only got it because they didn't have anyone else, not because I'm actually good.\"" }
+      ]
+    },
+    {
+      text: "Your partner or close friend tells you they need some space this weekend — not because of anything you did, just personal reasons. You:",
+      options: [
+        { letter: "A", text: "Feel irritable and let down. \"My standards for the weekend aren't being met. I had a plan.\"" },
+        { letter: "B", text: "Spiral immediately. \"Did I do something? Are they upset with me? Should I apologize for something?\"" },
+        { letter: "C", text: "Feel relieved. \"Great — more space. I don't need them around anyway. I'm better alone.\"" },
+        { letter: "D", text: "Feel panic and self-doubt. \"They don't actually like me that much. They probably tolerate me. I knew it.\"" },
+        { letter: "E", text: "Feel a wave of guilt, as if you've done something wrong by existing in their life." }
+      ]
+    },
+    {
+      text: "Think about the last time you felt really proud of yourself. What stopped you from staying proud?",
+      options: [
+        { letter: "A", text: "The inner voice immediately added a \"but...\" — \"But it wasn't that impressive. Anyone could have done it. Don't get complacent.\"" },
+        { letter: "B", text: "You immediately started worrying about maintaining the success. \"Now the pressure is on. Don't mess it up.\"" },
+        { letter: "C", text: "You dismissed it entirely. \"That doesn't count. That's just luck.\"" },
+        { letter: "D", text: "You felt unworthy of it. \"I don't really feel like I earned this. I just got lucky.\"" },
+        { letter: "E", text: "You felt bad that others didn't get the same recognition. \"What about them? They worked just as hard.\"" }
+      ]
+    },
+    {
+      text: "You have a big decision to make — a life choice that matters. Your inner voice leads with:",
+      options: [
+        { letter: "A", text: "\"What's the right answer? What should you do? Get it right. Don't make the wrong choice.\"" },
+        { letter: "B", text: "\"What if you make the wrong choice? Then everything falls apart. What if you can't handle the consequences?\"" },
+        { letter: "C", text: "\"It doesn't really matter what you choose. Nothing you do changes anything anyway.\"" },
+        { letter: "D", text: "\"You're going to regret this. You always choose wrong. You should ask someone else — you can't trust yourself.\"" },
+        { letter: "E", text: "\"Whatever you choose, you're letting someone down. You can't win.\"" }
+      ]
+    },
+    {
+      text: "You make a mistake in front of a group of people — you say the wrong name, stumble over a word, forget something obvious. You:",
+      options: [
+        { letter: "A", text: "Immediately criticize yourself internally. \"How embarrassing. That was sloppy. You should have caught that.\"" },
+        { letter: "B", text: "Feel mortified and spend the next hour replaying it and imagining what everyone thought." },
+        { letter: "C", text: "Minimize it or rationalize it away. \"That wasn't a big deal. No one noticed. I don't care anyway.\"" },
+        { letter: "D", text: "Feel a deep sense of shame, as if this one moment reveals your fundamental inadequacy." },
+        { letter: "E", text: "Apologize excessively, then feel guilty for having taken up space in the first place." }
+      ]
+    },
+    {
+      text: "A close friend shares that they're struggling. You:",
+      options: [
+        { letter: "A", text: "Feel a responsibility to help fix it. If you can't solve their problem, you've failed as a friend." },
+        { letter: "B", text: "Feel anxious — can you handle their pain? Will your response be good enough?" },
+        { letter: "C", text: "Feel distant and uncomfortable. You deflect with advice or change the subject." },
+        { letter: "D", text: "Feel consumed by their struggle. You take it on as your own and can't separate their feelings from yours." },
+        { letter: "E", text: "Feel guilty that you can't do more. You should be more available, more helpful, more present." }
+      ]
+    },
+    {
+      text: "Your inner critic most commonly sounds like:",
+      options: [
+        { letter: "A", text: "A demanding coach or boss who pushes you to be better, faster, sharper. The tone is sharp and impatient." },
+        { letter: "B", text: "A panicked worrier who catastrophizes everything and fills you with dread about the future." },
+        { letter: "C", text: "A dismissive voice that turns off the lights on anything emotional. The tone is flat, cold, and detached." },
+        { letter: "D", text: "A cruel voice that attacks your worth as a person — not your behavior, but your core value." },
+        { letter: "E", text: "A disappointed moralist who reminds you of every obligation, every should, and every way you've let people down." }
+      ]
+    },
+    {
+      text: "When your inner critic is loudest, how do you typically respond?",
+      options: [
+        { letter: "A", text: "You push harder. You work more, try harder, raise your standards. Productivity is the antidote." },
+        { letter: "B", text: "You spiral in anxiety, overthinking every detail and possibility until you're paralyzed." },
+        { letter: "C", text: "You check out emotionally. You numb it with scrolling, food, work, or distraction." },
+        { letter: "D", text: "You collapse. You feel worthless, hopeless, and want to give up entirely." },
+        { letter: "E", text: "You over-apologize, over-give, or try to earn your way back to feeling okay." }
+      ]
+    }
+  ];
+
+  /* ── Results data ── */
+  const results = {
+    perfectionist: {
+      name: "The Perfectionist",
+      tagline: "Never Good Enough — Even When You're Winning",
+      accent: "#C9A84C",
+      icon: `<svg viewBox="0 0 72 72" fill="none" aria-hidden="true"><polygon points="36,8 40,28 60,28 44,40 50,60 36,48 22,60 28,40 12,28 32,28" stroke="#C9A84C" stroke-width="1.5" fill="none"/></svg>`,
+      opening: "Your inner voice is saying: \"You could always do better. Rest is dangerous. Your worth is measured by your output.\"",
+      traits: [
+        { lead: "You set extremely high personal standards.", detail: "And feel genuine distress when they're not met, even slightly." },
+        { lead: "Your inner dialogue is demanding.", detail: "\"Do it better,\" \"This isn't good enough,\" \"Get it together.\"" },
+        { lead: "You may struggle to celebrate wins.", detail: "Without immediately pivoting to the next thing that needs fixing." },
+        { lead: "Rest feels dangerous.", detail: "If you're not producing, you're falling behind. Your worth feels tied to output." }
+      ],
+      protecting: "Perfectionism is not laziness in disguise — it is fear dressed up as discipline. Your Perfectionist critic believes: \"If I'm perfect, I'll be safe. If I'm imperfect, I'll be rejected.\" It is trying to keep you accepted, respected, and above all — not criticized.",
+      growthEdge: "The Perfectionist's gift is high standards and execution. Its shadow is that you can work tirelessly and still feel like a fraud on the inside. Your growth is learning to separate \"I did a good job\" from \"I have to do a better job.\" Both can be true — but only one lets you rest.",
+      actions: [
+        { title: "Notice the \"But...\" After Every Win.", desc: "Every time you accomplish something and your brain adds a qualifier (\"It was fine, but...\"), pause. Catch the \"but.\" Write down the sentence without it. Let yourself have the accomplishment, even for five seconds." },
+        { title: "Set One \"Good Enough\" Standard This Week.", desc: "Pick one task — email, report, outfit — and explicitly tell yourself: \"This is good enough.\" Do not revisit it. Notice what your body feels when you intentionally stop short of perfection." },
+        { title: "Ask: \"Whose Voice Is This?\"", desc: "The Perfectionist often sounds like a specific person from your past — a parent, a coach, a teacher. When you hear the demanding inner voice, ask: \"Did someone in my life talk to me like this? Who?\" Naming the origin gives you distance from it." }
+      ]
+    },
+    worry: {
+      name: "The Worry Guard",
+      tagline: "What If Everything Goes Wrong?",
+      accent: "#6B8FA8",
+      icon: `<svg viewBox="0 0 72 72" fill="none" aria-hidden="true"><path d="M36 12 C24 12 14 22 14 34 C14 48 36 60 36 60 C36 60 58 48 58 34 C58 22 48 12 36 12Z" stroke="#6B8FA8" stroke-width="1.5" fill="none"/><path d="M28 32 L32 36 L44 26" stroke="#6B8FA8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.5"/></svg>`,
+      opening: "Your inner voice is saying: \"Something is about to go wrong. Brace yourself. You need to be ready for the worst — because the worst is always coming.\"",
+      traits: [
+        { lead: "You are hyperaware of potential dangers.", detail: "In relationships, in work, in health, in the future." },
+        { lead: "Your inner voice leads with \"What if...\"", detail: "And the \"what if\" is almost always negative." },
+        { lead: "Physical anxiety symptoms may accompany worry.", detail: "Tightness in chest, racing thoughts, difficulty sleeping — which you then interpret as evidence that something IS wrong." },
+        { lead: "Your worst-case scenarios are vivid.", detail: "You can see, feel, and almost experience the disaster before it happens." }
+      ],
+      protecting: "The Worry Guard is not trying to torture you — it is trying to prepare you for danger. Somewhere in your history, anxiety was adaptive. Worrying about a parent's mood, anticipating rejection, bracing for criticism — these kept you safe in unpredictable environments. The Worry Guard is that old survival system, still running, still scanning for threats that may no longer exist.",
+      growthEdge: "Worry has a paradoxical relationship with control — the more you worry, the more you feel like you're \"doing something\" about potential threats. But excessive worry doesn't prevent disasters; it exhausts you before they arrive. Your growth is learning to distinguish productive preparation (useful) from catastrophic rumination (harmful).",
+      actions: [
+        { title: "Name the Probability, Not Just the Possibility.", desc: "When the Worry Guard says \"What if they don't like you?\" — ask: \"Is this likely?\" Not \"Is it possible?\" (everything is possible) but \"Based on evidence, how likely is this?\" Worry catastrophizes possibility. You can learn to weigh probability." },
+        { title: "Contain the Worry to a \"Worry Window.\"", desc: "Give yourself 15 minutes to fully worry. Write down every worst-case scenario. After 15 minutes, close the notebook and redirect. This honors the worry without letting it colonize your entire day." },
+        { title: "Ask: \"What's the Worst That Actually Happens — And Can I Survive It?\"", desc: "If this fear came true, what would you do? Not \"Would the world end?\" but \"How would I cope?\" You are more resilient than your Worry Guard believes." }
+      ]
+    },
+    cop: {
+      name: "The Inner Cop",
+      tagline: "Stop Feeling. Get Back to Work.",
+      accent: "#7A8694",
+      icon: `<svg viewBox="0 0 72 72" fill="none" aria-hidden="true"><rect x="16" y="20" width="40" height="36" rx="4" stroke="#7A8694" stroke-width="1.5" fill="none"/><path d="M26 20 V16 C26 13.8 27.8 12 30 12 H42 C44.2 12 46 13.8 46 16 V20" stroke="#7A8694" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="36" cy="38" r="6" stroke="#7A8694" stroke-width="1.5" fill="none"/><path d="M36 35 V41" stroke="#7A8694" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+      opening: "Your inner voice is saying: \"You're fine. That doesn't bother you. You don't need that. Get back to what you were doing. Feelings are a distraction.\"",
+      traits: [
+        { lead: "You intellectualize rather than feel.", detail: "When something emotional happens, your first instinct is to analyze it, not feel it." },
+        { lead: "\"I don't care\" may be reflexive.", detail: "In situations where you actually do care very much." },
+        { lead: "You may feel numb or flat.", detail: "In moments where you'd expect to feel something — grief, anger, joy." },
+        { lead: "You use productivity as emotional regulation.", detail: "If you're working, you're okay. The moment you stop, the feelings catch up." }
+      ],
+      protecting: "The Inner Cop learned that emotional expression was unsafe in your environment. Maybe vulnerability was mocked. Maybe displaying hurt invited more hurt. Whatever the origin, your nervous system learned: feeling = danger. Shut it down. This is not weakness — it is a brilliant adaptive survival strategy that worked. It just stopped being necessary and started being a cage.",
+      growthEdge: "The Inner Cop's gift is resilience — you can function through hard things, you don't fall apart, you keep going. Its shadow is that you may be cut off from your own emotional life in ways that erode intimacy and self-knowledge. Your growth is learning that feeling is not failing. You can feel something fully and still be okay.",
+      actions: [
+        { title: "Practice the \"Name It Before You Tame It\" Pause.", desc: "Before you dismiss an emotion, pause. Name what you're feeling: \"I am feeling rejected right now. I am feeling sad.\" Don't solve it. Don't analyze it. Just name it. Naming an emotion reduces its intensity." },
+        { title: "Ask: \"What Am I Protecting Myself From Feeling Right Now?\"", desc: "When you notice yourself going numb, shutting down, or deflecting with productivity — ask the question. You don't have to stop protecting yourself. Just bringing awareness to the mechanism loosens its grip." },
+        { title: "Let One Small Feeling Through.", desc: "Choose one safe situation this week — a small disappointment, a minor hurt — and do not intellectualize or dismiss it. Just feel it, briefly. Let yourself be sad for five minutes. Notice what happens. Notice that the world doesn't end." }
+      ]
+    },
+    impostor: {
+      name: "The Impostor",
+      tagline: "You Don't Belong Here — Luck, Not Skill",
+      accent: "#C4825A",
+      icon: `<svg viewBox="0 0 72 72" fill="none" aria-hidden="true"><circle cx="36" cy="32" r="18" stroke="#C4825A" stroke-width="1.5" fill="none"/><path d="M36 32 C36 32 24 38 24 46 C24 50.4 29.6 54 36 54 C42.4 54 48 50.4 48 46 C48 38 36 32 36 32Z" stroke="#C4825A" stroke-width="1.5" fill="none"/><path d="M26 30 L30 34 M46 30 L42 34" stroke="#C4825A" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/><path d="M30 40 C31.5 38 40.5 38 42 40" stroke="#C4825A" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.4"/></svg>`,
+      opening: "Your inner voice is saying: \"You got here by mistake. You don't actually know what you're doing. Someone is going to find out. Your success is luck, not skill.\"",
+      traits: [
+        { lead: "You have a persistent fear of being \"found out.\"", detail: "That at any moment, someone will realize you're not as capable as they've believed." },
+        { lead: "You attribute success to external factors.", detail: "Luck, timing, charm, connections — rather than to your actual skills and effort." },
+        { lead: "You downplay compliments.", detail: "When praised, you deflect, redirect, or dismiss. \"They're just being nice.\"" },
+        { lead: "You compare your inside view to others' outside view.", detail: "You see your internal doubt and uncertainty while seeing only their polished exterior." }
+      ],
+      protecting: "The Impostor Critic is trying to protect you from the humiliation of public failure. In a system that rewarded performance over process, in a family where you were praised for results but not effort, you learned that your value was tied to being exceptional. Being ordinary felt dangerous. The Impostor is the voice that says: \"If you accept that you're just a regular person with real skills, you might not work hard enough to stay safe.\"",
+      growthEdge: "The Impostor's gift is never becoming complacent — you're always pushing, always striving, always improving. Its shadow is that you never feel the ground under your feet. Your growth is learning to separate your achievements from your worth. You are valuable not because you are exceptional — but because you are a human being.",
+      actions: [
+        { title: "Collect Evidence That Isn't Attributable to Luck.", desc: "This week, write down three things you did well. For each, write specifically WHY it worked — what skill, what effort, what knowledge you applied. Counter \"I got lucky\" with a factual accounting of your contribution." },
+        { title: "Separate \"I Belong\" From \"I Have to Prove I Belong.\"", desc: "You belong in rooms, relationships, and opportunities not because you've proven yourself beyond doubt — but because you're a person. Practice: \"I belong here, even if I don't feel ready. Readiness is not the requirement — presence is.\"" },
+        { title: "When You Feel Like an Impostor, Ask: \"Would I Say This to Someone I Love?\"", desc: "If your best friend accomplished what you just did and said \"I only got it because of luck,\" what would you say to them? You'd firmly push back. Start extending that same compassion to yourself." }
+      ]
+    },
+    moral: {
+      name: "The Moral Compass",
+      tagline: "You Should Have Done Better — You Always Let People Down",
+      accent: "#5A8A6A",
+      icon: `<svg viewBox="0 0 72 72" fill="none" aria-hidden="true"><circle cx="36" cy="36" r="22" stroke="#5A8A6A" stroke-width="1.5" fill="none"/><path d="M36 14 V36 L50 50" stroke="#5A8A6A" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="36" cy="36" r="3" fill="#5A8A6A" opacity="0.6"/></svg>`,
+      opening: "Your inner voice is saying: \"You're not doing enough. You should be more available, more generous, more selfless. The ledger is always unbalanced. You always owe more.\"",
+      traits: [
+        { lead: "You feel guilty even when you haven't done anything wrong.", detail: "Guilt is your default emotional response to many situations." },
+        { lead: "You have a strong inner \"should.\"", detail: "You should be more available, more generous, more selfless, more present." },
+        { lead: "You struggle to receive without feeling you owe something.", detail: "Compliments, gifts, or help make you uncomfortable." },
+        { lead: "You feel responsible for others' emotions and outcomes.", detail: "In a way that feels heavy and burdensome." }
+      ],
+      protecting: "The Moral Compass Critic learned that your value was tied to being good, helpful, and self-sacrificing. In some systems — family, culture, religion — being \"good\" was the price of belonging. You may have learned that your worthiness as a person depended on being indispensable to others. The Moral Compass is trying to keep you worthy of love by ensuring you never stop giving.",
+      growthEdge: "The Moral Compass's gift is deep empathy and a genuine commitment to others. Its shadow is self-abandonment — you can give so much to others that you disappear from your own life. Your growth is learning that you are not a moral instrument for serving others' needs. You are also a person with needs, limits, and boundaries.",
+      actions: [
+        { title: "Notice When \"Should\" Becomes a Cage.", desc: "Every time you catch yourself saying \"I should...\" — pause. Ask: \"Should I actually do this, or am I following an obligation that isn't real?\" Some shoulds are genuine ethical obligations. Many are inherited rules from a system that needed you to give more than you had." },
+        { title: "Practice Receiving Without Repaying.", desc: "When someone gives you something — a compliment, a gift, help — sit with it for 30 seconds without deflecting, redirecting, or apologizing. Just say \"Thank you\" and mean it. You don't owe them anything for being kind." },
+        { title: "Check the Ledger — Who Owes Whom?", desc: "Sit down and actually assess: In my important relationships, who gives more than they receive? If it's always you, ask why. Is it because you genuinely want to give — or because you feel you have to? Guilt-driven giving and genuine generosity feel different in the body." }
+      ]
+    }
+  };
+
+  /* ── Scoring ── */
+  function getResult() {
+    const counts = { A: 0, B: 0, C: 0, D: 0, E: 0 };
+    answers.forEach((a, i) => { if (a !== undefined && questions[i]) counts[a]++; });
+    let max = 0, dominant = 'perfectionist';
+    // Tie-break priority: worry > impostor > moral > perfectionist > cop
+    const priority = ['B','D','E','A','C'];
+    const map = { A: 'perfectionist', B: 'worry', C: 'cop', D: 'impostor', E: 'moral' };
+    for (const l of priority) { if (counts[l] >= max) { max = counts[l]; dominant = map[l]; } }
+    return dominant;
+  }
+
+  /* ── Screens ── */
+  function showScreen(id) {
+    if (id === 'quiz') {
+      document.getElementById('twModal').classList.add('active');
+      return;
+    }
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if (id === 'quiz') renderQuestion();
+    if (id === 'result') renderResult();
+    saveProgress();
+  }
+
+  function proceedToQuiz() {
+    closeTWModal();
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('quiz').classList.add('active');
+    currentQ = answers.length;
+    renderQuestion();
+  }
+
+  /* ── Render question ── */
+  function renderQuestion() {
+    const wrap = document.getElementById('questionWrap');
+    const q = questions[currentQ];
+    const dir = quizDirection === 1 ? 'slideLeft' : 'slideRight';
+    wrap.style.animation = 'none';
+    wrap.offsetHeight;
+    wrap.style.animation = dir + ' 0.3s ease';
+
+    const answered = answers[currentQ];
+    const optionsHtml = q.options.map(opt => `
+      <li role="button" tabindex="0"
+          class="option-card${answered === opt.letter ? ' selected' : ''}"
+          onclick="selectOption('${opt.letter}')"
+          onkeydown="if(event.key==='Enter'||event.key===' ')selectOption('${opt.letter}')"
+          aria-pressed="${answered === opt.letter}">
+        <span class="option-letter">${opt.letter}</span>
+        <span class="option-text">${opt.text}</span>
+        <span class="option-check" aria-hidden="true">&#10003;</span>
+      </li>
+    `).join('');
+
+    wrap.innerHTML = `
+      <p class="question-text" id="questionText">${q.text}</p>
+      <ul class="options-list" role="list">${optionsHtml}</ul>
+    `;
+
+    const pct = ((currentQ + 1) / TOTAL_QS) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = `Q ${currentQ + 1} / ${TOTAL_QS}`;
+    document.getElementById('progressBar').setAttribute('aria-valuenow', currentQ + 1);
+    document.getElementById('backBtn').style.display = currentQ > 0 ? 'block' : 'none';
+  }
+
+  /* ── Select ── */
+  function selectOption(letter) {
+    answers[currentQ] = letter;
+    localStorage.setItem('critic-quiz-answers', JSON.stringify(answers));
+
+    document.querySelectorAll('.option-card').forEach(c => {
+      c.classList.toggle('selected', c.querySelector('.option-letter').textContent === letter);
+      c.setAttribute('aria-pressed', c.querySelector('.option-letter').textContent === letter);
+    });
+
+    setTimeout(() => {
+      if (currentQ < TOTAL_QS - 1) {
+        currentQ++;
+        quizDirection = 1;
+        renderQuestion();
+      } else {
+        showProcessing();
+      }
+    }, 320);
+  }
+
+  function navigateQuestion(dir) {
+    if (dir === -1 && currentQ > 0) {
+      currentQ--;
+      quizDirection = -1;
+      renderQuestion();
+    }
+  }
+
+  /* ── Processing ── */
+  function showProcessing() {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('processing').classList.add('active');
+    setTimeout(() => {
+      const dominant = getResult();
+      localStorage.setItem('critic-quiz-result', dominant);
+      showScreen('result');
+    }, 2500);
+  }
+
+  /* ── Render result ── */
+  function renderResult() {
+    const dominant = localStorage.getItem('critic-quiz-result') || getResult();
+    const r = results[dominant];
+
+    document.getElementById('resultContent').innerHTML = `
+      <div class="result-hero">
+        <p class="result-overline">Your Inner Critic Type</p>
+        <h1 class="result-type-name" style="color:${r.accent}">${r.name}</h1>
+        <p class="result-tagline">"${r.tagline}"</p>
+        <div class="result-icon">${r.icon}</div>
+      </div>
+
+      <div class="result-section">
+        <h3>What It's Telling You</h3>
+        <p class="result-opening">${r.opening}</p>
+      </div>
+
+      <div class="result-section">
+        <h3>Your Signature Traits</h3>
+        <ul class="trait-list">
+          ${r.traits.map(t => `<li class="trait-item"><strong>${t.lead}</strong> ${t.detail}</li>`).join('')}
+        </ul>
+      </div>
+
+      <div class="result-section protecting-section">
+        <h3>What It's Actually Protecting</h3>
+        <p>${r.protecting}</p>
+      </div>
+
+      <div class="result-section growth-edge">
+        <h3>Your Growth Edge</h3>
+        <p>${r.growthEdge}</p>
+      </div>
+
+      <div class="result-section">
+        <h3>Your Action Steps</h3>
+        <div class="action-steps">
+          ${r.actions.map((a, i) => `
+            <div class="action-step">
+              <span class="step-number">${i + 1}</span>
+              <div class="step-content">
+                <h4>${a.title}</h4>
+                <p>${a.desc}</p>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <div class="share-section">
+        <h3>Share Your Result</h3>
+        <div class="share-card">
+          <p class="share-card-quote">"Turns out my inner critic is ${r.name} — and it explains why I can never just... stop."</p>
+          <p class="share-card-source">What's Your Inner Critic Saying? Quiz</p>
+        </div>
+        <div class="share-btns">
+          <button class="btn-share" onclick="downloadShareCard()" aria-label="Download share card">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Save Image
+          </button>
+          <button class="btn-share" onclick="copyShareText()" aria-label="Copy share text">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            Copy Text
+          </button>
+          <button class="btn-share" onclick="openWeChatModal()" aria-label="Share to WeChat">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.5 11a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm7 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm-3.5 7.5c-3.6 0-6.5-2.3-6.5-5.1 0-1.5.8-2.9 2-3.8L6.4 8.5C6.2 8.3 6.2 7.9 6.4 7.7c.2-.2.6-.2.8 0l1.1 1.1c.8-.3 1.6-.5 2.5-.5.3 0 .5.2.5.5s-.2.5-.5.5c-.7 0-1.4.2-2 .4L8 10.7C7.1 11.5 6.5 12.7 6.5 14c0 2.4 2.5 4.5 6 4.5 1 0 1.9-.2 2.8-.5.2-.1.5.1.5.4 0 .3-.2.4-.4.5-1 .4-2.1.6-3.1.6z"/></svg>
+            WeChat
+          </button>
+        </div>
+        <button class="btn-retake" onclick="retakeQuiz()" aria-label="Retake the quiz">Retake the Quiz</button>
+      </div>
+
+      <div class="result-footer">
+        <p class="disclaimer">This quiz is for self-reflection insight, not clinical diagnosis. Your inner critic is a voice you absorbed — not your identity. If this content brought up difficult feelings, please consider speaking with a licensed therapist or trusted support person. You are not alone in this.</p>
+        <div class="footer-links">
+          <a onclick="openPrivacyModal()" tabindex="0" role="button" aria-label="View privacy policy">Privacy Policy</a>
+          <a href="https://www.who.int/health-topics/mental-health" target="_blank" rel="noopener noreferrer" aria-label="Find professional mental health support">Find Professional Support</a>
+        </div>
+      </div>
+    `;
+  }
+
+  /* ── Share: Canvas card ── */
+  function downloadShareCard() {
+    const dominant = localStorage.getItem('critic-quiz-result') || getResult();
+    const r = results[dominant];
+    const canvas = document.getElementById('shareCanvas');
+    const ctx = canvas.getContext('2d');
+
+    ctx.fillStyle = '#FAF6F1';
+    ctx.fillRect(0, 0, 600, 400);
+
+    // Gradient bar
+    const grad = ctx.createLinearGradient(0, 0, 600, 0);
+    grad.addColorStop(0, '#5B4F7D');
+    grad.addColorStop(1, '#B08B9A');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 600, 8);
+
+    ctx.fillStyle = '#2D2A26';
+    ctx.font = '600 22px "Playfair Display", serif';
+    ctx.fillText("What's Your Inner Critic Saying?", 40, 70);
+
+    ctx.fillStyle = r.accent;
+    ctx.font = 'bold 30px "Playfair Display", serif';
+    ctx.fillText(r.name, 40, 125);
+
+    ctx.fillStyle = '#6B6560';
+    ctx.font = 'italic 17px "Playfair Display", serif';
+    ctx.fillText('"' + r.tagline + '"', 40, 160);
+
+    ctx.fillStyle = '#2D2A26';
+    ctx.font = '15px Inter, sans-serif';
+    ctx.fillText('"Turns out my inner critic is ' + r.name + ' — and it explains why I can never just... stop."', 40, 215);
+
+    ctx.strokeStyle = '#E5E0DA';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(40, 250);
+    ctx.lineTo(560, 250);
+    ctx.stroke();
+
+    ctx.fillStyle = '#9E9892';
+    ctx.font = '12px Inter, sans-serif';
+    ctx.fillText('Inner Critic Quiz · Free · 12 Questions', 40, 280);
+
+    ctx.fillStyle = r.accent;
+    ctx.font = '600 14px Inter, sans-serif';
+    ctx.fillText('Take the Quiz →', 40, 350);
+
+    const link = document.createElement('a');
+    link.download = 'inner-critic-result.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+
+    showToast('Share card downloaded!');
+  }
+
+  /* ── Share: Copy text ── */
+  function copyShareText() {
+    const dominant = localStorage.getItem('critic-quiz-result') || getResult();
+    const r = results[dominant];
+    const text = `Turns out my inner critic is ${r.name} — "${r.tagline}"\n\nTake the quiz to find out yours →`;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard!'));
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast('Copied to clipboard!');
+    }
+  }
+
+  /* ── Modals ── */
+  function openWeChatModal() { document.getElementById('wechatModal').classList.add('active'); }
+  function closeWeChatModal() { document.getElementById('wechatModal').classList.remove('active'); }
+  function openPrivacyModal() { document.getElementById('privacyModal').classList.add('active'); }
+  function closePrivacyModal() { document.getElementById('privacyModal').classList.remove('active'); }
+  function closeTWModal() { document.getElementById('twModal').classList.remove('active'); }
+
+  /* ── Toast ── */
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  /* ── Save progress ── */
+  function saveProgress() {
+    localStorage.setItem('critic-quiz-answers', JSON.stringify(answers));
+  }
+
+  /* ── Retake ── */
+  function retakeQuiz() {
+    answers = [];
+    currentQ = 0;
+    quizDirection = 1;
+    localStorage.removeItem('critic-quiz-answers');
+    localStorage.removeItem('critic-quiz-result');
+    showScreen('landing');
+  }
+</script>
+</body>
+</html>
