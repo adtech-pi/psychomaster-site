@@ -14,196 +14,82 @@
        CSS CUSTOM PROPERTIES & RESET
     ============================================= */
     :root {
-      /* Base palette */
       --bg-base: #121018;
       --bg-surface: #1E1A27;
       --bg-card: #2A2438;
       --bg-elevated: #362E45;
-
-      /* Neutral text */
       --text-primary: #F0EBE8;
       --text-secondary: #B8AEB8;
       --text-muted: #786E82;
-
-      /* Borders */
       --border-subtle: #3A3248;
       --border-active: #5A4E68;
-
-      /* 9 Enneagram type colors */
-      --type1: #E8B84B;
-      --type2: #E0789A;
-      --type3: #56C278;
-      --type4: #E05C7A;
-      --type5: #4AB8B8;
-      --type6: #6B8FD4;
-      --type7: #F08040;
-      --type8: #C05030;
-      --type9: #9880D0;
-
-      /* Dominant type — set dynamically */
+      --type1: #E8B84B; --type2: #E0789A; --type3: #56C278;
+      --type4: #E05C7A; --type5: #4AB8B8; --type6: #6B8FD4;
+      --type7: #F08040; --type8: #C05030; --type9: #9880D0;
       --type-primary: var(--type9);
-      --type-light: #B8A8E8;
-      --type-dark: #6858A0;
-
-      /* Gradient system */
-      --gradient-angle: 135deg;
+      --type-light: #B8A8E8; --type-dark: #6858A0;
       --gradient-opacity: 0.12;
-
-      /* Spacing scale (8pt) */
       --sp2: 2px; --sp4: 4px; --sp8: 8px; --sp12: 12px; --sp16: 16px;
       --sp20: 20px; --sp24: 24px; --sp32: 32px; --sp40: 40px;
       --sp48: 48px; --sp56: 56px; --sp64: 64px; --sp80: 80px; --sp96: 96px;
-
-      /* Easing */
       --ease-enter: cubic-bezier(0.22, 1, 0.36, 1);
       --ease-exit: cubic-bezier(0.55, 0, 1, 0.45);
       --ease-continuous: cubic-bezier(0.4, 0, 0.2, 1);
       --ease-color: cubic-bezier(0.25, 0.1, 0.25, 1);
-
-      /* Typography */
       --font-display: 'Instrument Serif', Georgia, serif;
       --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
-
-      /* Container */
       --container-max: 480px;
-      --content-max: 360px;
       --screen-pad: var(--sp24);
     }
 
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      font-size: 16px;
-      scroll-behavior: smooth;
-      -webkit-text-size-adjust: 100%;
-    }
-
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
     body {
       font-family: var(--font-body);
       background-color: var(--bg-base);
       color: var(--text-primary);
-      min-height: 100dvh;
-      min-height: 100vh;
-      overflow-x: hidden;
-      line-height: 1.65;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      min-height: 100dvh; min-height: 100vh;
+      overflow-x: hidden; line-height: 1.65;
+      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
     }
 
     /* =============================================
        BACKGROUND SYSTEM
     ============================================= */
     .bg-gradient {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
       background:
         radial-gradient(ellipse 80% 60% at 20% 20%, rgba(232,184,75,0.06) 0%, transparent 60%),
         radial-gradient(ellipse 60% 80% at 80% 80%, rgba(152,128,208,0.07) 0%, transparent 60%),
         radial-gradient(ellipse 100% 100% at 50% 50%, rgba(30,26,39,0.9) 0%, var(--bg-base) 100%);
       transition: background 2000ms var(--ease-color);
     }
-
     .bg-gradient::before {
-      content: '';
-      position: absolute;
-      inset: 0;
+      content: ''; position: absolute; inset: 0;
       background: conic-gradient(
         from 0deg at 50% 50%,
-        var(--type1) 0deg,
-        var(--type2) 40deg,
-        var(--type3) 80deg,
-        var(--type4) 120deg,
-        var(--type5) 160deg,
-        var(--type6) 200deg,
-        var(--type7) 240deg,
-        var(--type8) 280deg,
-        var(--type9) 320deg,
-        var(--type1) 360deg
+        var(--type1) 0deg, var(--type2) 40deg, var(--type3) 80deg,
+        var(--type4) 120deg, var(--type5) 160deg, var(--type6) 200deg,
+        var(--type7) 240deg, var(--type8) 280deg, var(--type9) 320deg, var(--type1) 360deg
       );
-      opacity: var(--gradient-opacity);
-      filter: blur(80px);
+      opacity: var(--gradient-opacity); filter: blur(80px);
       animation: gradientRotate 120s linear infinite;
     }
+    @keyframes gradientRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-    @keyframes gradientRotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
+    .orbs { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .orb { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.04; }
+    .orb-1 { width: 400px; height: 400px; background: var(--type1); top: -100px; left: -100px; animation: orbDrift1 35s ease-in-out infinite alternate; }
+    .orb-2 { width: 300px; height: 300px; background: var(--type2); top: 20%; right: -80px; animation: orbDrift2 28s ease-in-out infinite alternate; }
+    .orb-3 { width: 350px; height: 350px; background: var(--type7); bottom: 10%; left: -60px; animation: orbDrift3 40s ease-in-out infinite alternate; }
+    .orb-4 { width: 250px; height: 250px; background: var(--type9); bottom: -50px; right: 20%; animation: orbDrift4 32s ease-in-out infinite alternate; }
+    @keyframes orbDrift1 { from { transform: translate(0, 0); } to { transform: translate(60px, 40px); } }
+    @keyframes orbDrift2 { from { transform: translate(0, 0); } to { transform: translate(-50px, 30px); } }
+    @keyframes orbDrift3 { from { transform: translate(0, 0); } to { transform: translate(40px, -50px); } }
+    @keyframes orbDrift4 { from { transform: translate(0, 0); } to { transform: translate(-40px, -30px); } }
 
-    /* Floating orbs */
-    .orbs {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      overflow: hidden;
-    }
-
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(60px);
-      opacity: 0.04;
-    }
-
-    .orb-1 {
-      width: 400px; height: 400px;
-      background: var(--type1);
-      top: -100px; left: -100px;
-      animation: orbDrift1 35s ease-in-out infinite alternate;
-    }
-
-    .orb-2 {
-      width: 300px; height: 300px;
-      background: var(--type2);
-      top: 20%; right: -80px;
-      animation: orbDrift2 28s ease-in-out infinite alternate;
-    }
-
-    .orb-3 {
-      width: 350px; height: 350px;
-      background: var(--type7);
-      bottom: 10%; left: -60px;
-      animation: orbDrift3 40s ease-in-out infinite alternate;
-    }
-
-    .orb-4 {
-      width: 250px; height: 250px;
-      background: var(--type9);
-      bottom: -50px; right: 20%;
-      animation: orbDrift4 32s ease-in-out infinite alternate;
-    }
-
-    @keyframes orbDrift1 {
-      from { transform: translate(0, 0); }
-      to { transform: translate(60px, 40px); }
-    }
-    @keyframes orbDrift2 {
-      from { transform: translate(0, 0); }
-      to { transform: translate(-50px, 30px); }
-    }
-    @keyframes orbDrift3 {
-      from { transform: translate(0, 0); }
-      to { transform: translate(40px, -50px); }
-    }
-    @keyframes orbDrift4 {
-      from { transform: translate(0, 0); }
-      to { transform: translate(-40px, -30px); }
-    }
-
-    /* Noise texture overlay */
     .noise {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-      opacity: 0.025;
+      position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.025;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
       background-size: 256px 256px;
     }
@@ -212,841 +98,269 @@
        APP CONTAINER
     ============================================= */
     .app {
-      position: relative;
-      z-index: 2;
-      min-height: 100dvh;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      position: relative; z-index: 2; min-height: 100dvh; min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
       padding: var(--sp24) var(--sp16);
       padding-top: calc(var(--sp24) + env(safe-area-inset-top));
       padding-bottom: calc(var(--sp24) + env(safe-area-inset-bottom));
     }
-
-    .container {
-      width: 100%;
-      max-width: var(--container-max);
-    }
+    .container { width: 100%; max-width: var(--container-max); }
 
     /* =============================================
        SCREENS
     ============================================= */
-    .screen {
-      display: none;
-      width: 100%;
-      animation: screenEnter 500ms var(--ease-enter) both;
-    }
-
-    .screen.active {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
+    .screen { display: none; width: 100%; animation: screenEnter 500ms var(--ease-enter) both; }
+    .screen.active { display: flex; flex-direction: column; align-items: center; }
     @keyframes screenEnter {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     /* =============================================
        CSS ENNEAGRAM SYMBOL
     ============================================= */
-    .enneagram-symbol {
-      position: relative;
-      width: 200px;
-      height: 200px;
-      flex-shrink: 0;
-    }
-
+    .enneagram-symbol { position: relative; width: 200px; height: 200px; flex-shrink: 0; }
     .enneagram-outer {
-      position: absolute;
-      inset: 0;
-      clip-path: polygon(
-        50% 0%,
-        63% 35%,
-        98% 35%,
-        68% 57%,
-        79% 91%,
-        50% 70%,
-        21% 91%,
-        32% 57%,
-        2% 35%,
-        37% 35%
-      );
-      background: conic-gradient(
-        from 0deg,
-        var(--type1) 0deg, var(--type2) 40deg, var(--type3) 80deg,
-        var(--type4) 120deg, var(--type5) 160deg, var(--type6) 200deg,
-        var(--type7) 240deg, var(--type8) 280deg, var(--type9) 320deg,
-        var(--type1) 360deg
-      );
+      position: absolute; inset: 0;
+      clip-path: polygon(50% 0%, 63% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 37% 35%);
+      background: conic-gradient(from 0deg, var(--type1) 0deg, var(--type2) 40deg, var(--type3) 80deg, var(--type4) 120deg, var(--type5) 160deg, var(--type6) 200deg, var(--type7) 240deg, var(--type8) 280deg, var(--type9) 320deg, var(--type1) 360deg);
       opacity: 0.15;
     }
-
     .enneagram-inner-triangle {
-      position: absolute;
-      inset: 0;
-      clip-path: polygon(
-        50% 15%, 85% 85%, 15% 85%
-      );
-      border: 2px solid var(--type-primary);
-      opacity: 0.2;
-      background: transparent;
+      position: absolute; inset: 0;
+      clip-path: polygon(50% 15%, 85% 85%, 15% 85%);
+      border: 2px solid var(--type-primary); opacity: 0.2; background: transparent;
     }
-
     .enneagram-inner-triangle-2 {
-      position: absolute;
-      inset: 0;
-      clip-path: polygon(
-        15% 15%, 85% 15%, 50% 85%
-      );
-      border: 2px solid var(--type-primary);
-      opacity: 0.12;
-      background: transparent;
+      position: absolute; inset: 0;
+      clip-path: polygon(15% 15%, 85% 15%, 50% 85%);
+      border: 2px solid var(--type-primary); opacity: 0.12; background: transparent;
     }
-
-    /* Large decorative symbol for intro/result */
-    .enneagram-symbol.large {
-      width: 280px;
-      height: 280px;
-    }
-
-    .enneagram-symbol.large .enneagram-outer {
-      animation: symbolRotate 120s linear infinite;
-    }
-
-    @keyframes symbolRotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    .enneagram-symbol.glowing .enneagram-outer {
-      opacity: 0.25;
-      filter: blur(4px);
-    }
-
-    .enneagram-symbol.calculating .enneagram-outer {
-      animation: symbolRotate 8s linear infinite, symbolPulse 3s ease-in-out infinite;
-    }
-
-    @keyframes symbolPulse {
-      0%, 100% { opacity: 0.4; }
-      50% { opacity: 0.7; }
-    }
-
-    /* Small footer symbol */
-    .enneagram-symbol.small {
-      width: 40px;
-      height: 40px;
-    }
+    .enneagram-symbol.large { width: 280px; height: 280px; }
+    .enneagram-symbol.large .enneagram-outer { animation: symbolRotate 120s linear infinite; }
+    @keyframes symbolRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .enneagram-symbol.glowing .enneagram-outer { opacity: 0.25; filter: blur(4px); }
+    .enneagram-symbol.calculating .enneagram-outer { animation: symbolRotate 8s linear infinite, symbolPulse 3s ease-in-out infinite; }
+    @keyframes symbolPulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.7; } }
+    .enneagram-symbol.small { width: 40px; height: 40px; }
 
     /* =============================================
-       DISLAIMER SCREEN
+       DISCLAIMER SCREEN
     ============================================= */
-    .disclaimer-screen {
-      text-align: center;
-      gap: var(--sp32);
-    }
-
-    .disclaimer-emoji {
-      font-size: 3rem;
-      margin-bottom: var(--sp8);
-      animation: floatIn 800ms var(--ease-enter) 200ms both;
-    }
-
-    @keyframes floatIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .disclaimer-title {
-      font-family: var(--font-display);
-      font-size: 2rem;
-      font-weight: 400;
-      line-height: 1.2;
-      letter-spacing: -0.01em;
-      color: var(--text-primary);
-      animation: floatIn 800ms var(--ease-enter) 300ms both;
-    }
-
-    .disclaimer-body {
-      font-size: 1rem;
-      line-height: 1.7;
-      color: var(--text-secondary);
-      max-width: 340px;
-      animation: floatIn 800ms var(--ease-enter) 400ms both;
-    }
-
-    .disclaimer-body em {
-      font-family: var(--font-display);
-      font-style: italic;
-      color: var(--text-primary);
-    }
-
-    .disclaimer-body p + p {
-      margin-top: var(--sp16);
-    }
-
-    .disclaimer-note {
-      font-size: 0.8125rem;
-      color: var(--text-muted);
-      padding: var(--sp16);
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      background: var(--bg-card);
-      max-width: 340px;
-      animation: floatIn 800ms var(--ease-enter) 500ms both;
-    }
+    .disclaimer-screen { text-align: center; gap: var(--sp32); }
+    .disclaimer-emoji { font-size: 3rem; margin-bottom: var(--sp8); animation: floatIn 800ms var(--ease-enter) 200ms both; }
+    @keyframes floatIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .disclaimer-title { font-family: var(--font-display); font-size: 2rem; font-weight: 400; line-height: 1.2; letter-spacing: -0.01em; color: var(--text-primary); animation: floatIn 800ms var(--ease-enter) 300ms both; }
+    .disclaimer-body { font-size: 1rem; line-height: 1.7; color: var(--text-secondary); max-width: 340px; animation: floatIn 800ms var(--ease-enter) 400ms both; }
+    .disclaimer-body em { font-family: var(--font-display); font-style: italic; color: var(--text-primary); }
+    .disclaimer-body p + p { margin-top: var(--sp16); }
+    .disclaimer-note { font-size: 0.8125rem; color: var(--text-muted); padding: var(--sp16); border: 1px solid var(--border-subtle); border-radius: 12px; background: var(--bg-card); max-width: 340px; animation: floatIn 800ms var(--ease-enter) 500ms both; }
 
     /* =============================================
        INTRO SCREEN
     ============================================= */
-    .intro-screen {
-      text-align: center;
-      gap: var(--sp32);
-    }
-
-    .intro-symbol {
-      animation: floatIn 600ms var(--ease-enter) 100ms both;
-    }
-
-    .intro-title {
-      font-family: var(--font-display);
-      font-size: 2.25rem;
-      font-weight: 400;
-      line-height: 1.2;
-      letter-spacing: -0.01em;
-      color: var(--text-primary);
-      animation: floatIn 600ms var(--ease-enter) 200ms both;
-    }
-
-    .intro-subtitle {
-      font-family: var(--font-display);
-      font-style: italic;
-      font-size: 1.125rem;
-      color: var(--type-primary);
-      margin-top: var(--sp8);
-      animation: floatIn 600ms var(--ease-enter) 300ms both;
-    }
-
-    .intro-body {
-      font-size: 0.9375rem;
-      line-height: 1.7;
-      color: var(--text-secondary);
-      max-width: 340px;
-      animation: floatIn 600ms var(--ease-enter) 400ms both;
-    }
-
-    .intro-body p + p {
-      margin-top: var(--sp16);
-    }
-
-    .instinct-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: var(--sp12);
-      text-align: left;
-      width: 100%;
-      max-width: 340px;
-      animation: floatIn 600ms var(--ease-enter) 500ms both;
-    }
-
-    .instinct-item {
-      display: flex;
-      align-items: flex-start;
-      gap: var(--sp12);
-      padding: var(--sp16);
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      transition: border-color 300ms var(--ease-continuous);
-    }
-
-    .instinct-item:hover {
-      border-color: var(--border-active);
-    }
-
-    .instinct-badge {
-      flex-shrink: 0;
-      font-size: 0.6875rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: var(--sp4) var(--sp8);
-      border-radius: 100px;
-      background: var(--type-primary);
-      color: var(--bg-base);
-    }
-
-    .instinct-text strong {
-      display: block;
-      font-size: 0.9375rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: var(--sp4);
-    }
-
-    .instinct-text span {
-      font-size: 0.875rem;
-      color: var(--text-secondary);
-      line-height: 1.55;
-    }
+    .intro-screen { text-align: center; gap: var(--sp32); }
+    .intro-symbol { animation: floatIn 600ms var(--ease-enter) 100ms both; }
+    .intro-title { font-family: var(--font-display); font-size: 2.25rem; font-weight: 400; line-height: 1.2; letter-spacing: -0.01em; color: var(--text-primary); animation: floatIn 600ms var(--ease-enter) 200ms both; }
+    .intro-subtitle { font-family: var(--font-display); font-style: italic; font-size: 1.125rem; color: var(--type-primary); margin-top: var(--sp8); animation: floatIn 600ms var(--ease-enter) 300ms both; }
+    .intro-body { font-size: 0.9375rem; line-height: 1.7; color: var(--text-secondary); max-width: 340px; animation: floatIn 600ms var(--ease-enter) 400ms both; }
+    .intro-body p + p { margin-top: var(--sp16); }
+    .intro-body em { font-family: var(--font-display); font-style: italic; color: var(--text-primary); }
+    .instinct-list { list-style: none; display: flex; flex-direction: column; gap: var(--sp12); text-align: left; width: 100%; max-width: 340px; animation: floatIn 600ms var(--ease-enter) 500ms both; }
+    .instinct-item { display: flex; align-items: flex-start; gap: var(--sp12); padding: var(--sp16); background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 12px; transition: border-color 300ms var(--ease-continuous); }
+    .instinct-item:hover { border-color: var(--border-active); }
+    .instinct-badge { flex-shrink: 0; font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: var(--sp4) var(--sp8); border-radius: 100px; background: var(--type-primary); color: var(--bg-base); }
+    .instinct-text strong { display: block; font-size: 0.9375rem; font-weight: 600; color: var(--text-primary); margin-bottom: var(--sp4); }
+    .instinct-text span { font-size: 0.875rem; color: var(--text-secondary); line-height: 1.55; }
 
     /* =============================================
        PROGRESS RING
     ============================================= */
-    .progress-container {
-      display: flex;
-      justify-content: center;
-      margin-bottom: var(--sp32);
-      animation: floatIn 500ms var(--ease-enter) both;
-    }
-
-    .progress-ring {
-      position: relative;
-      width: 64px;
-      height: 64px;
-    }
-
-    .progress-ring svg {
-      width: 100%;
-      height: 100%;
-      transform: rotate(-90deg);
-    }
-
-    .progress-ring-track {
-      fill: none;
-      stroke: var(--border-subtle);
-      stroke-width: 4;
-    }
-
-    .progress-ring-segment {
-      fill: none;
-      stroke: var(--type-primary);
-      stroke-width: 4;
-      stroke-linecap: round;
-      opacity: 0;
-      transition: opacity 400ms var(--ease-enter), stroke 800ms var(--ease-color);
-    }
-
-    .progress-ring-segment.active {
-      opacity: 1;
-    }
-
-    .progress-ring-segment.completed {
-      opacity: 0.8;
-    }
-
-    .progress-label {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--text-secondary);
-      font-family: var(--font-body);
-    }
+    .progress-container { display: flex; justify-content: center; margin-bottom: var(--sp32); animation: floatIn 500ms var(--ease-enter) both; }
+    .progress-ring { position: relative; width: 64px; height: 64px; }
+    .progress-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+    .progress-ring-track { fill: none; stroke: var(--border-subtle); stroke-width: 4; }
+    .progress-ring-segment { fill: none; stroke: var(--type-primary); stroke-width: 4; stroke-linecap: round; opacity: 0; transition: opacity 400ms var(--ease-enter), stroke 800ms var(--ease-color); }
+    .progress-ring-segment.active { opacity: 1; }
+    .progress-ring-segment.completed { opacity: 0.8; }
+    .progress-label { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); font-family: var(--font-body); }
 
     /* =============================================
        QUIZ SCREEN
     ============================================= */
-    .quiz-screen {
-      gap: var(--sp24);
-    }
-
-    .question-meta {
-      text-align: center;
-      width: 100%;
-      animation: floatIn 400ms var(--ease-enter) both;
-    }
-
-    .question-number {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--type-primary);
-      margin-bottom: var(--sp12);
-    }
-
-    .question-text {
-      font-family: var(--font-display);
-      font-size: 1.375rem;
-      font-weight: 400;
-      line-height: 1.35;
-      color: var(--text-primary);
-      max-width: 380px;
-    }
-
-    .answers-list {
-      display: flex;
-      flex-direction: column;
-      gap: var(--sp12);
-      width: 100%;
-      animation: floatIn 400ms var(--ease-enter) 100ms both;
-    }
-
+    .quiz-screen { gap: var(--sp24); }
+    .question-meta { text-align: center; width: 100%; animation: floatIn 400ms var(--ease-enter) both; }
+    .question-number { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--type-primary); margin-bottom: var(--sp12); }
+    .question-text { font-family: var(--font-display); font-size: 1.375rem; font-weight: 400; line-height: 1.35; color: var(--text-primary); max-width: 380px; }
+    .answers-list { display: flex; flex-direction: column; gap: var(--sp12); width: 100%; animation: floatIn 400ms var(--ease-enter) 100ms both; }
     .answer-card {
-      position: relative;
-      display: flex;
-      align-items: flex-start;
-      gap: var(--sp16);
-      padding: var(--sp16) var(--sp20);
-      background: var(--bg-card);
-      border: 1.5px solid var(--border-subtle);
-      border-radius: 16px;
+      position: relative; display: flex; align-items: flex-start; gap: var(--sp16);
+      padding: var(--sp16) var(--sp20); background: var(--bg-card);
+      border: 1.5px solid var(--border-subtle); border-radius: 16px;
       cursor: pointer;
-      transition:
-        border-color 200ms var(--ease-continuous),
-        background 200ms var(--ease-continuous),
-        transform 200ms var(--ease-enter),
-        box-shadow 200ms var(--ease-continuous);
-      text-align: left;
-      width: 100%;
-      min-height: 60px;
+      transition: border-color 200ms var(--ease-continuous), background 200ms var(--ease-continuous), transform 200ms var(--ease-enter), box-shadow 200ms var(--ease-continuous);
+      text-align: left; width: 100%; min-height: 60px;
     }
-
-    .answer-card:hover {
-      border-color: var(--border-active);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-    }
-
-    .answer-card:active {
-      transform: translateY(0);
-    }
-
-    .answer-card:focus-visible {
-      outline: 3px solid var(--type-primary);
-      outline-offset: 2px;
-    }
-
-    .answer-card.selected {
-      border-color: var(--type-primary);
-      background: var(--bg-elevated);
-      box-shadow: 0 0 0 3px color-mix(in srgb, var(--type-primary) 35%, transparent);
-    }
-
-    .answer-letter {
-      flex-shrink: 0;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      border: 1.5px solid var(--border-active);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.875rem;
-      font-weight: 700;
-      color: var(--text-secondary);
-      transition: border-color 200ms, background 200ms, color 200ms;
-    }
-
-    .answer-card.selected .answer-letter {
-      border-color: var(--type-primary);
-      background: var(--type-primary);
-      color: var(--bg-base);
-    }
-
-    .answer-text {
-      font-size: 0.9375rem;
-      line-height: 1.6;
-      color: var(--text-secondary);
-      transition: color 200ms;
-      padding-top: var(--sp4);
-    }
-
-    .answer-card.selected .answer-text {
-      color: var(--text-primary);
-    }
+    .answer-card:hover { border-color: var(--border-active); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+    .answer-card:active { transform: translateY(0); }
+    .answer-card:focus-visible { outline: 3px solid var(--type-primary); outline-offset: 2px; }
+    .answer-card.selected { border-color: var(--type-primary); background: var(--bg-elevated); box-shadow: 0 0 0 3px color-mix(in srgb, var(--type-primary) 35%, transparent); }
+    .answer-letter { flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--border-active); display: flex; align-items: center; justify-content: center; font-size: 0.875rem; font-weight: 700; color: var(--text-secondary); transition: border-color 200ms, background 200ms, color 200ms; }
+    .answer-card.selected .answer-letter { border-color: var(--type-primary); background: var(--type-primary); color: var(--bg-base); }
+    .answer-text { font-size: 0.9375rem; line-height: 1.6; color: var(--text-secondary); transition: color 200ms; padding-top: var(--sp4); }
+    .answer-card.selected .answer-text { color: var(--text-primary); }
 
     /* =============================================
        CALCULATING SCREEN
     ============================================= */
-    .calculating-screen {
-      text-align: center;
-      gap: var(--sp32);
-    }
-
-    .calculating-symbol {
-      animation: floatIn 600ms var(--ease-enter) both;
-    }
-
-    .calculating-text {
-      font-family: var(--font-display);
-      font-style: italic;
-      font-size: 1.25rem;
-      color: var(--text-secondary);
-      animation: floatIn 600ms var(--ease-enter) 200ms both;
-    }
-
-    .calculating-dots {
-      display: flex;
-      justify-content: center;
-      gap: var(--sp8);
-      margin-top: var(--sp16);
-    }
-
-    .calculating-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--type-primary);
-      animation: dotPulse 1.4s ease-in-out infinite;
-      opacity: 0.4;
-    }
-
+    .calculating-screen { text-align: center; gap: var(--sp32); }
+    .calculating-symbol { animation: floatIn 600ms var(--ease-enter) both; }
+    .calculating-text { font-family: var(--font-display); font-style: italic; font-size: 1.25rem; color: var(--text-secondary); animation: floatIn 600ms var(--ease-enter) 200ms both; }
+    .calculating-dots { display: flex; justify-content: center; gap: var(--sp8); margin-top: var(--sp16); }
+    .calculating-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--type-primary); animation: dotPulse 1.4s ease-in-out infinite; opacity: 0.4; }
     .calculating-dot:nth-child(2) { animation-delay: 0.2s; }
     .calculating-dot:nth-child(3) { animation-delay: 0.4s; }
-
-    @keyframes dotPulse {
-      0%, 80%, 100% { opacity: 0.4; transform: scale(1); }
-      40% { opacity: 1; transform: scale(1.2); }
-    }
+    @keyframes dotPulse { 0%, 80%, 100% { opacity: 0.4; transform: scale(1); } 40% { opacity: 1; transform: scale(1.2); } }
 
     /* =============================================
        RESULT SCREEN
     ============================================= */
-    .result-screen {
-      text-align: center;
-      gap: var(--sp24);
-    }
+    .result-screen { text-align: center; gap: var(--sp24); }
+    .result-header { display: flex; flex-direction: column; align-items: center; gap: var(--sp16); animation: floatIn 800ms var(--ease-enter) 100ms both; }
+    .result-type-number { font-family: var(--font-display); font-size: 4.5rem; font-weight: 400; line-height: 1; color: var(--type-primary); text-shadow: 0 0 40px color-mix(in srgb, var(--type-primary) 40%, transparent); letter-spacing: -0.03em; }
+    .result-type-name { font-family: var(--font-display); font-size: 1.5rem; font-weight: 400; color: var(--text-primary); }
+    .result-subtype-badge { display: inline-flex; align-items: center; gap: var(--sp8); padding: var(--sp8) var(--sp16); background: color-mix(in srgb, var(--type-primary) 12%, transparent); border: 1px solid color-mix(in srgb, var(--type-primary) 30%, transparent); border-radius: 100px; font-size: 0.8125rem; font-weight: 600; color: var(--type-primary); letter-spacing: 0.04em; }
+    .result-divider { width: 60px; height: 1px; background: linear-gradient(90deg, transparent, var(--border-active), transparent); margin: var(--sp8) 0; }
+    .result-description { max-width: 360px; animation: floatIn 800ms var(--ease-enter) 300ms both; }
+    .result-description-label { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--sp12); }
+    .result-description-public { font-size: 1rem; line-height: 1.7; color: var(--text-secondary); margin-bottom: var(--sp24); }
+    .result-traits { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--sp8); animation: floatIn 800ms var(--ease-enter) 500ms both; }
+    .trait-tag { padding: var(--sp8) var(--sp16); background: color-mix(in srgb, var(--type-primary) 10%, transparent); border: 1px solid color-mix(in srgb, var(--type-primary) 25%, transparent); border-radius: 100px; font-size: 0.75rem; font-weight: 500; color: var(--type-light); letter-spacing: 0.02em; }
+    .result-actions { display: flex; flex-direction: column; gap: var(--sp12); width: 100%; max-width: 340px; animation: floatIn 800ms var(--ease-enter) 700ms both; margin-top: var(--sp8); }
 
-    .result-header {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--sp16);
-      animation: floatIn 800ms var(--ease-enter) 100ms both;
-    }
-
-    .result-type-number {
-      font-family: var(--font-display);
-      font-size: 4.5rem;
-      font-weight: 400;
-      line-height: 1;
-      color: var(--type-primary);
-      text-shadow: 0 0 40px color-mix(in srgb, var(--type-primary) 40%, transparent);
-      letter-spacing: -0.03em;
-    }
-
-    .result-type-name {
-      font-family: var(--font-display);
-      font-size: 1.5rem;
-      font-weight: 400;
-      color: var(--text-primary);
-    }
-
-    .result-subtype-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--sp8);
-      padding: var(--sp8) var(--sp16);
-      background: color-mix(in srgb, var(--type-primary) 12%, transparent);
+    /* =============================================
+       CENTER BADGE
+    ============================================= */
+    .center-badge {
+      display: inline-flex; align-items: center; gap: var(--sp8);
+      padding: var(--sp6) var(--sp14); border-radius: 100px;
+      background: color-mix(in srgb, var(--type-primary) 15%, transparent);
       border: 1px solid color-mix(in srgb, var(--type-primary) 30%, transparent);
-      border-radius: 100px;
-      font-size: 0.8125rem;
-      font-weight: 600;
-      color: var(--type-primary);
-      letter-spacing: 0.04em;
-    }
-
-    .result-type-symbol {
-      opacity: 0.1;
-      position: absolute;
-      pointer-events: none;
-    }
-
-    .result-divider {
-      width: 60px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--border-active), transparent);
-      margin: var(--sp8) 0;
-    }
-
-    .result-description {
-      max-width: 360px;
-      animation: floatIn 800ms var(--ease-enter) 300ms both;
-    }
-
-    .result-description-label {
-      font-size: 0.6875rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: var(--sp12);
-    }
-
-    .result-description-public {
-      font-size: 1rem;
-      line-height: 1.7;
-      color: var(--text-secondary);
-      margin-bottom: var(--sp24);
-    }
-
-    .result-description-shadow {
-      font-size: 0.9375rem;
-      line-height: 1.65;
-      color: var(--text-muted);
-      font-style: italic;
-      padding: var(--sp16);
-      background: var(--bg-card);
-      border-radius: 12px;
-      border-left: 3px solid color-mix(in srgb, var(--type-primary) 40%, transparent);
-      text-align: left;
-    }
-
-    .result-shadow-label {
-      font-size: 0.6875rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: var(--sp8);
-      font-style: normal;
-    }
-
-    .result-traits {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: var(--sp8);
-      animation: floatIn 800ms var(--ease-enter) 500ms both;
-    }
-
-    .trait-tag {
-      padding: var(--sp8) var(--sp16);
-      background: color-mix(in srgb, var(--type-primary) 10%, transparent);
-      border: 1px solid color-mix(in srgb, var(--type-primary) 25%, transparent);
-      border-radius: 100px;
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: var(--type-light);
-      letter-spacing: 0.02em;
-    }
-
-    .result-actions {
-      display: flex;
-      flex-direction: column;
-      gap: var(--sp12);
-      width: 100%;
-      max-width: 340px;
-      animation: floatIn 800ms var(--ease-enter) 700ms both;
-      margin-top: var(--sp8);
+      font-size: 0.75rem; font-weight: 600; color: var(--type-light);
+      letter-spacing: 0.04em; margin-top: var(--sp8);
     }
 
     /* =============================================
        BUTTONS
     ============================================= */
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--sp8);
-      padding: var(--sp16) var(--sp32);
-      border-radius: 100px;
-      font-family: var(--font-body);
-      font-size: 1rem;
-      font-weight: 600;
-      line-height: 1;
-      cursor: pointer;
-      border: none;
-      transition:
-        transform 200ms var(--ease-enter),
-        box-shadow 200ms var(--ease-continuous),
-        background 200ms var(--ease-continuous),
-        opacity 200ms;
-      text-decoration: none;
-      min-height: 52px;
-      min-width: 44px;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
+      display: inline-flex; align-items: center; justify-content: center; gap: var(--sp8);
+      padding: var(--sp16) var(--sp32); border-radius: 100px;
+      font-family: var(--font-body); font-size: 1rem; font-weight: 600; line-height: 1;
+      cursor: pointer; border: none;
+      transition: transform 200ms var(--ease-enter), box-shadow 200ms var(--ease-continuous), background 200ms var(--ease-continuous), opacity 200ms;
+      text-decoration: none; min-height: 52px; min-width: 44px;
+      -webkit-tap-highlight-color: transparent; user-select: none;
     }
-
-    .btn:hover {
-      transform: translateY(-2px);
-    }
-
-    .btn:active {
-      transform: translateY(0);
-    }
-
-    .btn:focus-visible {
-      outline: 3px solid var(--type-primary);
-      outline-offset: 2px;
-    }
-
-    .btn-primary {
-      background: var(--type-primary);
-      color: var(--bg-base);
-      box-shadow: 0 4px 20px color-mix(in srgb, var(--type-primary) 30%, transparent);
-    }
-
-    .btn-primary:hover {
-      box-shadow: 0 8px 32px color-mix(in srgb, var(--type-primary) 45%, transparent);
-    }
-
-    .btn-secondary {
-      background: var(--bg-card);
-      color: var(--text-primary);
-      border: 1.5px solid var(--border-subtle);
-    }
-
-    .btn-secondary:hover {
-      border-color: var(--border-active);
-      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-    }
-
-    .btn-full {
-      width: 100%;
-    }
-
-    .btn-icon {
-      width: 20px;
-      height: 20px;
-      flex-shrink: 0;
-    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:active { transform: translateY(0); }
+    .btn:focus-visible { outline: 3px solid var(--type-primary); outline-offset: 2px; }
+    .btn-primary { background: var(--type-primary); color: var(--bg-base); box-shadow: 0 4px 20px color-mix(in srgb, var(--type-primary) 30%, transparent); }
+    .btn-primary:hover { box-shadow: 0 8px 32px color-mix(in srgb, var(--type-primary) 45%, transparent); }
+    .btn-secondary { background: var(--bg-card); color: var(--text-primary); border: 1.5px solid var(--border-subtle); }
+    .btn-secondary:hover { border-color: var(--border-active); box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+    .btn-full { width: 100%; }
+    .btn-icon { width: 20px; height: 20px; flex-shrink: 0; }
 
     /* Share toast */
-    .share-toast {
-      position: fixed;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%) translateY(20px);
-      background: var(--bg-elevated);
-      border: 1px solid var(--border-active);
-      color: var(--text-primary);
-      padding: var(--sp12) var(--sp24);
-      border-radius: 100px;
-      font-size: 0.875rem;
-      font-weight: 500;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 300ms var(--ease-continuous), transform 300ms var(--ease-enter);
-      z-index: 100;
-      white-space: nowrap;
-    }
-
-    .share-toast.visible {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    /* =============================================
-       TYPOGRAPHY UTILITIES
-    ============================================= */
-    .label-upper {
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
+    .share-toast { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--bg-elevated); border: 1px solid var(--border-active); color: var(--text-primary); padding: var(--sp12) var(--sp24); border-radius: 100px; font-size: 0.875rem; font-weight: 500; opacity: 0; pointer-events: none; transition: opacity 300ms var(--ease-continuous), transform 300ms var(--ease-enter); z-index: 100; white-space: nowrap; }
+    .share-toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
 
     /* =============================================
        RESPONSIVE
     ============================================= */
     @media (max-width: 400px) {
-      .question-text {
-        font-size: 1.25rem;
-      }
-
-      .result-type-number {
-        font-size: 3.5rem;
-      }
-
-      .intro-title {
-        font-size: 1.875rem;
-      }
-
-      .progress-ring {
-        width: 52px;
-        height: 52px;
-      }
+      .question-text { font-size: 1.25rem; }
+      .result-type-number { font-size: 3.5rem; }
+      .intro-title { font-size: 1.875rem; }
+      .progress-ring { width: 52px; height: 52px; }
     }
-
     @media (min-width: 640px) {
-      .result-type-number {
-        font-size: 6rem;
-      }
+      .result-type-number { font-size: 6rem; }
     }
 
     /* =============================================
        REDUCED MOTION
     ============================================= */
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-
-      .bg-gradient::before {
-        animation: none !important;
-      }
-
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+      .bg-gradient::before { animation: none !important; }
       .orb { display: none; }
-
-      .enneagram-symbol.large .enneagram-outer,
-      .enneagram-symbol.calculating .enneagram-outer {
-        animation: none !important;
-      }
-
-      .progress-ring-segment {
-        transition: none !important;
-      }
+      .enneagram-symbol.large .enneagram-outer, .enneagram-symbol.calculating .enneagram-outer { animation: none !important; }
+      .progress-ring-segment { transition: none !important; }
     }
 
     /* =============================================
-       SCREEN READER ONLY
+       ACCESSIBILITY
     ============================================= */
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    .skip-link { position: absolute; top: -100px; left: var(--sp16); background: var(--type-primary); color: var(--bg-base); padding: var(--sp12) var(--sp24); border-radius: 8px; font-weight: 600; z-index: 1000; text-decoration: none; transition: top 200ms; }
+    .skip-link:focus { top: var(--sp16); }
 
-    /* Skip link */
-    .skip-link {
-      position: absolute;
-      top: -100px;
-      left: var(--sp16);
-      background: var(--type-primary);
-      color: var(--bg-base);
-      padding: var(--sp12) var(--sp24);
-      border-radius: 8px;
-      font-weight: 600;
-      z-index: 1000;
-      text-decoration: none;
-      transition: top 200ms;
+    /* Result card share image styles */
+    .result-card-export {
+      position: fixed; left: -9999px; top: 0;
+      width: 540px; height: 960px;
+      background: var(--bg-base);
+      display: flex; flex-direction: column; align-items: center;
+      padding: 48px 40px; gap: 16px;
+      font-family: var(--font-body);
     }
-
-    .skip-link:focus {
-      top: var(--sp16);
+    .result-card-export .export-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 30%, color-mix(in srgb, var(--type-primary) 22%, transparent), var(--bg-base) 70%);
+    }
+    .result-card-export .export-symbol {
+      position: relative; z-index: 1;
+      font-family: var(--font-display); font-size: 6rem; font-weight: 400;
+      color: var(--type-primary);
+      text-shadow: 0 0 60px color-mix(in srgb, var(--type-primary) 50%, transparent);
+      line-height: 1;
+    }
+    .result-card-export .export-name {
+      position: relative; z-index: 1;
+      font-family: var(--font-display); font-size: 1.75rem; color: var(--text-primary);
+    }
+    .result-card-export .export-badge {
+      position: relative; z-index: 1;
+      padding: 8px 20px; border-radius: 100px;
+      background: color-mix(in srgb, var(--type-primary) 15%, transparent);
+      border: 1px solid color-mix(in srgb, var(--type-primary) 35%, transparent);
+      font-size: 0.875rem; font-weight: 600; color: var(--type-primary);
+    }
+    .result-card-export .export-desc {
+      position: relative; z-index: 1;
+      font-size: 0.9375rem; line-height: 1.7; color: var(--text-secondary);
+      max-width: 420px; text-align: center;
+    }
+    .result-card-export .export-traits {
+      position: relative; z-index: 1; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+    }
+    .result-card-export .export-trait {
+      padding: 6px 16px; border-radius: 100px;
+      background: color-mix(in srgb, var(--type-primary) 12%, transparent);
+      border: 1px solid color-mix(in srgb, var(--type-primary) 25%, transparent);
+      font-size: 0.75rem; font-weight: 500; color: var(--type-light);
+    }
+    .result-card-export .export-footer {
+      position: absolute; bottom: 40px; left: 0; right: 0;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      font-size: 0.6875rem; color: var(--text-muted); z-index: 1;
     }
   </style>
 </head>
 <body>
 
-  <!-- Background layers -->
   <div class="bg-gradient" aria-hidden="true"></div>
   <div class="orbs" aria-hidden="true">
     <div class="orb orb-1"></div>
@@ -1056,40 +370,32 @@
   </div>
   <div class="noise" aria-hidden="true"></div>
 
-  <!-- Skip link -->
   <a href="#quiz-start" class="skip-link">Skip to quiz</a>
 
-  <!-- App -->
   <main class="app" id="quiz-start">
     <div class="container">
 
-      <!-- ===========================================
-           DISCLAIMER SCREEN
-      =========================================== -->
+      <!-- DISCLAIMER SCREEN -->
       <section class="screen disclaimer-screen active" id="screen-disclaimer" aria-label="Quiz disclaimer">
         <div>
-          <div class="disclaimer-emoji" aria-hidden="true">💛</div>
-          <h1 class="disclaimer-title">A Note Before We Begin</h1>
+          <div class="disclaimer-emoji" aria-hidden="true">🌀</div>
+          <h1 class="disclaimer-title">Before We Begin</h1>
         </div>
-
         <div class="disclaimer-body">
-          <p>This quiz is a self-reflection tool rooted in the Enneagram tradition — a personality framework with deep roots in wisdom psychology. It's not a clinical diagnosis, and it's not the final word on who you are.</p>
-          <p><em>Think of it more like a mirror:</em> it reflects what you show it, and the more honestly you answer, the more you'll see.</p>
-          <p>Trust your gut. There's no right or wrong answer — only your answer.</p>
+          <p>This quiz is a self-reflection tool — not a clinical diagnosis or professional assessment.</p>
+          <p>Think of it as <em>a conversation with a part of yourself you might not have met yet.</em></p>
+          <p>There are no wrong answers, only honest ones.</p>
+          <p>If anything here brings up feelings you'd like support with, please reach out to a trusted friend, therapist, or crisis line. Your inner world is worth tending to.</p>
         </div>
-
         <div class="disclaimer-note">
           This quiz is for self-awareness and reflection only. No personal data is stored or shared.
         </div>
-
         <button class="btn btn-primary btn-full" id="btn-disclaimer-start" aria-label="Begin the Enneagram subtype quiz">
           I'm Ready to Explore
         </button>
       </section>
 
-      <!-- ===========================================
-           INTRO SCREEN
-      =========================================== -->
+      <!-- INTRO SCREEN -->
       <section class="screen intro-screen" id="screen-intro" aria-label="Quiz introduction" hidden>
         <div class="intro-symbol" aria-hidden="true">
           <div class="enneagram-symbol large glowing">
@@ -1098,41 +404,36 @@
             <div class="enneagram-inner-triangle-2"></div>
           </div>
         </div>
-
         <div>
           <h1 class="intro-title">What's Your Enneagram Subtype?</h1>
           <p class="intro-subtitle">Beyond your main type — discover the instinct that drives you.</p>
         </div>
-
         <div class="intro-body">
-          <p>You probably already know your Enneagram type. But here's the plot twist most people miss: your <em>instinct</em> — the part of you that guards, connects, and desires — might be running the show in ways you haven't noticed.</p>
-          <p>This quiz isn't about finding your main type again. It's about discovering which <strong>instinct</strong> sits at the wheel of your life:</p>
+          <p>The Enneagram says we're all one of nine types. But there's something deeper: each type moves through the world through one of three <strong>instincts</strong> — and that changes everything.</p>
         </div>
-
         <ul class="instinct-list" role="list">
           <li class="instinct-item">
             <span class="instinct-badge" aria-hidden="true">sp</span>
             <div class="instinct-text">
               <strong>Self-Preservation</strong>
-              <span>The instinct to secure your safety, stability, and personal well-being</span>
+              <span>Safety, comfort, and your relationship with your body and environment</span>
             </div>
           </li>
           <li class="instinct-item">
             <span class="instinct-badge" aria-hidden="true">so</span>
             <div class="instinct-text">
               <strong>Social</strong>
-              <span>The instinct to belong, contribute, and find your place in the group</span>
+              <span>Belonging, groups, and your place in something larger than yourself</span>
             </div>
           </li>
           <li class="instinct-item">
             <span class="instinct-badge" aria-hidden="true">sx</span>
             <div class="instinct-text">
-              <strong>Sexual</strong>
-              <span>The instinct to connect deeply, merge, and experience intensity with others</span>
+              <strong>Sexual / One-to-One</strong>
+              <span>Intensity, attraction, and deep one-to-one connection</span>
             </div>
           </li>
         </ul>
-
         <button class="btn btn-primary btn-full" id="btn-intro-start" aria-label="Start the quiz">
           Start the Quiz
           <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1141,39 +442,24 @@
         </button>
       </section>
 
-      <!-- ===========================================
-           QUIZ SCREEN
-      =========================================== -->
+      <!-- QUIZ SCREEN -->
       <section class="screen quiz-screen" id="screen-quiz" aria-label="Quiz questions" hidden>
         <div class="progress-container" aria-label="Quiz progress">
           <div class="progress-ring" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="15" aria-label="Question 0 of 15">
             <svg viewBox="0 0 64 64">
-              <defs>
-                <linearGradient id="ring-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stop-color="var(--type-primary)" stop-opacity="0.6"/>
-                  <stop offset="100%" stop-color="var(--type-primary)"/>
-                </linearGradient>
-              </defs>
               <circle class="progress-ring-track" cx="32" cy="32" r="28"/>
-              <!-- Segments will be drawn by JS -->
             </svg>
             <div class="progress-label" id="progress-label">0 / 15</div>
           </div>
         </div>
-
         <div class="question-meta">
           <p class="question-number" id="question-number" aria-live="polite">Question 1 of 15</p>
           <h2 class="question-text" id="question-text"></h2>
         </div>
-
-        <div class="answers-list" id="answers-list" role="list">
-          <!-- Generated by JS -->
-        </div>
+        <div class="answers-list" id="answers-list" role="list"></div>
       </section>
 
-      <!-- ===========================================
-           CALCULATING SCREEN
-      =========================================== -->
+      <!-- CALCULATING SCREEN -->
       <section class="screen calculating-screen" id="screen-calculating" aria-label="Calculating results" hidden>
         <div class="calculating-symbol" aria-hidden="true">
           <div class="enneagram-symbol large calculating">
@@ -1182,7 +468,6 @@
             <div class="enneagram-inner-triangle-2"></div>
           </div>
         </div>
-
         <div>
           <p class="calculating-text">Weaving your subtype together&hellip;</p>
           <div class="calculating-dots" aria-hidden="true">
@@ -1193,9 +478,7 @@
         </div>
       </section>
 
-      <!-- ===========================================
-           RESULT SCREEN
-      =========================================== -->
+      <!-- RESULT SCREEN -->
       <section class="screen result-screen" id="screen-result" aria-label="Your result" hidden>
         <div class="result-header">
           <div class="result-type-number" id="result-number" aria-hidden="true"></div>
@@ -1203,24 +486,14 @@
           <div class="result-subtype-badge" id="result-badge">
             <span id="result-subtype-label"></span>
           </div>
+          <div class="center-badge" id="result-center"></div>
         </div>
-
         <div class="result-divider" aria-hidden="true"></div>
-
         <div class="result-description">
           <p class="result-description-label">How This Subtype Moves Through the World</p>
           <p class="result-description-public" id="result-public"></p>
-
-          <div class="result-description-shadow" id="result-shadow-container">
-            <p class="result-shadow-label">The Hidden Side</p>
-            <p id="result-shadow"></p>
-          </div>
         </div>
-
-        <div class="result-traits" id="result-traits" role="list" aria-label="Trait tags">
-          <!-- Generated by JS -->
-        </div>
-
+        <div class="result-traits" id="result-traits" role="list" aria-label="Trait tags"></div>
         <div class="result-actions">
           <button class="btn btn-primary btn-full" id="btn-share" aria-label="Share your result">
             <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1245,756 +518,867 @@
 
   <!-- Share toast -->
   <div class="share-toast" id="share-toast" role="status" aria-live="polite">
-    Copied! Share it anywhere 💛
+    Copied! Share it anywhere 🌀
   </div>
 
+  <!-- Hidden export card for PNG generation -->
+  <div class="result-card-export" id="export-card" aria-hidden="true">
+    <div class="export-bg"></div>
+    <div class="export-symbol" id="export-number"></div>
+    <div class="export-name" id="export-name"></div>
+    <div class="export-badge" id="export-badge"></div>
+    <div class="export-desc" id="export-desc"></div>
+    <div class="export-traits" id="export-traits"></div>
+    <div class="export-footer">
+      <span>PsychoMaster · Enneagram Subtype Quiz</span>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoMamlTZQ==" crossorigin="anonymous"></script>
   <script>
-    'use strict';
+  'use strict';
 
-    /* =============================================
-       QUIZ DATA
-    ============================================= */
+  /* =============================================
+     QUIZ DATA — 15 QUESTIONS
+     A=sp, B=sx, C=so, D=sp
+     Type leanings inferred from copy themes
+  ============================================= */
+  const QUESTIONS = [
+    {
+      id: 1,
+      text: "You're settling into a new living space. What matters most to you?",
+      answers: [
+        { letter: 'A', text: "Making it feel safe and dependable — the kind of place you can truly relax in.", instinct: 'sp' },
+        { letter: 'B', text: "Filling it with evidence of who you are — photos, objects, the story of your life on the walls.", instinct: 'sx' },
+        { letter: 'C', text: "Making it comfortable enough, but you'd rather spend energy on the people who live there with you.", instinct: 'so' },
+        { letter: 'D', text: "Creating a sanctuary — a space that's entirely yours, where the outside world can't reach.", instinct: 'sp' }
+      ]
+    },
+    {
+      id: 2,
+      text: "A group you care about is making a decision that affects everyone. What do you instinctively do?",
+      answers: [
+        { letter: 'A', text: "Weigh the practical outcomes — who gets what, who's protected, who might be left exposed.", instinct: 'sp' },
+        { letter: 'B', text: "Watch where the energy is flowing — who's drawn to whom, where the real alliances are forming beneath the surface.", instinct: 'sx' },
+        { letter: 'C', text: "Tune in to the emotional undercurrent — who's uncomfortable, who's being overlooked, who's holding the group together.", instinct: 'so' },
+        { letter: 'D', text: "Step back. Group decisions exhaust you; you'd rather know where you stand with each person individually.", instinct: 'sx' }
+      ]
+    },
+    {
+      id: 3,
+      text: "What keeps you up at night more than anything?",
+      answers: [
+        { letter: 'A', text: "Whether you have enough — resources, security, a plan if things go wrong.", instinct: 'sp' },
+        { letter: 'B', text: "Whether you're truly known. Whether someone, somewhere, sees the version of you that you keep hidden.", instinct: 'sx' },
+        { letter: 'C', text: "Whether you matter — to someone, to a group, to the world in some way that feels real.", instinct: 'so' },
+        { letter: 'D', text: "Whether you're falling behind — missing out — not living the life you were supposed to.", instinct: 'sp' }
+      ]
+    },
+    {
+      id: 4,
+      text: "How do you typically handle conflict in a close relationship?",
+      answers: [
+        { letter: 'A', text: "You go quiet. You'd rather restore peace than risk losing someone, even if it means swallowing what you really feel.", instinct: 'sp' },
+        { letter: 'B', text: "You retreat into problem-solving mode — figuring out a practical fix so you can all move on.", instinct: 'sp' },
+        { letter: 'C', text: "You try to smooth things over while secretly wondering if the other person still respects you.", instinct: 'so' },
+        { letter: 'D', text: "You confront it — directly, in the moment. You need things to be honest, even if it gets heated.", instinct: 'sx' }
+      ]
+    },
+    {
+      id: 5,
+      text: "When you imagine your ideal near future — one year from now — what's in the picture?",
+      answers: [
+        { letter: 'A', text: "A sense of stability: steady income, good health, a predictable rhythm to your days.", instinct: 'sp' },
+        { letter: 'B', text: "A project or body of work you can disappear into — something that proves you're capable and worthy.", instinct: 'sp' },
+        { letter: 'C', text: "Being part of something meaningful — a team, a community, a cause that makes you feel like you belong.", instinct: 'so' },
+        { letter: 'D', text: "A deep, charged connection with someone — the kind where you feel completely yourself.", instinct: 'sx' }
+      ]
+    },
+    {
+      id: 6,
+      text: "Someone close to you has been pulling away lately. What's your first response?",
+      answers: [
+        { letter: 'A', text: "Double down on taking care of things — show up with help, solve problems, be indispensable.", instinct: 'sp' },
+        { letter: 'B', text: "Analyze it. Figure out what you did wrong and how to fix it before it escalates.", instinct: 'sp' },
+        { letter: 'C', text: "Create space for them — but also pull back your own energy. If they're withdrawing, you withdraw too.", instinct: 'sx' },
+        { letter: 'D', text: "Ask directly: \"Are we okay?\" You need verbal reassurance that the connection is still there.", instinct: 'so' }
+      ]
+    },
+    {
+      id: 7,
+      text: "What role do you tend to play when you're in a group — whether at work, with friends, or in a community?",
+      answers: [
+        { letter: 'A', text: "The stabilizer. The one who holds things together, keeps things running, makes sure the basics are covered.", instinct: 'sp' },
+        { letter: 'B', text: "The observer. You're there, you're engaged, but part of you is always watching the dynamics from the outside.", instinct: 'sx' },
+        { letter: 'C', text: "The connector. You know everyone's name, who's going through what, who needs to be invited.", instinct: 'so' },
+        { letter: 'D', text: "The spark. You bring intensity, vision, a certain energy that people either love or find overwhelming.", instinct: 'sx' }
+      ]
+    },
+    {
+      id: 8,
+      text: "A new opportunity arrives — prestigious, visible, but requiring you to put yourself in the spotlight. How do you feel?",
+      answers: [
+        { letter: 'A', text: "Interested, but anxious. You'll prepare obsessively until you feel ready to be seen that way.", instinct: 'sp' },
+        { letter: 'B', text: "Ambivalent. Recognition is nice, but you distrust anything that requires performance over substance.", instinct: 'sp' },
+        { letter: 'C', text: "Drawn to it because of who you'd be positioned alongside — the people you'd be associated with matter.", instinct: 'so' },
+        { letter: 'D', text: "Excited by the intimacy of the challenge — the idea of being truly seen, tested, known in that context.", instinct: 'sx' }
+      ]
+    },
+    {
+      id: 9,
+      text: "What do you find yourself learning or researching most often, even in your free time?",
+      answers: [
+        { letter: 'A', text: "Practical things — health, nutrition, finance, safety systems, how things work.", instinct: 'sp' },
+        { letter: 'B', text: "Whatever you're working on — your mind doesn't fully rest; it likes to understand things completely.", instinct: 'sp' },
+        { letter: 'C', text: "People — what makes them tick, how groups function, relationship dynamics, social systems.", instinct: 'so' },
+        { letter: 'D', text: "Deep questions — psychology, meaning, what makes someone who they are, the nature of connection.", instinct: 'sx' }
+      ]
+    },
+    {
+      id: 10,
+      text: "When you feel most alive, it's usually because…",
+      answers: [
+        { letter: 'A', text: "…everything in your life is in its right place — the routine, the details, the things you can count on.", instinct: 'sp' },
+        { letter: 'B', text: "…you've been working toward something and it's finally coming together — you're proving you can do it.", instinct: 'sp' },
+        { letter: 'C', text: "…you're part of something bigger, part of a team or moment where individual boundaries dissolve.", instinct: 'so' },
+        { letter: 'D', text: "…someone is paying attention to you — not in a shallow way, but really seeing you.", instinct: 'sx' }
+      ]
+    },
+    {
+      id: 11,
+      text: "What do you protect most fiercely — the thing you'd go to great lengths to preserve?",
+      answers: [
+        { letter: 'A', text: "Your independence. Your ability to provide for yourself and not be dependent on anyone.", instinct: 'sp' },
+        { letter: 'B', text: "Your emotional bonds. The specific, irreplaceable people in your life.", instinct: 'sx' },
+        { letter: 'C', text: "Your place in your community. The relationships, the belonging, the sense of being part of something.", instinct: 'so' },
+        { letter: 'D', text: "Your integrity — your sense of what's right, your principles, what you stand for.", instinct: 'sx' }
+      ]
+    },
+    {
+      id: 12,
+      text: "You're at a gathering where you know almost no one. What happens internally?",
+      answers: [
+        { letter: 'A', text: "You scan for threats — is this environment safe? Are these people trustworthy? You take your time before dropping your guard.", instinct: 'sp' },
+        { letter: 'B', text: "You find a quiet corner and observe. You'll engage on your own terms when you're ready.", instinct: 'sp' },
+        { letter: 'C', text: "You work the room — you talk to everyone, make sure no one's left out, hold the social fabric together.", instinct: 'so' },
+        { letter: 'D', text: "You instinctively look for the one or two people who seem most interesting or aligned with you — and find a way in.", instinct: 'sx' }
+      ]
+    },
+    {
+      id: 13,
+      text: "What trips you up most often in relationships — the thing that keeps showing up?",
+      answers: [
+        { letter: 'A', text: "You give too much and forget yourself. Or you withdraw to protect yourself before anyone can leave first.", instinct: 'sp' },
+        { letter: 'B', text: "You expect people to read your mind. When they don't, you feel unseen — and you pull away.", instinct: 'sx' },
+        { letter: 'C', text: "You measure yourself against others — whether you're valued enough, visible enough, needed enough.", instinct: 'so' },
+        { letter: 'D', text: "You need intensity —平淡 feels like absence. You're drawn to what you can't have or what destabilizes you.", instinct: 'sx' }
+      ]
+    },
+    {
+      id: 14,
+      text: "You notice a new trend in your field — everyone seems to be moving in a new direction. What's your reaction?",
+      answers: [
+        { letter: 'A', text: "Cautious curiosity. You'll observe and research before committing. The herd often moves prematurely.", instinct: 'sp' },
+        { letter: 'B', text: "Strategic interest — you want to understand it fully so you can decide if it's worth your time.", instinct: 'sp' },
+        { letter: 'C', text: "Genuine excitement — new directions mean new connections, new relevance, new possibilities to be part of.", instinct: 'so' },
+        { letter: 'D', text: "Skeptical unless it resonates deeply with you. You follow what's true for you, not what's fashionable.", instinct: 'sx' }
+      ]
+    },
+    {
+      id: 15,
+      text: "What does \"having power\" mean to you — in your work, your relationships, your life?",
+      answers: [
+        { letter: 'A', text: "Self-sufficiency. Not needing anyone to provide for your basic security is its own kind of power.", instinct: 'sp' },
+        { letter: 'B', text: "Control over your own domain — being the one who decides how things are run, free from external dependence.", instinct: 'sp' },
+        { letter: 'C', text: "Influence — the ability to shape what happens in the rooms you occupy and the lives you touch.", instinct: 'so' },
+        { letter: 'D', text: "Presence. The ability to walk into a room and shift its energy simply by being fully yourself.", instinct: 'sx' }
+      ]
+    }
+  ];
 
-    const QUESTIONS = [
-      {
-        id: 1,
-        text: "You're at a dinner party and the host's new partner says something that doesn't sit right with you — a values thing, not a fact thing.",
-        answers: [
-          { letter: 'A', text: "You let it slide. It's not worth the drama, and honestly, you didn't come here to fight.", instinct: 'sp' },
-          { letter: 'B', text: "You steer the conversation somewhere else — redirect without making anyone uncomfortable.", instinct: 'so' },
-          { letter: 'C', text: "You push back, gently but honestly. You can't help it — you said it, and now it's out.", instinct: 'sx' },
-          { letter: 'D', text: "You excuse yourself and check in with the host later, privately.", instinct: 'sp' }
-        ]
-      },
-      {
-        id: 2,
-        text: "Your friend calls you at 11pm, clearly upset. You're exhausted. The next day is brutal.",
-        answers: [
-          { letter: 'A', text: "You answer. Always. Something in you can't rest if someone you care about is hurting.", instinct: 'sx' },
-          { letter: 'B', text: "You text: \"Hey, everything okay? I'm wiped — can we talk tomorrow?\"", instinct: 'so' },
-          { letter: 'C', text: "You let it go to voicemail and feel guilty about it for three days.", instinct: 'sp' },
-          { letter: 'D', text: "You answer, but you find yourself half-listening, already thinking about your own problems.", instinct: 'sx' }
-        ]
-      },
-      {
-        id: 3,
-        text: "You're scrolling job listings and you see one that looks almost perfect — good pay, good mission, but the team vibe feels off in the photos.",
-        answers: [
-          { letter: 'A', text: "You apply anyway. Logic says it's the smart move. Your gut can be wrong.", instinct: 'sp' },
-          { letter: 'B', text: "You ask people in your network what they know about the company culture before you decide anything.", instinct: 'so' },
-          { letter: 'C', text: "You close the tab. If it doesn't feel right in your body, it's not right.", instinct: 'sx' },
-          { letter: 'D', text: "You bookmark it and keep looking — no rush. Something will click.", instinct: 'sp' }
-        ]
-      },
-      {
-        id: 4,
-        text: "A colleague takes credit for your idea in a big meeting. Your manager is there.",
-        answers: [
-          { letter: 'A', text: "You stay silent in the room, then pull the colleague aside later to sort it out.", instinct: 'sp' },
-          { letter: 'B', text: "You mention it casually to your manager after — framed as a \"quick clarification,\" not an accusation.", instinct: 'so' },
-          { letter: 'C', text: "You speak up in the moment. Not aggressively, but clearly: \"Actually, I developed that idea — happy to share more.\"", instinct: 'sx' },
-          { letter: 'D', text: "You let it go. The idea spoke for itself, and making a scene won't help your reputation.", instinct: 'sp' }
-        ]
-      },
-      {
-        id: 5,
-        text: "You're three drinks in at a wedding and someone asks you what you actually do for work. You start talking, and they seem genuinely interested...",
-        answers: [
-          { letter: 'A', text: "You keep going. When someone's actually listening, something opens up in you — you can't help yourself.", instinct: 'sx' },
-          { letter: 'B', text: "You give the polished version. You've told this story a hundred times, and the crowd seems to like it.", instinct: 'so' },
-          { letter: 'C', text: "You get self-conscious. Are you being too much? You pull back and turn it around on them.", instinct: 'sp' },
-          { letter: 'D', text: "You make a joke and deflect. Work talk is boring — let's talk about the DJ.", instinct: 'so' }
-        ]
-      },
-      {
-        id: 6,
-        text: "Your best friend starts dating someone you have a bad feeling about. Not a logical bad feeling — a gut one.",
-        answers: [
-          { letter: 'A', text: "You say something. You can't watch them walk into something you saw coming.", instinct: 'sx' },
-          { letter: 'B', text: "You wait. Let them figure it out. People need to learn their own lessons — you've learned that the hard way.", instinct: 'sp' },
-          { letter: 'C', text: "You bring it up carefully, in a \"I'm-not-saying-anything-but-here's-something\" kind of way.", instinct: 'so' },
-          { letter: 'D', text: "You actually spiral — you lose sleep over it, replaying scenarios, feeling responsible.", instinct: 'sp' }
-        ]
-      },
-      {
-        id: 7,
-        text: "You've been single for a while. You actually kind of like it. But your family keeps asking, and you're starting to feel the pressure.",
-        answers: [
-          { letter: 'A', text: "You lean into it — being single has its perks, and you're genuinely fine. Mostly.", instinct: 'sp' },
-          { letter: 'B', text: "You throw yourself into friend groups and social events. If you're going to be single, you're going to be surrounded.", instinct: 'so' },
-          { letter: 'C', text: "You meet someone and suddenly you're all in. When you fall, you fall hard and fast.", instinct: 'sx' },
-          { letter: 'D', text: "You tell your family you're \"focusing on yourself\" — which is true, but also convenient.", instinct: 'so' }
-        ]
-      },
-      {
-        id: 8,
-        text: "You're planning a trip — solo this time. No partner, no friends, just you.",
-        answers: [
-          { letter: 'A', text: "You've already mapped out the hostels, the transit passes, and the backup plans. The spreadsheet is real.", instinct: 'sp' },
-          { letter: 'B', text: "You're going somewhere with a strong community vibe — a retreat, a co-living situation, somewhere you'll meet people.", instinct: 'so' },
-          { letter: 'C', text: "You're going somewhere remote and a little wild. No itinerary. You want to be surprised by life.", instinct: 'sx' },
-          { letter: 'D', text: "You're actually nervous about going alone. Maybe you should ask someone to come?", instinct: 'sp' }
-        ]
-      },
-      {
-        id: 9,
-        text: "A close friend is going through a breakup. They're a mess. It's been three weeks.",
-        answers: [
-          { letter: 'A', text: "You keep showing up. Dinner delivered. Podcasts sent. You don't need them to fix it — you just need them to know they're not alone.", instinct: 'sx' },
-          { letter: 'B', text: "You organize a group thing — a movie night, a hike — so they have community without the pressure of one-on-one.", instinct: 'so' },
-          { letter: 'C', text: "You start setting a boundary. You love them, but this is draining you.", instinct: 'sp' },
-          { letter: 'D', text: "You feel helpless. You want to fix it for them but you can't, so you pull back.", instinct: 'sp' }
-        ]
-      },
-      {
-        id: 10,
-        text: "You're in a heated argument with someone you love. They're making some points that are actually landing.",
-        answers: [
-          { letter: 'A', text: "You hold your ground. Admitting you're wrong feels like losing a part of yourself.", instinct: 'sx' },
-          { letter: 'B', text: "You genuinely listen. You pause, you reflect, and if they're right, you say so.", instinct: 'so' },
-          { letter: 'C', text: "You shut down. Not out of pride — out of overwhelm. You need to process before you can respond.", instinct: 'sp' },
-          { letter: 'D', text: "You escalate. When you're pressed, you press back harder.", instinct: 'sx' }
-        ]
-      },
-      {
-        id: 11,
-        text: "You're at a networking event. You know almost no one there.",
-        answers: [
-          { letter: 'A', text: "You work the room. You find the quiet person in the corner — they usually turn out to be the most interesting.", instinct: 'so' },
-          { letter: 'B', text: "You find one or two solid conversations and invest in them. Quality over quantity.", instinct: 'sx' },
-          { letter: 'C', text: "You scan for the snacks, find a good spot by the wall, and observe. You'll engage when you spot someone worth engaging.", instinct: 'sp' },
-          { letter: 'D', text: "You already regret coming. But you're here, so you might as well make the most of it.", instinct: 'sp' }
-        ]
-      },
-      {
-        id: 12,
-        text: "You're dating someone new and things are getting more serious. You start to notice they have a habit that genuinely bothers you.",
-        answers: [
-          { letter: 'A', text: "You raise it. You can't build something real on top of unspoken things.", instinct: 'sx' },
-          { letter: 'B', text: "You think about whether it's a real problem or just a difference. You try to let it go.", instinct: 'sp' },
-          { letter: 'C', text: "You look at the whole picture — their values, their friends, their community — before deciding how much this habit matters.", instinct: 'so' },
-          { letter: 'D', text: "You get quiet and pull away slightly. You're already mentally preparing for this not to work out.", instinct: 'sp' }
-        ]
-      },
-      {
-        id: 13,
-        text: "You finally get a weekend completely alone. No obligations, no plans, no one needing anything from you.",
-        answers: [
-          { letter: 'A', text: "You immediately text someone. The silence feels too loud.", instinct: 'so' },
-          { letter: 'B', text: "You make it sacred — a real reset. You sleep in, cook something good, go for a long walk.", instinct: 'sp' },
-          { letter: 'C', text: "You dive into a project you've been obsessed with. Time alone is project time.", instinct: 'sx' },
-          { letter: 'D', text: "You actually don't know what to do with it. You default to work.", instinct: 'sp' }
-        ]
-      },
-      {
-        id: 14,
-        text: "You see someone across the room at a party — a total stranger — and something about them is magnetic.",
-        answers: [
-          { letter: 'A', text: "You walk over. Not to flirt necessarily, but because something pulled you there.", instinct: 'sx' },
-          { letter: 'B', text: "You ask a friend who they are. You want to know the context before you approach.", instinct: 'so' },
-          { letter: 'C', text: "You keep an eye on them from across the room, gathering intel, trying to figure them out.", instinct: 'sp' },
-          { letter: 'D', text: "You tell yourself you won't approach. You'll probably never see them again anyway.", instinct: 'sp' }
-        ]
-      },
-      {
-        id: 15,
-        text: "You're at a crossroads. Big decision, lots of variables. The kind of choice that will shape the next few years.",
-        answers: [
-          { letter: 'A', text: "You make a pro-con list, research everything, and decide based on security and long-term stability.", instinct: 'sp' },
-          { letter: 'B', text: "You ask the people you trust most — what do they think? Their feedback is part of your decision.", instinct: 'so' },
-          { letter: 'C', text: "You close your eyes and ask yourself: which path makes me feel most alive? You follow that.", instinct: 'sx' },
-          { letter: 'D', text: "You stall. Maybe the answer will become clear on its own.", instinct: 'sp' }
-        ]
-      }
-    ];
+  /* =============================================
+     ALL 27 SUBTYPE RESULTS
+  ============================================= */
+  const RESULTS = {
+    '1-sp': {
+      typeNumber: '1', typeName: 'The Reformer', center: 'Heart',
+      subtypeLabel: 'Self-Preservation', subtypeZh: '自我保存型',
+      description: 'Your inner critic drives you toward excellence — but your deepest concern is practical excellence: getting things right, maintaining order, being someone others can rely on. You fear being defective or corrupted, and your response is to perfect your environment and routines until the external world reflects the internal standard. In relationships, you show care through reliability and acts of service. Your growth path involves loosening the grip of "should" — trusting that good enough is, in fact, good enough.',
+      traits: ['#PracticalStandard', '#ReliablePerfectionist', '#SelfDiscipline', '#ControlledEnvironment'],
+      shareText: "My Enneagram subtype is 1 self-preservation — I find peace in systems, and I'll quietly fix everything in the room before I sit down."
+    },
+    '1-so': {
+      typeNumber: '1', typeName: 'The Reformer', center: 'Heart',
+      subtypeLabel: 'Social', subtypeZh: '社交型',
+      description: 'You channel the reformer\'s drive toward collective improvement. You care deeply about justice and want to be part of systems — or build them — that make things better for everyone. You fear being corrupt or having a flawed character, and you seek to embody principles visibly so others can follow your example. In groups, you are the conscience — the one who asks the hard questions and holds standards high. Your growth path is learning to separate your worth from whether others are following the rules.',
+      traits: ['#JusticeSeeker', '#PrincipledLeader', '#SystemsThinker', '#HighStandards'],
+      shareText: "I'm a social Type 1 — I can't help but ask 'should this be better?' and then try to make it so."
+    },
+    '1-sx': {
+      typeNumber: '1', typeName: 'The Reformer', center: 'Heart',
+      subtypeLabel: 'Sexual / One-to-One', subtypeZh: '性本能型 / 一对一型',
+      description: 'Your reformist energy is focused on deep, transformative one-to-one connection. You fear being corrupted or defective, but your search for perfection extends to the realm of intimacy: you want relationships that are honest, elevated, worthy of the ideal you carry. Your intensity can be both magnetic and demanding — you pour yourself into the people you love with an urgency that expects the same in return. Your growth path is accepting imperfection — in yourself, others, and relationships — as the actual doorway to intimacy.',
+      traits: ['#IdealisticIntimacy', '#MoralIntensity', '#TransformationalBond', '#HighCalling'],
+      shareText: "My subtype is 1 sexual — I don't do shallow connections, and I hold the people I love to the same standards I hold myself."
+    },
+    '2-sp': {
+      typeNumber: '2', typeName: 'The Helper', center: 'Heart',
+      subtypeLabel: 'Self-Preservation', subtypeZh: '自我保存型',
+      description: 'You express care through practical acts — making sure people are fed, rested, safe, comfortable. You fear being unwanted or unworthy of love, and your strategy is to make yourself indispensable by meeting everyone\'s practical needs before they even ask. This subtype can overlook its own exhaustion in service of others. You may find it hard to identify or ask for what you need. Your growth path is learning that being loved is not a transaction, and that your worth is not measured by how useful you are.',
+      traits: ['#SacrificialCare', '#PracticalNurturing', '#Overgiving', '#SecurityThroughService'],
+      shareText: "I'm a self-preserving Type 2 — I'll make sure everyone around me is okay, and I might forget to ask if I am."
+    },
+    '2-so': {
+      typeNumber: '2', typeName: 'The Helper', center: 'Heart',
+      subtypeLabel: 'Social', subtypeZh: '社交型',
+      description: 'Your love language is belonging — you want to be needed, wanted, and central to your community. You fear being dispensable, and so you build yourself into the fabric of every group: the one who remembers everyone\'s name, everyone\'s birthday, everyone\'s struggle. This subtype is often charming, generous, and highly attuned to what others need emotionally — but it can also become manipulative, giving to receive. Your growth path is discovering that your love is not a performance for an audience.',
+      traits: ['#CommunityCornerstone', '#GenerousHeart', '#NeedToBeNeeded', '#BelongingSeeker'],
+      shareText: "My subtype is 2 social — I pour myself into the people around me, and secretly I need them as much as they need me."
+    },
+    '2-sx': {
+      typeNumber: '2', typeName: 'The Helper', center: 'Heart',
+      subtypeLabel: 'Sexual / One-to-One', subtypeZh: '性本能型 / 一对一型',
+      description: 'You don\'t love crowds — you love people, specifically and deeply. You seek one-to-one intimacy where your care can be fully received and reciprocated. You fear being unwanted, and your deepest desire is to be chosen — chosen as the one person who truly sees and meets someone. This subtype can blur boundaries in intimate relationships, giving excessively to secure the bond. Your growth path is learning that love cannot be earned through performance.',
+      traits: ['#SelectiveDevotion', '#IntenseIntimacy', '#RelationalDepth', '#WantedHeart'],
+      shareText: "I'm a sexual Type 2 — I don't want to be everyone's favorite. I want to be one person's everything."
+    },
+    '3-sp': {
+      typeNumber: '3', typeName: 'The Achiever', center: 'Heart',
+      subtypeLabel: 'Self-Preservation', subtypeZh: '自我保存型',
+      description: 'You fear being worthless or failing to live up to your potential — and your solution is to build a life that looks successful and feels stable. You care about practical achievement: career, finances, the tangible evidence of your worth. This subtype can lose touch with authentic desires, becoming a version of themselves designed to impress rather than to feel. Your growth path is distinguishing between the self you built for the world and the self underneath.',
+      traits: ['#CredentialedWorth', '#PracticalAchiever', '#ImageManager', '#SecurityBuilder'],
+      shareText: "My subtype is 3 self-preservation — I've built a life that works, and I'm still figuring out if I like it."
+    },
+    '3-so': {
+      typeNumber: '3', typeName: 'The Achiever', center: 'Heart',
+      subtypeLabel: 'Social', subtypeZh: '社交型',
+      description: 'You seek status and belonging simultaneously — you want to be admired and included. You fear being insignificant, and you calibrate yourself to whatever environment you\'re in: the charming colleague, the impressive networker, the person everyone wants on their team. This subtype is often highly successful because so much energy goes into managing how you appear. Your growth path is internalizing that you are not the roles you play — and that real belonging requires real vulnerability.',
+      traits: ['#AdmiredPlayer', '#CompetitiveBelonging', '#ImageArchitect', '#SocialAchiever'],
+      shareText: "I'm a social Type 3 — I show up as the best version of myself and I'm still not sure who that really is."
+    },
+    '3-sx': {
+      typeNumber: '3', typeName: 'The Achiever', center: 'Heart',
+      subtypeLabel: 'Sexual / One-to-One', subtypeZh: '性本能型 / 一对一型',
+      description: 'You are drawn to people who represent something — beauty, status, power, a version of yourself you\'re striving toward. You fear being worthless without your achievements, and in intimate relationships this translates into trying to become whatever your partner most admires. This subtype brings extraordinary charm and attentiveness to relationships. Your growth path is discovering what you value when no one is watching or admiring you.',
+      traits: ['#ImageAttraction', '#AspirationalBond', '#MagneticCharm', '#WorthThroughMirroring'],
+      shareText: "My subtype is 3 sexual — I'm attracted to who I could become through someone, and terrified of who I am without them."
+    },
+    '4-sp': {
+      typeNumber: '4', typeName: 'The Individualist', center: 'Heart',
+      subtypeLabel: 'Self-Preservation', subtypeZh: '自我保存型',
+      description: 'You fear being inadequate or without significance, and your response is to retreat inward and create a personal aesthetic world that feels deeply meaningful. You may be drawn to beauty, nature, simplicity — anything that feels authentic compared to the mundane world outside. This subtype can struggle with envy, comparing your inner life to others\' outer presentation. Your growth path is recognizing that your depth is not a burden but a capacity — and that basic self-care is not mundane but necessary.',
+      traits: ['#AestheticSanctuary', '#QuietDepth', '#EnviousSelfComparison', '#PrivateWorld'],
+      shareText: "I'm a self-preserving Type 4 — my inner world is vivid and rich, and I'm still learning to show up for the practical world."
+    },
+    '4-so': {
+      typeNumber: '4', typeName: 'The Individualist', center: 'Heart',
+      subtypeLabel: 'Social', subtypeZh: '社交型',
+      description: 'You fear being insignificant or ordinary — and you refuse to be either. You want to be seen as authentically, deeply different, and you\'re willing to be dramatic in service of that distinction. In groups, you may feel both drawn to belong and fundamentally apart from the group. This subtype brings extraordinary emotional authenticity to social settings — but it can also become self-dramatizing. Your growth path is discovering that authenticity doesn\'t require exceptionalism.',
+      traits: ['#AuthenticOutsider', '#EmotionalBoldness', '#DifferentTogether', '#DramaAsCurrency'],
+      shareText: "I'm a social Type 4 — I feel everything loudly and I refuse to pretend I don't. But belonging somewhere still feels complicated."
+    },
+    '4-sx': {
+      typeNumber: '4', typeName: 'The Individualist', center: 'Heart',
+      subtypeLabel: 'Sexual / One-to-One', subtypeZh: '性本能型 / 一对一型',
+      description: 'You seek deep, soul-level intimacy — the kind where two people truly know each other\'s wounds and still choose each other. You fear being without identity or significance in an intimate relationship, and you hold onto something in yourself that feels irreducibly yours. Your emotional depth makes you an extraordinary intimate partner — perceptive, imaginative, fiercely loyal. Your growth path is discovering that you don\'t need a dramatic love story to be complete.',
+      traits: ['#SoulmateSeeker', '#GriefAsBeauty', '#FierceIntimacy', '#LongingLover'],
+      shareText: "My subtype is 4 sexual — I'm in love with love itself, and I choose the person who feels like my truest home."
+    },
+    '5-sp': {
+      typeNumber: '5', typeName: 'The Investigator', center: 'Head',
+      subtypeLabel: 'Self-Preservation', subtypeZh: '自我保存型',
+      description: 'You fear being overwhelmed, invaded, or stripped of your resources — and your strategy is radical conservation: minimizing your needs, reducing your footprint, retreating into mental worlds where no one can touch you. Your inner life is vast, and you ration your engagement with the external world like a precious, finite resource. This subtype can become so adept at self-sufficiency that it prevents genuine intimacy. Your growth path is recognizing that emotional resources are not zero-sum.',
+      traits: ['#ResourceGuardian', '#MentalSanctuary', '#MinimalistLiving', '#RationedEngagement'],
+      shareText: "My subtype is 5 self-preservation — the world takes a lot from people, and I've decided to take only what I can give back."
+    },
+    '5-so': {
+      typeNumber: '5', typeName: 'The Investigator', center: 'Head',
+      subtypeLabel: 'Social', subtypeZh: '社交型',
+      description: 'You seek belonging through shared knowledge and niche communities — groups organized around ideas, expertise, or shared values. You fear being incompetent or helpless, and you build your self-worth through mastery of a domain. In the right intellectual community, you can be surprisingly engaged and even generative. You want depth over breadth — a few true peers rather than a large circle of acquaintances. Your growth path is recognizing that knowledge shared is knowledge multiplied.',
+      traits: ['#MasterWithPeers', '#IntellectualBelonging', '#SelectiveSocializer', '#DomainExpert'],
+      shareText: "I'm a social Type 5 — I find my people through ideas, and I'd rather have three brilliant conversations than thirty surface ones."
+    },
+    '5-sx': {
+      typeNumber: '5', typeName: 'The Investigator', center: 'Head',
+      subtypeLabel: 'Sexual / One-to-One', subtypeZh: '性本能型 / 一对一型',
+      description: 'You may appear detached, but in the right one-to-one connection, you become fully present — even consumed. You seek deep intimacy where both partners can explore the full landscape of experience and thought without judgment. Your fear of being invaded or overwhelmed expresses as a need to understand emotion before you can safely feel it. This subtype is paradoxically both the most detached and the most passionate. Your growth path is learning to feel before you fully understand.',
+      traits: ['#MysteriousIntensity', '#CognitiveIntimacy', '#PrivatePassion', '#EmotionallyCurious'],
+      shareText: "My subtype is 5 sexual — I'm an ocean nobody can see from the shore, but the one person who dives in will never want to leave."
+    },
+    '6-sp': {
+      typeNumber: '6', typeName: 'The Loyalist', center: 'Head',
+      subtypeLabel: 'Self-Preservation', subtypeZh: '自我保存型',
+      description: 'You fear being without support or guidance — and your strategy is to build a stable, predictable life where the basics are covered and threats are minimized. You may seek out authorities, systems, or traditions that provide structure and safety. This subtype often projects competence on the outside while feeling uncertain and anxious within. You work hard to appear calm and capable. Your growth path is developing genuine self-reliance — acting from courage rather than merely seeking reassurance.',
+      traits: ['#SecuritySeeker', '#AnxiousCompetence', '#PragmaticPlanner', '#SupportDependent'],
+      shareText: "I'm a self-preserving Type 6 — I've thought about every worst-case scenario so I can stop thinking about them. Mostly."
+    },
+    '6-so': {
+      typeNumber: '6', typeName: 'The Loyalist', center: 'Head',
+      subtypeLabel: 'Social', subtypeZh: '社交型',
+      description: 'You fear being unsupported or alone, and you channel this into fierce loyalty to your community, your values, and the people you\'ve chosen. Counterphobically, you may actively confront the threats others avoid — in service of the group. This subtype is often the backbone of communities — the one who asks the hard questions, defends the vulnerable, and shows up when it matters. Your growth path is developing trust in your own inner authority rather than locating it entirely in external systems.',
+      traits: ['#LoyalGuardian', '#CounterphobicCourage', '#CommunityBackbone', '#ValuesDriven'],
+      shareText: "I'm a social Type 6 — I'll stand up for the people I love and the values I hold, and I'll probably overthink it three times first."
+    },
+    '6-sx': {
+      typeNumber: '6', typeName: 'The Loyalist', center: 'Head',
+      subtypeLabel: 'Sexual / One-to-One', subtypeZh: '性本能型 / 一对一型',
+      description: 'You seek a deep, committed partnership — someone who is your anchor, your ally, your person. You fear being without a stable relational anchor, and you pour loyalty and devotion into the one relationship that feels most real and necessary to you. This subtype can become highly attuned to shifts in your partner\'s energy — hypervigilant to any sign of withdrawal or doubt. Your growth path is recognizing that security doesn\'t require certainty.',
+      traits: ['#AnchorSeeker', '#IntenslyLoyal', '#Hyperattuned', '#DevotedPartner'],
+      shareText: "My subtype is 6 sexual — I don't commit halfway. The person I love has my full, undivided, slightly anxious loyalty."
+    },
+    '7-sp': {
+      typeNumber: '7', typeName: 'The Enthusiast', center: 'Head',
+      subtypeLabel: 'Self-Preservation', subtypeZh: '自我保存型',
+      description: 'You fear being deprived or trapped in pain — and your strategy is to keep multiple options and plans active so that no single disappointment can corner you. You are future-oriented, always scanning for the next opportunity, the next adventure, the next way to expand your horizons. This subtype channels restlessness into productive planning — you\'re often the one with a spreadsheet of possibilities. Your growth path is discovering that presence — being fully in the current moment — is not deprivation but richness.',
+      traits: ['#OptionOptimizer', '#FuturePlanner', '#PracticalAdventure', '#DeprivationAvoider'],
+      shareText: "My subtype is 7 self-preservation — I always have three plans, two escape routes, and a mental list of what's next."
+    },
+    '7-so': {
+      typeNumber: '7', typeName: 'The Enthusiast', center: 'Head',
+      subtypeLabel: 'Social', subtypeZh: '社交型',
+      description: 'You fear being left out of something exciting — and so you insert yourself into the center of social networks, bringing energy, ideas, and infectious enthusiasm. You are the one who knows everyone and can connect anyone to anyone. This subtype is genuinely generous with its social capital — you\'re always trying to bring people together for something good. Your growth path is learning to be fully present in one room, one conversation, without scanning for what\'s next.',
+      traits: ['#SocialCatalyst', '#OptimisticConnector', '#EnergyCenter', '#FOFODeflector'],
+      shareText: "I'm a social Type 7 — I know everyone, I'm planning something for every night, and I'm still figuring out what I actually want."
+    },
+    '7-sx': {
+      typeNumber: '7', typeName: 'The Enthusiast', center: 'Head',
+      subtypeLabel: 'Sexual / One-to-One', subtypeZh: '性本能型 / 一对一型',
+      description: 'You fear being confined or limited — and you express this in intimate relationships through passionate, expansive connection. You want partners who share your vision, match your intensity, and help you believe that the ideal is possible. This subtype is capable of extraordinary romantic idealism — planning adventures, building castles in the air, making the people you love feel like protagonists in the best story. Your growth path is learning that real intimacy includes the ordinary and the difficult.',
+      traits: ['#PassionateIdealist', '#AdventurePartner', '#IntensitySeeker', '#VisionaryLove'],
+      shareText: "My subtype is 7 sexual — I'm looking for the person who makes every day feel like the beginning of an adventure."
+    },
+    '8-sp': {
+      typeNumber: '8', typeName: 'The Challenger', center: 'Body',
+      subtypeLabel: 'Self-Preservation', subtypeZh: '自我保存型',
+      description: 'You fear being controlled by others or being unable to protect yourself — and your strategy is radical self-reliance: owning your resources, controlling your environment, and refusing to be dependent on anyone who might use that dependence against you. This subtype expresses protective energy in the most practical register — building a life where you are genuinely secure and untouchable. Your growth path is recognizing that true strength includes vulnerability.',
+      traits: ['#AutonomySeeker', '#ResourceBuilder', '#BodyAwareness', '#ControlOfDomain'],
+      shareText: "My subtype is 8 self-preservation — I build a life where I don't need anyone, and then I choose to share it on my own terms."
+    },
+    '8-so': {
+      typeNumber: '8', typeName: 'The Challenger', center: 'Body',
+      subtypeLabel: 'Social', subtypeZh: '社交型',
+      description: 'You fear being controlled or undermined — and you express this through asserting yourself in social and institutional spaces. You want to be the one who sets the tone, protects the vulnerable, and makes sure power is rightly distributed. This subtype is often a natural leader — protective, direct, and unwilling to let injustice stand unchallenged. But it can also become domineering. Your growth path is recognizing that real power doesn\'t require visual dominance.',
+      traits: ['#ProtectiveLeader', '#SocialAuthority', '#JusticeDriver', '#ConfrontationalCare'],
+      shareText: "I'm a social Type 8 — I'll challenge anyone who tries to control others or perpetuate unfairness, and I'll do it loudly."
+    },
+    '8-sx': {
+      typeNumber: '8', typeName: 'The Challenger', center: 'Body',
+      subtypeLabel: 'Sexual / One-to-One', subtypeZh: '性本能型 / 一对一型',
+      description: 'You fear being controlled or overpowered — and in intimate relationships you channel this into profound intensity and loyalty. You want a partner who can handle your power and match it — someone who won\'t be dominated but also won\'t be intimidated. This subtype is paradoxically the most vulnerable of the Type 8 variants — because sexual intimacy is the one arena where full power is actually expressed through surrender and receptivity. Your growth path is learning that real intimacy requires letting someone see you before you\'ve decided whether to trust them.',
+      traits: ['#MagneticIntensity', '#SurrenderedPower', '#PenetratingBond', '#LoyalPartner'],
+      shareText: "My subtype is 8 sexual — I'm intensely loyal to the one person who's earned my trust, and I'll fight anyone who threatens that bond."
+    },
+    '9-sp': {
+      typeNumber: '9', typeName: 'The Peacemaker', center: 'Body',
+      subtypeLabel: 'Self-Preservation', subtypeZh: '自我保存型',
+      description: 'You fear loss of stability and fragmentation — and your strategy is to create a comfortable, predictable environment where harmony can be maintained. You may be deeply attached to routines, physical comfort, and the pleasure of simple, unhurried existence. This subtype often underestimates its own needs in favor of maintaining peace. You may override your own desires to keep the environment smooth. Your growth path is recognizing that your own presence — your own wants and needs — matters as much as anyone else\'s comfort.',
+      traits: ['#HarmonyGuardian', '#ComfortPrioritizer', '#RoutineKeeper', '#SelfErasure'],
+      shareText: "My subtype is 9 self-preservation — I'll make sure the room feels peaceful, and I might not notice until later that I'm not at peace."
+    },
+    '9-so': {
+      typeNumber: '9', typeName: 'The Peacemaker', center: 'Body',
+      subtypeLabel: 'Social', subtypeZh: '社交型',
+      description: 'You fear exclusion and fragmentation of the group — and you channel this into being the connective tissue of your community. You are the one who makes sure everyone feels included, who smooths conflicts, who holds the group\'s sense of belonging together. This subtype can lose itself in group identity — mistaking the group\'s desires for its own. Your growth path is recognizing that true harmony requires honest difference — and that your voice in the room is not a threat to belonging.',
+      traits: ['#CommunityMediator', '#InclusiveHeart', '#GroupTissue', '#MergedIdentity'],
+      shareText: "I'm a social Type 9 — I make sure everyone's voice is heard, and I sometimes forget which one is mine."
+    },
+    '9-sx': {
+      typeNumber: '9', typeName: 'The Peacemaker', center: 'Body',
+      subtypeLabel: 'Sexual / One-to-One', subtypeZh: '性本能型 / 一对一型',
+      description: 'You fear loss of connection and inner fragmentation — and you express this through deep, absorbing one-to-one intimacy. You want to merge with a partner — to blend your inner world with theirs until the boundary between self and other becomes softly, beautifully unclear. This subtype is capable of extraordinary attentiveness and presence in intimate relationships. But it can also resist separation or conflict so strongly that it overrides authentic individual feeling. Your growth path is discovering that separation from a loved one is not the same as loss.',
+      traits: ['#MergingIntimacy', '#BlissfulPresence', '#AbsorbingConnection', '#SoftUnity'],
+      shareText: "My subtype is 9 sexual — I want to dissolve into the people I love until we're one warm, safe feeling together."
+    }
+  };
 
-    // 9 Results
-    const RESULTS = {
-      'sp1': {
-        typeNumber: '1',
-        typeName: 'The Ethical Perfectionist',
-        subtypeLabel: 'Self-Preservation 1 — The Responsible Reformer',
-        publicDesc: 'You have an internal compass that never stops pointing north — and you hold yourself to it even when no one else is watching. You care deeply about doing things right, not just looking right, and that quiet integrity is the thing people respect most about you.',
-        shadowDesc: "Behind the composed exterior, you can be brutally hard on yourself — one perceived failure can unravel a whole day of wins. You sometimes use \"being right\" as a shield against the messiness of being human, yours and everyone else's.",
-        traits: ['#Conscientious', '#Principled', '#Self-Directed', '#InnerCritic'],
-        shareText: "I'm a Type 1 who holds myself to a standard most people only wish they could meet — and honestly? Most days it exhausts me. 🔑",
-        colorVar: '--type1',
-        colorName: 'Gold'
-      },
-      'so2': {
-        typeNumber: '2',
-        typeName: 'The Boundary-Crossing Helper',
-        subtypeLabel: 'Social 2 — The Generous Host',
-        publicDesc: 'You show up for people in ways that feel almost instinctive — anticipating what they need before they ask, making space for them, making them feel seen. Your love language is acts of service, and you\'re genuinely happiest when you\'ve made someone\'s day a little easier.',
-        shadowDesc: "Here's the part you don't love admitting: sometimes you keep score, even when you swear you don't. Acts of kindness can become an unspoken transaction — and when your giving isn't reciprocated or acknowledged, the resentment hits harder than you'd ever let anyone see.",
-        traits: ['#Generous', '#Attentive', '#CommunityBuilder', '#QuietScorekeeper'],
-        shareText: "I will drop everything for the people I love — but what I really need to learn is that my worth isn't a ledger. 💛",
-        colorVar: '--type2',
-        colorName: 'Rose'
-      },
-      'so3': {
-        typeNumber: '3',
-        typeName: 'The Achievement Machine',
-        subtypeLabel: 'Social 3 — The Hero',
-        publicDesc: 'You are wired for impact. When you set your sights on a goal, you become unstoppable — adaptable, charismatic, and laser-focused on delivering results. People want to be on your team because you make things happen, and you make them feel like they\'re part of something bigger.',
-        shadowDesc: "But here's the cost of the highlight reel: you've sometimes been so focused on the outcome that you've lost track of who you actually are beneath the roles you play. You can look in the mirror and realize you've been performing for so long, you're not sure what your own voice sounds like anymore.",
-        traits: ['#Driven', '#Charismatic', '#Adaptive', '#RolePlayer'],
-        shareText: "I've built a life people envy — and some days I'm terrified that if I stop being \"successful,\" I'll have nothing left. 🏆",
-        colorVar: '--type3',
-        colorName: 'Emerald'
-      },
-      'sx4': {
-        typeNumber: '4',
-        typeName: 'The Uniqueness Seeker',
-        subtypeLabel: 'Sexual 4 — The Iconoclast',
-        publicDesc: 'You see the world through a lens no one else is quite using — and that lens is your gift. You feel things deeply and originally, and you have an uncanny ability to name emotions that other people can\'t quite articulate. You are drawn to what\'s authentic and repelled by what\'s generic.',
-        shadowDesc: "Your depth can tip into a private drama you don't always let people see — comparing yourself, feeling like everyone else has a manual for life that you never got. You can romanticize the past or an imagined future while missing the present moment that's right in front of you.",
-        traits: ['#DeeplyFeeling', '#Creative', '#AuthenticToAFault', '#EmotionallyProfound'],
-        shareText: "I feel everything more than everyone else — it's my greatest gift and my loneliest curse. 🎭",
-        colorVar: '--type4',
-        colorName: 'Coral'
-      },
-      'sp5': {
-        typeNumber: '5',
-        typeName: 'The Conceptual Fortress',
-        subtypeLabel: 'Self-Preservation 5 — The Gray Pebble',
-        publicDesc: 'You are a quiet collector of knowledge — not to show off, but because understanding the world feels like a form of safety. You value depth over breadth, and you\'d rather know one thing completely than know a little about many things. Your mind is a fascinating place to be invited into.',
-        shadowDesc: "But that mental fortress has walls for a reason. You've learned to retreat inward when the world feels too demanding, and sometimes that retreat becomes its own kind of prison — leaving you isolated even as your inner world grows richer and richer.",
-        traits: ['#IntellectuallyCurious', '#Observant', '#EnergyConservers', '#PrivatelyComplex'],
-        shareText: "I'd rather understand the universe than figure out how to make small talk at a party. 🧠",
-        colorVar: '--type5',
-        colorName: 'Teal'
-      },
-      'so6': {
-        typeNumber: '6',
-        typeName: 'The Loyal Skeptic',
-        subtypeLabel: 'Social 6 — The Team Player',
-        publicDesc: 'You are the person people call when they need someone they can truly rely on — because you\'ve already thought through the worst-case scenario and have a plan for it. Your loyalty is earned, not given, but once you commit to a person or a cause, it\'s ironclad. You bring a rare combination of critical thinking and wholehearted dedication.',
-        shadowDesc: "That vigilance that makes you such a good ally can also keep you up at night — replaying conversations, looking for hidden threats, second-guessing decisions you've already made. You've spent more mental energy worrying about things that never happened than most people spend worrying about things that do.",
-        traits: ['#LoyalToAFault', '#CriticalThinker', '#PreparedForTheWorst', '#InnerWorrier'],
-        shareText: "I will have your back before you even know you need it — but I'll also have anxiety about it for three days afterward. 🛡️",
-        colorVar: '--type6',
-        colorName: 'Sapphire'
-      },
-      'so7': {
-        typeNumber: '7',
-        typeName: 'The Freedom Optimist',
-        subtypeLabel: 'Social 7 — The Enthusiast',
-        publicDesc: 'You are a walking spark of possibility — the person who makes plans feel exciting and who\'s always four steps ahead onto the next adventure. You have an infectious enthusiasm for life and a genuine gift for helping other people see the bright side, even on gray days.',
-        shadowDesc: "But you've also got a finely-tuned avoidance system, and when things get too heavy or too painful, your instinct is to reframe, distract, or run. You've gotten so good at keeping your life full that you've never had to sit still long enough to really process the harder things.",
-        traits: ['#Adventurous', '#HighEnergy', '#JoySpreader', '#PainAvoider'],
-        shareText: "I collect experiences like some people collect stamps — because each new adventure means I don't have to feel the one I'm running from. ✨",
-        colorVar: '--type7',
-        colorName: 'Amber'
-      },
-      'sx8': {
-        typeNumber: '8',
-        typeName: 'The Protective Challenger',
-        subtypeLabel: 'Sexual 8 — The Dominator',
-        publicDesc: 'You walk into rooms with a presence that people feel before you say a word — and that\'s not an accident. You protect the people you care about with a fierceness that borders on devotion, and you have zero patience for injustice, manipulation, or weakness. You are a force of nature dressed in human skin.',
-        shadowDesc: "But that strength can also be a cage — for you. You've spent so long being the one who doesn't need help that you've accidentally pushed away the very intimacy you're secretly starving for. And beneath all that control is a vulnerability you've worked incredibly hard to never let anyone see.",
-        traits: ['#Fierce', '#Protective', '#Direct', '#SecretlyVulnerable'],
-        shareText: "I'll fight for anyone I love harder than I'll fight for myself — and I never, ever let anyone see me bleed. 🔥",
-        colorVar: '--type8',
-        colorName: 'Rust'
-      },
-      'sp9': {
-        typeNumber: '9',
-        typeName: 'The Peacemaking Mediator',
-        subtypeLabel: 'Self-Preservation 9 — The Apathetic',
-        publicDesc: 'You are the calm in the room — the person others gravitate toward when everything feels like chaos, because you somehow manage to stay grounded when everyone else is spiraling. You have a rare gift for seeing all sides, and your presence is genuinely healing to the people around you.',
-        shadowDesc: "But your peace-keeping can tip into self-erasure. You've said \"yes\" when you meant \"no\" so many times that sometimes you genuinely lose track of what you want — and the biggest thing you don't want to admit is that your biggest fear is being a burden.",
-        traits: ['#Easygoing', '#EmotionallySteady', '#ConflictAverse', '#SelfErasing'],
-        shareText: "I'm the person everyone comes to for peace — but I've forgotten what my own wants and needs feel like. 🕊️",
-        colorVar: '--type9',
-        colorName: 'Amethyst'
-      }
-    };
+  /* Type leanings per question/answer: which types does each A/B/C/D leans toward */
+  /* Format: { letter: [typeNumbers] } */
+  const TYPE_LEANINGS = [
+    // Q1
+    { A: [1,3,6], B: [2,4,7], C: [2,3,6,9], D: [1,5,8,9] },
+    // Q2
+    { A: [1,3,6], B: [4,5,8], C: [2,6,9], D: [5,9] },
+    // Q3
+    { A: [1,3,6], B: [4,5], C: [2,3,6,9], D: [3,6] },
+    // Q4
+    { A: [1,5,9], B: [1,5], C: [2,3,6,9], D: [4,7,8] },
+    // Q5
+    { A: [1,3,6], B: [1,3,6], C: [2,6,9], D: [4,7,8] },
+    // Q6
+    { A: [1,2,3,6], B: [1,5,6], C: [4,9], D: [2,6] },
+    // Q7
+    { A: [1,6], B: [5,9], C: [2,6,9], D: [4,7,8] },
+    // Q8
+    { A: [6], B: [1,5,9], C: [2,3,7], D: [4,8] },
+    // Q9
+    { A: [1,3,6], B: [3,5,6], C: [2,6], D: [4,5,7] },
+    // Q10
+    { A: [1,6], B: [3,5], C: [2,6,9], D: [4,7] },
+    // Q11
+    { A: [5,8], B: [4,6,9], C: [2,9], D: [1,8] },
+    // Q12
+    { A: [6], B: [5,9], C: [2,3,7], D: [4,7] },
+    // Q13
+    { A: [2,9], B: [5,6], C: [2,3,6], D: [4,7,8] },
+    // Q14
+    { A: [1,6], B: [3,5], C: [2,7], D: [4,5,7] },
+    // Q15
+    { A: [1,5,8], B: [1,6,8], C: [3,6], D: [4,8] }
+  ];
 
-    // Center mapping for tiebreakers
-    // Heart: 2,3,4 | Head: 5,6,7 | Body: 8,9,1
-    const CENTER_WEIGHTS = {
-      heart: [2, 5, 9, 10, 12, 14],  // Q indices
-      head:  [3, 6, 11, 13],         // Q indices
-      body:  [1, 4, 7, 8, 15]         // Q indices
-    };
+  const CENTER_MAP = { '1': 'Heart', '2': 'Heart', '3': 'Heart', '4': 'Heart', '5': 'Head', '6': 'Head', '7': 'Head', '8': 'Body', '9': 'Body' };
 
-    const INSTINCT_LETTER_MAP = { A: 'sp', B: 'so', C: 'sx', D: 'sp' };
+  const INSTINCT_LETTER = { A: 'sp', B: 'sx', C: 'so', D: 'sp' };
+  const INSTINCT_LABELS = { sp: 'Self-Preservation', so: 'Social', sx: 'Sexual / One-to-One' };
 
-    // Which instinct each letter maps to (for scoring)
-    const LETTER_INSTINCT = {
-      A: 'sp', B: 'so', C: 'sx', D: 'sp'
-    };
+  const TYPE_COLORS = {
+    1: { primary: '#E8B84B', light: '#F5D98A', dark: '#B8891E' },
+    2: { primary: '#E0789A', light: '#F0A8C0', dark: '#A84E72' },
+    3: { primary: '#56C278', light: '#8FDCA8', dark: '#2E8A4A' },
+    4: { primary: '#E05C7A', light: '#F08CA8', dark: '#A83255' },
+    5: { primary: '#4AB8B8', light: '#88D8D8', dark: '#288080' },
+    6: { primary: '#6B8FD4', light: '#9AB8EC', dark: '#4060A0' },
+    7: { primary: '#F08040', light: '#F8B080', dark: '#B85820' },
+    8: { primary: '#C05030', light: '#D88060', dark: '#883018' },
+    9: { primary: '#9880D0', light: '#B8A8E8', dark: '#6858A0' }
+  };
 
-    /* =============================================
-       STATE
-    ============================================= */
-    const state = {
-      currentScreen: 'disclaimer',
-      currentQuestionIndex: 0,
-      answers: [],           // { letter, instinct } per question
-      spScore: 0,
-      soScore: 0,
-      sxScore: 0,
-      dominantInstinct: null,
-      result: null,
-      gradientProgress: 0    // 0–100
-    };
+  /* =============================================
+     STATE
+  ============================================= */
+  const state = {
+    currentScreen: 'disclaimer',
+    currentQuestionIndex: 0,
+    answers: [],
+    spScore: 0, soScore: 0, sxScore: 0,
+    dominantInstinct: null, dominantType: null,
+    result: null
+  };
 
-    /* =============================================
-       DOM REFERENCES
-    ============================================= */
-    const $ = (sel) => document.querySelector(sel);
-    const $$ = (sel) => document.querySelectorAll(sel);
+  /* =============================================
+     DOM
+  ============================================= */
+  const $ = sel => document.querySelector(sel);
+  const $$ = sel => document.querySelectorAll(sel);
+  const screens = {
+    disclaimer:  $('#screen-disclaimer'),
+    intro:       $('#screen-intro'),
+    quiz:        $('#screen-quiz'),
+    calculating: $('#screen-calculating'),
+    result:      $('#screen-result')
+  };
+  const progressRing     = $('.progress-ring');
+  const progressLabel    = $('#progress-label');
+  const questionNumber   = $('#question-number');
+  const questionText      = $('#question-text');
+  const answersList      = $('#answers-list');
+  const resultNumber     = $('#result-number');
+  const resultName       = $('#result-name');
+  const resultSubtypeLbl = $('#result-subtype-label');
+  const resultCenter     = $('#result-center');
+  const resultPublic     = $('#result-public');
+  const resultTraits     = $('#result-traits');
+  const shareToast       = $('#share-toast');
 
-    const screens = {
-      disclaimer: $('#screen-disclaimer'),
-      intro:      $('#screen-intro'),
-      quiz:       $('#screen-quiz'),
-      calculating:$('#screen-calculating'),
-      result:     $('#screen-result')
-    };
-
-    const progressLabel  = $('#progress-label');
-    const progressRing   = $('.progress-ring');
-    const questionNumber = $('#question-number');
-    const questionText   = $('#question-text');
-    const answersList    = $('#answers-list');
-
-    const resultNumber   = $('#result-number');
-    const resultName     = $('#result-name');
-    const resultBadge    = $('#result-badge');
-    const resultSubtypeLabel = $('#result-subtype-label');
-    const resultPublic   = $('#result-public');
-    const resultShadow   = $('#result-shadow');
-    const resultTraits   = $('#result-traits');
-    const shareToast      = $('#share-toast');
-
-    /* =============================================
-       SCREEN TRANSITIONS
-    ============================================= */
-    function showScreen(name) {
-      Object.entries(screens).forEach(([key, el]) => {
-        if (key === name) {
-          el.removeAttribute('hidden');
-          el.classList.add('active');
-          // Focus first focusable element
-          const focusable = el.querySelector('button, [tabindex="0"]');
-          if (focusable) setTimeout(() => focusable.focus(), 100);
-        } else {
-          el.classList.remove('active');
-          el.setAttribute('hidden', '');
+  /* =============================================
+     PERSISTENCE
+  ============================================= */
+  function saveState() {
+    try { localStorage.setItem('psycho-subtype-quiz', JSON.stringify(state.answers)); } catch(e) {}
+  }
+  function loadState() {
+    try {
+      const saved = localStorage.getItem('psycho-subtype-quiz');
+      if (saved) {
+        const a = JSON.parse(saved);
+        if (Array.isArray(a) && a.length > 0) {
+          state.answers = a;
+          return true;
         }
-      });
-      state.currentScreen = name;
-      // Scroll to top
-      window.scrollTo({ top: 0, behavior: 'instant' });
-    }
-
-    /* =============================================
-       PROGRESS RING
-    ============================================= */
-    function buildProgressRing() {
-      const svg = progressRing.querySelector('svg');
-      // Clear existing segments
-      svg.querySelectorAll('.progress-ring-segment').forEach(s => s.remove());
-
-      const cx = 32, cy = 32, r = 28;
-      const totalSegments = 15;
-      const segmentAngleDeg = 360 / totalSegments;
-      const gapDeg = 6;
-      const arcDeg = segmentAngleDeg - gapDeg;
-
-      for (let i = 0; i < totalSegments; i++) {
-        const startAngle = i * segmentAngleDeg - 90; // start from top
-        const endAngle = startAngle + arcDeg;
-
-        const x1 = cx + r * Math.cos((startAngle * Math.PI) / 180);
-        const y1 = cy + r * Math.sin((startAngle * Math.PI) / 180);
-        const x2 = cx + r * Math.cos((endAngle * Math.PI) / 180);
-        const y2 = cy + r * Math.sin((endAngle * Math.PI) / 180);
-
-        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        const d = `M ${x1} ${y1} A ${r} ${r} 0 ${arcDeg > 180 ? 1 : 0} 1 ${x2} ${y2}`;
-        path.setAttribute('d', d);
-        path.setAttribute('class', 'progress-ring-segment');
-        path.dataset.index = i;
-        svg.appendChild(path);
       }
-    }
+    } catch(e) {}
+    return false;
+  }
+  function clearState() {
+    try { localStorage.removeItem('psycho-subtype-quiz'); } catch(e) {}
+  }
 
-    function updateProgressRing(completed) {
-      const segments = progressRing.querySelectorAll('.progress-ring-segment');
-      segments.forEach((seg, i) => {
-        seg.classList.remove('active', 'completed');
-        if (i < completed) {
-          seg.classList.add('completed');
-        } else if (i === completed) {
-          seg.classList.add('active');
-        }
-      });
-      progressLabel.textContent = `${completed} / ${QUESTIONS.length}`;
-
-      // Update ARIA
-      progressRing.setAttribute('aria-valuenow', completed);
-      progressRing.setAttribute('aria-label', `Question ${completed} of ${QUESTIONS.length}`);
-    }
-
-    /* =============================================
-       GRADIENT / COLOR SYSTEM
-    ============================================= */
-    const TYPE_COLORS = {
-      1: { primary: '#E8B84B', light: '#F5D98A', dark: '#B8891E' },
-      2: { primary: '#E0789A', light: '#F0A8C0', dark: '#A84E72' },
-      3: { primary: '#56C278', light: '#8FDCA8', dark: '#2E8A4A' },
-      4: { primary: '#E05C7A', light: '#F08CA8', dark: '#A83255' },
-      5: { primary: '#4AB8B8', light: '#88D8D8', dark: '#288080' },
-      6: { primary: '#6B8FD4', light: '#9AB8EC', dark: '#4060A0' },
-      7: { primary: '#F08040', light: '#F8B080', dark: '#B85820' },
-      8: { primary: '#C05030', light: '#D88060', dark: '#883018' },
-      9: { primary: '#9880D0', light: '#B8A8E8', dark: '#6858A0' }
-    };
-
-    function setDominantType(typeNum) {
-      const colors = TYPE_COLORS[typeNum];
-      if (!colors) return;
-
-      const root = document.documentElement;
-      root.style.setProperty('--type-primary', colors.primary);
-      root.style.setProperty('--type-light', colors.light);
-      root.style.setProperty('--type-dark', colors.dark);
-    }
-
-    function updateGradientProgress(answeredCount) {
-      // Background opacity increases as quiz progresses
-      const baseOpacity = 0.12;
-      const maxOpacity = 0.22;
-      const progress = answeredCount / QUESTIONS.length;
-      const opacity = baseOpacity + (maxOpacity - baseOpacity) * progress;
-      document.documentElement.style.setProperty('--gradient-opacity', opacity.toFixed(3));
-    }
-
-    /* =============================================
-       QUIZ LOGIC
-    ============================================= */
-    function calculateResult() {
-      const { spScore, soScore, sxScore, answers } = state;
-
-      // Find dominant instinct
-      const scores = { sp: spScore, so: soScore, sx: sxScore };
-      const maxScore = Math.max(spScore, soScore, sxScore);
-
-      // Count how many answers match each letter pattern
-      const letterCounts = { A: 0, B: 0, C: 0, D: 0 };
-      answers.forEach(a => { if (a && a.letter) letterCounts[a.letter]++; });
-      const maxLetterCount = Math.max(letterCounts.A, letterCounts.B, letterCounts.C);
-
-      let dominantInstinct = null;
-      let dominantType = null;
-
-      if (maxScore >= 6) {
-        // Clear dominant instinct
-        dominantInstinct = Object.entries(scores).find(([, v]) => v === maxScore)[0];
+  /* =============================================
+     SCREEN TRANSITIONS
+  ============================================= */
+  function showScreen(name) {
+    Object.entries(screens).forEach(([key, el]) => {
+      if (key === name) {
+        el.removeAttribute('hidden');
+        el.classList.add('active');
+        const focusable = el.querySelector('button, [tabindex="0"]');
+        if (focusable) setTimeout(() => focusable.focus(), 100);
       } else {
-        // Tiebreaker: use center signals
-        // Determine which center has most weight based on heart/head/body question answers
-        const heartQIndices = [1, 4, 8, 9, 11, 13]; // 0-indexed: Q2, Q5, Q10, Q12, Q14
-        const headQIndices  = [2, 5, 10, 12];        // Q3, Q6, Q11, Q13
-        const bodyQIndices  = [0, 3, 6, 7, 14];      // Q1, Q4, Q7, Q8, Q15
+        el.classList.remove('active');
+        el.setAttribute('hidden', '');
+      }
+    });
+    state.currentScreen = name;
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
 
-        let heartSignals = 0, headSignals = 0, bodySignals = 0;
+  /* =============================================
+     PROGRESS RING
+  ============================================= */
+  function buildProgressRing() {
+    const svg = progressRing.querySelector('svg');
+    svg.querySelectorAll('.progress-ring-segment').forEach(s => s.remove());
+    const cx = 32, cy = 32, r = 28;
+    const total = 15;
+    const segAngle = 360 / total;
+    const gapDeg = 6;
+    const arcDeg = segAngle - gapDeg;
+    for (let i = 0; i < total; i++) {
+      const start = i * segAngle - 90;
+      const end   = start + arcDeg;
+      const x1 = cx + r * Math.cos((start * Math.PI) / 180);
+      const y1 = cy + r * Math.sin((start * Math.PI) / 180);
+      const x2 = cx + r * Math.cos((end * Math.PI) / 180);
+      const y2 = cy + r * Math.sin((end * Math.PI) / 180);
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', `M ${x1} ${y1} A ${r} ${r} 0 ${arcDeg > 180 ? 1 : 0} 1 ${x2} ${y2}`);
+      path.setAttribute('class', 'progress-ring-segment');
+      path.dataset.index = i;
+      svg.appendChild(path);
+    }
+  }
 
-        answers.forEach((a, idx) => {
-          if (!a) return;
-          const letter = a.letter;
-          if (heartQIndices.includes(idx)) {
-            // Heart center questions: B → so, C → sx, A/D → sp
-            if (letter === 'B') heartSignals += 2;
-            else if (letter === 'C') heartSignals += 2;
-          }
-          if (headQIndices.includes(idx)) {
-            // Head center: A → sp, B → so, C → sx
-            if (letter === 'A') headSignals += 2;
-            else if (letter === 'B') headSignals += 2;
-          }
-          if (bodyQIndices.includes(idx)) {
-            // Body center: A → sp, D → sp
-            if (letter === 'A' || letter === 'D') bodySignals += 2;
-          }
-        });
+  function updateProgressRing(completed) {
+    const segs = progressRing.querySelectorAll('.progress-ring-segment');
+    segs.forEach((s, i) => {
+      s.classList.remove('active', 'completed');
+      if (i < completed) s.classList.add('completed');
+      else if (i === completed) s.classList.add('active');
+    });
+    progressLabel.textContent = `${completed} / ${QUESTIONS.length}`;
+    progressRing.setAttribute('aria-valuenow', completed);
+    progressRing.setAttribute('aria-label', `Question ${completed} of ${QUESTIONS.length}`);
+  }
 
-        // Also factor in sp/so/sx scores
-        const centerMap = {
-          heart: { instinct: scores.so >= scores.sx ? 'so' : 'sx', signals: heartSignals },
-          head:  { instinct: scores.sp >= scores.so ? 'sp' : 'so', signals: headSignals },
-          body:  { instinct: 'sp', signals: bodySignals }
-        };
+  /* =============================================
+     COLOR SYSTEM
+  ============================================= */
+  function setDominantType(typeNum) {
+    const c = TYPE_COLORS[typeNum];
+    if (!c) return;
+    const root = document.documentElement;
+    root.style.setProperty('--type-primary', c.primary);
+    root.style.setProperty('--type-light', c.light);
+    root.style.setProperty('--type-dark', c.dark);
+  }
 
-        const sortedCenters = Object.entries(centerMap).sort((a, b) => b[1].signals - a[1].signals);
-        const dominantCenter = sortedCenters[0][0];
+  function updateGradientProgress(answered) {
+    const base = 0.12, max = 0.22;
+    const opacity = base + (max - base) * (answered / QUESTIONS.length);
+    document.documentElement.style.setProperty('--gradient-opacity', opacity.toFixed(3));
+  }
 
-        // Determine dominant instinct from center + instinct scores
-        if (dominantCenter === 'heart') {
-          dominantInstinct = scores.so >= scores.sx ? 'so' : 'sx';
-        } else if (dominantCenter === 'head') {
-          dominantInstinct = scores.sp >= scores.so ? 'sp' : 'so';
-        } else {
-          dominantInstinct = 'sp';
-        }
+  /* =============================================
+     QUIZ LOGIC
+  ============================================= */
+  function computeScores() {
+    state.spScore = state.soScore = state.sxScore = 0;
+    state.answers.forEach(a => {
+      if (!a) return;
+      if (a.letter === 'A' || a.letter === 'D') state.spScore++;
+      else if (a.letter === 'B') state.sxScore++;
+      else if (a.letter === 'C') state.soScore++;
+    });
+  }
+
+  function determineDominantInstinct() {
+    const scores = { sp: state.spScore, so: state.soScore, sx: state.sxScore };
+    const max = Math.max(...Object.values(scores));
+    const tied = Object.entries(scores).filter(([,v]) => v === max).map(([k]) => k);
+
+    if (tied.length === 1) return tied[0];
+
+    // Tiebreaker: Q3, Q6, Q13 are core instinct-identity questions
+    const coreIndices = [2, 5, 12]; // 0-based: Q3, Q6, Q13
+    const coreScores = { sp: 0, so: 0, sx: 0 };
+    coreIndices.forEach(idx => {
+      const a = state.answers[idx];
+      if (!a) return;
+      if (a.letter === 'A' || a.letter === 'D') coreScores.sp++;
+      else if (a.letter === 'B') coreScores.sx++;
+      else if (a.letter === 'C') coreScores.so++;
+    });
+    const coreMax = Math.max(...Object.values(coreScores));
+    const coreTied = Object.entries(coreScores).filter(([,v]) => v === coreMax).map(([k]) => k);
+    if (coreTied.includes(tied[0])) return tied[0];
+    return tied[0];
+  }
+
+  function determineDominantType() {
+    // Count type leanings from all answered questions
+    const typeCounts = { 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0 };
+    state.answers.forEach((a, idx) => {
+      if (!a) return;
+      const leanings = TYPE_LEANINGS[idx];
+      if (!leanings) return;
+      const types = leanings[a.letter];
+      if (!types) return;
+      types.forEach(t => { typeCounts[t]++; });
+    });
+    const max = Math.max(...Object.values(typeCounts));
+    const top = Object.entries(typeCounts).filter(([,v]) => v === max).map(([k]) => parseInt(k));
+    // Return first (most common type)
+    return top[0];
+  }
+
+  function calculateResult() {
+    computeScores();
+    state.dominantInstinct = determineDominantInstinct();
+    state.dominantType = determineDominantType();
+    const key = `${state.dominantType}-${state.dominantInstinct}`;
+    state.result = RESULTS[key] || RESULTS[`${state.dominantType}-sp`] || null;
+  }
+
+  /* =============================================
+     RENDER QUESTION
+  ============================================= */
+  function renderQuestion() {
+    const q = QUESTIONS[state.currentQuestionIndex];
+    questionNumber.textContent = `Question ${state.currentQuestionIndex + 1} of ${QUESTIONS.length}`;
+    questionText.textContent = q.text;
+    answersList.innerHTML = '';
+
+    q.answers.forEach((ans, i) => {
+      const card = document.createElement('button');
+      card.className = 'answer-card';
+      card.setAttribute('role', 'listitem');
+      card.setAttribute('aria-pressed', 'false');
+      card.dataset.letter = ans.letter;
+      card.dataset.index = i;
+
+      // Check if already answered
+      const prevAnswer = state.answers[state.currentQuestionIndex];
+      if (prevAnswer && prevAnswer.letter === ans.letter) {
+        card.classList.add('selected');
+        card.setAttribute('aria-pressed', 'true');
       }
 
-      // Map to result key
-      // The 9 results: sp1, so2, so3, sx4, sp5, so6, so7, sx8, sp9
-      const resultKeys = {
-        sp: { heart: 'sp1', head: 'sp5', body: 'sp9' },
-        so: { heart: 'so2', head: 'so6', body: 'so7' },
-        sx: { heart: 'sx4', head: 'sx4', body: 'sx8' }
-      };
+      card.innerHTML = `
+        <span class="answer-letter" aria-hidden="true">${ans.letter}</span>
+        <span class="answer-text">${ans.text}</span>
+      `;
+      card.addEventListener('click', () => selectAnswer(ans.letter, i));
+      answersList.appendChild(card);
+    });
 
-      // Determine center from answer patterns
-      const heartIndices = [1, 4, 8, 9, 11, 13];
-      const headIndices  = [2, 5, 10, 12];
-      const bodyIndices  = [0, 3, 6, 7, 14];
+    updateProgressRing(state.currentQuestionIndex);
+    updateGradientProgress(state.currentQuestionIndex);
+  }
 
-      let hCount = 0, hdCount = 0, bCount = 0;
-      answers.forEach((a, idx) => {
-        if (!a) return;
-        const inst = a.instinct;
-        if (heartIndices.includes(idx) && (inst === 'so' || inst === 'sx')) hCount += 2;
-        if (headIndices.includes(idx) && (inst === 'sp' || inst === 'so')) hdCount += 2;
-        if (bodyIndices.includes(idx) && inst === 'sp') bCount += 2;
-      });
+  function selectAnswer(letter, index) {
+    // Update selected state
+    const cards = answersList.querySelectorAll('.answer-card');
+    cards.forEach(c => { c.classList.remove('selected'); c.setAttribute('aria-pressed', 'false'); });
+    cards[index].classList.add('selected');
+    cards[index].setAttribute('aria-pressed', 'true');
 
-      let centerType;
-      if (hCount >= hdCount && hCount >= bCount) centerType = 'heart';
-      else if (hdCount >= hCount && hdCount >= bCount) centerType = 'head';
-      else centerType = 'body';
+    // Save answer
+    state.answers[state.currentQuestionIndex] = { letter, instinct: INSTINCT_LETTER[letter] };
+    saveState();
 
-      const resultKey = resultKeys[dominantInstinct]?.[centerType] || 'sp9';
-      return RESULTS[resultKey] || RESULTS['sp9'];
+    // Auto-advance after delay
+    setTimeout(() => {
+      if (state.currentQuestionIndex < QUESTIONS.length - 1) {
+        state.currentQuestionIndex++;
+        renderQuestion();
+      } else {
+        showCalculating();
+      }
+    }, 400);
+  }
+
+  /* =============================================
+     RESULT RENDERING
+  ============================================= */
+  function renderResult() {
+    if (!state.result) return;
+    const r = state.result;
+    setDominantType(parseInt(r.typeNumber));
+
+    resultNumber.textContent = r.typeNumber;
+    resultName.textContent = `${r.typeName}`;
+    resultSubtypeLbl.textContent = `${r.subtypeLabel} ${r.subtypeZh}`;
+    resultCenter.textContent = `${r.center} Center`;
+    resultPublic.textContent = r.description;
+
+    resultTraits.innerHTML = '';
+    r.traits.forEach(t => {
+      const tag = document.createElement('span');
+      tag.className = 'trait-tag';
+      tag.textContent = t;
+      tag.setAttribute('role', 'listitem');
+      resultTraits.appendChild(tag);
+    });
+  }
+
+  /* =============================================
+     SHARE
+  ============================================= */
+  function showShareToast() {
+    shareToast.classList.add('visible');
+    setTimeout(() => shareToast.classList.remove('visible'), 2500);
+  }
+
+  async function shareResult() {
+    if (!state.result) return;
+    const r = state.result;
+    const shareData = {
+      title: "My Enneagram Subtype",
+      text: r.shareText + " 🌀 Take the quiz: psychomaster.co/enneagram-subtype",
+    };
+
+    // Try native share first
+    if (navigator.share) {
+      try { await navigator.share(shareData); return; } catch(e) {}
     }
 
-    /* =============================================
-       RENDER QUESTION
-    ============================================= */
-    function renderQuestion() {
-      const q = QUESTIONS[state.currentQuestionIndex];
-      const answered = state.currentQuestionIndex;
-
-      questionNumber.textContent = `Question ${q.id} of ${QUESTIONS.length}`;
-      questionText.textContent = q.text;
-
-      // Build answer cards
-      answersList.innerHTML = '';
-      q.answers.forEach((ans) => {
-        const card = document.createElement('button');
-        card.className = 'answer-card';
-        card.setAttribute('role', 'listitem');
-        card.setAttribute('aria-pressed', 'false');
-        card.dataset.letter = ans.letter;
-        card.dataset.instinct = ans.instinct;
-
-        card.innerHTML = `
-          <span class="answer-letter" aria-hidden="true">${ans.letter}</span>
-          <span class="answer-text">${ans.text}</span>
-        `;
-
-        card.addEventListener('click', () => selectAnswer(card, ans));
-        answersList.appendChild(card);
-      });
-
-      updateProgressRing(answered);
+    // Copy to clipboard
+    try {
+      await navigator.clipboard.writeText(shareData.text);
+      showShareToast();
+    } catch(e) {
+      // Fallback: try to download PNG
+      downloadPNG();
     }
+  }
 
-    function selectAnswer(cardEl, answer) {
-      // Prevent double selection
-      if (cardEl.classList.contains('selected')) return;
+  async function downloadPNG() {
+    const exportCard = document.getElementById('export-card');
+    const r = state.result;
+    const typeNum = parseInt(r.typeNumber);
+    const c = TYPE_COLORS[typeNum];
 
-      // Deselect siblings
-      cardEl.parentElement.querySelectorAll('.answer-card').forEach(c => {
-        c.classList.remove('selected');
-        c.setAttribute('aria-pressed', 'false');
-      });
+    exportCard.style.setProperty('--type-primary', c.primary);
+    exportCard.style.setProperty('--type-light', c.light);
 
-      // Select this one
-      cardEl.classList.add('selected');
-      cardEl.setAttribute('aria-pressed', 'true');
+    $('#export-number').textContent = r.typeNumber;
+    $('#export-name').textContent = r.typeName;
+    $('#export-badge').textContent = `${r.subtypeLabel} · ${r.subtypeZh}`;
+    $('#export-desc').textContent = r.description;
 
-      // Record answer
-      state.answers[state.currentQuestionIndex] = { letter: answer.letter, instinct: answer.instinct };
+    const traitsEl = $('#export-traits');
+    traitsEl.innerHTML = '';
+    r.traits.forEach(t => {
+      const span = document.createElement('span');
+      span.className = 'export-trait';
+      span.textContent = t;
+      traitsEl.appendChild(span);
+    });
 
-      // Update scores
-      const inst = answer.instinct;
-      if (inst === 'sp') state.spScore++;
-      else if (inst === 'so') state.soScore++;
-      else if (inst === 'sx') state.sxScore++;
+    exportCard.style.left = '0';
+    exportCard.style.visibility = 'visible';
 
-      // Update gradient based on which instinct was chosen
-      updateGradientProgress(state.currentQuestionIndex + 1);
-
-      // Auto-advance after brief pause
-      setTimeout(() => {
-        if (state.currentQuestionIndex < QUESTIONS.length - 1) {
-          state.currentQuestionIndex++;
-          renderQuestion();
-        } else {
-          // Last question — go to calculating
-          goToCalculating();
-        }
-      }, 450);
+    try {
+      const canvas = await html2canvas(exportCard, { backgroundColor: '#121018', scale: 1, useCORS: true, allowTaint: true });
+      const link = document.createElement('a');
+      link.download = `enneagram-subtype-${typeNum}${r.subtypeLabel.charAt(0).toLowerCase()}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } catch(e) {
+      // fallback: copy text
+      try { await navigator.clipboard.writeText(r.shareText); showShareToast(); } catch(e2) {}
+    } finally {
+      exportCard.style.left = '-9999px';
+      exportCard.style.visibility = 'hidden';
     }
+  }
 
-    /* =============================================
-       CALCULATING SCREEN
-    ============================================= */
-    function goToCalculating() {
-      showScreen('calculating');
-
-      // Animate gradient toward dominant
-      const scores = { sp: state.spScore, so: state.soScore, sx: state.sxScore };
-      const maxInstinct = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
-
-      // Pick a representative type number based on instinct
-      const instinctTypeMap = { sp: [1, 5, 9], so: [2, 3, 6, 7], sx: [4, 8] };
-      const possibleTypes = instinctTypeMap[maxInstinct] || [9];
-      // Pick the one with highest "center" alignment
-      setDominantType(possibleTypes[0]);
-
-      setTimeout(() => {
-        const result = calculateResult();
-        state.result = result;
-        showResult(result);
-      }, 3500);
-    }
-
-    /* =============================================
-       RESULT SCREEN
-    ============================================= */
-    function showResult(result) {
-      // Set the correct type color
-      const typeNum = parseInt(result.typeNumber);
-      setDominantType(typeNum);
-
-      // Update result elements
-      resultNumber.textContent = result.typeNumber;
-      resultName.textContent = result.typeName;
-      resultSubtypeLabel.textContent = result.subtypeLabel;
-      resultPublic.textContent = result.publicDesc;
-      resultShadow.textContent = result.shadowDesc;
-
-      // Build trait tags
-      resultTraits.innerHTML = '';
-      result.traits.forEach(tag => {
-        const el = document.createElement('span');
-        el.className = 'trait-tag';
-        el.textContent = tag;
-        el.setAttribute('role', 'listitem');
-        resultTraits.appendChild(el);
-      });
-
+  /* =============================================
+     FLOW
+  ============================================= */
+  function showCalculating() {
+    showScreen('calculating');
+    setTimeout(() => {
+      calculateResult();
       showScreen('result');
+      renderResult();
+    }, 3500);
+  }
+
+  function startQuiz() {
+    state.currentQuestionIndex = 0;
+    state.answers = [];
+    clearState();
+    buildProgressRing();
+    showScreen('quiz');
+    renderQuestion();
+  }
+
+  function retake() {
+    startQuiz();
+  }
+
+  /* =============================================
+     INIT
+  ============================================= */
+  function init() {
+    buildProgressRing();
+
+    // Check for saved answers
+    if (loadState() && state.answers.length === QUESTIONS.length) {
+      // All answered — go directly to result
+      calculateResult();
+      setDominantType(state.dominantType);
+      showScreen('result');
+      renderResult();
+      return;
     }
 
-    /* =============================================
-       SHARE
-    ============================================= */
-    function copyShareText() {
-      const text = state.result ? state.result.shareText : '';
-      const full = `${text}\n\nWhat's Your Enneagram Subtype? — Take the quiz:`;
-
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(full).then(() => {
-          showShareToast();
-        }).catch(() => {
-          // Fallback
-          const ta = document.createElement('textarea');
-          ta.value = full;
-          document.body.appendChild(ta);
-          ta.select();
-          document.execCommand('copy');
-          document.body.removeChild(ta);
-          showShareToast();
-        });
-      } else {
-        const ta = document.createElement('textarea');
-        ta.value = full;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        showShareToast();
-      }
-    }
-
-    function showShareToast() {
-      shareToast.classList.add('visible');
-      setTimeout(() => shareToast.classList.remove('visible'), 2500);
-    }
-
-    /* =============================================
-       RESET / RETAKE
-    ============================================= */
-    function resetQuiz() {
-      state.currentQuestionIndex = 0;
-      state.answers = [];
-      state.spScore = 0;
-      state.soScore = 0;
-      state.sxScore = 0;
-      state.dominantInstinct = null;
-      state.result = null;
-
-      // Reset gradient
-      updateGradientProgress(0);
-      document.documentElement.style.setProperty('--type-primary', TYPE_COLORS[9].primary);
-      document.documentElement.style.setProperty('--type-light', TYPE_COLORS[9].light);
-      document.documentElement.style.setProperty('--type-dark', TYPE_COLORS[9].dark);
-
+    // Filter to only answered questions
+    const answeredCount = state.answers.filter(Boolean).length;
+    if (answeredCount > 0) {
+      state.currentQuestionIndex = answeredCount;
       buildProgressRing();
-      renderQuestion();
       showScreen('quiz');
+      renderQuestion();
+    } else {
+      showScreen('disclaimer');
     }
 
-    /* =============================================
-       EVENT LISTENERS
-    ============================================= */
+    // Event listeners
     $('#btn-disclaimer-start').addEventListener('click', () => {
       showScreen('intro');
     });
 
-    $('#btn-intro-start').addEventListener('click', () => {
-      buildProgressRing();
-      renderQuestion();
-      showScreen('quiz');
-    });
+    $('#btn-intro-start').addEventListener('click', startQuiz);
 
-    $('#btn-share').addEventListener('click', copyShareText);
-
-    $('#btn-retake').addEventListener('click', resetQuiz);
-
-    // Keyboard nav for answer cards
-    answersList.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        const card = document.activeElement;
-        if (card.classList.contains('answer-card') && !card.classList.contains('selected')) {
-          e.preventDefault();
-          const letter = card.dataset.letter;
-          const instinct = card.dataset.instinct;
-          selectAnswer(card, { letter, instinct });
-        }
+    $('#btn-share').addEventListener('click', () => {
+      if (navigator.share || navigator.clipboard) {
+        shareResult();
+      } else {
+        downloadPNG();
       }
     });
 
-    /* =============================================
-       INIT
-    ============================================= */
-    function init() {
-      buildProgressRing();
-      // Set default type color (9 / Amethyst)
-      setDominantType(9);
-    }
+    $('#btn-retake').addEventListener('click', retake);
 
-    init();
+    // Keyboard: Enter/Space on answer cards
+    document.addEventListener('keydown', (e) => {
+      if (state.currentScreen !== 'quiz') return;
+      if (e.key === 'Enter' || e.key === ' ') {
+        const selected = answersList.querySelector('.answer-card.selected');
+        if (selected) {
+          e.preventDefault();
+          const letter = selected.dataset.letter;
+          const index = parseInt(selected.dataset.index);
+          selectAnswer(letter, index);
+        }
+      }
+    });
+  }
 
+  // Start
+  init();
   </script>
 </body>
 </html>
