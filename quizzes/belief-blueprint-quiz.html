@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What's Your Core Belief Blueprint?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-dark: #1E1B18;
+  --bg-warm-surface: #2A2118;
+  --bg-light: #F8F3EC;
+  --bg-light-surface: #F0EBE3;
+  --text-dark-bg: #F5EFE6;
+  --text-light-bg: #2A2118;
+  --text-secondary: #D4C9B8;
+  --text-muted: #9A9285;
+  --accent: #C9A96E;
+  --accent-hover: #B89A5E;
+  --accent-secondary: #B87B5E;
+  --border-warm: #3A3530;
+  --error: #C97B6E;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Nunito Sans', Arial, sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{
+  font-family:var(--font-sans);
+  background:var(--bg-dark);
+  color:var(--text-dark-bg);
+  min-height:100vh;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased
+}
+.screen{display:none;min-height:100vh;flex-direction:column}
+.screen.active{display:flex}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}
+}
+
+/* LANDING */
+#landing{
+  background:linear-gradient(160deg,var(--bg-dark) 0%,var(--bg-warm-surface) 60%,#3A2F20 100%);
+  justify-content:center;align-items:center;
+  text-align:center;padding:2rem;
+  position:relative;overflow:hidden
+}
+#landing::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 60% at 50% 40%,rgba(201,169,110,0.08) 0%,transparent 70%);
+  pointer-events:none
+}
+.landing-inner{max-width:600px;position:relative;z-index:1}
+.landing-eyebrow{
+  font-family:var(--font-sans);font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:1.5rem;opacity:0;transform:translateY(20px);
+  animation:fadeUp 0.8s ease-out 0.2s forwards
+}
+.landing-title{
+  font-family:var(--font-serif);font-size:clamp(2.2rem,6vw,3.5rem);
+  font-weight:600;line-height:1.15;color:var(--text-dark-bg);
+  margin-bottom:1.2rem;opacity:0;transform:translateY(20px);
+  animation:fadeUp 0.8s ease-out 0.4s forwards
+}
+.landing-title em{font-style:italic;color:var(--accent)}
+.landing-sub{
+  font-size:1.05rem;line-height:1.65;color:var(--text-secondary);
+  margin-bottom:2.5rem;opacity:0;transform:translateY(20px);
+  animation:fadeUp 0.8s ease-out 0.6s forwards
+}
+.landing-trust{
+  font-size:0.8rem;color:var(--text-muted);margin-top:1.5rem;
+  opacity:0;animation:fadeUp 0.8s ease-out 1s forwards
+}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:var(--accent);color:var(--bg-dark);
+  font-family:var(--font-sans);font-size:1rem;font-weight:700;
+  padding:0.85rem 2.2rem;border-radius:999px;border:none;cursor:pointer;
+  transition:background 0.2s,transform 0.15s,box-shadow 0.2s;
+  text-decoration:none;opacity:0;animation:fadeUp 0.8s ease-out 0.8s forwards;
+  min-height:48px
+}
+.btn-primary:hover{background:var(--accent-hover);transform:scale(1.03);box-shadow:0 4px 20px rgba(201,169,110,0.3)}
+.btn-primary:focus{outline:3px solid var(--accent);outline-offset:3px}
+.btn-primary:active{transform:scale(0.98)}
+
+/* DISCLAIMER */
+#disclaimer{
+  background:var(--bg-light);color:var(--text-light-bg);
+  justify-content:center;align-items:center;padding:2rem
+}
+.disclaimer-inner{max-width:580px;width:100%;text-align:center}
+.disclaimer-icon{
+  width:56px;height:56px;margin:0 auto 1.5rem;
+  background:var(--bg-light-surface);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem
+}
+.disclaimer-title{
+  font-family:var(--font-serif);font-size:clamp(1.6rem,4vw,2rem);
+  font-weight:600;margin-bottom:1.5rem;line-height:1.3
+}
+.disclaimer-body{
+  font-size:0.95rem;line-height:1.8;color:var(--text-muted);
+  margin-bottom:1rem
+}
+.disclaimer-body p{margin-bottom:1rem}
+.disclaimer-body strong{color:var(--text-light-bg)}
+.disclaimer-note{
+  font-family:var(--font-serif);font-style:italic;font-size:1.1rem;
+  color:var(--accent-secondary);margin:1.5rem 0
+}
+.disclaimer-cta-wrap{opacity:0;transition:opacity 0.5s}
+.disclaimer-cta-wrap.visible{opacity:1}
+.scroll-hint{
+  font-size:0.75rem;color:var(--text-muted);margin-bottom:0.75rem;
+  display:flex;align-items:center;justify-content:center;gap:0.4rem
+}
+.btn-secondary{
+  display:inline-flex;align-items:center;
+  background:var(--accent);color:var(--bg-dark);
+  font-family:var(--font-sans);font-size:0.95rem;font-weight:700;
+  padding:0.75rem 2rem;border-radius:999px;border:none;cursor:pointer;
+  transition:background 0.2s,transform 0.15s;min-height:48px;text-decoration:none
+}
+.btn-secondary:hover{background:var(--accent-hover);transform:scale(1.03)}
+.btn-secondary:focus{outline:3px solid var(--accent);outline-offset:3px}
+
+/* INTRO */
+#intro{
+  background:linear-gradient(160deg,var(--bg-dark) 0%,var(--bg-warm-surface) 60%,#3A2F20 100%);
+  justify-content:center;align-items:center;padding:2rem;
+  text-align:center;position:relative;overflow:hidden
+}
+#intro::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 50% at 50% 45%,rgba(201,169,110,0.07) 0%,transparent 70%);
+  pointer-events:none
+}
+.intro-inner{max-width:600px;position:relative;z-index:1}
+.intro-title{
+  font-family:var(--font-serif);font-size:clamp(1.8rem,4.5vw,2.4rem);
+  font-weight:600;margin-bottom:1.5rem;line-height:1.3
+}
+.intro-body{
+  font-size:1rem;line-height:1.85;color:var(--text-secondary);
+  margin-bottom:1.2rem
+}
+.intro-body p{margin-bottom:1rem}
+.intro-stats{
+  display:flex;justify-content:center;gap:2rem;margin:1.8rem 0;
+  color:var(--text-muted);font-size:0.85rem
+}
+.intro-stats span{display:flex;align-items:center;gap:0.4rem}
+.intro-stats svg{width:16px;height:16px;stroke:var(--accent);fill:none;stroke-width:2}
+.btn-intro{
+  background:var(--accent);color:var(--bg-dark);
+  font-family:var(--font-sans);font-size:1rem;font-weight:700;
+  padding:0.85rem 2.5rem;border-radius:999px;border:none;cursor:pointer;
+  transition:background 0.2s,transform 0.15s;min-height:48px
+}
+.btn-intro:hover{background:var(--accent-hover);transform:scale(1.03)}
+.btn-intro:focus{outline:3px solid var(--accent);outline-offset:3px}
+
+/* QUESTIONS */
+#questions{
+  background:linear-gradient(160deg,var(--bg-dark) 0%,var(--bg-warm-surface) 100%);
+  padding:0;position:relative
+}
+.progress-bar-wrap{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(30,27,24,0.95);backdrop-filter:blur(8px);
+  padding:12px 16px 10px;
+  display:flex;align-items:center;gap:1rem
+}
+.progress-info{
+  font-size:0.75rem;color:var(--text-muted);white-space:nowrap;min-width:90px
+}
+.progress-track{
+  flex:1;height:4px;background:var(--border-warm);border-radius:2px;overflow:hidden
+}
+.progress-fill{
+  height:100%;background:var(--accent);border-radius:2px;
+  transition:width 0.4s ease;width:0%
+}
+.question-body{
+  min-height:100vh;display:flex;flex-direction:column;
+  justify-content:center;padding:5rem 1.5rem 3rem;max-width:640px;margin:0 auto
+}
+.q-number{
+  font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--text-muted);margin-bottom:1rem
+}
+.q-text{
+  font-family:var(--font-serif);font-size:clamp(1.2rem,3.5vw,1.6rem);
+  font-weight:600;line-height:1.4;margin-bottom:1.8rem;
+  color:var(--text-dark-bg)
+}
+.q-scenario{
+  font-size:0.85rem;color:var(--accent-secondary);margin-bottom:0.6rem;
+  font-style:italic
+}
+.answers-list{display:flex;flex-direction:column;gap:0.7rem}
+.answer-btn{
+  width:100%;text-align:left;background:rgba(42,37,32,0.7);
+  border:1px solid var(--border-warm);border-radius:12px;
+  padding:0.9rem 1.2rem;cursor:pointer;
+  font-family:var(--font-sans);font-size:0.9rem;line-height:1.55;
+  color:var(--text-dark-bg);
+  transition:border-color 0.2s,background 0.2s,transform 0.15s,box-shadow 0.2s;
+  display:flex;gap:0.75rem;min-height:52px
+}
+.answer-btn .opt{
+  font-weight:700;color:var(--accent);flex-shrink:0;width:1.4rem;
+  line-height:1.5
+}
+.answer-btn:hover:not(.selected){
+  border-color:var(--accent);background:rgba(42,37,32,0.9);
+  transform:scale(1.01);box-shadow:0 2px 12px rgba(201,169,110,0.1)
+}
+.answer-btn.selected{
+  background:rgba(201,169,110,0.15);border-color:var(--accent);
+  box-shadow:0 0 0 1px var(--accent)
+}
+.answer-btn:focus{outline:3px solid var(--accent);outline-offset:2px}
+.answer-btn .opt-text{flex:1}
+.question-nav{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border-warm)
+}
+.btn-back{
+  display:flex;align-items:center;gap:0.4rem;
+  background:none;border:none;color:var(--text-muted);cursor:pointer;
+  font-family:var(--font-sans);font-size:0.85rem;
+  padding:0.5rem 0.75rem;border-radius:8px;
+  transition:color 0.2s;min-height:44px
+}
+.btn-back:hover{color:var(--text-dark-bg)}
+.btn-back:focus{outline:3px solid var(--accent);outline-offset:2px}
+.btn-next{
+  background:var(--accent);color:var(--bg-dark);
+  font-family:var(--font-sans);font-size:0.9rem;font-weight:700;
+  padding:0.7rem 1.8rem;border-radius:999px;border:none;cursor:pointer;
+  transition:background 0.2s,transform 0.15s;min-height:44px
+}
+.btn-next:hover:not(:disabled){background:var(--accent-hover);transform:scale(1.03)}
+.btn-next:disabled{opacity:0.4;cursor:not-allowed}
+.btn-next:focus{outline:3px solid var(--accent);outline-offset:2px}
+
+/* PROCESSING */
+#processing{
+  background:linear-gradient(160deg,var(--bg-dark) 0%,var(--bg-warm-surface) 100%);
+  justify-content:center;align-items:center;text-align:center;padding:2rem
+}
+.processing-title{
+  font-family:var(--font-serif);font-style:italic;font-size:clamp(1.4rem,3.5vw,1.9rem);
+  color:var(--text-dark-bg);margin-bottom:1rem;animation:fadeIn 0.8s ease-out
+}
+.processing-sub{
+  font-size:0.9rem;color:var(--text-muted);line-height:1.6;
+  max-width:400px;margin:0 auto 2.5rem;animation:fadeIn 0.8s ease-out 0.4s both
+}
+.glow-ring{
+  width:80px;height:80px;border-radius:50%;
+  border:2px solid rgba(201,169,110,0.3);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto;position:relative
+}
+.glow-ring::before{
+  content:'';position:absolute;inset:-10px;
+  border-radius:50%;border:2px solid rgba(201,169,110,0.1);
+  animation:pulseRing 2s ease-in-out infinite
+}
+.glow-core{
+  width:40px;height:40px;border-radius:50%;
+  background:radial-gradient(circle,var(--accent) 0%,rgba(201,169,110,0.3) 70%);
+  animation:glowPulse 2s ease-in-out infinite
+}
+
+/* RESULTS */
+#results{
+  background:var(--bg-light);color:var(--text-light-bg);
+  padding:3rem 1.5rem 4rem
+}
+.result-inner{max-width:640px;margin:0 auto}
+.result-header{text-align:center;margin-bottom:2.5rem}
+.result-label{
+  font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--text-muted);margin-bottom:0.75rem
+}
+.result-type{
+  font-family:var(--font-serif);font-size:clamp(2rem,6vw,2.8rem);
+  font-weight:700;color:var(--text-light-bg);margin-bottom:0.75rem;line-height:1.2
+}
+.result-tagline{
+  font-family:var(--font-serif);font-style:italic;font-size:clamp(1.05rem,3vw,1.3rem);
+  color:var(--accent-secondary);line-height:1.5;max-width:480px;margin:0 auto
+}
+.result-divider{
+  width:60px;height:2px;background:var(--accent);margin:2rem auto;
+  border-radius:1px
+}
+.result-section{margin-bottom:2rem}
+.result-section-title{
+  font-family:var(--font-serif);font-size:1.3rem;font-weight:600;
+  margin-bottom:0.8rem;color:var(--text-light-bg)
+}
+.result-section p,.result-section li{
+  font-size:0.95rem;line-height:1.8;color:#4A4035
+}
+.result-section ul{list-style:none;margin-top:0.6rem}
+.result-section li{
+  padding-left:1.5rem;position:relative;margin-bottom:0.4rem
+}
+.result-section li::before{
+  content:'—';position:absolute;left:0;color:var(--accent)
+}
+.history-box{
+  background:var(--bg-light-surface);border-left:3px solid var(--accent);
+  border-radius:0 8px 8px 0;padding:1.2rem 1.5rem;margin:1rem 0
+}
+.history-box p{font-size:0.9rem;line-height:1.8}
+.gift-cost-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem
+}
+@media(max-width:500px){.gift-cost-grid{grid-template-columns:1fr}}
+.gift-cost-card{
+  background:var(--bg-light-surface);border-radius:8px;padding:1rem 1.2rem
+}
+.gift-cost-card.gift{border-top:3px solid var(--accent)}
+.gift-cost-card.cost{border-top:3px solid var(--accent-secondary)}
+.gc-label{
+  font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;
+  margin-bottom:0.4rem;font-weight:700
+}
+.gc-label.gift-l{color:var(--accent)}
+.gc-label.cost-l{color:var(--accent-secondary)}
+.gc-label+*{font-size:0.88rem;line-height:1.65}
+.restructure-steps{counter-reset:steps}
+.restructure-step{
+  display:flex;gap:1rem;margin-bottom:1.2rem
+}
+.step-num{
+  width:28px;height:28px;min-width:28px;border-radius:50%;
+  background:var(--accent);color:var(--bg-dark);
+  font-weight:700;font-size:0.8rem;
+  display:flex;align-items:center;justify-content:center;
+  counter-increment:steps
+}
+.step-content{}
+.step-title{
+  font-weight:700;font-size:0.9rem;margin-bottom:0.2rem;
+  color:var(--text-light-bg)
+}
+.step-desc{font-size:0.85rem;line-height:1.65;color:#4A4035}
+.restructure-closing{
+  font-family:var(--font-serif);font-style:italic;
+  color:var(--accent-secondary);margin-top:1.5rem;font-size:0.95rem;text-align:center
+}
+.result-actions{
+  display:flex;flex-direction:column;gap:0.8rem;
+  align-items:center;margin:2rem 0
+}
+.result-share-label{
+  font-size:0.8rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--text-muted);margin-bottom:0.3rem
+}
+.share-copy-wrap{
+  display:flex;gap:0.5rem;width:100%;max-width:500px
+}
+.share-text{
+  flex:1;background:var(--bg-light-surface);border:1px solid #D8D0C4;
+  border-radius:8px;padding:0.6rem 0.9rem;font-size:0.78rem;
+  color:#4A4035;line-height:1.5;
+  font-family:var(--font-sans);resize:none;min-width:0
+}
+.share-copy-btn{
+  background:var(--accent);color:var(--bg-dark);
+  font-family:var(--font-sans);font-size:0.8rem;font-weight:700;
+  padding:0.6rem 1rem;border-radius:8px;border:none;cursor:pointer;
+  white-space:nowrap;min-height:44px;min-width:60px;
+  transition:background 0.2s
+}
+.share-copy-btn:hover{background:var(--accent-hover)}
+.share-copy-btn.copied{background:#7a9e7a}
+.share-canvas-btn{
+  background:var(--bg-light-surface);color:var(--text-light-bg);
+  border:1px solid #D8D0C4;
+  font-family:var(--font-sans);font-size:0.8rem;font-weight:600;
+  padding:0.6rem 1rem;border-radius:8px;cursor:pointer;
+  display:flex;align-items:center;gap:0.4rem;min-height:44px;
+  transition:background 0.2s
+}
+.share-canvas-btn:hover{background:#EDE8E0}
+.result-footer-disclaimer{
+  font-size:0.75rem;line-height:1.7;color:var(--text-muted);
+  border-top:1px solid #D8D0C4;padding-top:1.2rem;
+  margin-top:1.5rem;text-align:center
+}
+.result-footer-disclaimer a{color:var(--accent-secondary)}
+.explore-more{
+  text-align:center;margin-top:2rem
+}
+.explore-more a{
+  display:inline-flex;align-items:center;gap:0.4rem;
+  color:var(--accent-secondary);font-weight:700;font-size:0.9rem;
+  text-decoration:none;min-height:44px;padding:0.5rem 0;
+  border-bottom:1px solid transparent;transition:border-color 0.2s
+}
+.explore-more a:hover{border-color:var(--accent-secondary)}
+
+/* TRIGGER WARNING */
+.trigger-warning{
+  background:rgba(201,123,110,0.08);border:1px solid rgba(201,123,110,0.25);
+  border-radius:8px;padding:1rem 1.2rem;margin-bottom:1.5rem
+}
+.trigger-warning-title{
+  font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--error);margin-bottom:0.4rem;font-weight:700;display:flex;align-items:center;gap:0.4rem
+}
+.trigger-warning p{font-size:0.82rem;color:#7a4a42;line-height:1.65}
+
+/* WeChat share fallback notice */
+.wechat-notice{
+  font-size:0.75rem;color:var(--text-muted);text-align:center;
+  margin-top:0.5rem
+}
+
+/* Canvas share card styles (drawn to canvas) */
+.canvas-card{display:none}
+
+/* Animations */
+@keyframes fadeUp{
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes fadeIn{
+  from{opacity:0}to{opacity:1}
+}
+@keyframes pulseRing{
+  0%,100%{transform:scale(1);opacity:0.6}
+  50%{transform:scale(1.15);opacity:0}
+}
+@keyframes glowPulse{
+  0%,100%{opacity:0.6;transform:scale(0.9)}
+  50%{opacity:1;transform:scale(1.1)}
+}
+@media(prefers-reduced-motion:reduce){
+  @keyframes fadeUp{to{opacity:1;transform:none}}
+  @keyframes fadeIn{to{opacity:1}}
+  @keyframes pulseRing{to{transform:scale(1);opacity:0.3}}
+  @keyframes glowPulse{to{opacity:0.8;transform:scale(1)}}
+}
+
+/* Focus visible */
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* Screen reader only */
+.sr-only{
+  position:absolute;width:1px;height:1px;
+  padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0,0,0,0);white-space:nowrap;border:0
+}
+
+/* Custom scrollbar for light bg */
+#results::-webkit-scrollbar{width:6px}
+#results::-webkit-scrollbar-track{background:transparent}
+#results::-webkit-scrollbar-thumb{background:#D4C9B8;border-radius:3px}
+</style>
+</head>
+<body>
+
+<!-- LANDING -->
+<section id="landing" class="screen active" role="banner" aria-label="Quiz landing">
+  <div class="landing-inner">
+    <p class="landing-eyebrow">Schema Therapy · Self-Reflection Quiz</p>
+    <h1 class="landing-title">What's Your <em>Core Belief</em> Blueprint?</h1>
+    <p class="landing-sub">The underground beliefs running your life — identified in 5 minutes.</p>
+    <button class="btn-primary" id="start-btn" aria-label="Start the quiz">Start the Quiz →</button>
+    <p class="landing-trust">Based on Jeffrey Young's Schema Therapy · Not a diagnosis — just a mirror</p>
+  </div>
+</section>
+
+<!-- DISCLAIMER -->
+<section id="disclaimer" class="screen" role="main" aria-label="Quiz disclaimer">
+  <div class="disclaimer-inner">
+    <div class="disclaimer-icon" aria-hidden="true">💛</div>
+    <h2 class="disclaimer-title">Before We Begin</h2>
+    <div class="disclaimer-body">
+      <p><strong>This quiz is for educational and self-reflection purposes only.</strong></p>
+      <p>It is not a clinical diagnosis. It is not a substitute for professional mental health support.</p>
+      <p>Schema therapy is a powerful, evidence-based clinical approach — and this quiz brings its core concepts to you in an accessible format.</p>
+    </div>
+    <p class="disclaimer-note">Think of it as a mirror, not a manual.</p>
+    <div class="disclaimer-cta-wrap" id="disclaimer-cta-wrap">
+      <p class="scroll-hint" aria-hidden="true">↓ Scroll to continue</p>
+      <button class="btn-secondary" id="disclaimer-btn">I'm ready to look</button>
+    </div>
+  </div>
+</section>
+
+<!-- INTRO -->
+<section id="intro" class="screen" role="main" aria-label="Introduction">
+  <div class="intro-inner">
+    <h2 class="intro-title">There's a voice inside you.</h2>
+    <div class="intro-body">
+      <p>Not the one that narrates your day — a deeper one. It speaks in certainties: <em>I'm not enough. I can't trust anyone. I have to earn love.</em></p>
+      <p>These aren't random thoughts. They're beliefs. And they have a history.</p>
+      <p><strong>Core beliefs</strong> are the underground rules you formed in childhood about how the world works and who you are. They're invisible — you've lived with them so long they feel like facts. But beliefs can be changed. And the first step is knowing which one is running the show.</p>
+    </div>
+    <div class="intro-stats">
+      <span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        12 questions
+      </span>
+      <span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/><path d="M12 6v6l4 2"/></svg>
+        ~5 minutes
+      </span>
+    </div>
+    <button class="btn-intro" id="intro-btn">Let's Begin</button>
+  </div>
+</section>
+
+<!-- QUESTIONS -->
+<section id="questions" class="screen" role="main" aria-label="Quiz questions" aria-live="polite">
+  <div class="progress-bar-wrap" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-bar">
+    <span class="progress-info" id="progress-info" aria-hidden="true">Question 1 of 12</span>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+  <div class="question-body">
+    <p class="q-number" id="q-number" aria-hidden="true"></p>
+    <p class="q-scenario" id="q-scenario" aria-hidden="true"></p>
+    <h2 class="q-text" id="q-text"></h2>
+    <div class="answers-list" id="answers-list" role="radiogroup" aria-label="Answer options"></div>
+    <div class="question-nav">
+      <button class="btn-back" id="back-btn" aria-label="Go to previous question">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <button class="btn-next" id="next-btn" disabled aria-label="Go to next question">Next →</button>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESSING -->
+<section id="processing" class="screen" role="status" aria-label="Processing">
+  <p class="processing-title">Identifying your core belief blueprint...</p>
+  <p class="processing-sub">This is not a test you're taking.<br>It's a pattern you're revealing.</p>
+  <div class="glow-ring" aria-hidden="true">
+    <div class="glow-core"></div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results" class="screen" role="main" aria-label="Your results">
+  <div class="result-inner" id="result-inner"></div>
+</section>
+
+<script>
+(function(){
+'use strict';
+
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+
+const QUESTIONS = [
+  {
+    num:1,
+    scenario:"You're in a relationship. Your partner says they love you — but they've been distant lately, texting less, seeming distracted.",
+    text:"What happens inside you?",
+    answers:[
+      {opt:"A",text:"Panic. They'll leave. Everyone leaves eventually. I should prepare myself.",domain:1},
+      {opt:"B",text:"Suspicion. Something's wrong. If I can't trust them, what can I trust? I'll keep watching for signs.",domain:1},
+      {opt:"C",text:"Self-blame. I must have done something. If I were better, more attractive, more interesting...",domain:1},
+      {opt:"D",text:"Wait and absorb. I'll just keep the peace. I'll shrink myself if I have to.",domain:3}
+    ]
+  },
+  {
+    num:2,
+    scenario:"You make a mistake at work. It's not catastrophic, but it's visible — a client noticed, your boss noticed.",
+    text:"What do you do?",
+    answers:[
+      {opt:"A",text:"Spiral. I should have caught this. I'm incompetent. This proves I'm a fraud.",domain:2},
+      {opt:"B",text:"Immediately start fixing it — before anyone else notices or before it gets worse.",domain:2},
+      {opt:"C",text:"Deflect. Minimize it. Make a joke. Move on — because if I sit with it, I'll feel unbearable shame.",domain:4},
+      {opt:"D",text:"Apologize profusely. Over-explain. Send follow-up messages. Try to make them forget it happened.",domain:3}
+    ]
+  },
+  {
+    num:3,
+    scenario:"You're alone on a weekend. No plans, no obligations.",
+    text:"What do you feel?",
+    answers:[
+      {opt:"A",text:"Anxious. Something bad is going to happen. I need to stay alert.",domain:2},
+      {opt:"B",text:"Numb. I don't really feel much of anything. I just... exist.",domain:4},
+      {opt:"C",text:"Triggered. There's a specific ache — the one that reminds me I'm fundamentally alone.",domain:1},
+      {opt:"D",text:"Energetic. Finally — time to be productive, to get ahead, to prove my worth.",domain:4}
+    ]
+  },
+  {
+    num:4,
+    scenario:"Someone close to you lets you down — not catastrophically, but noticeably. They forgot something important.",
+    text:"What is your first reaction?",
+    answers:[
+      {opt:"A",text:"Withdraw. I knew it. I can't rely on anyone. I'll handle it myself.",domain:1},
+      {opt:"B",text:"Feel a flash of rage — followed by guilt for feeling rage. Then swallow it.",domain:5},
+      {opt:"C",text:"Immediately forgive and reassure them. They had a lot going on. I don't want to be a burden.",domain:3},
+      {opt:"D",text:"Wonder if I did something wrong — if this is punishment for something.",domain:1}
+    ]
+  },
+  {
+    num:5,
+    scenario:"You're offered a new opportunity — a promotion, a creative project, a chance to do something meaningful.",
+    text:"What stops you from fully going for it?",
+    answers:[
+      {opt:"A",text:"Fear of failure. What if I can't do it? What if I embarrass myself?",domain:2},
+      {opt:"B",text:"Guilt. I'd be taking something from someone else. It's selfish to want more.",domain:3},
+      {opt:"C",text:"The belief that I don't really deserve it. It won't last. Good things don't happen to me.",domain:1},
+      {opt:"D",text:"Perfectionism. The timing isn't right. I need to be more prepared.",domain:4}
+    ]
+  },
+  {
+    num:6,
+    scenario:"You've been working hard. Really hard. You've earned a break — a vacation, a purchase, a rest.",
+    text:"What happens when you try to actually enjoy it?",
+    answers:[
+      {opt:"A",text:"Guilt. I don't deserve it. I should be doing more.",domain:4},
+      {opt:"B",text:"Anxiety. Something will go wrong. I'll worry the whole time.",domain:2},
+      {opt:"C",text:"Numbness. I can't actually feel the good feelings. They don't register.",domain:4},
+      {opt:"D",text:"Wait for someone else to give permission. Does anyone think I deserve this?",domain:3}
+    ]
+  },
+  {
+    num:7,
+    scenario:"A friend tells you about their success — a new job, a relationship milestone, something they're proud of.",
+    text:"How do you feel?",
+    answers:[
+      {opt:"A",text:"Genuinely happy for them — but a small, sharp voice whispers: Why not me?",domain:4},
+      {opt:"B",text:"Irritated. They don't deserve it. Life isn't fair.",domain:5},
+      {opt:"C",text:"Inadequate. I should have that by now. I'm behind.",domain:2},
+      {opt:"D",text:"Dismissive. None of that matters anyway. Life is hard for everyone.",domain:4}
+    ]
+  },
+  {
+    num:8,
+    scenario:"You look in the mirror and really look.",
+    text:"What thought surfaces first?",
+    answers:[
+      {opt:"A",text:"Criticism. My body is wrong. My face is wrong. I'm not attractive enough.",domain:1},
+      {opt:"B",text:"Nothing. I don't really see myself. I see a function — someone who does things.",domain:1},
+      {opt:"C",text:"Assessment. How do I look to others? Will they judge me?",domain:3},
+      {opt:"D",text:"Exhaustion. I look tired. I always look tired. How much longer can I keep this up?",domain:2}
+    ]
+  },
+  {
+    num:9,
+    scenario:"You're in a conflict with someone important to you. Not a fight — a real, genuine disagreement.",
+    text:"What do you do?",
+    answers:[
+      {opt:"A",text:"Give in. Keep the peace. It's not worth it. I can't risk losing them.",domain:3},
+      {opt:"B",text:"Fight back hard. No one gets to treat me like this. I'll show them.",domain:5},
+      {opt:"C",text:"Shut down. Go silent. Wait for it to pass.",domain:4},
+      {opt:"D",text:"Analyze it obsessively. What does this mean about them? About me? About our future?",domain:4}
+    ]
+  },
+  {
+    num:10,
+    scenario:"Think about a pattern in your life that keeps repeating — in relationships, at work, with friends.",
+    text:"Which description fits best?",
+    answers:[
+      {opt:"A",text:"I attract people who can't commit, and I keep trying to fix them.",domain:1},
+      {opt:"B",text:"I give and give and feel unseen and used.",domain:3},
+      {opt:"C",text:"I start things I can't finish because I can't meet my own standards.",domain:4},
+      {opt:"D",text:"I isolate when things get hard, then feel alone, then isolate more.",domain:1}
+    ]
+  },
+  {
+    num:11,
+    scenario:"You receive criticism — not harsh, just honest feedback.",
+    text:"What happens in your body and mind?",
+    answers:[
+      {opt:"A",text:"Collapse. Devastation. I'm terrible. I ruined everything.",domain:1},
+      {opt:"B",text:"Anger. How dare they. They're wrong.",domain:5},
+      {opt:"C",text:"Dismissal. They don't know what they're talking about. Their opinion doesn't matter.",domain:1},
+      {opt:"D",text:"Shame spiral. I replay it. I make a plan to fix it — immediately.",domain:4}
+    ]
+  },
+  {
+    num:12,
+    scenario:"If your core belief was a message childhood-you heard over and over, which is closest to what you received?",
+    text:"Which lie have you believed the longest?",
+    answers:[
+      {opt:"A",text:"You're not enough. / Try harder. / You should be better.",domain:4},
+      {opt:"B",text:"You're on your own. / Don't trust anyone. / People leave.",domain:1},
+      {opt:"C",text:"Your needs are a burden. I should handle everything myself.",domain:3},
+      {opt:"D",text:"You're broken. / There's something wrong with you. / You're defective.",domain:1}
+    ]
+  }
+];
+
+const RESULT_TYPES = {
+  1:{
+    name:"The Abandoned Self",
+    tagline:"You've been waiting your whole life for someone to stay. The question isn't whether they'll leave — it's whether you'll finally let yourself rest.",
+    whatSoundsLike:[
+      "\"Everyone I love eventually leaves.\"",
+      "\"If people really knew me, they'd run.\"",
+      "\"I don't deserve to be truly cared for.\"",
+      "\"I'm fundamentally alone.\"",
+      "\"People can't be trusted.\""
+    ],
+    howShowsUp:[
+      "You may find yourself in relationships where you're the one giving more — or the one bracing for abandonment.",
+      "You may have a hard time believing good things will last.",
+      "You may have learned to keep people at arm's length before they can leave first.",
+      "You may feel like an outsider, no matter how many people are around.",
+      "You may have learned to anticipate loss before it happens."
+    ],
+    history:"This belief often forms in environments where attachment was unreliable — where caregivers were inconsistently present, emotionally unavailable, or where you learned early that love was conditional or temporary. Your nervous system adapted by learning to expect loss.",
+    gift:"Your hyperawareness of others' moods and intentions. Your capacity for deep emotional intimacy when trust is earned. Your self-reliance. Your resilience.",
+    cost:"The energy spent bracing for abandonment. The relationships you pulled back from. The love you didn't let in because you were afraid it would leave.",
+    steps:[
+      {title:"Notice the prophecy.",desc:"When you feel someone pulling away, pause before reacting. Ask: is this happening, or am I anticipating it?"},
+      {title:"Get curious about the child.",desc:"Place a hand on your chest. Say to yourself: \"Little me was scared of being left. That was real. This is now.\""},
+      {title:"Practice being the one who stays.",desc:"Stay with your own feeling for 30 more seconds before reaching for external reassurance."},
+      {title:"Correct the record.",desc:"When the belief says \"everyone leaves,\" write down one person who hasn't. Let evidence accumulate."}
+    ]
+  },
+  2:{
+    name:"The Dependent Child",
+    tagline:"You've spent your life waiting for the other shoe to drop. What if you allowed yourself to believe — just for a moment — that you're actually going to be okay?",
+    whatSoundsLike:[
+      "\"I can't handle this on my own.\"",
+      "\"Something bad is about to happen.\"",
+      "\"I'm not capable enough.\"",
+      "\"I need someone stronger to guide me.\"",
+      "\"I'll probably fail anyway, so why try.\""
+    ],
+    howShowsUp:[
+      "You may second-guess your own decisions, even small ones.",
+      "You may stay in jobs, relationships, or situations that aren't right for you because leaving feels too frightening.",
+      "You may have a hard time picturing a future where things actually work out.",
+      "You may feel like an imposter — like at any moment someone will discover you're not as capable as they think.",
+      "You may catastrophize small problems into large ones."
+    ],
+    history:"This belief often forms in environments where you weren't given enough space to develop your own competence — where overprotective parents, chaotic circumstances, or early failure taught you that the world is dangerous and you are not equipped. Your nervous system learned to stay alert.",
+    gift:"Your ability to anticipate problems and plan carefully. Your thoroughness. Your willingness to ask for help — and your recognition that no one succeeds alone.",
+    cost:"The dreams deferred because the risk felt too high. The times you didn't trust yourself and wish you had. The exhaustion of constant vigilance.",
+    steps:[
+      {title:"Reality-check the danger.",desc:"Ask: what is the actual worst-case scenario? How likely is it? What would I do if it happened?"},
+      {title:"Collect evidence of your competence.",desc:"Make a list of 10 things you've handled successfully — including things you thought you couldn't do."},
+      {title:"Practice small risks.",desc:"Do one thing this week without asking for permission or reassurance first."},
+      {title:"Re-parent the afraid part.",desc:"Put a hand on your chest. Say: \"You're scared. I know. But I'm older now, and I can handle this with you.\""}
+    ]
+  },
+  3:{
+    name:"The Good Soldier",
+    tagline:"You've made everyone else comfortable for so long. What's one more day of checking in with yourself — asking what you actually want, and giving yourself permission to want it?",
+    whatSoundsLike:[
+      "\"I shouldn't take up too much space.\"",
+      "\"My needs are a burden to others.\"",
+      "\"If I'm good enough, maybe they'll finally be happy with me.\"",
+      "\"I have to give to deserve to receive.\"",
+      "\"My feelings don't matter as much as theirs.\""
+    ],
+    howShowsUp:[
+      "You may have a hard time saying no — even when you're already overwhelmed.",
+      "You may have lost touch with what you actually want, need, or feel.",
+      "You may stay in relationships or jobs longer than you should because you've prioritized everyone else's comfort.",
+      "You may feel invisible, used, or resentful — but unable to express it.",
+      "You may have a very active inner critic that punishes you for having needs at all."
+    ],
+    history:"This belief often forms in environments where your needs weren't welcomed — where expressing them led to conflict, withdrawal of love, or punishment. You learned that your authentic self was not acceptable, and you built a compliant self to survive. The cost was losing touch with what you actually felt and wanted.",
+    gift:"Your empathy, generosity, and ability to make others feel seen and cared for. Your deep commitment to relationships. Your capacity for genuine kindness — when it comes from you, not from obligation.",
+    cost:"The resentment you've swallowed. The self you've repressed. The life you've lived for others.",
+    steps:[
+      {title:"Name your need before saying no.",desc:"Before responding to a request, check in: \"What do I actually want here?\" Wait one breath before answering."},
+      {title:"Practice a small no.",desc:"Say no to something small this week — without explaining, justifying, or apologizing."},
+      {title:"Notice the cost of silence.",desc:"Ask yourself: what is it costing me to not say how I really feel? Is the silence protecting the relationship, or protecting me from its end?"},
+      {title:"Give yourself permission to be 'selfish.'",desc:"Use the word \"I want\" at least three times this week. Notice how it feels."}
+    ]
+  },
+  4:{
+    name:"The Watchtower",
+    tagline:"You've been holding the reins so tight. You've been so good at being good. What would happen if you loosened your grip — just a little — and let yourself just... be?",
+    whatSoundsLike:[
+      "\"I'm never doing enough.\"",
+      "\"I have to be perfect to be okay.\"",
+      "\"I can't let myself feel this — I have to stay composed.\"",
+      "\"If I fail, I deserve to be punished.\"",
+      "\"Other people have it together. I don't.\""
+    ],
+    howShowsUp:[
+      "You may be exhausted from the constant effort to be perfect.",
+      "You may have a hard time relaxing, resting, or feeling like you've done enough.",
+      "You may inhibit your emotions — especially anger, grief, or joy — to stay in control.",
+      "You may be very hard on yourself when you make mistakes.",
+      "You may feel like you're watching life from a distance, not really participating in it."
+    ],
+    history:"This belief often forms in environments where love was conditional on performance — where approval came from being good, achieving, and not causing problems. You learned that your worth was tied to what you did, not who you are. Your nervous system conflated relaxation with danger.",
+    gift:"Your high standards and drive. Your reliability. Your ability to get things done. Your integrity.",
+    cost:"The joy you've missed because you couldn't enjoy it without guilt. The connections you've avoided because vulnerability felt too dangerous. The exhaustion.",
+    steps:[
+      {title:"Lower the bar.",desc:"Intentionally do something imperfectly this week — a small task, a casual email, a relaxed outfit. Notice what happens."},
+      {title:"Feel one feeling.",desc:"Pick one emotion (not joy, not calm) and let yourself feel it — fully — for 60 seconds. Notice what you feared would happen."},
+      {title:"Challenge 'should.'",desc:"Notice how many sentences in your head contain the word \"should.\" Replace one \"should\" with \"I could\" or \"I want to.\""},
+      {title:"Rest as rebellion.",desc:"Schedule 20 minutes of genuine rest this week — with no productivity goal attached. See if you survive. (You will.)"}
+    ]
+  },
+  5:{
+    name:"The Punished Self",
+    tagline:"You've been your own harshest judge. The question isn't whether you deserve punishment — it's whether you're ready to offer yourself the mercy you've never received.",
+    whatSoundsLike:[
+      "\"I deserve to suffer for my mistakes.\"",
+      "\"If I don't punish myself, who will? I have to stay in line.\"",
+      "\"Other people get what they deserve. I don't.\"",
+      "\"I'll never be forgiven for who I used to be.\"",
+      "\"I'm a bad person.\""
+    ],
+    howShowsUp:[
+      "You may be relentlessly self-critical — more than anyone else could ever be.",
+      "You may have a hard time accepting forgiveness (yours or others').",
+      "You may punish yourself through deprivation, overwork, or refusing good things.",
+      "You may expect bad things to happen because you feel you deserve them.",
+      "You may carry shame that never quite lifts."
+    ],
+    history:"This belief often forms in environments with harsh, punitive, or abusive caregivers — where criticism was the primary language and love was mixed with pain. You internalized the punishing voice as a survival mechanism: if you beat yourself up first, maybe others won't have to. Or you simply learned that you were bad, and no amount of evidence to the contrary has fully landed.",
+    gift:"Your capacity for accountability and genuine remorse. Your sensitivity to harm and injustice. Your refusal to let yourself off the hook — which, when redirected, becomes moral integrity.",
+    cost:"The self-hatred that colours everything. The good things you've refused because you felt you didn't deserve them. The person you might have been if you'd been met with mercy instead of punishment.",
+    steps:[
+      {title:"Separate deed from worth.",desc:"Ask: \"Did I do something bad, or am I a bad person?\" These are different. You can regret an action without abandoning your worth."},
+      {title:"Imagine someone else.",desc:"If a friend came to you with your mistake, what would you say to them? Say that to yourself."},
+      {title:"Practice one act of mercy.",desc:"This week, do one thing that contradicts your belief that you don't deserve good things — accept a compliment, buy yourself something nice, rest without guilt."},
+      {title:"Externalize the voice.",desc:"Write down the punishing words. Read them aloud in an exaggerated, silly voice. Notice how their power shifts when they sound absurd."}
+    ]
+  }
+};
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+
+const TOTAL_Q = QUESTIONS.length;
+const STORAGE_KEY = 'belief_blueprint_progress';
+
+let currentQ = 0;
+let answers = new Array(TOTAL_Q).fill(null); // answers[qIndex] = domain (1-5)
+let dominantResult = null;
+
+function saveProgress(){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify({answers,currentQ}));}catch(e){}
+}
+function loadProgress(){
+  try{
+    const d = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if(d&&d.answers&&d.currentQ!==undefined){
+      answers=d.answers;currentQ=d.currentQ;return true;
+    }
+  }catch(e){}
+  return false;
+}
+function clearProgress(){
+  try{localStorage.removeItem(STORAGE_KEY);}catch(e){}
+}
+
+// ─── HELPERS ──────────────────────────────────────────────────────────────────
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function calcResult(){
+  const scores={1:0,2:0,3:0,4:0,5:0};
+  answers.forEach((a,i)=>{if(a!==null) scores[a]=(scores[a]||0)+1;});
+  let max=0,result=1;
+  for(let k in scores){if(scores[k]>max){max=scores[k];result=parseInt(k);}}
+  return result;
+}
+
+function buildShareText(){
+  const r=RESULT_TYPES[dominantResult];
+  const domains={1:"Disconnection & Rejection",2:"Impaired Autonomy",3:"Other-Directedness",4:"Overvigilance & Inhibition",5:"Punitiveness"};
+  return `I just took the Core Belief Blueprint Quiz and found out my dominant pattern is "${r.name}" — a schema rooted in ${domains[dominantResult]}. If you've ever felt like something underneath your life is running the show, this might explain it. →`;
+}
+
+// ─── SCREEN: LANDING ──────────────────────────────────────────────────────────
+
+document.getElementById('start-btn').addEventListener('click',()=>{
+  showScreen('disclaimer');
+});
+
+// ─── SCREEN: DISCLAIMER ───────────────────────────────────────────────────────
+
+const disclaimerWrap=document.getElementById('disclaimer-cta-wrap');
+const disclaimerEl=document.getElementById('disclaimer');
+
+function checkDisclaimerScroll(){
+  const scrolled=disclaimerEl.scrollTop+disclaimerEl.clientHeight >= disclaimerEl.scrollHeight - 20;
+  if(scrolled) disclaimerWrap.classList.add('visible');
+  else disclaimerWrap.classList.remove('visible');
+}
+
+disclaimerEl.addEventListener('scroll',checkDisclaimerScroll);
+window.addEventListener('resize',checkDisclaimerScroll);
+// Trigger once after load
+setTimeout(checkDisclaimerScroll,300);
+
+document.getElementById('disclaimer-btn').addEventListener('click',()=>{
+  showScreen('intro');
+});
+
+// ─── SCREEN: INTRO ────────────────────────────────────────────────────────────
+
+document.getElementById('intro-btn').addEventListener('click',()=>{
+  showScreen('questions');
+  renderQuestion(currentQ);
+});
+
+// ─── SCREEN: QUESTIONS ────────────────────────────────────────────────────────
+
+function renderQuestion(qIndex){
+  const q=QUESTIONS[qIndex];
+  const progressBar=document.getElementById('progress-bar');
+  const progressInfo=document.getElementById('progress-info');
+  const progressFill=document.getElementById('progress-fill');
+  const qNumber=document.getElementById('q-number');
+  const qScenario=document.getElementById('q-scenario');
+  const qText=document.getElementById('q-text');
+  const answersList=document.getElementById('answers-list');
+  const nextBtn=document.getElementById('next-btn');
+  const backBtn=document.getElementById('back-btn');
+
+  // Update ARIA progress
+  const pct=((qIndex)/(TOTAL_Q))*100;
+  progressBar.setAttribute('aria-valuenow',Math.round(pct));
+  progressFill.style.width=pct+'%';
+  progressInfo.textContent=`Question ${qIndex+1} of ${TOTAL_Q}`;
+
+  qNumber.textContent=`Question ${qIndex+1} of ${TOTAL_Q}`;
+  qScenario.textContent=q.scenario;
+  qText.textContent=q.text;
+
+  // Build answers
+  answersList.innerHTML='';
+  q.answers.forEach((a,i)=>{
+    const btn=document.createElement('button');
+    btn.className='answer-btn'+(answers[qIndex]===a.domain?' selected':'');
+    btn.setAttribute('role','radio');
+    btn.setAttribute('aria-checked',answers[qIndex]===a.domain?'true':'false');
+    btn.setAttribute('aria-label',`Option ${a.opt}: ${a.text}`);
+    btn.innerHTML=`<span class="opt">${a.opt}.</span><span class="opt-text">${a.text}</span>`;
+    btn.addEventListener('click',()=>selectAnswer(qIndex,a.domain,btn));
+    answersList.appendChild(btn);
+  });
+
+  // Next button state
+  nextBtn.disabled=answers[qIndex]===null;
+  nextBtn.textContent=qIndex===TOTAL_Q-1?'See My Results →':'Next →';
+  nextBtn.setAttribute('aria-label',qIndex===TOTAL_Q-1?'See my results':'Next question');
+
+  // Back button visibility
+  backBtn.style.visibility=qIndex===0?'hidden':'visible';
+}
+
+function selectAnswer(qIndex,domain,btnEl){
+  answers[qIndex]=domain;
+  saveProgress();
+  // Update visual selection
+  btnEl.parentElement.querySelectorAll('.answer-btn').forEach(b=>{
+    b.classList.remove('selected');
+    b.setAttribute('aria-checked','false');
+  });
+  btnEl.classList.add('selected');
+  btnEl.setAttribute('aria-checked','true');
+  document.getElementById('next-btn').disabled=false;
+}
+
+document.getElementById('next-btn').addEventListener('click',()=>{
+  if(answers[currentQ]===null) return;
+  if(currentQ<TOTAL_Q-1){
+    currentQ++;
+    saveProgress();
+    renderQuestion(currentQ);
+  } else {
+    // Done — processing then results
+    showScreen('processing');
+    dominantResult=calcResult();
+    setTimeout(()=>{
+      renderResults();
+      showScreen('results');
+      clearProgress();
+    },2800);
+  }
+});
+
+document.getElementById('back-btn').addEventListener('click',()=>{
+  if(currentQ>0){
+    currentQ--;
+    saveProgress();
+    renderQuestion(currentQ);
+  }
+});
+
+// ─── SCREEN: RESULTS ─────────────────────────────────────────────────────────
+
+function renderResults(){
+  const r=RESULT_TYPES[dominantResult];
+  const inner=document.getElementById('result-inner');
+
+  const shareText=buildShareText();
+
+  inner.innerHTML=`
+
+<!-- Trigger Warning -->
+<div class="trigger-warning" role="note">
+  <p class="trigger-warning-title">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    A note before you read on
+  </p>
+  <p>If exploring these patterns brings up difficult emotions, please be gentle with yourself. Consider reaching out to a therapist or trusted support person. You are not broken. You are learning.</p>
+</div>
+
+<!-- Result Header -->
+<div class="result-header">
+  <p class="result-label">Your Core Belief Blueprint</p>
+  <h2 class="result-type">${r.name}</h2>
+  <p class="result-tagline">${r.tagline}</p>
+  <div class="result-divider"></div>
+</div>
+
+<!-- What This Belief Sounds Like -->
+<div class="result-section">
+  <h3 class="result-section-title">What This Belief Sounds Like</h3>
+  <ul>
+    ${r.whatSoundsLike.map(t=>`<li>${t}</li>`).join('')}
+  </ul>
+</div>
+
+<!-- How It Shows Up -->
+<div class="result-section">
+  <h3 class="result-section-title">How This Pattern Shows Up</h3>
+  <ul>
+    ${r.howShowsUp.map(t=>`<li>${t}</li>`).join('')}
+  </ul>
+</div>
+
+<!-- History -->
+<div class="result-section">
+  <h3 class="result-section-title">The History</h3>
+  <div class="history-box">
+    <p>${r.history}</p>
+  </div>
+</div>
+
+<!-- Gift + Cost -->
+<div class="result-section">
+  <h3 class="result-section-title">The Gift & The Cost</h3>
+  <div class="gift-cost-grid">
+    <div class="gift-cost-card gift">
+      <p class="gc-label gift-l">The Gift Inside</p>
+      <p>${r.gift}</p>
+    </div>
+    <div class="gift-cost-card cost">
+      <p class="gc-label cost-l">The Cost</p>
+      <p>${r.cost}</p>
+    </div>
+  </div>
+</div>
+
+<!-- Restructuring Steps -->
+<div class="result-section">
+  <h3 class="result-section-title">How to Begin Changing This Belief</h3>
+  <div class="restructure-steps">
+    ${r.steps.map((s,i)=>`
+    <div class="restructure-step">
+      <div class="step-num" aria-hidden="true">${i+1}</div>
+      <div class="step-content">
+        <p class="step-title">${s.title}</p>
+        <p class="step-desc">${s.desc}</p>
+      </div>
+    </div>`).join('')}
+  </div>
+  <p class="restructure-closing">This is work worth doing. You are worth doing it for.</p>
+</div>
+
+<!-- Closing Message -->
+<div class="result-section">
+  <p style="font-size:0.95rem;line-height:1.8;color:#4A4035;margin-top:1rem">
+    <strong>This belief was learned. It was not chosen. And it can be unlearned.</strong> Your core belief is not a life sentence — it's a pattern that made sense in the environment where you grew up. It kept you safe. It helped you cope. But it doesn't have to run your life forever.
+  </p>
+  <p style="font-size:0.95rem;line-height:1.8;color:#4A4035;margin-top:0.8rem">
+    Cognitive restructuring — the core technique of schema therapy — is the practice of noticing the old belief, understanding its origin, and consciously choosing a new, more adaptive belief. Therapy, particularly schema therapy, is specifically designed for this kind of deep belief change. But this quiz is your first step: knowing what's running underneath.
+  </p>
+</div>
+
+<!-- Share -->
+<div class="result-actions">
+  <p class="result-share-label">Share Your Result</p>
+  <div class="share-copy-wrap">
+    <textarea class="share-text" rows="2" id="share-text" aria-label="Share text">${shareText}</textarea>
+    <button class="share-copy-btn" id="copy-btn" aria-label="Copy share text">Copy</button>
+  </div>
+  <p class="wechat-notice" id="wechat-notice"></p>
+  <button class="share-canvas-btn" id="canvas-btn" aria-label="Generate share image">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+    Generate Share Card
+  </button>
+</div>
+
+<!-- Footer Disclaimer -->
+<div class="result-footer-disclaimer">
+  <p>This quiz is inspired by Jeffrey Young's schema therapy framework and maps to his 18 early maladaptive schemas, organized into five schema domains. It is not a validated clinical instrument — it is a psychoeducational self-reflection tool.</p>
+  <p style="margin-top:0.5rem">If exploring these topics has brought up difficult feelings and you'd like to talk to someone, please consider reaching out to a <a href="https://www.istaschema.com" target="_blank" rel="noopener">licensed therapist</a>.</p>
+</div>
+
+<!-- Professional Support CTA -->
+<div style="text-align:center;margin-top:1.5rem;padding:1.2rem;background:var(--bg-light-surface);border-radius:8px">
+  <p style="font-size:0.85rem;color:#4A4035;line-height:1.7">
+    <strong>Need someone to talk to?</strong> If this quiz has brought up difficult feelings, a licensed therapist can help. You don't have to do this alone.
+  </p>
+</div>
+
+<!-- Explore More -->
+<div class="explore-more">
+  <a href="#" onclick="location.reload();return false;">Take Another Quiz →</a>
+</div>
+  `;
+
+  // ─── Share Logic ─────────────────────────────────────────────────────────
+  const copyBtn=document.getElementById('copy-btn');
+  const wechatNotice=document.getElementById('wechat-notice');
+
+  copyBtn.addEventListener('click',()=>{
+    const ta=document.getElementById('share-text');
+    ta.select();
+    try{
+      document.execCommand('copy');
+      copyBtn.textContent='Copied!';
+      copyBtn.classList.add('copied');
+      wechatNotice.textContent='';
+      setTimeout(()=>{
+        copyBtn.textContent='Copy';
+        copyBtn.classList.remove('copied');
+      },2000);
+    }catch(e){
+      // Fallback
+      const range=document.createRange();
+      range.selectNodeContents(ta);
+      const sel=window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      try{
+        document.execCommand('copy');
+        copyBtn.textContent='Copied!';
+        copyBtn.classList.add('copied');
+        setTimeout(()=>{copyBtn.textContent='Copy';copyBtn.classList.remove('copied');},2000);
+      }catch(e2){
+        wechatNotice.textContent='Tip: Long-press the text above to select and copy.';
+      }
+    }
+  });
+
+  document.getElementById('canvas-btn').addEventListener('click',()=>generateShareCard(r));
+}
+
+function generateShareCard(r){
+  const canvas=document.createElement('canvas');
+  canvas.width=1200;canvas.height=630;
+  const ctx=canvas.getContext('2d');
+
+  // Background gradient
+  const grad=ctx.createLinearGradient(0,0,1200,630);
+  grad.addColorStop(0,'#1E1B18');
+  grad.addColorStop(1,'#2A2118');
+  ctx.fillStyle=grad;
+  ctx.fillRect(0,0,1200,630);
+
+  // Radial glow
+  const glow=ctx.createRadialGradient(600,250,50,600,250,450);
+  glow.addColorStop(0,'rgba(201,169,110,0.12)');
+  glow.addColorStop(1,'transparent');
+  ctx.fillStyle=glow;
+  ctx.fillRect(0,0,1200,630);
+
+  // Accent line top
+  ctx.fillStyle='#C9A96E';
+  ctx.fillRect(540,160,120,3);
+
+  // Label
+  ctx.fillStyle='#9A9285';
+  ctx.font='500 18px Nunito Sans, Arial, sans-serif';
+  ctx.textAlign='center';
+  ctx.letterSpacing='4px';
+  ctx.fillText('CORE BELIEF BLUEPRINT',600,140);
+
+  // Result type name
+  ctx.fillStyle='#F5EFE6';
+  ctx.font='700 72px Cormorant Garamond, Georgia, serif';
+  ctx.fillText(r.name,600,260);
+
+  // Tagline
+  ctx.fillStyle='#B87B5E';
+  ctx.font='italic 400 28px Cormorant Garamond, Georgia, serif';
+  // Word wrap
+  const words=r.tagline.split(' ');
+  let line2='';
+  for(let w of words){
+    const test=line2+w+' ';
+    if(ctx.measureText(test).width>900){line2=line2.trim();break;}
+    line2=test;
+  }
+  const remaining=r.tagline.slice(line2.length).trim();
+  ctx.fillText(line2,600,320);
+  if(remaining) ctx.fillText(remaining,600,360);
+
+  // Bottom bar
+  ctx.fillStyle='rgba(201,169,110,0.15)';
+  ctx.fillRect(0,540,1200,90);
+  ctx.fillStyle='#C9A96E';
+  ctx.fillRect(540,545,120,2);
+  ctx.fillStyle='#9A9285';
+  ctx.font='400 18px Nunito Sans, Arial, sans-serif';
+  ctx.fillText('Based on Jeffrey Young\'s Schema Therapy  ·  Not a diagnosis — just a mirror',600,595);
+
+  // Download
+  const link=document.createElement('a');
+  link.download='belief-blueprint-result.png';
+  link.href=canvas.toDataURL('image/png');
+  link.click();
+
+  // Update button
+  const btn=document.getElementById('canvas-btn');
+  if(btn){btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Card Downloaded!';}
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+
+const resumed=loadProgress();
+if(resumed&&currentQ>0){
+  // Start at questions screen
+  showScreen('intro');
+  // small delay then jump to questions
+  setTimeout(()=>{
+    showScreen('questions');
+    renderQuestion(currentQ);
+  },100);
+}
+
+})();
+</script>
+</body>
+</html>
