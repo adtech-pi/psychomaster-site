@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PsychoMaster Quiz</title>
+  <meta name="description" content="">
+  <style>
+
+
+/* ── Reset & Base ──────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #1A1412;
+  --surface: #2A2019;
+  --surface-elevated: #3A2E22;
+  --text-primary: #F5EDE4;
+  --text-secondary: #C4B5A5;
+  --text-muted: #8A7A6A;
+  --border: #4A3A2A;
+  --primary: #D4B896;
+  --primary-light: #E8C888;
+  --result-primary: #D4B896;
+  --result-glow: #E8C888;
+
+  --font-body: Nunito Sans, system-ui, -apple-system, sans-serif;
+  --font-display: Cormorant Garamond, Georgia, serif;
+
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-pill: 999px;
+
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+
+  --transition-fast: 250ms ease;
+  --transition-normal: 400ms ease;
+  --transition-slow: 600ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Screens ───────────────────────────────────────────────────────────── */
+.quiz-screen {
+  display: none;
+  min-height: 100dvh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl) var(--space-md);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+.quiz-screen.active {
+  display: flex;
+  opacity: 1;
+}
+
+.screen-inner {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+  text-align: center;
+}
+
+/* ── Disclaimer Screen ──────────────────────────────────────────────────── */
+.screen-disclaimer .disclaimer-text {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl) var(--space-lg);
+  text-align: left;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* ── Intro Screen ───────────────────────────────────────────────────────── */
+.screen-intro .intro-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 8vw, 3rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.screen-intro .intro-subtitle {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  max-width: 380px;
+}
+
+/* ── Quiz Screen ────────────────────────────────────────────────────────── */
+.screen-quiz {
+  justify-content: flex-start;
+  padding-top: var(--space-xl);
+  gap: var(--space-lg);
+}
+
+.quiz-header {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+/* Progress bar */
+.progress-track {
+  width: 100%;
+  height: 3px;
+  background: var(--border);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+  border-radius: var(--radius-pill);
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+/* Question */
+.question-container {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.q-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.q-text {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 4vw, 1.25rem);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-primary);
+  text-align: left;
+}
+
+/* Options */
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  width: 100%;
+  max-width: 480px;
+}
+
+.option-btn {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.option-btn:hover {
+  background: var(--surface-elevated);
+  border-color: var(--primary);
+}
+
+.option-btn:active {
+  transform: scale(0.98);
+}
+
+.option-btn.selected {
+  background: color-mix(in srgb, var(--primary) 15%, var(--surface));
+  border-color: var(--primary);
+}
+
+.opt-letter {
+  font-weight: 700;
+  color: var(--primary);
+  flex-shrink: 0;
+  min-width: 1.5em;
+}
+
+.opt-text {
+  color: var(--text-primary);
+}
+
+/* Quiz navigation */
+.quiz-nav {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-sm);
+}
+
+.back-btn {
+  display: none;
+  align-items: center;
+  gap: var(--space-xs);
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  cursor: pointer;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast);
+}
+
+.back-btn:hover { color: var(--text-primary); }
+
+.quiz-nav-spacer {
+  flex: 1;
+}
+
+/* ── Result Screen ──────────────────────────────────────────────────────── */
+.screen-result {
+  justify-content: flex-start;
+  padding-top: var(--space-2xl);
+  gap: var(--space-xl);
+}
+
+.result-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.result-type-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--result-primary);
+}
+
+.result-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 8vw, 3rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.result-divider {
+  width: 48px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--result-primary), transparent);
+  border-radius: 2px;
+  margin: var(--space-xs) auto;
+}
+
+.result-description {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.result-desc-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  text-align: left;
+}
+
+.result-desc-block h3 {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--result-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.result-desc-block p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.result-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  justify-content: center;
+}
+
+.trait-tag {
+  background: color-mix(in srgb, var(--result-primary) 12%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--result-primary) 30%, transparent);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--result-primary);
+  letter-spacing: 0.02em;
+}
+
+.share-quote {
+  border-left: 3px solid var(--result-primary);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--surface);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  font-style: italic;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.result-footer {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding-bottom: var(--space-xl);
+}
+
+.retake-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  padding: var(--space-xs) var(--space-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.retake-btn:hover {
+  border-color: var(--primary);
+  color: var(--text-primary);
+}
+
+/* ── Primary CTA Button ─────────────────────────────────────────────────── */
+.btn-primary {
+  background: var(--primary);
+  color: #1A1412;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  padding: var(--space-sm) var(--space-xl);
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+  letter-spacing: 0.02em;
+  min-width: 200px;
+}
+
+.btn-primary:hover {
+  background: var(--primary-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--primary) 30%, transparent);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* ── Animations ────────────────────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.quiz-screen.active .screen-inner {
+  animation: fadeInUp 500ms cubic-bezier(0.4, 0, 0.6, 1) both;
+}
+
+.screen-disclaimer.active .disclaimer-text {
+  animation: fadeInUp 600ms cubic-bezier(0.4, 0, 0.6, 1) 100ms both;
+}
+
+.screen-result .result-header,
+.screen-result .result-description,
+.screen-result .result-tags {
+  animation: fadeInUp 600ms cubic-bezier(0.4, 0, 0.6, 1) both;
+}
+
+.screen-result .result-description { animation-delay: 100ms; }
+.screen-result .result-tags { animation-delay: 200ms; }
+
+/* ── Responsive ────────────────────────────────────────────────────────── */
+@media (min-width: 640px) {
+  body { font-size: 17px; }
+  .quiz-screen { padding: var(--space-2xl) var(--space-lg); }
+}
+
+/* ── Accessibility ─────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quiz-screen.active .screen-inner,
+  .screen-disclaimer.active .disclaimer-text,
+  .screen-result .result-header,
+  .screen-result .result-description,
+  .screen-result .result-tags {
+    animation: fadeIn 300ms ease both;
+  }
+}
+
+  </style>
+</head>
+<body>
+<div id="screen-disclaimer" class="quiz-screen screen-disclaimer">
+  <div class="screen-inner">
+    <div class="disclaimer-text"></div>
+    <button id="begin-btn" class="btn-primary">Begin →</button>
+  </div>
+</div>
+<div id="screen-intro" class="quiz-screen screen-intro">
+  <div class="screen-inner">
+    <h1 class="intro-title">Psychology</h1>
+    <p class="intro-subtitle"></p>
+    <button id="start-btn" class="btn-primary">Start Quiz</button>
+  </div>
+</div>
+<div id="screen-quiz" class="quiz-screen screen-quiz">
+  <div class="quiz-header">
+    <div class="progress-track">
+      <div id="progress-fill" class="progress-fill" style="width:0%"></div>
+    </div>
+    <span id="q-number" class="q-label"></span>
+  </div>
+  <div class="question-container">
+    <p id="q-text" class="q-text"></p>
+    <div id="options-container" class="options-list"></div>
+  </div>
+  <div class="quiz-nav">
+    <button id="back-btn" class="back-btn">← Back</button>
+    <div class="quiz-nav-spacer"></div>
+  </div>
+</div>
+<div id="screen-result" class="quiz-screen screen-result">
+  <div class="screen-inner">
+    <div class="result-header">
+      <span id="result-type-name" class="result-type-label">Your Result</span>
+      <h1 id="result-title" class="result-title"></h1>
+      <div class="result-divider"></div>
+    </div>
+    <div id="result-description" class="result-description"></div>
+    <div id="result-tags" class="result-tags"></div>
+    <div id="result-share"></div>
+    <div id="result-footer" class="result-footer"></div>
+  </div>
+</div>
+
+<script>
+// ─── Quiz Config & Data ────────────────────────────────────────────────────
+const QUIZ_CONFIG = {"questionCount": 14, "resultCount": 5, "hasDisclaimer": false, "hasIntro": false, "hasScoringGuide": false, "meta": {}};
+const RESULT_TYPES = [
+  {
+    "number": 1,
+    "title": "身份羞耻主导型 / Character Shame",
+    "descriptions": {},
+    "trait_tags": [
+      "CharacterShame",
+      "IdentityWound",
+      "FearOfRejection",
+      "ConditionalWorth",
+      "ProtectiveDistance"
+    ],
+    "share_text": "I took the Shame Wound Assessment and got: Character Shame — the one where your deepest fear is being truly seen, because part of you believes what's underneath isn't worth staying for. Take the quiz →"
+  },
+  {
+    "number": 2,
+    "title": "社交角色羞耻主导型 / Social Role Shame",
+    "descriptions": {},
+    "trait_tags": [
+      "SocialRoleShame",
+      "StatusAnxiety",
+      "ImageProtection",
+      "ConditionalRespect",
+      "ApprovalSeeking"
+    ],
+    "share_text": "I took the Shame Wound Assessment and got: Social Role Shame — my self-worth is tied to how others see me. What's your shame pattern? Take the quiz →"
+  },
+  {
+    "number": 3,
+    "title": "身体/外貌羞耻主导型 / Body Shame",
+    "descriptions": {},
+    "trait_tags": [
+      "BodyShame",
+      "AppearanceWorth",
+      "SomaticShame",
+      "DisguisedIdentityShame",
+      "UnworthyOfTouch"
+    ],
+    "share_text": "I took the Shame Wound Assessment and got: Body Shame — my body has been carrying value judgments that were never mine to carry. What's your shame pattern? Take the quiz →"
+  },
+  {
+    "number": 4,
+    "title": "代际/隐藏羞耻主导型 / Ancestral Shame",
+    "descriptions": {},
+    "trait_tags": [
+      "AncestralShame",
+      "InheritedWound",
+      "FamilySecrets",
+      "GenerationalTrauma",
+      "HiddenWound"
+    ],
+    "share_text": "I took the Shame Wound Assessment and got: Ancestral Shame — I inherited a family wound I never chose. What's your shame pattern? Take the quiz →"
+  },
+  {
+    "number": 5,
+    "title": "羞耻回避/解离主导型 / Shame Avoidance",
+    "descriptions": {},
+    "trait_tags": [
+      "ShameAvoidance",
+      "Dissociation",
+      "ProtectiveNumbness",
+      "EmotionalDistance",
+      "HiddenDepth"
+    ],
+    "share_text": "I took the Shame Wound Assessment and got: Shame Avoidance — my shame is hidden so deep I didn't even know it was there. But my body knows. Take the quiz →"
+  }
+];
+const QUIZ_CONTENT = {
+  disclaimer: ``,
+  intro: ``,
+  seoDescription: ``,
+};
+
+// ─── App State ────────────────────────────────────────────────────────────
+const state = {
+  screen: 'disclaimer',      // disclaimer | intro | quiz | result
+  answers: {},              // question_number -> 'A'|'B'|'C'|'D'
+  currentQuestion: 1,
+  resultType: null,
+  resultData: null,
+};
+
+// ─── Navigation ───────────────────────────────────────────────────────────
+function showScreen(name) {
+  document.querySelectorAll('.quiz-screen').forEach(s => s.classList.remove('active'));
+  const screen = document.getElementById('screen-' + name);
+  if (screen) screen.classList.add('active');
+  state.screen = name;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── Disclaimer ─────────────────────────────────────────────────────────────
+function handleDisclaimer() {
+  if (QUIZ_CONFIG.hasIntro) {
+    showScreen('intro');
+  } else {
+    startQuiz();
+  }
+}
+
+// ─── Quiz Start ────────────────────────────────────────────────────────────
+function startQuiz() {
+  state.answers = {};
+  state.currentQuestion = 1;
+  renderQuestion();
+  showScreen('quiz');
+}
+
+// ─── Question Rendering ────────────────────────────────────────────────────
+function renderQuestion() {
+  const q = QUIZ_CONTENT.questions[state.currentQuestion - 1];
+  const progress = (state.currentQuestion - 1) / QUIZ_CONFIG.questionCount * 100;
+  const progressEl = document.getElementById('progress-fill');
+  const qNumEl = document.getElementById('q-number');
+  const qTextEl = document.getElementById('q-text');
+  const optionsEl = document.getElementById('options-container');
+
+  if (progressEl) progressEl.style.width = progress + '%';
+  if (qNumEl) qNumEl.textContent = 'Question ' + state.currentQuestion;
+  if (qTextEl) qTextEl.textContent = q.text;
+
+  // Render options
+  optionsEl.innerHTML = '';
+  ['A', 'B', 'C', 'D'].forEach(letter => {
+    const optText = q.options[letter];
+    if (!optText) return;
+    const selected = state.answers[state.currentQuestion] === letter;
+    const btn = document.createElement('button');
+    btn.className = 'option-btn' + (selected ? ' selected' : '');
+    btn.setAttribute('data-letter', letter);
+    btn.setAttribute('data-q', state.currentQuestion);
+    btn.innerHTML = `<span class="opt-letter">{letter}.</span><span class="opt-text">${optText}</span>`;
+    btn.addEventListener('click', () => selectOption(letter));
+    optionsEl.appendChild(btn);
+  });
+
+  // Back button visibility
+  const backBtn = document.getElementById('back-btn');
+  if (backBtn) backBtn.style.display = state.currentQuestion > 1 ? 'inline-flex' : 'none';
+}
+
+function selectOption(letter) {
+  state.answers[state.currentQuestion] = letter;
+
+  // Highlight selected
+  document.querySelectorAll('.option-btn').forEach(b => {
+    b.classList.toggle('selected', b.getAttribute('data-letter') === letter);
+  });
+
+  // Advance after short delay
+  setTimeout(() => {
+    if (state.currentQuestion < QUIZ_CONFIG.questionCount) {
+      state.currentQuestion++;
+      renderQuestion();
+    } else {
+      calculateResult();
+    }
+  }, 350);
+}
+
+function goBack() {
+  if (state.currentQuestion > 1) {
+    state.currentQuestion--;
+    renderQuestion();
+  }
+}
+
+// ─── Result Calculation ─────────────────────────────────────────────────────
+function calculateResult() {
+  // Default: simple majority (most selected letter wins)
+  // Subclasses can override with custom scoring logic
+  const counts = { A: 0, B: 0, C: 0, D: 0 };
+  for (const q in state.answers) {
+    counts[state.answers[q]]++;
+  }
+
+  // Find highest count
+  let maxCount = 0;
+  let dominant = 'A';
+  for (const [k, v] of Object.entries(counts)) {
+    if (v > maxCount) {
+      maxCount = v;
+      dominant = k;
+    }
+  }
+
+  // Map to result type
+  const resultIndex = (parseInt(dominant.charCodeAt(0)) - 65) % QUIZ_CONFIG.resultCount;
+  const resultType = RESULT_TYPES[resultIndex] || RESULT_TYPES[0];
+
+  state.resultType = dominant;
+  state.resultData = resultType;
+  renderResult();
+  showScreen('result');
+}
+
+// ─── Result Rendering ───────────────────────────────────────────────────────
+function renderResult() {
+  const r = state.resultData;
+  const typeNameEl = document.getElementById('result-type-name');
+  const titleEl = document.getElementById('result-title');
+  const descEl = document.getElementById('result-description');
+  const tagsEl = document.getElementById('result-tags');
+  const shareEl = document.getElementById('result-share');
+  const footerEl = document.getElementById('result-footer');
+
+  if (typeNameEl) typeNameEl.textContent = r.title || 'Your Result';
+  if (titleEl) titleEl.textContent = r.title || 'Your Result';
+
+  // Build description from descriptions dict
+  let descHtml = '';
+  if (r.descriptions) {
+    for (const [key, val] of Object.entries(r.descriptions)) {
+      if (val) {
+        descHtml += `<div class="result-desc-block"><h3>${key.replace('_', ' ').replace(/\b\w/g, c => c.toUpperCase())}</h3><p>${val}</p></div>`;
+      }
+    }
+  } else {
+    descHtml = `<p>${r.title}</p>`;
+  }
+  if (descEl) descEl.innerHTML = descHtml;
+
+  // Trait tags
+  if (tagsEl) {
+    tagsEl.innerHTML = (r.trait_tags || []).map(t =>
+      `<span class="trait-tag">#${t}</span>`
+    ).join('');
+  }
+
+  // Share text
+  if (shareEl && r.share_text) {
+    shareEl.innerHTML = `<blockquote class="share-quote">"${r.share_text}"</blockquote>`;
+  }
+
+  // Footer
+  if (footerEl) {
+    footerEl.innerHTML = `
+      <p>Psychomaster · ${QUIZ_CONFIG.meta.audience || 'Self-Reflection Quiz'}</p>
+      <button class="retake-btn" onclick="retakeQuiz()">Take Quiz Again</button>
+    `;
+  }
+
+  // Set result type color (if available in spec)
+  const resultVariant = spec['1_colorPalette']?.get('resultTypes', spec['1_colorPalette']?.get('resultVariants'));
+  if (resultVariant) {
+    const key = Object.keys(resultVariant)[resultIndex % Object.keys(resultVariant).length];
+    const variant = resultVariant[key];
+    document.documentElement.style.setProperty('--result-primary', variant.primary || variant.primary);
+    document.documentElement.style.setProperty('--result-glow', variant.glow || variant.primary);
+  }
+}
+
+function retakeQuiz() {
+  state.answers = {};
+  state.currentQuestion = 1;
+  state.resultType = null;
+  state.resultData = null;
+  showScreen('disclaimer');
+}
+
+// ─── Init ──────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // Set quiz content questions
+  QUIZ_CONTENT.questions = [{"number": 1, "text": "当你想到\"如果所有人都知道我内心深处的某个秘密\"时，你最先感受到的是——\n\nA) 恐惧。会被拒绝、被孤立、被看不起——那个真相一旦暴露，没人会再尊重我。\n\nB) 羞耻混合着麻痹。好像有一层看不见的东西把我和他人隔开了，我没办法真的靠近任何人。\n\nC) 某种空洞的麻木感。好像习惯了隐藏，以至于已经不清楚有没有什么需要被隐藏的。\n\nD) 一股愤怒。有时候我会想，凭什么我要为这些事情感到羞耻？又不是我的错。\n\n(A: Character+1 Social+1 | B: Character+1 Social+1 | C: Hidden+1 | D: Character+1 Hidden+1)", "options": {}}, {"number": 2, "text": "你的朋友无意中在别人面前提起了你一件令你尴尬的事。你当下第一反应是——\n\nA) 瞬间血液涌上脸颊，非常想消失。恨不得当场找个洞钻进去。\n\nB) 表面上笑笑带过，但内心一整天都在反复回放那个场景，无法释怀。\n\nC) 愤怒。凭什么不经过我同意就讲出来？然后开始对这个人产生不信任感。\n\nD) 冷静。但回家后洗澡时会突然想起，然后独自崩溃或者大哭一场。\n\n(A: Social+1 Character+1 | B: Character+1 Social+1 | C: Character+1 | D: Hidden+1 Character+1)", "options": {}}, {"number": 3, "text": "你照镜子时，脑海中最常出现的批评声音是——\n\nA) \"你怎么这么丑/胖/矮/皮肤差……难怪没人喜欢你。\"\n\nB) \"你这个人本身就有问题。不是外表的问题——是你这个人的内核是坏的。\"\n\nC) \"你要更努力、更成功，才能抵消你这个人不够好的事实。\"\n\nD) \"别看了，看了也没用。改变不了的，就这样吧。\"\n\n(A: Body+1 | B: Character+1 | C: Character+1 Social+1 | D: Body+1 Hidden+1)", "options": {}}, {"number": 4, "text": "你在原生家庭里，最常听到的潜台词（即使没有明说）是——\n\nA) \"你不要表现得太出格，大家会怎么看我们家。\"\n\nB) \"你看看别人家孩子，再看看你。我们为你付出了这么多，你对得起我们吗？\"\n\nC) \"我们家没什么问题，是外面的人有问题。\"（但家庭内部其实充满张力）\n\nD) 没什么明确的声音，但整个家的氛围是：不要惹事、不要表达需求、不要让人操心。\n\n(A: Social+1 | B: Social+1 Character+1 | C: Hidden+1 Social+1 | D: Hidden+1 Social+1)", "options": {}}, {"number": 5, "text": "当你搞砸了一件事（比如在工作中犯错、在朋友面前失态），你内在的对话是——\n\nA) \"完了，他们会发现的。他们会发现我其实根本不行。\"\n\nB) \"我又搞砸了。每次都是这样。我就是这样的人。\"\n\nC) 立刻找借口、解释、辩护——先把\"我是个有缺陷的人\"这个结论挡住再说。\n\nD) \"这没什么大不了的。\"（然后把情绪压下去，过很久之后才在独处时崩溃）\n\n(A: Social+1 Character+1 | B: Character+1 | C: Character+1 | D: Hidden+1 Character+1)", "options": {}}, {"number": 6, "text": "在亲密关系中，你最害怕的场景是——\n\nA) 对方发现我真实的性格之后，嫌弃地离开。\"你根本不是我以为的那个人。\"\n\nB) 对方知道我家庭的真实情况（经济、矛盾、阶层），然后看不起我或我的家人。\n\nC) 我在关系中展现了真实的情绪需求，却被对方当作\"太作\"或\"太沉重\"。\n\nD) 我完全不知道我害怕什么——我只知道每次快到真正亲密的时候就本能想逃。\n\n(A: Character+1 | B: Social+1 Hidden+1 | C: Social+1 Character+1 | D: Hidden+1)", "options": {}}, {"number": 7, "text": "当你感到深深羞耻时，你的身体通常会——\n\nA) 脸发烫、肩膀内收、想把自己缩小、消失。\n\nB) 胸腔发紧、呼吸变浅，感觉和自己的身体断开了连接。\n\nC) 非常愤怒——是那种指向自己的、无法发泄的愤怒。\n\nD) 变得异常平静，甚至有点解离。好像羞耻太大了，身体自动进入了\"保护模式\"。\n\n(A: Social+1 | B: Character+1 | C: Character+1 | D: Hidden+1)", "options": {}}, {"number": 8, "text": "你在社交媒体上发东西，最担心的是——\n\nA) 没人点赞或评论。这说明我的存在没有价值。\n\nB) 有人留言说\"这有什么好发的\"或者暗讽我炫耀/无聊/作秀。\n\nC) 发完之后会反复刷新，看有没有人看，然后开始后悔发出去。\n\nD) 干脆很少发，因为我不确定\"别人会怎么看我\"——我还没有足够的自我来抵御外界的目光。\n\n(A: Social+1 | B: Social+1 | C: Social+1 | D: Social+1 Character+1)", "options": {}}, {"number": 9, "text": "有人说\"你真的很努力\"时，你通常感受到的是——\n\nA) 对方在委婉说我不够聪明/没有天赋，只是靠努力在撑。\n\nB) 不知道为什么有点不舒服，像是被看穿了自己在用\"努力\"来弥补某种缺乏。\n\nC) 还行，至少是被认可的。比什么评价都没有强。\n\nD) 羞耻。\"努力\"这个词本身就提醒了我：我还不够好，所以需要努力。\n\n(A: Character+1 | B: Character+1 | C: Social+1 | D: Character+1)", "options": {}}, {"number": 10, "text": "回想一下，在你成长过程中，羞耻感最强的事件是——\n\nA) 被当众羞辱或惩罚（在学校、家庭或他人面前），那个场景至今仍能触发你的羞耻感。\n\nB) 慢慢积累的，不是单一事件，而是长期感觉自己\"不够好、不够对、不够乖\"。\n\nC) 某次你试图表达真实需求，却被告知\"你不应该有这种想法\"或\"你知道我们家的情况吗\"。\n\nD) 其实你记不清了。但你隐约感觉到家里有一种不能说出口的秘密或羞耻。\n\n(A: Social+1 | B: Character+1 | C: Hidden+1 Social+1 | D: Hidden+1)", "options": {}}, {"number": 11, "text": "当你看见一个人为某件你也有类似经历的事情感到羞耻时，你会——\n\nA) 非常同情，因为你知道那种感觉有多痛苦，你会想要安慰对方。\n\nB) 有点嫉妒。他们居然还敢承认，而我早就把这件事埋得很深了。\n\nC) 理性上理解，但情感上无法连接。羞耻感太个人化了，没办法真正感同身受。\n\nD) 迅速评估：如果我在他们的处境，我会不会也这样？——然后产生一种恐惧感。\n\n(A: Character+1 | B: Hidden+1 | C: Hidden+1 | D: Character+1 Hidden+1)", "options": {}}, {"number": 12, "text": "有人说\"你不需要为这些感到羞耻\"时，你内心的反应通常是——\n\nA) \"你不懂。这个你不懂。\"\n\nB) 理性上同意，但情感上还是有一块东西在抗拒，无法真正放下。\n\nC) 突然有一丝释然，像是身体里某个紧绷的东西松开了一点点。\n\nD) 想哭。一种被看见的可能性突然出现，但你又不敢相信。\n\n(A: Character+1 | B: Character+1 | C: Character+1 | D: Hidden+1)", "options": {}}, {"number": 13, "text": "在你试图建立自信或自我价值感的过程中，你最大的卡点是——\n\nA) 每次快感觉好一点，就会有人或有个声音把你拉回来：\"你凭什么感觉良好？\"\n\nB) 你的羞耻感是\"我是一个有问题的人\"——这是存在层面的，不是靠正向思维就能解决。\n\nC) 每次取得成绩，都会触发一种\"这是假象\"的怀疑。好像你的成就感随时会崩塌。\n\nD) 你其实已经习惯了和羞耻感共存，以至于你甚至不确定自己还有没有\"真实的自我\"。\n\n(A: Character+1 | B: Character+1 | C: Character+1 | D: Hidden+1)", "options": {}}, {"number": 14, "text": "你认为羞耻和内疚（guilt）的区别在于——\n\nA) 内疚是\"我做了坏事\"，羞耻是\"我是坏人\"。羞耻比内疚深得多。\n\nB) 羞耻是你无法控制的，因为它针对的是\"你是谁\"，而不是\"你做了什么\"。\n\nC) 羞耻会让人想要隐藏和逃避，内疚则有可能导向修复和行动。\n\nD) 对我来说，羞耻是关于\"我是家里的问题\"，内疚是\"我伤害了某个人\"。\n\n(A: Character+1 | B: Character+1 | C: Character+1 | D: Hidden+1)\n\nResult 1: 身份羞耻主导型 / Character Shame\n\n\"你最深处的恐惧是：我是一个有缺陷的人。\"\n\nCore Fear: \"If people see the real me — the uncertain, imperfect, struggling me — they'll finally see what I've always known: that I'm fundamentally broken.\"\n\nOrigin Story: This shame usually forms early, when a child received the message — directly or indirectly — that their very existence was a problem. Not just their behavior, not just their choices, but who they were at the core.\n\nHow It Shows Up in Adult Relationships:\n- You habitually rehearse rejection — you pull back before anyone can push you away\n- You find it nearly impossible to accept unconditional love — you feel certain that if they \"really knew you,\" they'd leave\n- You are extremely sensitive to criticism, even constructive feedback can trigger deep shame\n- You may create distance when intimacy deepens — a protective instinct you barely notice\n\nThe Blind Spot: You might not realize that your shame about being \"fundamentally flawed\" is actually your deepest form of self-trust — you've learned to see yourself so clearly that you've become your own harshest critic.\n\nTrait Tags: #CharacterShame #IdentityWound #FearOfRejection #ConditionalWorth #ProtectiveDistance\n\n今日微行动 (Today's Micro-Action): 找一件你从来没有说过的小事（哪怕你觉得说出来很傻），告诉一个你信任的人。然后观察说出之后发生了什么。注意你的羞耻感是否像你想象的那么\"真实\"。\n\nShare Text: I took the Shame Wound Assessment and got: Character Shame — the one where your deepest fear is being truly seen, because part of you believes what's underneath isn't worth staying for. Take the quiz →\n\nResult 2: 社交角色羞耻主导型 / Social Role Shame\n\n\"你的自尊很大程度上取决于别人怎么看你。\"\n\nCore Fear: \"If people saw where I really come from, how I really live, what my family is really like — they'd look at me differently.\"\n\nOrigin Story: This shame is deeply tied to social identity — your family's reputation, your economic status, your academic or professional standing, your appearance and presentation.\n\nHow It Shows Up in Adult Relationships:\n- Your effort to \"maintain image\" in relationships far outweighs your actual emotional connection\n- You find it hard to admit failure, vulnerability, or being \"not good enough\" to partners or friends\n- You may gravitate toward relationships that \"elevate\" your social standing rather than truly nourish you\n- You over-maintain others' perception of you even in intimate private moments\n\nThe Blind Spot: Your hyperawareness of social evaluation is actually a form of emotional intelligence — you can read rooms and people with unusual accuracy. The trap is when you use that skill to perform rather than to genuinely connect.\n\nTrait Tags: #SocialRoleShame #StatusAnxiety #ImageProtection #ConditionalRespect #ApprovalSeeking\n\n今日微行动 (Today's Micro-Action): 今天，做一件完全不考虑\"别人会怎么看\"的事，完全按照你自己的感受做。然后注意：这个选择比你想象的更小，也更安全。\n\nShare Text: I took the Shame Wound Assessment and got: Social Role Shame — my self-worth is tied to how others see me. What's your shame pattern? Take the quiz →\n\nResult 3: 身体/外貌羞耻主导型 / Body Shame\n\n\"你的身体承载了太多不属于它的价值判断。\"\n\nCore Fear: \"If people saw my body — really saw it, without the right angles, clothes, lighting, or control — they'd finally see the truth: that I'm not attractive, not worthy, not enough.\"\n\nOrigin Story: Body shame is one of the most pervasive forms of shame in modern culture. It often begins in adolescence, but for many, body shame goes deeper than culture — it becomes a somatic shorthand for \"I am fundamentally unacceptable as a person.\"\n\nHow It Shows Up in Adult Relationships:\n- You struggle to fully relax in intimate physical moments — body shame makes it hard to simply inhabit your body with a partner\n- You either obsess over your partner's reaction to your body or completely avoid any body-related conversation\n- You use clothes, makeup, angles, and filters to \"control\" which version of your body the world sees\n- Body shame extends into a core belief that you are \"not lovable because not attractive enough\"\n\nThe Blind Spot: Your hyperawareness of your body is actually your body trying to communicate with you. Beneath the shame, there's a deep intelligence about physical sensation, boundary, and self-protection.\n\nTrait Tags: #BodyShame #AppearanceWorth #SomaticShame #DisguisedIdentityShame #UnworthyOfTouch\n\n今日微行动 (Today's Micro-Action): 今天，洗一个不带镜子的澡，或者穿一套让你完全舒适的衣服待在家里。今天的任务是：让身体只是身体，不赋予它\"价值判断\"。\n\nShare Text: I took the Shame Wound Assessment and got: Body Shame — my body has been carrying value judgments that were never mine to carry. What's your shame pattern? Take the quiz →\n\nResult 4: 代际/隐藏羞耻主导型 / Ancestral Shame\n\n\"你承接了不属于你的羞耻，而它一直在悄悄影响你。\"\n\nCore Fear: \"There's something wrong with my family — with where I come from — and if people find out, they'll see that the 'flaw' isn't just in my behavior, it's in my blood.\"\n\nOrigin Story: This shame is inherited. It lives in your family system, passed down through generations without ever being named. It might be tied to family secrets, economic hardship, addiction, mental illness, trauma, social class, immigration history, or the unspoken conflicts that everyone in the family learned to pretend didn't exist.\n\nHow It Shows Up in Adult Relationships:\n- Your drive to protect your family's image outweighs your drive to protect yourself — you may keep family secrets even when they harm you\n- You struggle to distinguish \"my own shame\" from \"shame I inherited from my family\"\n- You may hide your family circumstances from partners until the relationship is very deep\n- A vague, persistent feeling of \"not being good enough\" that you can't trace to a specific event or decision\n\nThe Blind Spot: You are doing something most people never even realize is possible: distinguishing between shame that belongs to you and shame that was handed to you. That觉醒 itself is the beginning of healing.\n\nTrait Tags: #AncestralShame #InheritedWound #FamilySecrets #GenerationalTrauma #HiddenWound\n\n今日微行动 (Today's Micro-Action): 今天，允许自己问一个问题：\"这个让我感到羞耻的东西，是真正属于我的，还是我替别人保守的秘密？\" 答案可能很复杂，但问题本身就是力量。\n\nShare Text: I took the Shame Wound Assessment and got: Ancestral Shame — I inherited a family wound I never chose. What's your shame pattern? Take the quiz →\n\nResult 5: 羞耻回避/解离主导型 / Shame Avoidance\n\n\"你的羞耻感藏在意识不到的层面，但你的身体知道。\"\n\nCore Fear: \"If I let myself feel what I'm actually feeling — the full depth of my shame — I'll collapse. So I've learned to live above it, around it, everywhere but in it.\"\n\nOrigin Story: For some, shame is so overwhelming that the only viable survival strategy is to never look at it directly. Dissociation is an intelligent response to unendurable emotional pain. In childhood, when shame was too big and there was no safe person to hold it with you, learning to not-know your own shame was a form of sanity. It still is.\n\nHow It Shows Up in Adult Relationships:\n- Closeness feels threatening — not because you don't like the person, but because closeness risks triggering what you've carefully kept out of awareness\n- Your intimacy style is \"close enough, but not too real\" — authenticity risks triggering shame\n- You find it hard to cry, be vulnerable, or truly fall apart — these feel too dangerous\n- You maintain a \"I'm very rational\" or \"I'm very optimistic\" persona — a shame-free self to compensate for the shame you've buried\n\nThe Blind Spot: Your dissociation is a form of wisdom — your body and mind built a protective wall when you had no other protection. The task now is to carefully lower that wall, just a little, in safe enough relationships.\n\nTrait Tags: #ShameAvoidance #Dissociation #ProtectiveNumbness #EmotionalDistance #HiddenDepth\n\n今日微行动 (Today's Micro-Action): 找一个安静的时刻，问自己：\"我最近在逃避什么？\" 不是大脑给你的答案，而是身体的感觉。如果感觉有点\"那个东西\"，允许自己只是在那里，不做评判，不做改变。\n\nShare Text: I took the Shame Wound Assessment and got: Shame Avoidance — my shame is hidden so deep I didn't even know it was there. But my body knows. Take the quiz →", "options": {}}];
+
+  // Auto-start to disclaimer
+  showScreen('disclaimer');
+
+  // CTA buttons
+  const beginBtn = document.getElementById('begin-btn');
+  if (beginBtn) beginBtn.addEventListener('click', handleDisclaimer);
+
+  const startBtn = document.getElementById('start-btn');
+  if (startBtn) startBtn.addEventListener('click', startQuiz);
+
+  const backBtn = document.getElementById('back-btn');
+  if (backBtn) backBtn.addEventListener('click', goBack);
+});
+  </script>
+</body>
+</html>
