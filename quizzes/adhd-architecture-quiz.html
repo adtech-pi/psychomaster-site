@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Discover your unique ADHD brain type — take the 3-minute quiz and learn how your traits work.">
+  <meta property="og:title" content="What's Your ADHD Architecture?">
+  <meta property="og:description" content="Discover your unique ADHD brain type. 12 questions, 6 result types, 3 minutes.">
+  <meta property="og:type" content="website">
+  <title>What's Your ADHD Architecture? | ADHD Trait Quiz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #2563EB;
+      --primary-dark: #1D4ED8;
+      --primary-darker: #1E40AF;
+      --secondary: #FBBF24;
+      --accent: #7C3AED;
+      --bg: #0F172A;
+      --surface: #1E293B;
+      --surface-light: #334155;
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --warning-bg: #450a0a;
+      --warning-text: #FCA5A5;
+      --danger: #EF4444;
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --transition: 200ms ease-out;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Dot grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, var(--surface-light) 1px, transparent 1px);
+      background-size: 32px 32px;
+      opacity: 0.15;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 24px 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Screen management */
+    .screen { display: none; }
+    .screen.active { display: block; animation: fadeIn 300ms ease-out; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(24px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes revealUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    /* Typography */
+    h1 { font-size: clamp(1.75rem, 5vw, 2.25rem); font-weight: 700; line-height: 1.2; }
+    h2 { font-size: 1.5rem; font-weight: 700; line-height: 1.3; }
+    h3 { font-size: 1.25rem; font-weight: 600; }
+    .tagline { font-size: 1.125rem; color: var(--text-muted); font-weight: 400; }
+    .label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); font-weight: 600; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+      text-decoration: none;
+      min-height: 48px;
+    }
+    .btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+    .btn:active { transform: translateY(1px); }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      width: 100%;
+    }
+    .btn-primary:hover { background: var(--primary-dark); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--surface-light);
+      width: 100%;
+    }
+    .btn-secondary:hover { background: var(--surface); color: var(--text); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-muted);
+      border: none;
+      padding: 8px 16px;
+    }
+    .btn-ghost:hover { color: var(--text); }
+
+    /* Trust badges */
+    .trust-badges {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 16px;
+    }
+    .trust-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .trust-badge svg { width: 14px; height: 14px; color: var(--secondary); }
+
+    /* Welcome screen */
+    .welcome-hero { text-align: center; padding: 48px 0 32px; }
+    .welcome-hero .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--secondary);
+      margin-bottom: 32px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .welcome-hero h1 { margin-bottom: 16px; }
+    .welcome-hero h1 span { color: var(--secondary); }
+    .welcome-hero .tagline { margin-bottom: 32px; max-width: 400px; margin-left: auto; margin-right: auto; }
+
+    .brain-graphic {
+      width: 160px;
+      height: 160px;
+      margin: 0 auto 32px;
+      position: relative;
+    }
+    .brain-graphic svg { width: 100%; height: 100%; }
+
+    /* Decorative elements */
+    .deco-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--secondary);
+      opacity: 0.6;
+      display: inline-block;
+    }
+    .deco-line {
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--secondary), transparent);
+      opacity: 0.4;
+    }
+
+    /* Trigger warning */
+    .trigger-warning {
+      background: var(--warning-bg);
+      border-left: 4px solid var(--danger);
+      border-radius: var(--radius-sm);
+      padding: 24px;
+      margin: 32px 0;
+    }
+    .trigger-warning h3 { color: var(--text); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .trigger-warning h3 svg { color: var(--danger); }
+    .trigger-warning p { color: var(--warning-text); font-size: 0.95rem; margin-bottom: 20px; }
+    .trigger-warning .btn-group { display: flex; flex-direction: column; gap: 12px; }
+
+    /* Progress bar */
+    .progress-section { margin-bottom: 32px; }
+    .progress-label { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px; font-weight: 500; }
+    .progress-track {
+      height: 8px;
+      background: var(--surface);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 4px;
+      transition: width 400ms ease-out;
+      width: 0%;
+    }
+
+    /* Question screen */
+    .question-header { margin-bottom: 24px; }
+    .question-header h2 { font-size: 1.1rem; color: var(--text-muted); font-weight: 500; }
+    .question-text {
+      font-size: 1.15rem;
+      font-weight: 500;
+      line-height: 1.5;
+      margin-bottom: 28px;
+      color: var(--text);
+    }
+
+    .answers { display: flex; flex-direction: column; gap: 12px; }
+
+    .answer-card {
+      background: var(--surface);
+      border: 2px solid var(--surface-light);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      cursor: pointer;
+      transition: background var(--transition), border-color var(--transition), transform var(--transition);
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      text-align: left;
+      width: 100%;
+      font-family: inherit;
+      font-size: 1rem;
+      color: var(--text);
+      min-height: 56px;
+    }
+    .answer-card:hover { background: var(--surface-light); border-color: var(--primary); transform: scale(1.01); }
+    .answer-card:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+    .answer-card.selected { border-color: var(--primary); background: rgba(37, 99, 235, 0.1); }
+
+    .answer-letter {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--surface-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.875rem;
+      color: var(--secondary);
+      transition: background var(--transition), color var(--transition);
+    }
+    .answer-card.selected .answer-letter { background: var(--primary); color: white; }
+    .answer-text { padding-top: 4px; line-height: 1.5; }
+
+    /* Loading */
+    .loading-screen { text-align: center; padding: 80px 0; }
+    .loading-spinner {
+      width: 48px; height: 48px;
+      border: 3px solid var(--surface-light);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 24px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-screen p { color: var(--text-muted); font-size: 1rem; }
+
+    /* Result screen */
+    .result-hero { text-align: center; padding: 32px 0 24px; }
+    .result-type-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      animation: revealUp 400ms ease-out;
+    }
+    .result-type-name {
+      font-size: clamp(2rem, 6vw, 2.75rem);
+      font-weight: 700;
+      color: var(--secondary);
+      margin-bottom: 8px;
+      animation: revealUp 400ms ease-out 100ms both;
+    }
+    .result-tagline {
+      font-size: 1.125rem;
+      font-style: italic;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 24px;
+      animation: revealUp 400ms ease-out 200ms both;
+    }
+
+    .result-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 20px;
+      animation: revealUp 400ms ease-out 300ms both;
+    }
+
+    .result-section { margin-bottom: 20px; }
+    .result-section:last-child { margin-bottom: 0; }
+    .result-section-title {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .result-section-title svg { width: 14px; height: 14px; color: var(--secondary); }
+
+    .trait-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .trait-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+    .trait-list li::before {
+      content: '→';
+      color: var(--secondary);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .growth-edge {
+      background: rgba(124, 58, 237, 0.1);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      border-left: 3px solid var(--accent);
+    }
+    .growth-edge p { color: var(--text); font-size: 0.95rem; }
+
+    .action-steps { counter-reset: steps; list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .action-step {
+      display: flex;
+      gap: 14px;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+    .action-step::before {
+      counter-increment: steps;
+      content: counter(steps);
+      flex-shrink: 0;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* CTA Support */
+    .support-cta {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(124, 58, 237, 0.1));
+      border: 1px solid var(--surface-light);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin: 24px 0;
+      animation: revealUp 400ms ease-out 400ms both;
+    }
+    .support-cta h3 { font-size: 0.95rem; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+    .support-cta h3 svg { color: var(--primary); }
+    .support-cta p { font-size: 0.875rem; color: var(--text-muted); margin-bottom: 12px; }
+    .support-cta a { color: var(--primary); text-decoration: underline; text-underline-offset: 3px; }
+    .support-cta a:hover { color: var(--secondary); }
+
+    /* Share section */
+    .share-section { animation: revealUp 400ms ease-out 500ms both; margin: 24px 0; }
+    .share-section h3 { font-size: 1rem; margin-bottom: 4px; }
+    .share-section .label { margin-bottom: 16px; display: block; }
+    .share-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
+    .share-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+      transition: background var(--transition);
+    }
+    .share-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+    .share-btn svg { width: 16px; height: 16px; }
+    .share-btn-download { background: var(--primary); color: white; }
+    .share-btn-download:hover { background: var(--primary-dark); }
+    .share-btn-copy { background: var(--surface); color: var(--text); border: 1px solid var(--surface-light); }
+    .share-btn-copy:hover { background: var(--surface-light); }
+    .copy-confirmation { font-size: 0.8rem; color: #22C55E; margin-top: 8px; display: none; }
+    .copy-confirmation.show { display: block; animation: fadeIn 200ms; }
+
+    /* WeChat fallback */
+    .wechat-fallback {
+      background: var(--surface);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-top: 12px;
+    }
+    .wechat-fallback-label { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px; }
+    .wechat-text {
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+
+    /* Retake */
+    .retake-section { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--surface-light); text-align: center; }
+    .retake-section p { font-size: 0.875rem; color: var(--text-muted); margin-bottom: 12px; }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--surface);
+      color: var(--text);
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      font-weight: 500;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+      z-index: 100;
+      opacity: 0;
+      transition: opacity 200ms;
+    }
+    .toast.show { opacity: 1; }
+
+    /* JS required fallback */
+    .no-js-msg {
+      text-align: center;
+      padding: 80px 24px;
+      color: var(--text-muted);
+    }
+
+    /* Result type color accents */
+    .type-hyperfocus .result-type-name { color: #22D3EE; }
+    .type-impulsive .result-type-name { color: #FB923C; }
+    .type-timeblind .result-type-name { color: #A78BFA; }
+    .type-emotional .result-type-name { color: #F472B6; }
+    .type-combined .result-type-name { color: #FBBF24; }
+    .type-quiet .result-type-name { color: #86EFAC; }
+
+    /* Decorative background blobs */
+    .blob-1 {
+      position: fixed;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(37,99,235,0.08), transparent 70%);
+      top: -100px; right: -100px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .blob-2 {
+      position: fixed;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(251,191,36,0.06), transparent 70%);
+      bottom: -50px; left: -80px;
+      pointer-events: none;
+      z-index: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="blob-1"></div>
+  <div class="blob-2"></div>
+
+  <div class="container">
+
+    <!-- WELCOME SCREEN -->
+    <div id="screen-welcome" class="screen active">
+      <div class="welcome-hero">
+        <div class="logo">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          PsychoMaster
+        </div>
+        <div class="brain-graphic">
+          <svg viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="80" cy="80" r="60" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.4"/>
+            <circle cx="80" cy="80" r="40" stroke="#7C3AED" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.3"/>
+            <circle cx="80" cy="80" r="20" fill="rgba(37,99,235,0.15)" stroke="#FBBF24" stroke-width="2"/>
+            <circle cx="80" cy="80" r="8" fill="#FBBF24" opacity="0.8"/>
+            <line x1="80" y1="20" x2="80" y2="40" stroke="#2563EB" stroke-width="1.5" opacity="0.4"/>
+            <line x1="80" y1="120" x2="80" y2="140" stroke="#2563EB" stroke-width="1.5" opacity="0.4"/>
+            <line x1="20" y1="80" x2="40" y2="80" stroke="#7C3AED" stroke-width="1.5" opacity="0.4"/>
+            <line x1="120" y1="80" x2="140" y2="80" stroke="#7C3AED" stroke-width="1.5" opacity="0.4"/>
+            <circle cx="80" cy="20" r="4" fill="#2563EB" opacity="0.5"/>
+            <circle cx="80" cy="140" r="4" fill="#2563EB" opacity="0.5"/>
+            <circle cx="20" cy="80" r="4" fill="#7C3AED" opacity="0.5"/>
+            <circle cx="140" cy="80" r="4" fill="#7C3AED" opacity="0.5"/>
+          </svg>
+        </div>
+        <h1>What's Your <span>ADHD Architecture</span>?</h1>
+        <p class="tagline">Discover your unique brain wiring — and turn your ADHD traits into strengths.</p>
+        <button class="btn btn-primary" onclick="showScreen('trigger-warning')">
+          Find Your Type
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <div class="trust-badges">
+          <span class="trust-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Not a diagnosis
+          </span>
+          <span class="trust-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            3 minutes
+          </span>
+          <span class="trust-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            Science-backed
+          </span>
+        </div>
+      </div>
+
+      <div class="trigger-warning" style="margin-top: 0;">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          A note before you begin
+        </h3>
+        <p>This quiz explores topics related to ADHD — including attention, impulse control, emotional regulation, and time perception. Some questions may feel personal. If you feel distressed, please reach out to a trusted friend or mental health professional. This quiz is <strong>not a diagnosis</strong>.</p>
+      </div>
+    </div>
+
+    <!-- TRIGGER WARNING SCREEN -->
+    <div id="screen-trigger-warning" class="screen">
+      <div style="padding: 32px 0;">
+        <div class="trigger-warning" style="margin: 0;">
+          <h3>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Please Read Before Continuing
+          </h3>
+          <p>This quiz explores ADHD-related topics — attention, impulse control, emotional regulation, and time perception. Some questions may bring up difficult emotions or feel personal. <strong>If you feel distressed, please speak with a trusted friend, therapist, or crisis line.</strong></p>
+          <p style="margin-top: 12px;"><strong>This is a psychoeducational tool, not a clinical diagnosis.</strong> Only a qualified professional can diagnose ADHD. If you have concerns, consider reaching out to a psychiatrist, psychologist, or your GP.</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 24px;">
+          <button class="btn btn-primary" onclick="startQuiz()">I understand — let's go</button>
+          <button class="btn btn-secondary" onclick="showScreen('welcome')">I'd like to step back</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUESTION SCREEN -->
+    <div id="screen-question" class="screen">
+      <div class="progress-section">
+        <p class="progress-label" id="progress-label">Question 1 of 12</p>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill" style="width: 8.33%"></div>
+        </div>
+      </div>
+      <div class="question-header">
+        <h2 id="question-number">Scenario 1</h2>
+      </div>
+      <p class="question-text" id="question-text"></p>
+      <div class="answers" id="answers-container"></div>
+    </div>
+
+    <!-- LOADING SCREEN -->
+    <div id="screen-loading" class="screen">
+      <div class="loading-screen">
+        <div class="loading-spinner"></div>
+        <p>Analyzing your responses…</p>
+      </div>
+    </div>
+
+    <!-- RESULT SCREEN -->
+    <div id="screen-result" class="screen">
+      <div class="result-hero">
+        <p class="result-type-label">Your ADHD Architecture</p>
+        <h1 class="result-type-name" id="result-name"></h1>
+        <p class="result-tagline" id="result-tagline"></p>
+      </div>
+      <div class="result-card" id="result-card">
+        <div class="result-section">
+          <p class="result-section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Your Core Traits
+          </p>
+          <ul class="trait-list" id="result-traits"></ul>
+        </div>
+        <div class="result-section">
+          <p class="result-section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+            Growth Edge
+          </p>
+          <div class="growth-edge">
+            <p id="result-growth"></p>
+          </div>
+        </div>
+        <div class="result-section">
+          <p class="result-section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            Your Action Steps
+          </p>
+          <ol class="action-steps" id="result-actions"></ol>
+        </div>
+      </div>
+
+      <div class="support-cta">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Looking for more support?
+        </h3>
+        <p>This quiz is psychoeducational — not a diagnosis. If ADHD is affecting your life, a formal assessment with a psychiatrist, psychologist, or ADHD specialist can be transformative.</p>
+        <p style="font-size:0.8rem;">Find professionals at <a href="https://chadd.org" target="_blank" rel="noopener">CHADD.org</a> or <a href="https://additudemag.com" target="_blank" rel="noopener">ADDitude Magazine</a>. If you're in crisis, please contact a crisis helpline in your country immediately.</p>
+      </div>
+
+      <div class="share-section">
+        <h3>Share Your Result</h3>
+        <span class="label">Help others discover their ADHD architecture</span>
+        <div class="share-buttons">
+          <button class="share-btn share-btn-download" onclick="downloadShareCard()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download Image
+          </button>
+          <button class="share-btn share-btn-copy" onclick="copyShareText()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy Text
+          </button>
+        </div>
+        <p class="copy-confirmation" id="copy-confirmation">✓ Copied to clipboard!</p>
+
+        <div id="wechat-fallback" class="wechat-fallback" style="display:none;">
+          <p class="wechat-fallback-label">📱 Share via WeChat — copy the text below:</p>
+          <div class="wechat-text" id="wechat-text"></div>
+          <button class="share-btn share-btn-copy" onclick="copyWeChatText()" style="width:100%;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy for WeChat
+          </button>
+        </div>
+      </div>
+
+      <div class="retake-section">
+        <p>Want to retake the quiz?</p>
+        <button class="btn btn-secondary" onclick="retakeQuiz()">Take Again</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ===== DATA =====
+    const QUESTIONS = [
+      {
+        text: "It's Monday morning. You have a full week ahead. What happens?",
+        answers: [
+          { letter: 'A', text: "I make a detailed to-do list. It feels good. I look at it once." },
+          { letter: 'B', text: "I already sent three emails about things that aren't actually urgent." },
+          { letter: 'C', text: "I sit down to start one task and emerge three hours later having deep-dived something completely unrelated." },
+          { letter: 'D', text: "I stare at the list and feel a wave of dread. The dread is louder than the tasks." }
+        ],
+        weights: [
+          { A: { timeblind: 2 }, B: { impulsive: 2 }, C: { hyperfocus: 2 }, D: { emotional: 2 } }
+        ][0]
+      },
+      {
+        text: "You're in a conversation. Someone is telling you a story. You...",
+        answers: [
+          { letter: 'A', text: "Nod along, then realize you missed the last two minutes and hope no one noticed." },
+          { letter: 'B', text: "Interject with a related story. You know you do this. You try to stop." },
+          { letter: 'C', text: "Remember every detail of a random thing they mentioned once, three months ago." },
+          { letter: 'D', text: "Feel their frustration viscerally before they've even finished the sentence." }
+        ],
+        weights: { A: { timeblind: 2 }, B: { impulsive: 2 }, C: { hyperfocus: 2 }, D: { emotional: 2 } }
+      },
+      {
+        text: "You finally sit down to do work you've been avoiding. The first 10 minutes are...",
+        answers: [
+          { letter: 'A', text: "Impossible. It's like pulling teeth. Then suddenly — you're gone." },
+          { letter: 'B', text: "A rapid-fire series of \"just check this quickly\" detours." },
+          { letter: 'C', text: "You check the clock and discover you've been \"working\" for 20 minutes but it's actually been an hour and a half." },
+          { letter: 'D', text: "You feel the weight of guilt that you avoided it so long. The guilt makes it harder." }
+        ],
+        weights: { A: { hyperfocus: 2 }, B: { impulsive: 2 }, C: { timeblind: 2 }, D: { emotional: 2 } }
+      },
+      {
+        text: "You walk into a party. What's your default mode?",
+        answers: [
+          { letter: 'A', text: "Work the room enthusiastically. You meet everyone. You are the energy." },
+          { letter: 'B', text: "Find the one person having an interesting conversation and disappear into it for two hours." },
+          { letter: 'C', text: "Stand near the snacks, scan for the exit, feel vaguely overwhelmed." },
+          { letter: 'D', text: "Match the emotional temperature of the room — if there's tension, you feel it immediately." }
+        ],
+        weights: { A: { impulsive: 2 }, B: { hyperfocus: 2 }, C: { timeblind: 1, emotional: 1 }, D: { emotional: 2 } }
+      },
+      {
+        text: "Your phone buzzes. You...",
+        answers: [
+          { letter: 'A', text: "Look immediately. Then the notification sent you somewhere. Now you're reading about a war in 1847. It's been 40 minutes." },
+          { letter: 'B', text: "Glance and think \"I'll answer that later.\" You never do. Or you answer three days later at 2am." },
+          { letter: 'C', text: "Answer it because someone might need something. You cancel your own plans. Again." },
+          { letter: 'D', text: "Answer every message within 30 seconds because the notification SOUND is unbearable." }
+        ],
+        weights: { A: { hyperfocus: 2 }, B: { timeblind: 2 }, C: { emotional: 2 }, D: { impulsive: 2 } }
+      },
+      {
+        text: "You have a creative idea. What happens next?",
+        answers: [
+          { letter: 'A', text: "You tell everyone immediately. The idea is HUGE. By Tuesday you've started seven other projects." },
+          { letter: 'B', text: "You write it down meticulously. Months later, you find the notebook. The idea is still brilliant. The notebook has 200 other ideas." },
+          { letter: 'C', text: "You work on it for 14 hours straight. You forget to eat. You produce something extraordinary." },
+          { letter: 'D', text: "You don't pursue it because the fear of not doing it perfectly is stronger than the excitement." }
+        ],
+        weights: { A: { impulsive: 2 }, B: { timeblind: 2 }, C: { hyperfocus: 2 }, D: { emotional: 2 } }
+      },
+      {
+        text: "You're waiting for something — a friend, a meeting to start, food to arrive. You...",
+        answers: [
+          { letter: 'A', text: "Pace. Fidget. Check your phone 18 times." },
+          { letter: 'B', text: "Completely lose track of time and miss it." },
+          { letter: 'C', text: "Use the time to start five other tasks in your head." },
+          { letter: 'D', text: "Spiral into anxiety about whether they're mad at you or if something went wrong." }
+        ],
+        weights: { A: { impulsive: 2 }, B: { timeblind: 2 }, C: { hyperfocus: 2 }, D: { emotional: 2 } }
+      },
+      {
+        text: "You receive feedback on a project. It's mostly positive but has one critique. You...",
+        answers: [
+          { letter: 'A', text: "Fixate entirely on the critique for the next three days." },
+          { letter: 'B', text: "Argue back immediately, even if you secretly agree." },
+          { letter: 'C', text: "Miss it entirely because you were skimming for validation." },
+          { letter: 'D', text: "Immediately start redoing the whole project from scratch." }
+        ],
+        weights: { A: { emotional: 2 }, B: { impulsive: 2 }, C: { timeblind: 2 }, D: { hyperfocus: 2 } }
+      },
+      {
+        text: "You're trying to fall asleep. Your brain...",
+        answers: [
+          { letter: 'A', text: "Generates 47 to-do items, a song lyric on loop, and a sudden urgent need to research something you thought of in 2019." },
+          { letter: 'B', text: "Runs the reel of every awkward thing you've ever said, at 3x speed." },
+          { letter: 'C', text: "Decides it's the perfect time to text someone back. It's 1am." },
+          { letter: 'D', text: "Loses all sense of time. You check — it's been 20 minutes? Three hours?" }
+        ],
+        weights: { A: { hyperfocus: 2 }, B: { emotional: 2 }, C: { impulsive: 2 }, D: { timeblind: 2 } }
+      },
+      {
+        text: "You open your calendar. Your week looks like...",
+        answers: [
+          { letter: 'A', text: "A battlefield of conflicting priorities where everything is marked \"URGENT.\"" },
+          { letter: 'B', text: "Mostly empty except for one obsessive deep-dive into a single project." },
+          { letter: 'C', text: "Full of things you said yes to weeks ago and completely forgot about until now." },
+          { letter: 'D', text: "Fine on paper but you feel exhausted before anything has even happened." }
+        ],
+        weights: { A: { impulsive: 2 }, B: { hyperfocus: 2 }, C: { timeblind: 2 }, D: { emotional: 2 } }
+      },
+      {
+        text: "Your environment is...",
+        answers: [
+          { letter: 'A', text: "A carefully curated chaos. You know where everything is. Others are terrified." },
+          { letter: 'B', text: "Loud and reactive — you respond to everything in the moment." },
+          { letter: 'C', text: "A mystery. Where did I put my keys? Was that meeting today or yesterday?" },
+          { letter: 'D', text: "Emotionally charged — you absorb other people's moods and carry them home." }
+        ],
+        weights: { A: { hyperfocus: 2 }, B: { impulsive: 2 }, C: { timeblind: 2 }, D: { emotional: 2 } }
+      },
+      {
+        text: "Someone describes you. Which feels most true?",
+        answers: [
+          { letter: 'A', text: "\"You go 0 to 100 on everything — emotions, projects, enthusiasm.\"" },
+          { letter: 'B', text: "\"You can focus like a laser when it matters. Everything else disappears.\"" },
+          { letter: 'C', text: "\"You're always running 20 minutes late but you're also the most present person I know when you're actually there.\"" },
+          { letter: 'D', text: "\"You feel things deeply. Sometimes you can't tell where you end and others begin.\"" }
+        ],
+        weights: { A: { impulsive: 2 }, B: { hyperfocus: 2 }, C: { timeblind: 2 }, D: { emotional: 2 } }
+      }
+    ];
+
+    const RESULT_TYPES = {
+      hyperfocus: {
+        name: "The Hyperfocus Architect",
+        tagline: "When your brain finds the right lock, no key is more powerful.",
+        traits: [
+          "Can achieve extraordinary depth of focus on interesting tasks",
+          "Noticing patterns and connections others miss",
+          "Exceptional long-term memory for things you care about",
+          "High creativity and originality",
+          "Deep empathy and intensity in relationships"
+        ],
+        growth: "Channel hyperfocus intentionally. Build systems that protect your focus windows. Learn to recognize when you're in a flow state so you can choose it rather than be ambushed by it.",
+        actions: [
+          "Time-box your hyperfocus with 90-minute focus blocks using a kitchen timer",
+          "Front-load important work in the first 2 hours of your day when focus is peak",
+          "Prepare transitions — before a focus session, decide what you'll do when it ends",
+          "Make interruptions less painful: write where you left off so you can return"
+        ],
+        color: "#22D3EE"
+      },
+      impulsive: {
+        name: "The Impulsive Reactor",
+        tagline: "Energy that moves rooms. Power that needs a harness.",
+        traits: [
+          "Natural enthusiasm that draws people in",
+          "Fast thinker, fast responder, fast executor",
+          "High energy that fuels creativity and action",
+          "Bold and willing to take risks",
+          "Genuinely fun to be around — you make things happen"
+        ],
+        growth: "Impulsivity is energy without direction. Learn to notice the impulse before acting — even 10 seconds of pause can be transformative. Channel spontaneity into controlled bursts of action.",
+        actions: [
+          "The 10-second rule: count to 10 before any reactive response (text, email, speaking up)",
+          "Pre-commitment: set your intention aloud or in writing before entering triggering situations",
+          "Body-first regulation: physical movement before a high-impulse situation regulates your nervous system",
+          "Audit your yeses: at week's end, review every commitment — did you say yes without thinking?"
+        ],
+        color: "#FB923C"
+      },
+      timeblind: {
+        name: "The Time Blind Navigator",
+        tagline: "You live in the eternal now. Time is a suggestion, not a schedule.",
+        traits: [
+          "Being fully present — often more so than people who seem \"together\"",
+          "Natural ability to be absorbed in the moment",
+          "Creative thinking unconstrained by linear time anxiety",
+          "Often late, but deeply engaged when present",
+          "Intuition that operates outside of clock-time"
+        ],
+        growth: "Time blindness is real — it's not laziness. Understanding it lets you build external structures (timers, reminders, buffers) that do what internal time-sense can't. This is not a character flaw.",
+        actions: [
+          "Add 50% buffer to every time estimate — if you think 30 min, block 45. This is strategy, not defeat.",
+          "Timers as external clocks: a visible countdown for appointments. Your phone's clock isn't enough.",
+          "Time-based anchors: associate tasks with specific anchors (\"after I shower, I start work\") rather than clock time.",
+          "Externalize everything: if it's not in your calendar, it doesn't exist."
+        ],
+        color: "#A78BFA"
+      },
+      emotional: {
+        name: "The Emotional Depth Diver",
+        tagline: "You feel everything. Intensity is your default. This is a gift — and a responsibility.",
+        traits: [
+          "Deep empathy — people feel seen around you",
+          "Rich emotional inner life and high emotional intelligence",
+          "Strong intuition about people and situations",
+          "Passionate, loyal, deeply caring",
+          "Creative and expressive"
+        ],
+        growth: "Your emotional sensitivity is neurological, not weakness. The work is learning to observe emotions without being swept away — like standing on the shore rather than being pulled under by the tide.",
+        actions: [
+          "Name the emotion: when a strong feeling arises, label it (\"this is frustration, this is shame\"). Naming reduces its power.",
+          "The 90-second rule: emotional chemical responses peak at 90 seconds. Stay with it without acting.",
+          "Create emotional transitions: short rituals between contexts prevent emotional bleed-through.",
+          "Externalize before internalizing: write it down before you process it internally."
+        ],
+        color: "#F472B6"
+      },
+      combined: {
+        name: "The Combined Architect",
+        tagline: "You contain multitudes. Your complexity is your competitive advantage.",
+        traits: [
+          "Experiences significant traits from multiple ADHD profiles",
+          "Highly adaptive — different modes for different contexts",
+          "Deep self-awareness from navigating contradictory internal experiences",
+          "Rich internal world and high mental complexity",
+          "Often feels \"too much\" in mainstream settings — but \"exactly right\" in the right ones"
+        ],
+        growth: "Combined types are not more broken — they're more nuanced. The goal isn't to simplify yourself; it's to build systems that honor your complexity. You need more flexibility, not more rigidity.",
+        actions: [
+          "Map your modes: identify your different brain states and name them. Reduces internal conflict.",
+          "Context engineering: change your environment rather than trying to change your brain.",
+          "Stop comparing across modes: focused-you is not a betrayal of social-you.",
+          "Integrated planning: maintain parallel to-do lists for different energy/mood states."
+        ],
+        color: "#FBBF24"
+      },
+      quiet: {
+        name: "The Quiet Struggler",
+        tagline: "Your ADHD doesn't look like the stereotype. That's exactly why it's been so hard to name.",
+        traits: [
+          "Primarily inattentive symptoms — less visible hyperactivity",
+          "Often called \"lazy\" or \"unmotivated\" without understanding why",
+          "High internal noise: racing thoughts, mental chaos, exhaustion",
+          "Spikes of competence on interesting tasks, collapse on boring ones",
+          "Appears calm on the surface while internally drowning"
+        ],
+        growth: "The hardest part of quiet ADHD is the delay between struggle and recognition. Naming it changes everything — not because it fixes the ADHD, but because it removes the shame. You are not lazy.",
+        actions: [
+          "Validate your experience first: read about inattentive ADHD. The shame begins to lift the moment you recognize yourself.",
+          "Interest-first strategy: find the angle of interest and use it as your lever — don't try to brute-force motivation.",
+          "Body double: work in the same room as another person. The social presence regulates your attention.",
+          "Gentle external structure: timers, body doubles, body breaks — small scaffolds that don't demand willpower."
+        ],
+        color: "#86EFAC"
+      }
+    };
+
+    const STORAGE_KEY_PROGRESS = 'adhd_quiz_progress';
+    const STORAGE_KEY_RESULT = 'adhd_quiz_result';
+
+    // ===== STATE =====
+    let state = {
+      currentQuestion: 0,
+      answers: {}
+    };
+
+    // ===== UTILS =====
+    function isWeChat() {
+      return /MicroMessenger/i.test(navigator.userAgent);
+    }
+
+    function saveProgress() {
+      try {
+        localStorage.setItem(STORAGE_KEY_PROGRESS, JSON.stringify(state));
+      } catch(e) {}
+    }
+
+    function loadProgress() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY_PROGRESS);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed && typeof parsed.currentQuestion === 'number') {
+            state = parsed;
+            return true;
+          }
+        }
+      } catch(e) {}
+      return false;
+    }
+
+    function clearProgress() {
+      try {
+        localStorage.removeItem(STORAGE_KEY_PROGRESS);
+        localStorage.removeItem(STORAGE_KEY_RESULT);
+      } catch(e) {}
+    }
+
+    function saveResult(type) {
+      try {
+        localStorage.setItem(STORAGE_KEY_RESULT, JSON.stringify({ type, timestamp: Date.now() }));
+      } catch(e) {}
+    }
+
+    function showScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('screen-' + screenId).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    function calculateResult() {
+      const scores = { hyperfocus: 0, impulsive: 0, timeblind: 0, emotional: 0, quiet: 0 };
+      Object.entries(state.answers).forEach(([qIndexStr, answer]) => {
+        const qIndex = parseInt(qIndexStr);
+        const q = QUESTIONS[qIndex];
+        const weights = q.weights[answer];
+        if (weights) {
+          Object.entries(weights).forEach(([type, val]) => {
+            scores[type] = (scores[type] || 0) + val;
+          });
+        }
+      });
+      // Check for combined type: high scores in 3+ categories
+      const highCount = Object.values(scores).filter(v => v >= 6).length;
+      if (highCount >= 3) return 'combined';
+      // Find highest score
+      return Object.entries(scores).sort((a,b) => b[1]-a[1])[0][0];
+    }
+
+    // ===== QUIZ FLOW =====
+    function startQuiz() {
+      state = { currentQuestion: 0, answers: {} };
+      clearProgress();
+      showScreen('question');
+      renderQuestion();
+    }
+
+    function retakeQuiz() {
+      clearProgress();
+      state = { currentQuestion: 0, answers: {} };
+      showScreen('welcome');
+    }
+
+    function renderQuestion() {
+      const q = QUESTIONS[state.currentQuestion];
+      const total = QUESTIONS.length;
+
+      document.getElementById('progress-label').textContent = `Question ${state.currentQuestion + 1} of ${total}`;
+      document.getElementById('progress-fill').style.width = `${((state.currentQuestion + 1) / total) * 100}%`;
+      document.getElementById('question-number').textContent = `Scenario ${state.currentQuestion + 1}`;
+      document.getElementById('question-text').textContent = q.text;
+
+      const container = document.getElementById('answers-container');
+      container.innerHTML = '';
+
+      q.answers.forEach(a => {
+        const card = document.createElement('button');
+        card.className = 'answer-card';
+        if (state.answers[state.currentQuestion] === a.letter) card.classList.add('selected');
+        card.setAttribute('aria-label', `Option ${a.letter}: ${a.text}`);
+        card.innerHTML = `
+          <span class="answer-letter">${a.letter}</span>
+          <span class="answer-text">${a.text}</span>
+        `;
+        card.addEventListener('click', () => selectAnswer(a.letter));
+        container.appendChild(card);
+      });
+    }
+
+    function selectAnswer(letter) {
+      state.answers[state.currentQuestion] = letter;
+      saveProgress();
+
+      // Visual feedback
+      document.querySelectorAll('.answer-card').forEach(c => c.classList.remove('selected'));
+      event.currentTarget.classList.add('selected');
+
+      // Advance after brief pause
+      setTimeout(() => {
+        if (state.currentQuestion < QUESTIONS.length - 1) {
+          state.currentQuestion++;
+          saveProgress();
+          renderQuestion();
+        } else {
+          showScreen('loading');
+          setTimeout(showResult, 1500);
+        }
+      }, 300);
+    }
+
+    function showResult() {
+      const type = calculateResult();
+      const data = RESULT_TYPES[type];
+      saveResult(type);
+
+      document.getElementById('result-name').textContent = data.name;
+      document.getElementById('result-tagline').textContent = data.tagline;
+
+      const traitsList = document.getElementById('result-traits');
+      traitsList.innerHTML = data.traits.map(t => `<li>${t}</li>`).join('');
+      document.getElementById('result-growth').textContent = data.growth;
+
+      const actionsList = document.getElementById('result-actions');
+      actionsList.innerHTML = data.actions.map(a => `<li class="action-step">${a}</li>`).join('');
+
+      // Type-specific color
+      const card = document.getElementById('result-card');
+      card.style.setProperty('--type-color', data.color);
+
+      // WeChat fallback
+      if (isWeChat()) {
+        document.getElementById('wechat-fallback').style.display = 'block';
+        document.getElementById('wechat-text').textContent =
+          `I'm a ${data.name} — What's Your ADHD Architecture?\n\n` +
+          `${data.tagline}\n\n` +
+          `Took 3 minutes. Found out why my brain works like this. Mind = blown.\n\n` +
+          `👉 Take the quiz: https://adtech-pi.github.io/psychomaster-site/quizzes/adhd-architecture-quiz.html`;
+      }
+
+      showScreen('result');
+    }
+
+    // ===== SHARE =====
+    function downloadShareCard() {
+      const type = calculateResult();
+      const data = RESULT_TYPES[type];
+
+      const canvas = document.createElement('canvas');
+      canvas.width = 1200;
+      canvas.height = 630;
+      const ctx = canvas.getContext('2d');
+
+      // Background
+      const gradient = ctx.createLinearGradient(0, 0, 1200, 630);
+      gradient.addColorStop(0, '#0F172A');
+      gradient.addColorStop(1, '#1E293B');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, 1200, 630);
+
+      // Decorative circles
+      ctx.beginPath();
+      ctx.arc(1050, 150, 200, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(37, 99, 235, 0.08)';
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(150, 500, 150, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(251, 191, 36, 0.08)';
+      ctx.fill();
+
+      // Title
+      ctx.fillStyle = '#F8FAFC';
+      ctx.font = 'bold 42px Inter, system-ui, sans-serif';
+      ctx.fillText("What's Your ADHD Architecture?", 80, 120);
+
+      // Decorative line
+      ctx.fillStyle = '#FBBF24';
+      ctx.fillRect(80, 145, 200, 4);
+
+      // Result type
+      ctx.fillStyle = data.color;
+      ctx.font = 'bold 72px Inter, system-ui, sans-serif';
+      ctx.fillText(data.name, 80, 260);
+
+      // Tagline
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = 'italic 32px Inter, system-ui, sans-serif';
+      ctx.fillText(data.tagline, 80, 330);
+
+      // Divider dots
+      ctx.fillStyle = '#334155';
+      for (let i = 0; i < 20; i++) {
+        ctx.beginPath();
+        ctx.arc(80 + i * 55, 380, 4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // URL
+      ctx.fillStyle = '#64748B';
+      ctx.font = '24px Inter, system-ui, sans-serif';
+      ctx.fillText('adtech-pi.github.io/psychomaster-site/quizzes/adhd-architecture-quiz.html', 80, 560);
+
+      // Download
+      canvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `adhd-architecture-${type}.png`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('Image downloaded!');
+      }, 'image/png');
+    }
+
+    function copyShareText() {
+      const type = calculateResult();
+      const data = RESULT_TYPES[type];
+      const text = `I'm a ${data.name} — What's Your ADHD Architecture?\n\n${data.tagline}\n\nTook 3 minutes. Found out why my brain works like this. Mind = blown.\n\n👉 Take the quiz: https://adtech-pi.github.io/psychomaster-site/quizzes/adhd-architecture-quiz.html`;
+
+      navigator.clipboard.writeText(text).then(() => {
+        document.getElementById('copy-confirmation').classList.add('show');
+        setTimeout(() => document.getElementById('copy-confirmation').classList.remove('show'), 2500);
+      }).catch(() => {
+        showToast('Copy failed — try manually selecting and copying');
+      });
+    }
+
+    function copyWeChatText() {
+      const el = document.getElementById('wechat-text');
+      const text = el.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('Copied! Paste into WeChat');
+      }).catch(() => {
+        showToast('Long-press and copy the text above');
+      });
+    }
+
+    // ===== INIT =====
+    (function init() {
+      // Check for JS
+      const noJs = document.getElementById('no-js-msg');
+      if (noJs) noJs.style.display = 'none';
+
+      // Restore progress if exists
+      if (loadProgress() && state.currentQuestion > 0 && state.currentQuestion < QUESTIONS.length) {
+        showScreen('question');
+        renderQuestion();
+      } else if (loadProgress() && state.currentQuestion >= QUESTIONS.length) {
+        // Completed — show result directly
+        showScreen('loading');
+        setTimeout(showResult, 800);
+      }
+    })();
+  </script>
+</body>
+</html>
