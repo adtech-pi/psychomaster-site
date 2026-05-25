@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PsychoMaster Quiz</title>
+  <meta name="description" content="">
+  <style>
+
+
+/* ── Reset & Base ──────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #1A1412;
+  --surface: #2A2019;
+  --surface-elevated: #3A2E22;
+  --text-primary: #F5EDE4;
+  --text-secondary: #C4B5A5;
+  --text-muted: #8A7A6A;
+  --border: #4A3A2A;
+  --primary: #D4B896;
+  --primary-light: #E8C888;
+  --result-primary: #D4B896;
+  --result-glow: #E8C888;
+
+  --font-body: Nunito Sans, system-ui, -apple-system, sans-serif;
+  --font-display: Cormorant Garamond, Georgia, serif;
+
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-pill: 999px;
+
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+
+  --transition-fast: 250ms ease;
+  --transition-normal: 400ms ease;
+  --transition-slow: 600ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Screens ───────────────────────────────────────────────────────────── */
+.quiz-screen {
+  display: none;
+  min-height: 100dvh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl) var(--space-md);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+.quiz-screen.active {
+  display: flex;
+  opacity: 1;
+}
+
+.screen-inner {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+  text-align: center;
+}
+
+/* ── Disclaimer Screen ──────────────────────────────────────────────────── */
+.screen-disclaimer .disclaimer-text {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl) var(--space-lg);
+  text-align: left;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* ── Intro Screen ───────────────────────────────────────────────────────── */
+.screen-intro .intro-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 8vw, 3rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.screen-intro .intro-subtitle {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  max-width: 380px;
+}
+
+/* ── Quiz Screen ────────────────────────────────────────────────────────── */
+.screen-quiz {
+  justify-content: flex-start;
+  padding-top: var(--space-xl);
+  gap: var(--space-lg);
+}
+
+.quiz-header {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+/* Progress bar */
+.progress-track {
+  width: 100%;
+  height: 3px;
+  background: var(--border);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+  border-radius: var(--radius-pill);
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+/* Question */
+.question-container {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.q-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.q-text {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 4vw, 1.25rem);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-primary);
+  text-align: left;
+}
+
+/* Options */
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  width: 100%;
+  max-width: 480px;
+}
+
+.option-btn {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.option-btn:hover {
+  background: var(--surface-elevated);
+  border-color: var(--primary);
+}
+
+.option-btn:active {
+  transform: scale(0.98);
+}
+
+.option-btn.selected {
+  background: color-mix(in srgb, var(--primary) 15%, var(--surface));
+  border-color: var(--primary);
+}
+
+.opt-letter {
+  font-weight: 700;
+  color: var(--primary);
+  flex-shrink: 0;
+  min-width: 1.5em;
+}
+
+.opt-text {
+  color: var(--text-primary);
+}
+
+/* Quiz navigation */
+.quiz-nav {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-sm);
+}
+
+.back-btn {
+  display: none;
+  align-items: center;
+  gap: var(--space-xs);
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  cursor: pointer;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast);
+}
+
+.back-btn:hover { color: var(--text-primary); }
+
+.quiz-nav-spacer {
+  flex: 1;
+}
+
+/* ── Result Screen ──────────────────────────────────────────────────────── */
+.screen-result {
+  justify-content: flex-start;
+  padding-top: var(--space-2xl);
+  gap: var(--space-xl);
+}
+
+.result-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.result-type-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--result-primary);
+}
+
+.result-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 8vw, 3rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.result-divider {
+  width: 48px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--result-primary), transparent);
+  border-radius: 2px;
+  margin: var(--space-xs) auto;
+}
+
+.result-description {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.result-desc-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  text-align: left;
+}
+
+.result-desc-block h3 {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--result-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.result-desc-block p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.result-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  justify-content: center;
+}
+
+.trait-tag {
+  background: color-mix(in srgb, var(--result-primary) 12%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--result-primary) 30%, transparent);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--result-primary);
+  letter-spacing: 0.02em;
+}
+
+.share-quote {
+  border-left: 3px solid var(--result-primary);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--surface);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  font-style: italic;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.result-footer {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding-bottom: var(--space-xl);
+}
+
+.retake-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  padding: var(--space-xs) var(--space-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.retake-btn:hover {
+  border-color: var(--primary);
+  color: var(--text-primary);
+}
+
+/* ── Primary CTA Button ─────────────────────────────────────────────────── */
+.btn-primary {
+  background: var(--primary);
+  color: #1A1412;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  padding: var(--space-sm) var(--space-xl);
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+  letter-spacing: 0.02em;
+  min-width: 200px;
+}
+
+.btn-primary:hover {
+  background: var(--primary-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--primary) 30%, transparent);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* ── Animations ────────────────────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.quiz-screen.active .screen-inner {
+  animation: fadeInUp 500ms cubic-bezier(0.4, 0, 0.6, 1) both;
+}
+
+.screen-disclaimer.active .disclaimer-text {
+  animation: fadeInUp 600ms cubic-bezier(0.4, 0, 0.6, 1) 100ms both;
+}
+
+.screen-result .result-header,
+.screen-result .result-description,
+.screen-result .result-tags {
+  animation: fadeInUp 600ms cubic-bezier(0.4, 0, 0.6, 1) both;
+}
+
+.screen-result .result-description { animation-delay: 100ms; }
+.screen-result .result-tags { animation-delay: 200ms; }
+
+/* ── Responsive ────────────────────────────────────────────────────────── */
+@media (min-width: 640px) {
+  body { font-size: 17px; }
+  .quiz-screen { padding: var(--space-2xl) var(--space-lg); }
+}
+
+/* ── Accessibility ─────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quiz-screen.active .screen-inner,
+  .screen-disclaimer.active .disclaimer-text,
+  .screen-result .result-header,
+  .screen-result .result-description,
+  .screen-result .result-tags {
+    animation: fadeIn 300ms ease both;
+  }
+}
+
+  </style>
+</head>
+<body>
+<div id="screen-disclaimer" class="quiz-screen screen-disclaimer">
+  <div class="screen-inner">
+    <div class="disclaimer-text"></div>
+    <button id="begin-btn" class="btn-primary">Begin →</button>
+  </div>
+</div>
+<div id="screen-intro" class="quiz-screen screen-intro">
+  <div class="screen-inner">
+    <h1 class="intro-title">Psychology</h1>
+    <p class="intro-subtitle"></p>
+    <button id="start-btn" class="btn-primary">Start Quiz</button>
+  </div>
+</div>
+<div id="screen-quiz" class="quiz-screen screen-quiz">
+  <div class="quiz-header">
+    <div class="progress-track">
+      <div id="progress-fill" class="progress-fill" style="width:0%"></div>
+    </div>
+    <span id="q-number" class="q-label"></span>
+  </div>
+  <div class="question-container">
+    <p id="q-text" class="q-text"></p>
+    <div id="options-container" class="options-list"></div>
+  </div>
+  <div class="quiz-nav">
+    <button id="back-btn" class="back-btn">← Back</button>
+    <div class="quiz-nav-spacer"></div>
+  </div>
+</div>
+<div id="screen-result" class="quiz-screen screen-result">
+  <div class="screen-inner">
+    <div class="result-header">
+      <span id="result-type-name" class="result-type-label">Your Result</span>
+      <h1 id="result-title" class="result-title"></h1>
+      <div class="result-divider"></div>
+    </div>
+    <div id="result-description" class="result-description"></div>
+    <div id="result-tags" class="result-tags"></div>
+    <div id="result-share"></div>
+    <div id="result-footer" class="result-footer"></div>
+  </div>
+</div>
+
+<script>
+// ─── Quiz Config & Data ────────────────────────────────────────────────────
+const QUIZ_CONFIG = {"questionCount": 15, "resultCount": 4, "hasDisclaimer": false, "hasIntro": false, "hasScoringGuide": false, "meta": {}};
+const RESULT_TYPES = [
+  {
+    "number": 1,
+    "title": "— The Ghost 🏚️",
+    "descriptions": {},
+    "trait_tags": [],
+    "share_text": ""
+  },
+  {
+    "number": 2,
+    "title": "— The Diplomat 🌍",
+    "descriptions": {},
+    "trait_tags": [],
+    "share_text": ""
+  },
+  {
+    "number": 3,
+    "title": "— The Returner 🔥",
+    "descriptions": {},
+    "trait_tags": [],
+    "share_text": ""
+  },
+  {
+    "number": 4,
+    "title": "— The Differentiated 🌱",
+    "descriptions": {},
+    "trait_tags": [],
+    "share_text": ""
+  }
+];
+const QUIZ_CONTENT = {
+  disclaimer: ``,
+  intro: ``,
+  seoDescription: ``,
+};
+
+// ─── App State ────────────────────────────────────────────────────────────
+const state = {
+  screen: 'disclaimer',      // disclaimer | intro | quiz | result
+  answers: {},              // question_number -> 'A'|'B'|'C'|'D'
+  currentQuestion: 1,
+  resultType: null,
+  resultData: null,
+};
+
+// ─── Navigation ───────────────────────────────────────────────────────────
+function showScreen(name) {
+  document.querySelectorAll('.quiz-screen').forEach(s => s.classList.remove('active'));
+  const screen = document.getElementById('screen-' + name);
+  if (screen) screen.classList.add('active');
+  state.screen = name;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── Disclaimer ─────────────────────────────────────────────────────────────
+function handleDisclaimer() {
+  if (QUIZ_CONFIG.hasIntro) {
+    showScreen('intro');
+  } else {
+    startQuiz();
+  }
+}
+
+// ─── Quiz Start ────────────────────────────────────────────────────────────
+function startQuiz() {
+  state.answers = {};
+  state.currentQuestion = 1;
+  renderQuestion();
+  showScreen('quiz');
+}
+
+// ─── Question Rendering ────────────────────────────────────────────────────
+function renderQuestion() {
+  const q = QUIZ_CONTENT.questions[state.currentQuestion - 1];
+  const progress = (state.currentQuestion - 1) / QUIZ_CONFIG.questionCount * 100;
+  const progressEl = document.getElementById('progress-fill');
+  const qNumEl = document.getElementById('q-number');
+  const qTextEl = document.getElementById('q-text');
+  const optionsEl = document.getElementById('options-container');
+
+  if (progressEl) progressEl.style.width = progress + '%';
+  if (qNumEl) qNumEl.textContent = 'Question ' + state.currentQuestion;
+  if (qTextEl) qTextEl.textContent = q.text;
+
+  // Render options
+  optionsEl.innerHTML = '';
+  ['A', 'B', 'C', 'D'].forEach(letter => {
+    const optText = q.options[letter];
+    if (!optText) return;
+    const selected = state.answers[state.currentQuestion] === letter;
+    const btn = document.createElement('button');
+    btn.className = 'option-btn' + (selected ? ' selected' : '');
+    btn.setAttribute('data-letter', letter);
+    btn.setAttribute('data-q', state.currentQuestion);
+    btn.innerHTML = `<span class="opt-letter">{letter}.</span><span class="opt-text">${optText}</span>`;
+    btn.addEventListener('click', () => selectOption(letter));
+    optionsEl.appendChild(btn);
+  });
+
+  // Back button visibility
+  const backBtn = document.getElementById('back-btn');
+  if (backBtn) backBtn.style.display = state.currentQuestion > 1 ? 'inline-flex' : 'none';
+}
+
+function selectOption(letter) {
+  state.answers[state.currentQuestion] = letter;
+
+  // Highlight selected
+  document.querySelectorAll('.option-btn').forEach(b => {
+    b.classList.toggle('selected', b.getAttribute('data-letter') === letter);
+  });
+
+  // Advance after short delay
+  setTimeout(() => {
+    if (state.currentQuestion < QUIZ_CONFIG.questionCount) {
+      state.currentQuestion++;
+      renderQuestion();
+    } else {
+      calculateResult();
+    }
+  }, 350);
+}
+
+function goBack() {
+  if (state.currentQuestion > 1) {
+    state.currentQuestion--;
+    renderQuestion();
+  }
+}
+
+// ─── Result Calculation ─────────────────────────────────────────────────────
+function calculateResult() {
+  // Default: simple majority (most selected letter wins)
+  // Subclasses can override with custom scoring logic
+  const counts = { A: 0, B: 0, C: 0, D: 0 };
+  for (const q in state.answers) {
+    counts[state.answers[q]]++;
+  }
+
+  // Find highest count
+  let maxCount = 0;
+  let dominant = 'A';
+  for (const [k, v] of Object.entries(counts)) {
+    if (v > maxCount) {
+      maxCount = v;
+      dominant = k;
+    }
+  }
+
+  // Map to result type
+  const resultIndex = (parseInt(dominant.charCodeAt(0)) - 65) % QUIZ_CONFIG.resultCount;
+  const resultType = RESULT_TYPES[resultIndex] || RESULT_TYPES[0];
+
+  state.resultType = dominant;
+  state.resultData = resultType;
+  renderResult();
+  showScreen('result');
+}
+
+// ─── Result Rendering ───────────────────────────────────────────────────────
+function renderResult() {
+  const r = state.resultData;
+  const typeNameEl = document.getElementById('result-type-name');
+  const titleEl = document.getElementById('result-title');
+  const descEl = document.getElementById('result-description');
+  const tagsEl = document.getElementById('result-tags');
+  const shareEl = document.getElementById('result-share');
+  const footerEl = document.getElementById('result-footer');
+
+  if (typeNameEl) typeNameEl.textContent = r.title || 'Your Result';
+  if (titleEl) titleEl.textContent = r.title || 'Your Result';
+
+  // Build description from descriptions dict
+  let descHtml = '';
+  if (r.descriptions) {
+    for (const [key, val] of Object.entries(r.descriptions)) {
+      if (val) {
+        descHtml += `<div class="result-desc-block"><h3>${key.replace('_', ' ').replace(/\b\w/g, c => c.toUpperCase())}</h3><p>${val}</p></div>`;
+      }
+    }
+  } else {
+    descHtml = `<p>${r.title}</p>`;
+  }
+  if (descEl) descEl.innerHTML = descHtml;
+
+  // Trait tags
+  if (tagsEl) {
+    tagsEl.innerHTML = (r.trait_tags || []).map(t =>
+      `<span class="trait-tag">#${t}</span>`
+    ).join('');
+  }
+
+  // Share text
+  if (shareEl && r.share_text) {
+    shareEl.innerHTML = `<blockquote class="share-quote">"${r.share_text}"</blockquote>`;
+  }
+
+  // Footer
+  if (footerEl) {
+    footerEl.innerHTML = `
+      <p>Psychomaster · ${QUIZ_CONFIG.meta.audience || 'Self-Reflection Quiz'}</p>
+      <button class="retake-btn" onclick="retakeQuiz()">Take Quiz Again</button>
+    `;
+  }
+
+  // Set result type color (if available in spec)
+  const resultVariant = spec['1_colorPalette']?.get('resultTypes', spec['1_colorPalette']?.get('resultVariants'));
+  if (resultVariant) {
+    const key = Object.keys(resultVariant)[resultIndex % Object.keys(resultVariant).length];
+    const variant = resultVariant[key];
+    document.documentElement.style.setProperty('--result-primary', variant.primary || variant.primary);
+    document.documentElement.style.setProperty('--result-glow', variant.glow || variant.primary);
+  }
+}
+
+function retakeQuiz() {
+  state.answers = {};
+  state.currentQuestion = 1;
+  state.resultType = null;
+  state.resultData = null;
+  showScreen('disclaimer');
+}
+
+// ─── Init ──────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // Set quiz content questions
+  QUIZ_CONTENT.questions = [{"number": 1, "text": "当你想到下个月要见家人时，你的第一反应是——\n\nA)  dread it. 你已经在心里排练怎么熬过这次见面了。\n\nB) 有点烦，但没什么大不了的。你告诉自己还好，能应付。\n\nC) 愧疚。你知道自己应该更想见他们，但你不知道为什么就是不想见。\n\nD) 还行——但偶尔在夜里，你会对这种距离感到一阵悲伤，然后快速把它压下去。", "options": {}}, {"number": 2, "text": "家人批评了你做的某件事。你会——\n\nA) 用幽默化解或立刻转移话题。你不会给他们看到你反应的机会。\n\nB) 保持沉默，但在接下来好几天里身体都能感受到那种疼痛。你什么都没说，但还是受伤了。\n\nC) 反击，坚持自己的观点。你不知道为什么家人聚会这么累人。\n\nD) 感到一阵真实的愤怒——然后立刻对生家人的气感到愧疚。", "options": {}}, {"number": 3, "text": "你有多经常主动避免告诉家人你生活中正在发生的重要事情？\n\nA) 很经常。他们对你生活中很多重要的事一无所知。\n\nB) 有时候。我会根据我觉得他们会怎么反应来筛选我分享的内容。\n\nC) 很少。我大部分事都会分享，但有1-2个话题我会避开。\n\nD) 我其实想分享更多。我忍住是因为害怕他们会评判我。", "options": {}}, {"number": 4, "text": "你离开了家乡。主要原因是什么？\n\nA) 重新开始。我想从成长环境中获得地理和情感上的距离。\n\nB) 机会——但内心深处也松了口气，因为有了一个不那么随叫随到的借口。\n\nC) 纯属偶然。我完全没有想过这和家庭有什么关系。\n\nD) 你有时会想，你选择这种距离是否部分是为了逃避面对某些东西。", "options": {}}, {"number": 5, "text": "当家人正在经历困难时，你的感受是——\n\nA) 想要帮忙——也许超过了合理的程度。你会介入并解决问题。\n\nB) 真切的关心，但你注意到即使提供实际帮助，你也保持着情感距离。\n\nC) 焦虑和疲惫。他们的痛苦激活了你未解决的东西，让你感觉无法呼吸。\n\nD) 有同情心，但保持着距离。你在乎，但这似乎是他们的问题。", "options": {}}, {"number": 6, "text": "回想上一次你在家人面前感到真正被看见的时刻。那次经历如何？\n\nA) 几乎从未发生。当我试图分享真实的东西时，它被转移了或者被反过来利用。\n\nB) 发生过一两次，那是好几年前了。这些时刻之所以突出，是因为它们太罕见了。\n\nC) 有时候会发生，都是小瞬间。但它总是感觉脆弱——好像随时会破碎。\n\nD) 我和至少一个家人有这种关系，这是一生中最重要的东西之一。", "options": {}}, {"number": 7, "text": "你的伴侣问你为什么很少给家人打电话。你说——\n\nA) \"我只是和他们不亲近。\"然后你就转移话题。\n\nB) \"我们关系很复杂。\"你稍微敞开了一点，但很快就关闭了。\n\nC) \"我在努力。\"你内心感到一阵愧疚，不知道怎么处理。\n\nD) \"说实话，我希望我能感到更亲近。我想要这种连接。\"你诚实地说出这句话，甚至对自己。", "options": {}}, {"number": 8, "text": "当你家人做了伤害你的事时，你通常会——\n\nA) 什么都不说。提起这件事从来不会有好结果，你已经学会了不值得。\n\nB) 提起——但你已经准备好迎接随之而来的冲突。\n\nC) 强烈地愤怒，有时持续好几天。你不知道如何处理对家人的愤怒。\n\nD) 试图理解他们的角度。你告诉自己他们尽力了，你也应该。", "options": {}}, {"number": 9, "text": "你收到一连串短信，来自家人问你为什么\"这么疏远\"。你会——\n\nA) 几天都不回复。当回复时，给出一个模糊的、不回答的回答。\n\nB) 写一段长长的解释，发出后感到如释重负，然后当他们回复时又感到被批评了。\n\nC) 不理会。他们会好的。他们总是会。\n\nD) 感到愧疚，用一些安慰的话回复，即使那不完全是真的，然后因为撒谎而感到难受。", "options": {}}, {"number": 10, "text": "你开始注意到你的关系遵循一个模式：你变得亲近，然后某些东西触发了旧有的家庭焦虑，你开始疏远或被压垮。这会引起共鸣吗？\n\nA) 是的。我清楚地看到了，这让我很沮丧。\n\nB) 有时候。我能在事后看到它，但并不总是在当下。\n\nC) 我以前听过这个，但我不确定它是否适用于我。\n\nD) 不——我认为我实际上已经处理了很多这些模式。", "options": {}}, {"number": 11, "text": "当你想象与家人完全情感亲密——没有距离，没有过滤——你的感受是——\n\nA) 恐惧。对他们来说这种程度的亲密感觉危险或势不可挡。\n\nB) 渴望和恐惧的混合。你一部分想要它，一部分知道它代价太高。\n\nC) 没什么感觉。你真正接受了距离就是这样。\n\nD) 实际上充满希望。你相信这是可能的，你正在为此努力。", "options": {}}, {"number": 12, "text": "当你和家人在一起时，你通常怎么度过时间？\n\nA) 身体在场，心在其他地方。你在走过场。\n\nB) 小心翼翼地管理互动——选择话题、监控动态、保持警惕。\n\nC) 真诚地连接，但你注意到你很容易疲倦，之后需要恢复时间。\n\nD) 你只是偶尔见他们，但当你们在一起时，是有意义的，你感觉还好。", "options": {}}, {"number": 13, "text": "你的家人不知道你的伴侣、你的工作状况，或一个重大人生决定。他们有多少不知道的？\n\nA) 很多。他们不知道我生活中很多重要的事。\n\nB) 有些事，在每个类别里都有。我精心筛选他们看到的内容。\n\nC) 大部分事。但我告诉自己这不重要，因为他们反正不会理解。\n\nD) 很少。他们知道重要的事，即使不是每个细节。", "options": {}}, {"number": 14, "text": "回想一次你的家人说了一些暗示你\"不如\"或\"不够好\"的话。你最可能——\n\nA) 让它过去，不作回应。你学会了不参与。\n\nB) 感到受伤，然后沉默，但从未提起过。\n\nC) 明显地不安，然后这又被反过来变成你的问题（\"你怎么这么敏感\"）。\n\nD) 温和但明确地说明它是如何影响你的，并请他们反思。", "options": {}}, {"number": 15, "text": "如果有人问你和家人的关系是否亲近，你会说——\n\nA) \"不。坦白说，我已经接受了。\"（即使你可能还没有真正接受。）\n\nB) \"很复杂。\"（因为你真的不知道怎么描述。）\n\nC) \"我希望我们更亲近。\"（而这种愿望本身就是痛苦的。）\n\nD) \"是的，有一些边界。\"（你会这么说的——不是作为墙，而是作为一个有门的篱笆。）\n\nRESULT DESCRIPTIONS\n\nResult 1 — The Ghost 🏚️\n\nScore: A dominant — Ghost pattern\n\nYou are someone who has emotionally — and often physically — removed yourself from your family of origin. You might live far away. You might not call often. Or you might live nearby but have built a psychological wall so high that real intimacy feels impossible.\n\nThe Ghost pattern is not a failure. It's an adaptation. Somewhere along the way, your family system felt too unsafe, too engulfing, or too critical for you to maintain a close, regulated presence. Cutoff was your nervous system's solution.\n\nThe cost is real, though. You may notice that your close relationships carry a particular quality of fear — fear of closeness, fear of being truly known, fear of the kind of vulnerability your family taught you was dangerous. The irony is painful: you left one family only to recreate the distance in every other relationship.\n\nThe invitation isn't to run back. It's to notice what the cutoff is protecting you from — and to ask whether the protection is still serving you, or whether it's now running the show.\n\nResult 2 — The Diplomat 🌍\n\nScore: B dominant — Diplomat pattern\n\nYou are someone who maintains contact with your family — but carefully. You've learned the terrain: which topics are safe, which relatives to avoid, how long to stay, when to excuse yourself. You perform closeness without fully feeling it.\n\nThe Diplomat is often the most exhausting role because it's so psychologically labor-intensive. You are constantly managing the interaction in real time — reading rooms, choosing words, calculating responses. And after every family event, you need to recover.\n\nThe thing the Diplomat rarely lets themselves feel is the grief underneath the management. Because underneath all that strategy is a person who actually wanted — maybe still wants — to be genuinely close. But closeness requires risk. And the Diplomat has gotten so good at managing the risk that they've accidentally made it impossible to feel held.\n\nThe invitation is to notice when management is actually a wall — and to consider whether one small act of genuine vulnerability might be worth the uncertainty.\n\nResult 3 — The Returner 🔥\n\nScore: C dominant — Returner pattern\n\nYou are someone who never fully left. Not physically — maybe you live nearby, maybe you're in frequent contact — but emotionally, you're still deeply enmeshed in your family system's anxiety. You feel what they feel. Their criticism lands like a wound. Their needs feel like obligations you can't refuse.\n\nThe Returner is the inverse of the Ghost. While the Ghost has built walls, the Returner has no walls — or ones full of holes. Your emotional bandwidth is consumed by your family. Your relationships struggle because you're running on fumes. Your identity is still partially fused with theirs.\n\nThis is not about blame. The Returner is often the most loving, most attuned person in the family — and the most used. You learned early that your value was tied to how much you gave, how well you managed others' emotions.\n\nThe invitation is not to leave. It's to find — for the first time — a genuine sense of self within the relationship. To feel your own needs as real and valid. To practice the terrifying sentence: \"I matter too.\"\n\nResult 4 — The Differentiated 🌱\n\nScore: D dominant — Differentiated pattern\n\nYou are someone who has done the quiet, difficult work of finding yourself within — not necessarily without — your family system. You can be in contact with your family, feel the anxiety they generate, and still stay connected to who you are. You can hold your own position without attacking theirs. You can love them and also disagree with them.\n\nDifferentiation, in Bowen's language, is the capacity to be your own person while remaining emotionally connected. It's not a destination — it's an ongoing practice. You don't have it perfect. But you have a grounded sense of self that doesn't collapse when your family triggers old patterns.\n\nThis is one of the rarest positions in a family system, and it usually comes at a cost — often years of therapy, painful differentiation work, or the experience of being somewhat of a \"stranger\" in your own family because you've grown in ways they haven't.\n\nThe continued invitation: stay the course. Your differentiation isn't just for you — it's a model for others in the system that change is possible.\n\nSHARE CARD\n\nEnglish\n\n\"I'm [Result Type] — the way I handle family closeness and distance says a lot about how I show up in all my relationships.\"\n\nTake the quiz: [URL]\n\n中文\n\n\"我是[结果类型]——我处理家庭亲密距离的方式，揭示了我在人际关系中的很多模式。\"\n\n测验链接：[URL]", "options": {}}];
+
+  // Auto-start to disclaimer
+  showScreen('disclaimer');
+
+  // CTA buttons
+  const beginBtn = document.getElementById('begin-btn');
+  if (beginBtn) beginBtn.addEventListener('click', handleDisclaimer);
+
+  const startBtn = document.getElementById('start-btn');
+  if (startBtn) startBtn.addEventListener('click', startQuiz);
+
+  const backBtn = document.getElementById('back-btn');
+  if (backBtn) backBtn.addEventListener('click', goBack);
+});
+  </script>
+</body>
+</html>
