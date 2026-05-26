@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How Does Your Nervous System Protect You? | Trauma Response Pattern Quiz</title>
+  <meta name="description" content="Discover your trauma response pattern — Fight, Flight, Freeze, or Fawn. A psychoeducational quiz exploring how your nervous system learned to keep you safe.">
+  <style>
+    /* =============================================
+       CSS VARIABLES & DESIGN TOKENS
+       ============================================= */
+    :root {
+      --bg-primary: #FAF8F5;
+      --bg-card: #FFFFFF;
+      --bg-muted: #F5F0EB;
+      --text-primary: #2C2A27;
+      --text-secondary: #6B6860;
+      --text-muted: #7A776F;
+      --accent: #C4956A;
+      --accent-light: rgba(196, 149, 106, 0.12);
+      --accent-hover: rgba(196, 149, 106, 0.20);
+      --border: #E8E4DF;
+      --border-dark: #D4CFC8;
+      --radius-sm: 12px;
+      --radius-md: 16px;
+      --radius-lg: 20px;
+      --shadow: 0 2px 16px rgba(44, 42, 39, 0.06);
+      --shadow-lg: 0 8px 32px rgba(44, 42, 39, 0.10);
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-display: 'Fraunces', 'Georgia', serif;
+      --transition: 200ms ease-out;
+      --progress-track: #E8E4DF;
+      /* Result type colors */
+      --fight-primary: #C4956A;
+      --fight-secondary: #8B6914;
+      --flight-primary: #7A9E9E;
+      --flight-secondary: #4A7C7C;
+      --freeze-primary: #9B96B0;
+      --freeze-secondary: #6E6889;
+      --fawn-primary: #C4908A;
+      --fawn-secondary: #9E6B63;
+    }
+
+    /* =============================================
+       RESET & BASE
+       ============================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
+
+    /* =============================================
+       TYPOGRAPHY
+       ============================================= */
+    h1, h2, h3 { font-family: var(--font-display); line-height: 1.2; }
+    h1 { font-size: clamp(26px, 6vw, 32px); font-weight: 700; }
+    h2 { font-size: clamp(22px, 5vw, 28px); font-weight: 600; }
+    h3 { font-size: 18px; font-weight: 600; }
+
+    p { line-height: 1.6; }
+
+    /* =============================================
+       SCREEN CONTAINER
+       ============================================= */
+    .screen {
+      display: none;
+      width: 100%;
+      max-width: 480px;
+      animation: fadeIn var(--transition) both;
+    }
+    .screen.active { display: flex; flex-direction: column; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); opacity: 0.7; }
+      50% { transform: scale(1.08); opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* =============================================
+       CARD
+       ============================================= */
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding: 32px 24px;
+      width: 100%;
+    }
+
+    /* =============================================
+       WELCOME SCREEN
+       ============================================= */
+    #welcome-screen { justify-content: center; }
+    #welcome-screen .card {
+      text-align: center;
+      padding: 48px 32px;
+    }
+    #welcome-screen .brand {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    #welcome-screen h1 {
+      margin-bottom: 16px;
+      color: var(--text-primary);
+    }
+    #welcome-screen .tagline {
+      font-size: 17px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+    #welcome-screen .meta-note {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+    .brand-logo {
+      display: inline-block;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: var(--accent);
+      margin-bottom: 20px;
+      line-height: 48px;
+      font-size: 20px;
+      color: #fff;
+      font-family: var(--font-display);
+      font-weight: 700;
+    }
+
+    /* =============================================
+       CONSENT SCREEN
+       ============================================= */
+    #consent-screen .card { padding: 32px 24px; }
+    #consent-screen h2 {
+      margin-bottom: 20px;
+      font-size: 22px;
+    }
+    #consent-screen .consent-body {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+    #consent-screen .consent-body p {
+      margin-bottom: 16px;
+    }
+    #consent-screen .consent-body p:last-of-type { margin-bottom: 24px; }
+    .consent-checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding: 16px;
+      background: var(--bg-muted);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+    }
+    .consent-checkbox-row:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--radius-sm); }
+    .consent-checkbox {
+      width: 22px;
+      height: 22px;
+      min-width: 22px;
+      margin-top: 1px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+    .consent-label-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      cursor: pointer;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      padding: 14px 32px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: background var(--transition), transform var(--transition), opacity var(--transition);
+      text-decoration: none;
+      width: 100%;
+    }
+    .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover { background: #b8845e; }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { background: var(--bg-muted); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+      padding: 8px 16px;
+      min-height: 40px;
+      font-size: 14px;
+    }
+    .btn-ghost:hover { color: var(--text-primary); }
+
+    /* =============================================
+       QUESTION SCREEN
+       ============================================= */
+    #question-screen { gap: 0; }
+    .progress-container {
+      width: 100%;
+      max-width: 480px;
+      margin-bottom: 20px;
+    }
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .progress-track {
+      width: 100%;
+      height: 4px;
+      background: var(--progress-track);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 300ms ease-out;
+    }
+    .question-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding: 28px 24px;
+      width: 100%;
+    }
+    .question-text {
+      font-size: 19px;
+      font-weight: 500;
+      line-height: 1.5;
+      margin-bottom: 24px;
+      color: var(--text-primary);
+    }
+    .options-list { display: flex; flex-direction: column; gap: 10px; }
+    .option-btn {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      width: 100%;
+      padding: 16px 18px;
+      background: var(--bg-card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      text-align: left;
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--text-primary);
+      line-height: 1.5;
+      transition: border-color var(--transition), background var(--transition), transform var(--transition);
+      min-height: 52px;
+    }
+    .option-btn:hover {
+      border-color: var(--border-dark);
+      background: #F9F6F2;
+    }
+    .option-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .option-btn:active { transform: scale(0.985); }
+    .option-btn.selected {
+      border-color: var(--accent);
+      background: var(--accent-light);
+    }
+    .option-letter {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
+      border-radius: 50%;
+      background: var(--bg-muted);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      transition: background var(--transition), color var(--transition);
+      margin-top: 1px;
+    }
+    .option-btn.selected .option-letter {
+      background: var(--accent);
+      color: #fff;
+    }
+    .question-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+    }
+    @media (max-width: 380px) {
+      .question-card { padding: 20px 16px; }
+      .question-text { font-size: 17px; }
+      .option-btn { font-size: 14px; padding: 14px 14px; }
+    }
+
+    /* =============================================
+       PROCESSING SCREEN
+       ============================================= */
+    #processing-screen { justify-content: center; align-items: center; text-align: center; }
+    #processing-screen .card { padding: 48px 32px; }
+    .processing-circle {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      margin: 0 auto 24px;
+      animation: breathe 2.4s ease-in-out infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .processing-circle-inner {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.7;
+    }
+    #processing-screen h2 { color: var(--text-primary); margin-bottom: 8px; }
+    #processing-screen p { color: var(--text-muted); font-size: 15px; }
+
+    /* =============================================
+       RESULT SCREEN
+       ============================================= */
+    #result-screen { gap: 0; }
+    .result-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      padding: 40px 32px;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .result-intro-label {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .result-archetype {
+      font-family: var(--font-display);
+      font-size: clamp(30px, 8vw, 40px);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+    .result-type-name {
+      font-family: var(--font-display);
+      font-size: clamp(20px, 5vw, 26px);
+      font-weight: 400;
+      font-style: italic;
+      margin-bottom: 16px;
+    }
+    .result-tagline {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 24px;
+      font-style: italic;
+      font-family: var(--font-display);
+    }
+    .result-divider {
+      width: 40px;
+      height: 2px;
+      background: var(--border);
+      margin: 24px auto;
+      border-radius: 1px;
+    }
+    .result-description {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      text-align: left;
+      margin-bottom: 24px;
+    }
+    .result-traits {
+      list-style: none;
+      text-align: left;
+      margin-bottom: 24px;
+    }
+    .result-traits li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .result-traits li:last-child { border-bottom: none; }
+    .trait-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      min-width: 6px;
+      margin-top: 7px;
+    }
+    .secondary-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 24px;
+    }
+    .secondary-badge-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      opacity: 0.7;
+    }
+    /* Result type color theming */
+    body.result-fight .result-archetype,
+    body.result-fight .trait-dot { color: var(--fight-primary); }
+    body.result-fight .trait-dot { background: var(--fight-primary); }
+    body.result-fight .result-type-name { color: var(--fight-secondary); }
+    body.result-fight .secondary-badge { background: rgba(196, 149, 106, 0.12); color: var(--fight-secondary); }
+    body.result-fight .secondary-badge .trait-dot { background: var(--fight-primary); }
+
+    body.result-flight .result-archetype,
+    body.result-flight .trait-dot { color: var(--flight-primary); }
+    body.result-flight .trait-dot { background: var(--flight-primary); }
+    body.result-flight .result-type-name { color: var(--flight-secondary); }
+    body.result-flight .secondary-badge { background: rgba(122, 158, 158, 0.12); color: var(--flight-secondary); }
+    body.result-flight .secondary-badge .trait-dot { background: var(--flight-primary); }
+
+    body.result-freeze .result-archetype,
+    body.result-freeze .trait-dot { color: var(--freeze-primary); }
+    body.result-freeze .trait-dot { background: var(--freeze-primary); }
+    body.result-freeze .result-type-name { color: var(--freeze-secondary); }
+    body.result-freeze .secondary-badge { background: rgba(155, 150, 176, 0.12); color: var(--freeze-secondary); }
+    body.result-freeze .secondary-badge .trait-dot { background: var(--freeze-primary); }
+
+    body.result-fawn .result-archetype,
+    body.result-fawn .trait-dot { color: var(--fawn-primary); }
+    body.result-fawn .trait-dot { background: var(--fawn-primary); }
+    body.result-fawn .result-type-name { color: var(--fawn-secondary); }
+    body.result-fawn .secondary-badge { background: rgba(196, 144, 138, 0.12); color: var(--fawn-secondary); }
+    body.result-fawn .secondary-badge .trait-dot { background: var(--fawn-primary); }
+
+    /* Share card canvas (hidden) */
+    #share-canvas { display: none; }
+
+    /* Share actions */
+    .share-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .share-actions .btn { flex-direction: row; gap: 8px; }
+    .btn-icon { font-size: 18px; line-height: 1; }
+
+    /* =============================================
+       RESOURCES SCREEN
+       ============================================= */
+    .resources-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding: 28px 24px;
+      width: 100%;
+      margin-bottom: 16px;
+    }
+    .resources-card h3 {
+      font-size: 16px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .resource-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .resource-item:last-of-type { border-bottom: none; }
+    .resource-icon {
+      font-size: 20px;
+      min-width: 32px;
+      text-align: center;
+    }
+    .resource-content { flex: 1; }
+    .resource-label { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+    .resource-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+    .resource-link {
+      display: block;
+      font-size: 13px;
+      color: var(--accent);
+      text-decoration: none;
+      margin-top: 4px;
+      font-weight: 500;
+    }
+    .resource-link:hover { text-decoration: underline; }
+    .grounding-exercise {
+      background: var(--bg-muted);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      margin-top: 16px;
+    }
+    .grounding-exercise-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .grounding-exercise-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      font-style: italic;
+    }
+    .retake-row {
+      text-align: center;
+      padding: 8px 0 16px;
+    }
+    .disclaimer-note {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      text-align: center;
+      max-width: 420px;
+      margin: 0 auto;
+      padding: 16px 0;
+    }
+
+    /* =============================================
+       ACCESSIBILITY
+       ============================================= */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+    [aria-live] { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+    /* Focus styles */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* =============================================
+       UTILITY
+       ============================================= */
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <!-- =============================================
+       STAGE 1: WELCOME SCREEN
+       ============================================= -->
+  <main id="welcome-screen" class="screen active" role="main" aria-label="Welcome">
+    <div class="card">
+      <div class="brand-logo" aria-hidden="true">PM</div>
+      <p class="brand">PsychoMaster</p>
+      <h1>How Does Your Nervous System Protect You?</h1>
+      <p class="tagline">Every survival strategy made sense at the time.<br>Let's find yours.</p>
+      <p class="meta-note">
+        A trauma response pattern exploration based on the 4F framework — Fight, Flight, Freeze, and Fawn.<br><br>
+        Most people are a blend of two. This quiz will find yours.
+      </p>
+      <button class="btn btn-primary" id="btn-begin" aria-label="Begin the trauma response pattern quiz">
+        Begin
+      </button>
+    </div>
+  </main>
+
+  <!-- =============================================
+       STAGE 2: CONSENT + FRAMING SCREEN
+       ============================================= -->
+  <main id="consent-screen" class="screen" role="main" aria-label="Before you begin">
+    <div class="card">
+      <h2>A note before we start</h2>
+      <div class="consent-body">
+        <p>
+          This quiz asks you to reflect on how you respond to stress, conflict, and emotionally charged situations. The questions are based on real patterns that trauma researchers and psychologists recognize.
+        </p>
+        <p>
+          <strong>What this is:</strong> A tool for self-reflection and psychoeducation. It can help you recognize patterns you've always sensed but never had words for.
+        </p>
+        <p>
+          <strong>What this is not:</strong> A clinical diagnosis, a substitute for therapy, or a fixed identity. Your responses developed in specific contexts to keep you safe — they're not flaws.
+        </p>
+        <p>
+          Some questions may feel familiar; others may not resonate at all. That's okay. There are no wrong answers here — only honest reflection.
+        </p>
+      </div>
+      <div class="consent-checkbox-row" id="consent-row" role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="consent-label">
+        <input type="checkbox" id="consent-checkbox" class="consent-checkbox">
+        <label id="consent-label" class="consent-label-text" for="consent-checkbox">
+          I understand this is a psychoeducational tool, not a clinical assessment, and I'm ready to begin.
+        </label>
+      </div>
+      <button class="btn btn-primary" id="btn-continue" disabled aria-label="Continue to quiz questions">
+        Continue
+      </button>
+    </div>
+  </main>
+
+  <!-- =============================================
+       STAGE 3: QUESTION FLOW
+       ============================================= -->
+  <main id="question-screen" class="screen" role="main" aria-label="Quiz questions">
+    <div class="progress-container">
+      <div class="progress-meta">
+        <span id="progress-label">Question 1 of 16</span>
+        <span id="progress-pct"></span>
+      </div>
+      <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Quiz progress">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="question-card" id="question-card">
+      <p class="question-text" id="question-text" aria-live="polite"></p>
+      <div class="options-list" id="options-list" role="radiogroup" aria-label="Answer options"></div>
+      <div class="question-nav">
+        <button class="btn btn-ghost" id="btn-back" aria-label="Go to previous question" style="visibility:hidden">
+          &larr; Back
+        </button>
+        <span></span>
+      </div>
+    </div>
+  </main>
+
+  <!-- =============================================
+       STAGE 4: PROCESSING MOMENT
+       ============================================= -->
+  <main id="processing-screen" class="screen" role="main" aria-label="Processing">
+    <div class="card">
+      <div class="processing-circle" aria-hidden="true">
+        <div class="processing-circle-inner"></div>
+      </div>
+      <h2>Reflecting on your responses&hellip;</h2>
+      <p>Understanding your patterns takes a moment.</p>
+    </div>
+  </main>
+
+  <!-- =============================================
+       STAGE 5: RESULT REVEAL + SHARE
+       ============================================= -->
+  <main id="result-screen" class="screen" role="main" aria-label="Your results">
+    <div class="result-card" id="result-card">
+      <p class="result-intro-label">Your dominant pattern</p>
+      <h2 class="result-archetype" id="result-archetype" aria-live="assertive"></h2>
+      <p class="result-type-name" id="result-type-name"></p>
+      <p class="result-tagline" id="result-tagline"></p>
+      <div class="result-divider"></div>
+      <p class="result-description" id="result-description"></p>
+      <ul class="result-traits" id="result-traits" aria-label="Key characteristics"></ul>
+      <div class="secondary-badge" id="secondary-badge" role="note">
+        <span class="secondary-badge-label">Also showing:</span>
+        <span class="trait-dot" id="secondary-dot"></span>
+        <span id="secondary-type-label"></span>
+      </div>
+    </div>
+
+    <!-- Share actions -->
+    <div class="card" style="padding:24px;">
+      <div class="share-actions">
+        <button class="btn btn-primary" id="btn-share" aria-label="Share your result">
+          <span class="btn-icon" aria-hidden="true">&#8594;</span>
+          Share Your Pattern
+        </button>
+        <button class="btn btn-secondary" id="btn-download" aria-label="Download your result as an image">
+          <span class="btn-icon" aria-hidden="true">&#11015;</span>
+          Save as Image
+        </button>
+      </div>
+    </div>
+
+    <!-- Resources -->
+    <div class="resources-card">
+      <h3>
+        <span aria-hidden="true">&#9749;</span>
+        Support &amp; Resources
+      </h3>
+      <div class="resource-item">
+        <span class="resource-icon" aria-hidden="true">&#128222;</span>
+        <div class="resource-content">
+          <p class="resource-label">If you're in crisis</p>
+          <p class="resource-desc">Free, confidential support is available. Please reach out to a local crisis service — you don't have to navigate this alone.</p>
+        </div>
+      </div>
+      <div class="resource-item">
+        <span class="resource-icon" aria-hidden="true">&#128214;</span>
+        <div class="resource-content">
+          <p class="resource-label">Find a trauma-informed therapist</p>
+          <p class="resource-desc">Search for licensed therapists specializing in trauma, EMDR, Somatic Experiencing, or IFS.</p>
+          <a href="https://www.psychologytoday.com/us/therapists" target="_blank" rel="noopener noreferrer" class="resource-link">Search therapists &rarr;</a>
+        </div>
+      </div>
+      <div class="resource-item">
+        <span class="resource-icon" aria-hidden="true">&#128218;</span>
+        <div class="resource-content">
+          <p class="resource-label">Continue learning</p>
+          <p class="resource-desc">Two grounding starting points on trauma and nervous system responses:</p>
+          <p class="resource-desc" style="margin-top:4px;">
+            <em>The Body Keeps the Score</em> — Bessel van der Kolk<br>
+            <em>CPTSD: From Surviving to Thriving</em> — Pete Walker
+          </p>
+        </div>
+      </div>
+      <div class="grounding-exercise" id="grounding-exercise">
+        <p class="grounding-exercise-label">A moment with yourself</p>
+        <p class="grounding-exercise-text" id="grounding-text"></p>
+      </div>
+    </div>
+
+    <div class="retake-row">
+      <button class="btn btn-ghost" id="btn-retake" aria-label="Retake the quiz">
+        Retake the quiz
+      </button>
+    </div>
+
+    <p class="disclaimer-note">
+      This quiz is psychoeducational and not a clinical diagnosis. It is not a substitute for professional mental health support. If you're struggling, please reach out to a qualified therapist or crisis service.
+    </p>
+  </main>
+
+  <!-- ARIA live region for screen reader announcements -->
+  <div aria-live="polite" id="aria-announcer" class="sr-only"></div>
+
+  <!-- Hidden canvas for share card generation -->
+  <canvas id="share-canvas" width="1080" height="1350" aria-hidden="true"></canvas>
+
+  <script>
+    /* =============================================
+       QUIZ DATA — ALL 16 QUESTIONS
+       Each option maps to a 4F type:
+         A = Fight, B = Flight, C = Freeze, D = Fawn
+       ============================================= */
+    const QUESTIONS = [
+      {
+        scenario: "A friend cancels plans with you at the last minute for the third time this month.",
+        options: [
+          {
+            letter: "A",
+            text: "I'd feel a flash of irritation — maybe even send a sharp text right then. I'd tell myself I'm not that bothered, but I'd be thinking about it for hours."
+          },
+          {
+            letter: "B",
+            text: "I'd tell myself it's fine, I probably needed the night alone anyway. I'd throw myself into something productive — clean the apartment, start a project, anything to not sit with the disappointment."
+          },
+          {
+            letter: "C",
+            text: "I'd read the message and just... go quiet. I'd stare at it for a minute, then put my phone down and feel kind of numb. I'd probably not respond for a long time, not because I'm angry, but because I don't know what to feel."
+          },
+          {
+            letter: "D",
+            text: "I'd immediately reassure them — \"No worries at all! Hope you're okay!\" — even though I'm quietly hurt. I'd probably over-explain why I was free, so they didn't feel guilty."
+          }
+        ]
+      },
+      {
+        scenario: "You're in a meeting and a colleague publicly takes credit for an idea you shared last week.",
+        options: [
+          {
+            letter: "A",
+            text: "I'd correct them on the spot — calmly, but firmly. I'd make sure the room knew where that idea came from. I wouldn't let it slide."
+          },
+          {
+            letter: "B",
+            text: "I'd make a mental note to never share ideas in meetings again. I'd start planning how to document everything going forward so this doesn't happen."
+          },
+          {
+            letter: "C",
+            text: "I'd feel something tighten in my chest but I'd just... stay quiet. I'd smile and let it go. Later, I'd replay it in bed and feel frustrated I didn't say anything."
+          },
+          {
+            letter: "D",
+            text: "I'd laugh it off in the moment and maybe even support their idea in front of everyone. I'd tell myself it's not worth making a scene."
+          }
+        ]
+      },
+      {
+        scenario: "Someone close to you is going through a hard time and texts you at 11pm asking if they can call right now.",
+        options: [
+          {
+            letter: "A",
+            text: "I'd feel a surge of obligation — like I have to say yes or I'm a bad friend. I'd answer and be present, but I'd feel quietly resentful by minute 20."
+          },
+          {
+            letter: "B",
+            text: "I'd feel tired and want to say no, so I'd make an excuse — I'm already in bed, I have an early morning — even though I could technically stay up."
+          },
+          {
+            letter: "C",
+            text: "I'd stare at the message. I'd want to respond but feel paralyzed about what to say. I'd probably leave it for a while and hope they text again so I don't have to decide."
+          },
+          {
+            letter: "D",
+            text: "I'd say yes immediately, drop everything, and be fully present for them — even if I'm exhausted, even if I have something important the next day. Their need feels more real than mine."
+          }
+        ]
+      },
+      {
+        scenario: "You wake up on a Saturday with nothing planned and nowhere to be.",
+        options: [
+          {
+            letter: "A",
+            text: "I'd feel restless — like I should be doing something productive. Even lying in bed feels wrong. I'd probably start a project or reorganize something within an hour."
+          },
+          {
+            letter: "B",
+            text: "I'd sleep in, take a long shower, scroll my phone for a while. It sounds nice but a part of me would feel vaguely guilty, like I should be doing more."
+          },
+          {
+            letter: "C",
+            text: "I'd stay in bed. Not because I chose rest — more like my body just... won't fully come online. I'd scroll, half-watch something, drift. The day would feel slippery."
+          },
+          {
+            letter: "D",
+            text: "I'd immediately start thinking if anyone needs anything this weekend. I'd volunteer to help a family member, check in on a friend, make myself available — even when I explicitly have nothing scheduled."
+          }
+        ]
+      },
+      {
+        scenario: "You're at dinner with a group and someone makes a joke that subtly puts someone else down.",
+        options: [
+          {
+            letter: "A",
+            text: "I'd probably say something — not aggressively, but I'd challenge it. \"That's not really fair, right?\" Something that shifts the room's energy."
+          },
+          {
+            letter: "B",
+            text: "I'd laugh along to fit in, but feel uncomfortable inside. Later I'd probably think about whether I should have said something."
+          },
+          {
+            letter: "C",
+            text: "I'd go very still. My smile would feel stuck. I'd feel like I can't move or speak. I'd leave the dinner feeling off and not knowing why."
+          },
+          {
+            letter: "D",
+            text: "I'd probably make a joke to lighten the mood or deflect — something that keeps the social atmosphere smooth. I'd take pressure off the person being put down by changing the subject."
+          }
+        ]
+      },
+      {
+        scenario: "Your partner says something that hurt your feelings and you want to bring it up.",
+        options: [
+          {
+            letter: "A",
+            text: "I'd bring it up directly — probably sooner than later. I'd want to talk it through, understand who was right, and resolve it. I'd feel unresolved until we address it."
+          },
+          {
+            letter: "B",
+            text: "I'd think about how to say it perfectly first. I'd rehearse it in my head, maybe write it down. I'd probably delay bringing it up until I felt \"ready\" — which might take days."
+          },
+          {
+            letter: "C",
+            text: "I'd feel like I can't find the words. I'd freeze in the moment and later feel frustrated that I didn't say anything. Sometimes I'd just shut down mid-conversation."
+          },
+          {
+            letter: "D",
+            text: "I'd bring it up in a very careful, soft way — almost apologizing for bringing it up. I'd make it feel smaller than it is so they wouldn't feel bad. I'd probably end up comforting them instead."
+          }
+        ]
+      },
+      {
+        scenario: "You're running late to something important — an interview, a flight, a medical appointment.",
+        options: [
+          {
+            letter: "A",
+            text: "I'd feel my heart rate spike immediately. I'd rush, get aggressive with traffic, maybe get short with anyone in my way. I'd be running the whole time, not breathing."
+          },
+          {
+            letter: "B",
+            text: "I'd start rescheduling or looking for exits — maybe I don't have to go, maybe I can push it. I'd try to solve the lateness with logistics rather than just getting there."
+          },
+          {
+            letter: "C",
+            text: "I'd feel frozen by the stress — like my body goes into slow motion even though I know I need to move. There might be a moment where I just... stop and stare."
+          },
+          {
+            letter: "D",
+            text: "I'd text them immediately to apologize before I even solve the problem. I'd be more worried about how I'm perceived than the actual consequence of being late."
+          }
+        ]
+      },
+      {
+        scenario: "A family member criticizes a life choice you made — your career, your relationship, where you live.",
+        options: [
+          {
+            letter: "A",
+            text: "I'd push back. I'd defend my choice, explain my reasoning, maybe get into an argument. I wouldn't sit quietly with that."
+          },
+          {
+            letter: "B",
+            text: "I'd deflect — change the subject, make a joke, leave the room mentally if not physically. I'd tell myself their opinion doesn't matter and try to move on."
+          },
+          {
+            letter: "C",
+            text: "I'd feel my chest go tight. I'd probably go quiet and just nod, even though I'm upset. I'd shut down and wait for the conversation to end."
+          },
+          {
+            letter: "D",
+            text: "I'd actually start to wonder if they're right. I'd maybe ask questions about their concern, validate their viewpoint, and quietly question myself."
+          }
+        ]
+      },
+      {
+        scenario: "You notice you've been working long hours for weeks without a real break.",
+        options: [
+          {
+            letter: "A",
+            text: "I'd feel driven — like stopping isn't an option. There's always more to do. I'd probably work through the tiredness rather than rest."
+          },
+          {
+            letter: "B",
+            text: "I'd feel exhausted but also guilty about not doing more. I'd schedule a break but then cancel it because something came up. I'd run on fumes."
+          },
+          {
+            letter: "C",
+            text: "I'd reach a point where I just... stop. I can't keep going. I might call in sick or just go non-functional for a day or two."
+          },
+          {
+            letter: "D",
+            text: "I'd keep going because others are counting on me. My work, my family, my responsibilities — I'd prioritize their needs over my exhaustion until something gives."
+          }
+        ]
+      },
+      {
+        scenario: "You're in a heated argument and the other person raises their voice.",
+        options: [
+          {
+            letter: "A",
+            text: "I'd raise mine back. I wouldn't back down. If they escalate, I'd escalate. I'd want to win this."
+          },
+          {
+            letter: "B",
+            text: "I'd mentally check out — start planning my exit from the conversation, rehearse what I'll say when I leave, or figure out how to de-escalate quickly so I can escape."
+          },
+          {
+            letter: "C",
+            text: "I'd go completely silent. Not out of choice — more like my voice just stops. I might cry or dissociate. I can't find words or don't trust myself to speak."
+          },
+          {
+            letter: "D",
+            text: "I'd probably apologize to calm things down — even if I'm not the one who did something wrong. I'd say whatever would make them stop being upset."
+          }
+        ]
+      },
+      {
+        scenario: "You walk into a room where a group of people stop talking when you enter.",
+        options: [
+          {
+            letter: "A",
+            text: "I'd assume they were talking about me and confront it — directly or indirectly. I'd be annoyed and want answers. I'd probably ask what they were talking about."
+          },
+          {
+            letter: "B",
+            text: "I'd pretend I didn't notice and act very normal. But I'd be watching from across the room, trying to figure out what happened without engaging directly."
+          },
+          {
+            letter: "C",
+            text: "I'd feel a knot in my stomach and want to disappear. I'd probably leave the room or find somewhere to stand where I'm less exposed. I might go very quiet."
+          },
+          {
+            letter: "D",
+            text: "I'd try to rejoin the conversation quickly — laugh, make small talk, fit back in — even if I feel hurt. I'd probably overcompensate to be accepted."
+          }
+        ]
+      },
+      {
+        scenario: "You're about to make a big purchase — a house, a car, a major investment — and you realize you haven't really consulted anyone close to you.",
+        options: [
+          {
+            letter: "A",
+            text: "It's my decision. I don't need to consult anyone. I'd make the call and tell them after. I'd see this as self-reliance, not isolation."
+          },
+          {
+            letter: "B",
+            text: "I'd research it obsessively before deciding. I'd read every review, every forum post, every comparison — trying to make the \"perfect\" choice alone so I don't have to involve anyone."
+          },
+          {
+            letter: "C",
+            text: "I'd feel overwhelmed by the scale of it. The bigger the decision, the harder it gets. I might delay it indefinitely or feel stuck between options."
+          },
+          {
+            letter: "D",
+            text: "I'd already know what they would think and I'd make my decision based on that. I'd be more focused on whether they'd approve than whether it's right for me."
+          }
+        ]
+      },
+      {
+        scenario: "Someone tells you that you've hurt their feelings and they'd like to talk about it.",
+        options: [
+          {
+            letter: "A",
+            text: "I'd get defensive quickly. I'd explain my intentions, point out why I was right, or redirect to what they did wrong. I'd struggle to just listen without fixing or fighting."
+          },
+          {
+            letter: "B",
+            text: "I'd agree to talk but mentally prepare a rebuttal. I'd spend more time thinking about what I'd say back than actually hearing what they said. I'd also probably want to leave the conversation early."
+          },
+          {
+            letter: "C",
+            text: "I'd go very quiet and feel flooded. I'd have a hard time responding in the moment — not because I don't care, but because I genuinely don't know what to say or how to process it."
+          },
+          {
+            letter: "D",
+            text: "I'd immediately apologize and try to fix it. I'd take on full responsibility, maybe even over-apologize, even if I'm not sure what I did. I'd prioritize ending the discomfort quickly."
+          }
+        ]
+      },
+      {
+        scenario: "You have a week completely free — no work, no obligations, no one needing anything from you.",
+        options: [
+          {
+            letter: "A",
+            text: "I'd fill it immediately. There's a project to start, a skill to learn, a goal to advance. A week off feels like a waste if I'm not achieving something."
+          },
+          {
+            letter: "B",
+            text: "I'd enjoy it but feel the productivity anxiety underneath. I might start the week relaxed and by Wednesday be bored and jittery, needing a task."
+          },
+          {
+            letter: "C",
+            text: "I'd have good intentions — maybe I'd planned to do things — but the week would pass in a kind of haze. I'd rest but not feel rested. Days would blur together."
+          },
+          {
+            letter: "D",
+            text: "Someone would ask me to help with something and I'd say yes. I'd fill my week with others' needs and then wonder why I still feel empty."
+          }
+        ]
+      },
+      {
+        scenario: "You're in a new social situation — a party, a networking event, a group trip — where you don't know many people.",
+        options: [
+          {
+            letter: "A",
+            text: "I'd walk in like I own the place. I'd introduce myself, work the room, make sure people know who I am. I'd probably try to become the center of things."
+          },
+          {
+            letter: "B",
+            text: "I'd scout the edges, find someone who seems approachable, and stick with them. I'd research the event or hosts beforehand so I feel prepared and safe."
+          },
+          {
+            letter: "C",
+            text: "I'd feel exposed and anxious. I'd probably go somewhere quiet, check my phone to feel less alone, and hope someone approaches me rather than risk being the one to start a conversation."
+          },
+          {
+            letter: "D",
+            text: "I'd immediately mirror the energy of whoever I'm talking to. I'd agree with things, laugh at jokes I don't get, and make myself useful so people like me."
+          }
+        ]
+      },
+      {
+        scenario: "Looking back over the past year, what's the most consistent pattern in how you responded to stress?",
+        options: [
+          {
+            letter: "A",
+            text: "I pushed through. I worked harder, moved faster, tackled it head-on. I didn't let anyone see me struggle — or if they did, I covered it with action."
+          },
+          {
+            letter: "B",
+            text: "I distanced myself. I threw myself into something else, isolated, or numbed out in ways that kept me one step ahead of feeling it fully."
+          },
+          {
+            letter: "C",
+            text: "I shut down. I went quiet, withdrew, felt numb, or just... disappeared from things for a while. People around me might not have even noticed."
+          },
+          {
+            letter: "D",
+            text: "I made sure everyone else was okay first. I checked in on people, solved their problems, made myself useful — even when I was the one who needed support."
+          }
+        ]
+      }
+    ];
+
+    /* =============================================
+       RESULT DATA
+       ============================================= */
+    const RESULT_DATA = {
+      fight: {
+        archetype: "The Guardian",
+        typeName: "Fight Response",
+        tagline: "You learned to meet threat by becoming unstoppable. The question is whether the urgency ever turns off.",
+        description: "Your nervous system learned to protect you through immediate, forceful action. When danger appears, your default is to engage, confront, or control — not because you enjoy conflict, but because movement and mastery once meant safety. You've developed a remarkable capacity to act under pressure. The cost is that stillness can feel dangerous, and vulnerability may register as weakness.",
+        traits: [
+          "Responds to stress with immediate action, rarely pausing to feel it first",
+          "Uses productivity, achievement, or control as emotional regulators",
+          "Finds it difficult to ask for help or admit vulnerability",
+          "Prone to frustration when others don't match your pace or standards"
+        ],
+        grounding: "Roll your shoulders back slowly. Place both feet flat on the floor. Take one slow breath in through your nose, and release it through your mouth. You are safe right now. The urgency can wait a moment.",
+        colorPrimary: "#C4956A",
+        colorSecondary: "#8B6914"
+      },
+      flight: {
+        archetype: "The Scout",
+        typeName: "Flight Response",
+        tagline: "You learned that if you moved fast enough, you could outrun the feelings you didn't want to have. But some things aren't meant to be outrun.",
+        description: "Your nervous system learned to find safety in motion — in planning, doing, staying one step ahead of the feeling. Busyness became a shield, and independence became the price of feeling safe. You've developed extraordinary capability and forward momentum. The cost is that stillness often feels like danger, and feelings you've been outrunning may be waiting.",
+        traits: [
+          "Prone to chronic busyness, even when rest is available",
+          "Tends to think through problems rather than feel through them",
+          "Struggles to be present in conversations because part of the mind is always elsewhere",
+          "Described as reliable, responsible, and always on — by others and yourself"
+        ],
+        grounding: "Look out a window — name 5 things you can see. Then name 4 things you can hear. Notice your nervous system for just a moment. You don't have to solve anything right now.",
+        colorPrimary: "#7A9E9E",
+        colorSecondary: "#4A7C7C"
+      },
+      freeze: {
+        archetype: "The Witness",
+        typeName: "Freeze Response",
+        tagline: "When fight and flight weren't options, you learned to vanish. And sometimes, vanishing was the only way you knew how to stay whole.",
+        description: "Your nervous system learned to find safety in disappearance — in going inside, going quiet, becoming invisible when no other option remained. This was not giving up; it was the last available act of protection. You've developed a rich inner world and remarkable capacity to endure. The cost is that life may sometimes feel like it's happening at a distance, and your needs may go unheard even by you.",
+        traits: [
+          "Tends to withdraw or go quiet when stressed rather than engage or confront",
+          "May experience dissociative episodes — feeling unreal, spaced out, or disconnected",
+          "Often appears calm or detached in situations where others are visibly upset",
+          "Experiences emotions more as waves or numbness than steady streams"
+        ],
+        grounding: "Notice your feet on the floor. Can you feel them? Press them gently down. Look around the room and name three things you can see. You are here. You are real.",
+        colorPrimary: "#9B96B0",
+        colorSecondary: "#6E6889"
+      },
+      fawn: {
+        archetype: "The Keeper",
+        typeName: "Fawn Response",
+        tagline: "You learned that love was conditional on being good, helpful, and small. The world needs you — but right now, you need you too.",
+        description: "Your nervous system learned to find safety in being needed — in anticipating others' needs before they asked, in making yourself valuable so you wouldn't be abandoned. You've developed deep empathy and extraordinary relational attunement. The cost is that your own needs may have become hard to locate, and you may have forgotten what it feels like to be cared for, not just caring.",
+        traits: [
+          "Has a near-instant ability to read what others need and adapt to it",
+          "Says yes when they mean no — or doesn't realize they've agreed until it's done",
+          "Takes on others' emotional states as if they were their own",
+          "Has a complicated relationship with anger — often suppressed, occasionally explosive"
+        ],
+        grounding: "Place a hand gently on your chest. Take a slow breath in. As you breathe out, ask yourself quietly: What do I need right now? You don't have to have an answer. Just ask.",
+        colorPrimary: "#C4908A",
+        colorSecondary: "#9E6B63"
+      }
+    };
+
+    /* =============================================
+       TYPE DISPLAY LABELS
+       ============================================= */
+    const TYPE_LABELS = {
+      fight: "Fight",
+      flight: "Flight",
+      freeze: "Freeze",
+      fawn: "Fawn"
+    };
+
+    /* =============================================
+       QUIZ STATE
+       ============================================= */
+    const STORAGE_KEY = "psycho-trauma-quiz-v1";
+    let currentQuestion = 0;
+    let scores = { fight: 0, flight: 0, freeze: 0, fawn: 0 };
+    let answers = []; // stores letter chosen per question
+
+    function getTypeFromLetter(letter) {
+      const map = { A: "fight", B: "flight", C: "freeze", D: "fawn" };
+      return map[letter];
+    }
+
+    /* =============================================
+       SCREEN MANAGEMENT
+       ============================================= */
+    function showScreen(id) {
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      const screen = document.getElementById(id);
+      screen.classList.add("active");
+      screen.setAttribute("aria-hidden", "false");
+      // Hide other screens from aria
+      document.querySelectorAll(".screen:not(.active)").forEach(s => s.setAttribute("aria-hidden", "true"));
+      // Focus management
+      const focusTarget = screen.querySelector("h1, h2, .btn-primary, [tabindex='0']");
+      if (focusTarget) {
+        setTimeout(() => focusTarget.focus(), 50);
+      }
+    }
+
+    /* =============================================
+       PROGRESS BAR
+       ============================================= */
+    function updateProgress(qIndex) {
+      const pct = Math.round((qIndex / QUESTIONS.length) * 100);
+      document.getElementById("progress-fill").style.width = pct + "%";
+      document.getElementById("progress-label").textContent = `Question ${qIndex + 1} of ${QUESTIONS.length}`;
+      const bar = document.querySelector('[role="progressbar"]');
+      bar.setAttribute("aria-valuenow", pct);
+      announce(`Question ${qIndex + 1} of ${QUESTIONS.length}`);
+    }
+
+    /* =============================================
+       QUESTION RENDERING
+       ============================================= */
+    function renderQuestion(index) {
+      const q = QUESTIONS[index];
+      document.getElementById("question-text").textContent = q.scenario;
+
+      const list = document.getElementById("options-list");
+      list.innerHTML = "";
+
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn" + (answers[index] === opt.letter ? " selected" : "");
+        btn.setAttribute("role", "radio");
+        btn.setAttribute("aria-checked", answers[index] === opt.letter ? "true" : "false");
+        btn.setAttribute("aria-label", `${opt.letter}: ${opt.text}`);
+        btn.dataset.letter = opt.letter;
+
+        const isReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (!isReduced) btn.style.animationDelay = (i * 60) + "ms";
+
+        btn.innerHTML = `<span class="option-letter" aria-hidden="true">${opt.letter}</span><span>${opt.text}</span>`;
+
+        btn.addEventListener("click", () => selectOption(index, opt.letter));
+        list.appendChild(btn);
+      });
+
+      updateProgress(index);
+
+      // Back button visibility
+      const backBtn = document.getElementById("btn-back");
+      backBtn.style.visibility = index > 0 ? "visible" : "hidden";
+    }
+
+    function selectOption(qIndex, letter) {
+      // Record answer
+      const prev = answers[qIndex];
+      answers[qIndex] = letter;
+
+      // Update score
+      if (prev) {
+        scores[getTypeFromLetter(prev)]--;
+      }
+      scores[getTypeFromLetter(letter)]++;
+
+      // Save progress
+      saveProgress();
+
+      // Visual selection
+      document.querySelectorAll(".option-btn").forEach(btn => {
+        const isSelected = btn.dataset.letter === letter;
+        btn.classList.toggle("selected", isSelected);
+        btn.setAttribute("aria-checked", isSelected ? "true" : "false");
+      });
+
+      // Announce
+      const labels = { A: "Fight", B: "Flight", C: "Freeze", D: "Fawn" };
+      announce(`Selected: ${labels[letter]}. Moving to next question.`);
+
+      // Auto-advance after 400ms
+      setTimeout(() => {
+        if (qIndex < QUESTIONS.length - 1) {
+          currentQuestion = qIndex + 1;
+          renderQuestion(currentQuestion);
+        } else {
+          finishQuiz();
+        }
+      }, 400);
+    }
+
+    /* =============================================
+       SCORING + RESULT CALCULATION
+       ============================================= */
+    function calculateResults() {
+      const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+      const primary = sorted[0][0];
+      const secondary = sorted[1][0];
+
+      // Tiebreaker using Q16
+      if (sorted[0][1] === sorted[1][1] && answers[15]) {
+        const q16Type = getTypeFromLetter(answers[15]);
+        // Boost the Q16 type
+        if (q16Type === primary) {
+          // Already primary, keep it
+        } else if (q16Type === secondary) {
+          // Q16 supports secondary — swap not needed since they're equal
+        }
+        // If Q16 is a different type (3rd type tied), leave as-is
+      }
+
+      return { primary, secondary };
+    }
+
+    /* =============================================
+       PROCESSING + RESULT DISPLAY
+       ============================================= */
+    function finishQuiz() {
+      showScreen("processing-screen");
+      setTimeout(() => {
+        displayResult();
+        showScreen("result-screen");
+      }, 2500);
+    }
+
+    function displayResult() {
+      const { primary, secondary } = calculateResults();
+      const data = RESULT_DATA[primary];
+      const secData = RESULT_DATA[secondary];
+
+      // Set body class for color theming
+      document.body.className = `result-${primary}`;
+
+      // Populate result card
+      document.getElementById("result-archetype").textContent = data.archetype;
+      document.getElementById("result-type-name").textContent = data.typeName;
+      document.getElementById("result-tagline").textContent = data.tagline;
+      document.getElementById("result-description").textContent = data.description;
+
+      // Traits
+      const traitsList = document.getElementById("result-traits");
+      traitsList.innerHTML = data.traits.map(t => {
+        return `<li><span class="trait-dot" aria-hidden="true"></span>${t}</li>`;
+      }).join("");
+
+      // Secondary badge
+      document.getElementById("secondary-dot").style.background = RESULT_DATA[secondary].colorPrimary;
+      document.getElementById("secondary-type-label").textContent =
+        `${secData.archetype} — ${TYPE_LABELS[secondary]}`;
+
+      // Grounding exercise
+      document.getElementById("grounding-text").textContent = data.grounding;
+
+      // Announce result to screen reader
+      announce(`Your dominant trauma response is ${data.archetype}, ${data.typeName}. Your secondary pattern is ${secData.archetype}.`);
+    }
+
+    /* =============================================
+       SHARE CARD — CANVAS PNG
+       ============================================= */
+    function generateShareCard() {
+      const { primary, secondary } = calculateResults();
+      const data = RESULT_DATA[primary];
+      const secData = RESULT_DATA[secondary];
+      const canvas = document.getElementById("share-canvas");
+      const ctx = canvas.getContext("2d");
+      const W = 1080, H = 1350;
+
+      ctx.clearRect(0, 0, W, H);
+
+      // Gradient background
+      const grad = ctx.createLinearGradient(0, 0, W * 0.7, H);
+      grad.addColorStop(0, data.colorPrimary);
+      grad.addColorStop(1, data.colorSecondary);
+      ctx.fillStyle = grad;
+      roundRect(ctx, 0, 0, W, H, 0);
+      ctx.fill();
+
+      // Subtle inner glow / overlay
+      ctx.fillStyle = "rgba(255,255,255,0.06)";
+      roundRect(ctx, 0, 0, W, H, 0);
+      ctx.fill();
+
+      // Top accent bar
+      ctx.fillStyle = "rgba(255,255,255,0.15)";
+      roundRect(ctx, 0, 0, W, 8, 0);
+      ctx.fill();
+
+      // Brand name
+      ctx.fillStyle = "rgba(255,255,255,0.7)";
+      ctx.font = "500 28px Inter, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("PsychoMaster", W / 2, 90);
+
+      // Quiz title
+      ctx.fillStyle = "rgba(255,255,255,0.5)";
+      ctx.font = "400 22px Inter, sans-serif";
+      ctx.fillText("Trauma Response Pattern Quiz", W / 2, 130);
+
+      // Divider
+      ctx.strokeStyle = "rgba(255,255,255,0.2)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(W * 0.2, 165);
+      ctx.lineTo(W * 0.8, 165);
+      ctx.stroke();
+
+      // "Your pattern" label
+      ctx.fillStyle = "rgba(255,255,255,0.6)";
+      ctx.font = "500 22px Inter, sans-serif";
+      ctx.fillText("Your dominant pattern", W / 2, 240);
+
+      // Archetype name
+      ctx.fillStyle = "#FFFFFF";
+      ctx.font = "700 108px Fraunces, Georgia, serif";
+      ctx.textAlign = "center";
+
+      // Word wrap archetype name if needed
+      const archetypeWords = data.archetype.split(" ");
+      if (archetypeWords.length > 1 && data.archetype.length > 12) {
+        ctx.fillText(archetypeWords[0], W / 2, 360);
+        ctx.fillText(archetypeWords.slice(1).join(" "), W / 2, 480);
+      } else {
+        ctx.fillText(data.archetype, W / 2, 380);
+      }
+
+      // Type name
+      ctx.fillStyle = "rgba(255,255,255,0.85)";
+      ctx.font = "italic 400 44px Fraunces, Georgia, serif";
+      ctx.fillText(data.typeName, W / 2, 540);
+
+      // Tagline
+      ctx.fillStyle = "rgba(255,255,255,0.7)";
+      ctx.font = "italic 400 30px Fraunces, Georgia, serif";
+      // Wrap tagline
+      wrapText(ctx, `"${data.tagline}"`, W * 0.12, W * 0.88, 600, 38, 34);
+
+      // Divider
+      ctx.strokeStyle = "rgba(255,255,255,0.2)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(W * 0.25, 720);
+      ctx.lineTo(W * 0.75, 720);
+      ctx.stroke();
+
+      // Key traits
+      ctx.fillStyle = "rgba(255,255,255,0.6)";
+      ctx.font = "600 22px Inter, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("Key Characteristics", W / 2, 770);
+
+      ctx.font = "400 28px Inter, sans-serif";
+      ctx.textAlign = "left";
+      const traitX = W * 0.15;
+      let traitY = 820;
+      data.traits.forEach((trait, i) => {
+        // Bullet dot
+        ctx.fillStyle = "rgba(255,255,255,0.8)";
+        ctx.beginPath();
+        ctx.arc(traitX + 10, traitY + 9, 6, 0, Math.PI * 2);
+        ctx.fill();
+        // Text
+        ctx.fillStyle = "rgba(255,255,255,0.9)";
+        ctx.fillText(trait, traitX + 30, traitY + 16);
+        traitY += 55;
+      });
+
+      // Secondary pattern
+      traitY += 20;
+      ctx.strokeStyle = "rgba(255,255,255,0.2)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(W * 0.2, traitY);
+      ctx.lineTo(W * 0.8, traitY);
+      ctx.stroke();
+      traitY += 40;
+
+      ctx.fillStyle = "rgba(255,255,255,0.5)";
+      ctx.font = "500 20px Inter, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("Also showing", W / 2, traitY);
+      traitY += 38;
+      ctx.fillStyle = "rgba(255,255,255,0.8)";
+      ctx.font = "600 30px Inter, sans-serif";
+      ctx.fillText(`${secData.archetype} — ${TYPE_LABELS[secondary]}`, W / 2, traitY);
+
+      // Bottom watermark
+      ctx.fillStyle = "rgba(255,255,255,0.35)";
+      ctx.font = "400 20px Inter, sans-serif";
+      ctx.fillText("PsychoMaster — Trauma Response Pattern Quiz", W / 2, H - 50);
+
+      return canvas;
+    }
+
+    function wrapText(ctx, text, minX, maxX, y, lineHeight, fontSize) {
+      const words = text.split(" ");
+      let line = "";
+      const centerX = (minX + maxX) / 2;
+      ctx.textAlign = "center";
+      words.forEach((word, i) => {
+        const testLine = line + word + " ";
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > (maxX - minX) && i > 0) {
+          ctx.fillText(line.trim(), centerX, y);
+          line = word + " ";
+          y += lineHeight;
+        } else {
+          line = testLine;
+        }
+      });
+      ctx.fillText(line.trim(), centerX, y);
+    }
+
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    function downloadShareCard() {
+      const canvas = generateShareCard();
+      const link = document.createElement("a");
+      const { primary } = calculateResults();
+      const data = RESULT_DATA[primary];
+      link.download = `trauma-response-${primary}-result.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    }
+
+    function shareResult() {
+      const isWeChat = /MicroMessenger/i.test(navigator.userAgent);
+      const { primary, secondary } = calculateResults();
+      const data = RESULT_DATA[primary];
+      const secData = RESULT_DATA[secondary];
+
+      const shareText = `My trauma response pattern is ${data.archetype} — ${data.typeName}. Your nervous system learned to protect you too. Find yours with this free quiz.`;
+
+      if (isWeChat) {
+        // WeChat: copy text to clipboard, show the card download
+        navigator.clipboard.writeText(shareText + " #TraumaResponse #4F #PsychoMaster").then(() => {
+          alert("Share text copied! Paste it in WeChat to share your result.\n\nTip: Download your result card first to attach it.");
+        }).catch(() => {
+          // Fallback
+          prompt("Copy this text to share:", shareText + " #TraumaResponse #4F #PsychoMaster");
+        });
+        downloadShareCard();
+        return;
+      }
+
+      if (navigator.share) {
+        navigator.share({
+          title: `${data.archetype} — ${data.typeName}`,
+          text: shareText
+        }).catch(() => {});
+      } else {
+        // Fallback: copy text
+        navigator.clipboard.writeText(shareText + " #TraumaResponse #4F #PsychoMaster").then(() => {
+          announce("Share text copied to clipboard!");
+          const btn = document.getElementById("btn-share");
+          const orig = btn.innerHTML;
+          btn.innerHTML = '<span class="btn-icon" aria-hidden="true">&#10003;</span> Copied!';
+          setTimeout(() => { btn.innerHTML = orig; }, 2000);
+        }).catch(() => {
+          prompt("Copy this to share:", shareText + " #TraumaResponse #4F #PsychoMaster");
+        });
+      }
+    }
+
+    /* =============================================
+       PROGRESS PERSISTENCE (localStorage)
+       ============================================= */
+    function saveProgress() {
+      const state = { currentQuestion, scores, answers };
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch(e) {}
+    }
+
+    function loadProgress() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch(e) { return null; }
+    }
+
+    function clearProgress() {
+      try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+      scores = { fight: 0, flight: 0, freeze: 0, fawn: 0 };
+      answers = new Array(QUESTIONS.length).fill(null);
+      currentQuestion = 0;
+    }
+
+    /* =============================================
+       ACCESSIBILITY ANNOUNCER
+       ============================================= */
+    function announce(text) {
+      const el = document.getElementById("aria-announcer");
+      el.textContent = "";
+      setTimeout(() => { el.textContent = text; }, 50);
+    }
+
+    /* =============================================
+       EVENT LISTENERS
+       ============================================= */
+    document.addEventListener("DOMContentLoaded", () => {
+      // Restore saved progress
+      const saved = loadProgress();
+      if (saved) {
+        currentQuestion = saved.currentQuestion || 0;
+        scores = saved.scores || { fight: 0, flight: 0, freeze: 0, fawn: 0 };
+        answers = saved.answers || new Array(QUESTIONS.length).fill(null);
+      } else {
+        answers = new Array(QUESTIONS.length).fill(null);
+      }
+
+      // Begin button
+      document.getElementById("btn-begin").addEventListener("click", () => {
+        showScreen("consent-screen");
+      });
+
+      // Consent checkbox
+      const checkbox = document.getElementById("consent-checkbox");
+      const continueBtn = document.getElementById("btn-continue");
+      checkbox.addEventListener("change", () => {
+        continueBtn.disabled = !checkbox.checked;
+      });
+
+      // Consent row keyboard (checkbox row is clickable)
+      const consentRow = document.getElementById("consent-row");
+      consentRow.addEventListener("keydown", (e) => {
+        if (e.key === " " || e.key === "Enter") {
+          e.preventDefault();
+          checkbox.checked = !checkbox.checked;
+          checkbox.dispatchEvent(new Event("change"));
+        }
+      });
+
+      // Continue button
+      continueBtn.addEventListener("click", () => {
+        if (!checkbox.checked) return;
+        showScreen("question-screen");
+        renderQuestion(currentQuestion);
+      });
+
+      // Back button
+      document.getElementById("btn-back").addEventListener("click", () => {
+        if (currentQuestion > 0) {
+          currentQuestion--;
+          renderQuestion(currentQuestion);
+        }
+      });
+
+      // Share button
+      document.getElementById("btn-share").addEventListener("click", shareResult);
+
+      // Download button
+      document.getElementById("btn-download").addEventListener("click", downloadShareCard);
+
+      // Retake button
+      document.getElementById("btn-retake").addEventListener("click", () => {
+        clearProgress();
+        document.body.className = "";
+        showScreen("welcome-screen");
+        checkbox.checked = false;
+        continueBtn.disabled = true;
+      });
+
+      // Keyboard navigation for options
+      document.getElementById("options-list").addEventListener("keydown", (e) => {
+        if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+          e.preventDefault();
+          const opts = Array.from(document.querySelectorAll(".option-btn"));
+          const focused = document.activeElement;
+          const idx = opts.indexOf(focused);
+          let next;
+          if (e.key === "ArrowDown") next = opts[(idx + 1) % opts.length];
+          else next = opts[(idx - 1 + opts.length) % opts.length];
+          next.focus();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
