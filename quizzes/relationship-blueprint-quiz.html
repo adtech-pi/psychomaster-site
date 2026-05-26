@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Relationship Blueprint — Discover Your Emotional Patterns</title>
+  <meta name="description" content="Discover the unspoken emotional rules from your family that quietly govern your adult relationships. A psychology-based quiz about relationship blueprints.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #C4785A;
+      --primary-light: #E8A882;
+      --primary-dark: #B06A4C;
+      --secondary: #5C3D5E;
+      --accent: #D4A853;
+      --bg: #FAF6F0;
+      --surface: #FFFFFF;
+      --text: #2C2825;
+      --text-secondary: #6B6259;
+      --border: #E5DDD4;
+      --error: #C06060;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Inter', system-ui, sans-serif;
+      --radius-card: 12px;
+      --radius-btn: 8px;
+      --transition: 300ms ease-out;
+      --transition-fast: 150ms ease-out;
+      --transition-screen: 400ms ease-in-out;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ─── Screens ─── */
+    .screen {
+      display: none;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+    .screen.active { display: flex; }
+
+    /* ─── Landing ─── */
+    .landing {
+      justify-content: center;
+      align-items: center;
+      padding: 48px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .landing::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 80%, rgba(196,120,90,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 60% at 80% 20%, rgba(92,61,94,0.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .landing-content {
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+    }
+    .landing-eyebrow {
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 16px;
+    }
+    .landing-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.25rem, 6vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+    .landing-subtitle {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 40px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .landing-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary);
+      color: #fff;
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 16px 36px;
+      border: none;
+      border-radius: var(--radius-btn);
+      cursor: pointer;
+      transition: background var(--transition-fast), transform var(--transition-fast);
+      text-decoration: none;
+    }
+    .landing-cta:hover { background: var(--primary-dark); }
+    .landing-cta:active { transform: scale(0.98); }
+    .landing-cta:focus-visible {
+      outline: 2px solid var(--secondary);
+      outline-offset: 3px;
+    }
+    .landing-trust {
+      margin-top: 32px;
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+    .trust-item svg { color: var(--primary); flex-shrink: 0; }
+
+    /* ─── Intro ─── */
+    .intro {
+      justify-content: center;
+      align-items: center;
+      padding: 48px 24px;
+    }
+    .intro-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 32px 24px;
+      max-width: 640px;
+      width: 100%;
+    }
+    @media (min-width: 640px) { .intro-card { padding: 48px 40px; } }
+    .intro-icon {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, var(--primary-light), var(--primary));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+    .intro-icon svg { color: #fff; }
+    .intro-title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.75rem, 4vw, 2.25rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .intro-body {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+    .intro-body p + p { margin-top: 12px; }
+    .intro-disclaimer {
+      background: var(--bg);
+      border-left: 3px solid var(--accent);
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+    .intro-disclaimer strong { color: var(--secondary); }
+
+    /* ─── Question ─── */
+    .question-screen {
+      justify-content: flex-start;
+      padding: 0 24px 48px;
+    }
+    @media (min-width: 640px) { .question-screen { padding: 0 48px 64px; } }
+    .question-inner {
+      max-width: 640px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .progress-bar-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--bg);
+      padding: 16px 0 20px;
+    }
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+    .progress-bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 2px;
+      transition: width 500ms ease-out;
+      width: 0%;
+    }
+    .question-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 28px 24px;
+      margin-top: 16px;
+    }
+    @media (min-width: 640px) { .question-card { padding: 36px 40px; } }
+    .question-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--primary);
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+    .question-text {
+      font-family: var(--font-serif);
+      font-size: clamp(1.125rem, 3vw, 1.375rem);
+      font-weight: 600;
+      line-height: 1.35;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .question-scenario {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+    .answers { display: flex; flex-direction: column; gap: 12px; }
+    .answer-option {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 14px 18px;
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--text);
+      cursor: pointer;
+      transition: border-color var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+    }
+    .answer-option:hover {
+      border-color: var(--primary);
+      box-shadow: 0 2px 8px rgba(44,40,37,0.08);
+    }
+    .answer-option:focus-visible {
+      outline: 2px solid var(--secondary);
+      outline-offset: 2px;
+    }
+    .answer-option.selected {
+      border-color: var(--primary);
+      border-width: 2px;
+      background: var(--bg);
+      transform: scale(1.01);
+    }
+    .answer-letter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-right: 10px;
+      flex-shrink: 0;
+      transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+    }
+    .answer-option.selected .answer-letter {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    /* ─── Processing ─── */
+    .processing {
+      justify-content: center;
+      align-items: center;
+      padding: 48px 24px;
+      text-align: center;
+    }
+    .processing-spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 800ms linear infinite;
+      margin: 0 auto 24px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .processing-text {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .processing-sub {
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+    }
+
+    /* ─── Result ─── */
+    .result-screen {
+      padding: 48px 24px 64px;
+    }
+    @media (min-width: 640px) { .result-screen { padding: 64px 48px 80px; } }
+    .result-inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .result-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .result-eyebrow {
+      font-size: 0.875rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+    .result-type-name {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 6vw, 3rem);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .result-tagline {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.125rem;
+      color: var(--secondary);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+    .result-divider {
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 2px;
+      margin: 32px auto;
+    }
+    .result-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 28px 24px;
+      margin-bottom: 20px;
+    }
+    @media (min-width: 640px) { .result-section { padding: 36px 40px; } }
+    .result-section-title {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--secondary);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .result-section-title svg { color: var(--primary); flex-shrink: 0; }
+    .result-section p {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .result-section p:last-child { margin-bottom: 0; }
+    .result-section ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .result-section ul li {
+      display: flex;
+      gap: 10px;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--text);
+    }
+    .result-section ul li::before {
+      content: '–';
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+    .result-section ol {
+      list-style: none;
+      counter-reset: steps;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .result-section ol li {
+      display: flex;
+      gap: 12px;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--text);
+      counter-increment: steps;
+    }
+    .result-section ol li::before {
+      content: counter(steps);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .belief-quote {
+      border-left: 3px solid var(--accent);
+      background: var(--bg);
+      padding: 16px 24px;
+      border-radius: 0 8px 8px 0;
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.0625rem;
+      line-height: 1.6;
+      color: var(--secondary);
+      margin: 4px 0;
+    }
+    .resource-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--primary);
+      font-weight: 500;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      font-size: 0.9375rem;
+    }
+    .resource-link:hover { color: var(--primary-dark); }
+    .resource-link:focus-visible { outline: 2px solid var(--secondary); outline-offset: 2px; }
+
+    /* ─── Share Section ─── */
+    .share-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 28px 24px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    @media (min-width: 640px) { .share-section { padding: 36px 40px; } }
+    .share-section h2 {
+      font-family: var(--font-serif);
+      font-size: 1.375rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    .share-section p {
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+    .share-preview {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      text-align: left;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .share-preview-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    .share-preview-type {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .share-preview-tagline {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 0.9375rem;
+      color: var(--secondary);
+      margin-bottom: 8px;
+    }
+    .share-preview-url {
+      font-size: 0.8125rem;
+      color: var(--primary);
+      word-break: break-all;
+    }
+    .share-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .share-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: var(--radius-btn);
+      font-family: var(--font-sans);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: background var(--transition-fast), transform var(--transition-fast);
+      text-decoration: none;
+    }
+    .share-btn:active { transform: scale(0.97); }
+    .share-btn:focus-visible { outline: 2px solid var(--secondary); outline-offset: 2px; }
+    .share-btn-copy {
+      background: var(--secondary);
+      color: #fff;
+    }
+    .share-btn-copy:hover { background: #4a324d; }
+    .share-btn-twitter {
+      background: #1DA1F2;
+      color: #fff;
+    }
+    .share-btn-twitter:hover { background: #0d8bd9; }
+    .share-btn-whatsapp {
+      background: #25D366;
+      color: #fff;
+    }
+    .share-btn-whatsapp:hover { background: #1ebe5c; }
+    .share-btn-canvas {
+      background: var(--accent);
+      color: #fff;
+    }
+    .share-btn-canvas:hover { background: #c49840; }
+    .share-feedback {
+      font-size: 0.875rem;
+      color: var(--primary);
+      margin-top: 10px;
+      min-height: 20px;
+      font-weight: 500;
+    }
+
+    /* ─── Footer ─── */
+    .quiz-footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      margin-top: auto;
+    }
+    .quiz-footer-inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .trigger-warning {
+      background: #FEF3E7;
+      border: 1px solid #F5D5B8;
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9375rem;
+      line-height: 1.5;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+    .trigger-warning strong { color: var(--secondary); }
+    .footer-nav {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .footer-nav a {
+      font-size: 0.9375rem;
+      color: var(--primary);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .footer-nav a:hover { color: var(--primary-dark); }
+    .footer-nav a:focus-visible { outline: 2px solid var(--secondary); outline-offset: 2px; }
+    .footer-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--secondary);
+      color: #fff;
+      font-family: var(--font-sans);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: var(--radius-btn);
+      text-decoration: none;
+      margin-bottom: 20px;
+      transition: background var(--transition-fast);
+    }
+    .footer-cta:hover { background: #4a324d; }
+    .footer-cta:focus-visible { outline: 2px solid var(--secondary); outline-offset: 2px; }
+    .footer-disclaimer {
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+
+    /* ─── Privacy Modal ─── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(44,40,37,0.6);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: var(--surface);
+      border-radius: var(--radius-card);
+      padding: 32px 28px;
+      max-width: 560px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+    }
+    .modal h2 {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+    .modal p {
+      font-size: 0.9375rem;
+      line-height: 1.7;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-secondary);
+      padding: 4px;
+      border-radius: 4px;
+    }
+    .modal-close:hover { color: var(--text); }
+    .modal-close:focus-visible { outline: 2px solid var(--secondary); outline-offset: 2px; }
+
+    /* ─── WeChat Modal ─── */
+    .wechat-modal-body {
+      text-align: center;
+    }
+    .wechat-qr-placeholder {
+      width: 200px;
+      height: 200px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin: 16px auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .wechat-qr-placeholder svg { color: var(--primary); }
+    .wechat-qr-placeholder span {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    /* ─── Buttons ─── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--primary);
+      color: #fff;
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 16px 32px;
+      border: none;
+      border-radius: var(--radius-btn);
+      cursor: pointer;
+      transition: background var(--transition-fast), transform var(--transition-fast);
+      text-decoration: none;
+    }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:focus-visible { outline: 2px solid var(--secondary); outline-offset: 3px; }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--primary);
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 14px 28px;
+      border: 1.5px solid var(--primary);
+      border-radius: var(--radius-btn);
+      cursor: pointer;
+      transition: background var(--transition-fast), color var(--transition-fast);
+      text-decoration: none;
+    }
+    .btn-secondary:hover { background: var(--bg); }
+    .btn-secondary:focus-visible { outline: 2px solid var(--secondary); outline-offset: 3px; }
+
+    /* ─── Skip / Retake ─── */
+    .result-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 32px;
+    }
+
+    /* ─── Screen transition ─── */
+    .screen {
+      opacity: 1;
+      transition: opacity var(--transition-screen);
+    }
+
+    /* ─── Skip link ─── */
+    .skip-link {
+      position: absolute;
+      top: -9999px;
+      left: 16px;
+      background: var(--secondary);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: var(--radius-btn);
+      z-index: 1000;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .skip-link:focus { top: 16px; }
+
+    /* ─── Canvas share (hidden, used offscreen) ─── */
+    #shareCanvas { display: none; }
+
+    /* ─── Accessibility ─── */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* ─── WeChat detection ─── */
+    .is-wechat .share-btn-whatsapp { display: none; }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <main id="main-content" role="main">
+
+    <!-- ─── LANDING ─── -->
+    <section id="screen-landing" class="screen landing active" aria-label="Quiz Landing">
+      <div class="landing-content">
+        <p class="landing-eyebrow">Psychology Quiz · 12 Questions</p>
+        <h1 class="landing-title">Your Relationship Blueprint</h1>
+        <p class="landing-subtitle">Discover the unspoken emotional rules from your family that quietly govern your adult relationships.</p>
+        <button class="landing-cta" id="btn-start" aria-label="Start the quiz to discover your relationship blueprint">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Discover My Blueprint
+        </button>
+        <div class="landing-trust" aria-label="Quiz trust signals">
+          <span class="trust-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            ~5 minutes
+          </span>
+          <span class="trust-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            No email required
+          </span>
+          <span class="trust-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            Self-awareness tool
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── INTRO ─── -->
+    <section id="screen-intro" class="screen intro" aria-label="Quiz Introduction">
+      <div class="intro-card">
+        <div class="intro-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <h2 class="intro-title">What's Programmed in Your Relationships?</h2>
+        <div class="intro-body">
+          <p>We all absorbed unspoken rules from our families — about closeness, conflict, worthiness, and love. These rules became your "relationship blueprint," running quietly in the background of every connection you have.</p>
+          <p>This quiz helps you identify YOUR specific blueprint so you can finally see what's been driving your patterns — and choose differently.</p>
+        </div>
+        <div class="intro-disclaimer">
+          <strong>Disclaimer:</strong> Not a diagnostic tool. Results are patterns to explore, not proof of dysfunction. If this resonates, that's enough.
+        </div>
+        <button class="btn-primary" id="btn-start-quiz" aria-label="Begin the Relationship Blueprint Quiz">
+          Start Quiz
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- ─── QUESTION ─── -->
+    <section id="screen-question" class="screen question-screen" aria-label="Quiz Question">
+      <div class="question-inner">
+        <div class="progress-bar-wrap">
+          <div class="progress-meta">
+            <span id="progress-label" aria-live="polite">Question 1 of 12</span>
+            <span id="progress-percent" aria-live="polite">8%</span>
+          </div>
+          <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="12" aria-label="Quiz progress">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+        </div>
+        <div class="question-card">
+          <p class="question-label" id="question-label">Question 1</p>
+          <h2 class="question-text" id="question-text"></h2>
+          <p class="question-scenario" id="question-scenario"></p>
+          <fieldset id="answers-fieldset">
+            <legend class="sr-only" id="answers-legend"></legend>
+            <div class="answers" id="answers-container" role="radiogroup" aria-describedby="answers-legend"></div>
+          </fieldset>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── PROCESSING ─── -->
+    <section id="screen-processing" class="screen processing" aria-label="Analyzing your patterns">
+      <div>
+        <div class="processing-spinner" aria-hidden="true"></div>
+        <p class="processing-text">Analyzing your patterns…</p>
+        <p class="processing-sub">This only takes a moment</p>
+      </div>
+    </section>
+
+    <!-- ─── RESULT ─── -->
+    <section id="screen-result" class="screen result-screen" aria-label="Your Result">
+      <div class="result-inner">
+        <header class="result-header">
+          <p class="result-eyebrow">Your Relationship Blueprint</p>
+          <h1 class="result-type-name" id="result-type-name"></h1>
+          <p class="result-tagline" id="result-tagline"></p>
+          <div class="result-divider" aria-hidden="true"></div>
+        </header>
+
+        <article class="result-section" aria-labelledby="section-portrait">
+          <h2 class="result-section-title" id="section-portrait">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Your Portrait
+          </h2>
+          <div id="result-portrait"></div>
+        </article>
+
+        <article class="result-section" aria-labelledby="section-childhood">
+          <h2 class="result-section-title" id="section-childhood">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Core Childhood Pattern
+          </h2>
+          <div id="result-childhood"></div>
+        </article>
+
+        <article class="result-section" aria-labelledby="section-adult">
+          <h2 class="result-section-title" id="section-adult">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            How It Shows Up in Adult Relationships
+          </h2>
+          <ul id="result-adult" aria-label="Adult relationship patterns"></ul>
+        </article>
+
+        <article class="result-section" aria-labelledby="section-belief">
+          <h2 class="result-section-title" id="section-belief">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            The Belief Running in the Background
+          </h2>
+          <blockquote class="belief-quote" id="result-belief"></blockquote>
+        </article>
+
+        <article class="result-section" aria-labelledby="section-growth">
+          <h2 class="result-section-title" id="section-growth">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            Your Growth Edge
+          </h2>
+          <div id="result-growth"></div>
+        </article>
+
+        <article class="result-section" aria-labelledby="section-steps">
+          <h2 class="result-section-title" id="section-steps">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            Your Next Steps
+          </h2>
+          <ol id="result-steps" aria-label="Your next steps"></ol>
+          <div id="result-resource" style="margin-top:16px;"></div>
+        </article>
+
+        <!-- Share Section -->
+        <div class="share-section" aria-labelledby="share-heading">
+          <h2 id="share-heading">Share Your Blueprint</h2>
+          <p>See what resonates with friends — this might be a useful conversation starter.</p>
+          <div class="share-preview" id="share-preview" aria-label="Share card preview">
+            <p class="share-preview-label">Your Share Card</p>
+            <p class="share-preview-type" id="share-card-type"></p>
+            <p class="share-preview-tagline" id="share-card-tagline"></p>
+            <p class="share-preview-url">psychomaster.site/quiz</p>
+          </div>
+          <div class="share-buttons" role="group" aria-label="Share options">
+            <button class="share-btn share-btn-copy" id="btn-copy" aria-label="Copy share link to clipboard">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Copy Link
+            </button>
+            <button class="share-btn share-btn-twitter" id="btn-twitter" aria-label="Share on Twitter">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.259 5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              Share
+            </button>
+            <button class="share-btn share-btn-whatsapp" id="btn-whatsapp" aria-label="Share on WhatsApp">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              WhatsApp
+            </button>
+            <button class="share-btn share-btn-canvas" id="btn-canvas" aria-label="Download share card as image">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              Save Card
+            </button>
+          </div>
+          <p class="share-feedback" id="share-feedback" aria-live="polite" role="status"></p>
+        </div>
+
+        <div class="result-actions">
+          <button class="btn-secondary" id="btn-retake" aria-label="Retake the quiz from the beginning">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg>
+            Retake Quiz
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="quiz-footer" id="quiz-footer" style="display:none;" role="contentinfo">
+    <div class="quiz-footer-inner">
+      <div class="trigger-warning" role="note">
+        <strong>Trigger Warning:</strong> This quiz explores family-of-origin patterns and emotional dynamics. If you experience difficult emotions, please take care of yourself. You can stop at any time.
+      </div>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="#" id="btn-privacy" role="button">Privacy Policy</a>
+        <a href="#" id="btn-terms" role="button">Terms of Use</a>
+        <a href="#" id="btn-contact" role="button">Contact</a>
+      </nav>
+      <a href="https://psychomaster.site/support" class="footer-cta" target="_blank" rel="noopener noreferrer" aria-label="Find a therapist or counselor (opens in new tab)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.06 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Find a Therapist or Counselor
+      </a>
+      <p class="footer-disclaimer">This quiz is for self-awareness purposes only and is not a clinical assessment, diagnosis, or form of therapy. If this content brings up difficult feelings, consider reaching out to a licensed therapist or counselor in your area.</p>
+    </div>
+  </footer>
+
+  <!-- ─── PRIVACY MODAL ─── -->
+  <div class="modal-overlay" id="modal-privacy" role="dialog" aria-modal="true" aria-labelledby="privacy-title">
+    <div class="modal">
+      <button class="modal-close" id="modal-privacy-close" aria-label="Close privacy policy">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <h2 id="privacy-title">Privacy Policy</h2>
+      <p><strong>Data Collection:</strong> This quiz does not collect, store, or transmit any personal data. Your answers are processed entirely within your browser and are never sent to any server.</p>
+      <p><strong>localStorage:</strong> We use localStorage to save your quiz progress so you can resume if you leave and return. This data stays on your device and is never transmitted.</p>
+      <p><strong>Cookies:</strong> We do not use any tracking cookies or third-party analytics.</p>
+      <p><strong>Share Features:</strong> When you share your result via copy, Twitter, or WhatsApp, only the result type and quiz URL are shared — no personal answers or identifying information.</p>
+      <p><strong>Canvas Images:</strong> The share card download feature creates an image file in your browser only. No data is uploaded.</p>
+      <p>If you have questions, contact us at <strong>privacy@psychomaster.site</strong>.</p>
+    </div>
+  </div>
+
+  <!-- ─── WECHAT MODAL ─── -->
+  <div class="modal-overlay" id="modal-wechat" role="dialog" aria-modal="true" aria-labelledby="wechat-title">
+    <div class="modal wechat-modal-body">
+      <button class="modal-close" id="modal-wechat-close" aria-label="Close WeChat share guide">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <h2 id="wechat-title">Share via WeChat</h2>
+      <p>Open the quiz in your WeChat in-app browser and use the share menu there. Alternatively, copy the link and share it manually.</p>
+      <div class="wechat-qr-placeholder" aria-label="QR code placeholder">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <span>Scan with WeChat camera</span>
+      </div>
+      <button class="btn-primary" id="btn-wechat-copy-link" style="margin-top:8px;" aria-label="Copy quiz link for WeChat sharing">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Copy Link for WeChat
+      </button>
+    </div>
+  </div>
+
+  <!-- ─── CANVAS (for share card generation) ─── -->
+  <canvas id="shareCanvas" width="1200" height="630" aria-hidden="true"></canvas>
+
+  <script>
+    (function() {
+      'use strict';
+
+      /* ─── Data ─── */
+      const QUESTIONS = [
+        {
+          label: "Question 1",
+          text: "Your partner comes home stressed and quiet. You...",
+          scenario: "",
+          answers: [
+            { letter: "A", text: "Immediately wonder if you did something wrong and mentally replay the day for clues." },
+            { letter: "B", text: "Rush to fix it — offer solutions, suggest activities, make a plan to cheer them up." },
+            { letter: "C", text: "Give them space but feel anxious inside, checking in mentally every few minutes." },
+            { letter: "D", text: "Stay calm and go about your own thing, figuring they'll come around when ready." }
+          ]
+        },
+        {
+          label: "Question 2",
+          text: "A family dinner turns into an argument between your parents. You...",
+          scenario: "",
+          answers: [
+            { letter: "A", text: "Try to smooth things over — redirect the conversation, make a joke, change the subject." },
+            { letter: "B", text: "Feel deeply responsible for resolving it and start taking sides to end the tension." },
+            { letter: "C", text: "Shut down emotionally and focus on getting through the meal in one piece." },
+            { letter: "D", text: "Step in as the mediator, talking to each person separately to defuse things." }
+          ]
+        },
+        {
+          label: "Question 3",
+          text: "Your friend cancels plans last minute. You think...",
+          scenario: "",
+          answers: [
+            { letter: "A", text: "\"They must be upset with me. What did I do?\"" },
+            { letter: "B", text: "\"I hope they're okay. Let me reach out and make sure they have everything they need.\"" },
+            { letter: "C", text: "\"I should have known. People always let me down eventually.\"" },
+            { letter: "D", text: "\"Good — now I can have the evening to myself.\"" }
+          ]
+        },
+        {
+          label: "Question 4",
+          text: "At a gathering, you realize no one has asked about your life in a while. You...",
+          scenario: "",
+          answers: [
+            { letter: "A", text: "Bring it up yourself, carefully, in a way that doesn't make anyone uncomfortable." },
+            { letter: "B", text: "Don't mention it — but later you quietly do something to get their attention." },
+            { letter: "C", text: "Notice it hurts but say nothing, and double down on being interested in their lives." },
+            { letter: "D", text: "Feel relieved; you weren't looking forward to talking about yourself anyway." }
+          ]
+        },
+        {
+          label: "Question 5",
+          text: "Your partner criticizes something you did. You...",
+          scenario: "",
+          answers: [
+            { letter: "A", text: "Immediately apologize and adjust, even if you don't fully agree." },
+            { letter: "B", text: "Defend yourself, then feel guilty and eventually cave to keep the peace." },
+            { letter: "C", text: "Feel a deep sense of \"not enough\" and withdraw emotionally." },
+            { letter: "D", text: "Respond calmly, set a boundary, but then worry you were too harsh." }
+          ]
+        },
+        {
+          label: "Question 6",
+          text: "Growing up, there was an unspoken rule in your home. It was something like...",
+          scenario: "",
+          answers: [
+            { letter: "A", text: "\"Keep the peace. Don't make waves.\" — Harmony was everyone's job." },
+            { letter: "B", text: "\"Someone always needs help. That's what we do for each other.\"" },
+            { letter: "C", text: "\"Your needs come second. The family's needs come first.\"" },
+            { letter: "D", text: "\"Emotions are dangerous. Keep them under control.\"" }
+          ]
+        },
+        {
+          label: "Question 7",
+          text: "You're on a first few dates with someone you really like. You catch yourself...",
+          scenario: "",
+          answers: [
+            { letter: "A", text: "Monitoring how they seem to feel about you, adjusting your behavior to match." },
+            { letter: "B", text: "Already thinking about how to support their goals and make their life easier." },
+            { letter: "C", text: "Losing your own preferences — liking what they like, wanting what they want." },
+            { letter: "D", text: "Keeping one foot out the door, just in case things get too intense." }
+          ]
+        },
+        {
+          label: "Question 8",
+          text: "A conflict with someone close escalates. You tend to...",
+          scenario: "",
+          answers: [
+            { letter: "A", text: "Apologize first, even before you fully understand what happened." },
+            { letter: "B", text: "Over-explain your side, hoping they'll finally get why you're right." },
+            { letter: "C", text: "Go quiet and withdraw, waiting for them to reach out first." },
+            { letter: "D", text: "Try to get both sides heard and find a compromise everyone can live with." }
+          ]
+        },
+        {
+          label: "Question 9",
+          text: "You get a big compliment from a friend. You...",
+          scenario: "",
+          answers: [
+            { letter: "A", text: "Feel awkward and deflect with self-deprecation." },
+            { letter: "B", text: "Appreciate it, but immediately wonder if they want something in return." },
+            { letter: "C", text: "Feel genuinely good — you let yourself enjoy it." },
+            { letter: "D", text: "Feel suspicious; it seems too good to be true." }
+          ]
+        },
+        {
+          label: "Question 10",
+          text: "Your family expresses love mainly through...",
+          scenario: "",
+          answers: [
+            { letter: "A", text: "Acts of service and taking care of each other." },
+            { letter: "B", text: "Quality time and doing things together." },
+            { letter: "C", text: "Rarely expressed directly — it was shown in other ways, if at all." },
+            { letter: "D", text: "Verbal affirmation and direct words of affection." }
+          ]
+        },
+        {
+          label: "Question 11",
+          text: "You notice you've been giving more in a relationship than you receive. You...",
+          scenario: "",
+          answers: [
+            { letter: "A", text: "Give more anyway — maybe if you're enough, things will shift." },
+            { letter: "B", text: "Feel resentful but are afraid to bring it up and risk the relationship." },
+            { letter: "C", text: "Don't really notice imbalance — you just focus on the other person's needs." },
+            { letter: "D", text: "Feel relieved to have an easy excuse to pull back if it's getting too close." }
+          ]
+        },
+        {
+          label: "Question 12",
+          text: "You have a personal goal that you know might create tension with people close to you. You...",
+          scenario: "",
+          answers: [
+            { letter: "A", text: "Delay or downplay it so others don't feel threatened or disappointed." },
+            { letter: "B", text: "Move forward — you figure you'll handle the fallout if it comes." },
+            { letter: "C", text: "Feel torn between what you want and keeping everyone comfortable." },
+            { letter: "D", text: "Keep it private; you don't need anyone else's buy-in to go after what you want." }
+          ]
+        }
+      ];
+
+      const RESULTS = {
+        A: {
+          name: "The Peacemaker",
+          tagline: "You learned that love means keeping everyone okay — even yourself.",
+          portrait: "<p>You grew up in an environment where harmony was sacred — either explicitly taught or silently required. You learned early that peace is everyone's responsibility, and that conflict is dangerous. As an adult, you carry an instinctive radar for tension in your relationships, and you move toward it immediately, often at the cost of your own needs or opinions.</p>",
+          childhood: "<p>In your family, unspoken rules said: <em>Don't argue. Don't make people upset. Keep things smooth.</em> Your emotional attunement to others became your way of belonging and staying safe.</p>",
+          adult: [
+            "You absorb other people's moods before you know your own",
+            "You agree even when you disagree, then feel resentment quietly building",
+            "Conflict feels like an emergency — you work hard to end it fast",
+            "You may have a hard time knowing what you actually want",
+            "In intimate relationships, you might avoid bringing up real issues until they explode"
+          ],
+          belief: "\"If I speak up, things will fall apart. It's my job to keep everyone comfortable.\"",
+          growth: "<p>Your superpower is emotional intelligence — you read rooms deeply. The invitation is to use that same attunement toward <em>yourself</em>. What do <em>you</em> feel? What do <em>you</em> need? The Peacemaker who learns to hold their own boundaries without guilt becomes one of the most genuinely nurturing partners possible.</p>",
+          steps: [
+            "<strong>Pause before you smooth.</strong> When you feel the urge to defuse tension, check in with yourself first: <em>What am I feeling right now?</em></p>",
+            "<strong>Practice a small disagree.</strong> Pick one low-stakes moment this week to say \"Actually, I see it differently\" — and notice the world doesn't end.</p>",
+            "<strong>Name your needs out loud.</strong> Share one honest preference with someone you trust, even if it feels uncomfortable at first.</p>"
+          ],
+          resource: "<p><strong>Resource:</strong> Look up \"dark horse of family systems\" and the concept of \"overfunctioning\" in relationships — Dr. Marianne H. George's work on family roles is a good starting point.</p>"
+        },
+        B: {
+          name: "The Over-Functioner",
+          tagline: "You learned that love means giving everything — and maybe earning your place.",
+          portrait: "<p>You grew up in a family where someone had to hold things together — and that someone was you, whether by necessity or by instinct. You learned early that your value was tied to what you <em>did</em> for others, and that love was something you earned through usefulness. As an adult, you give and give, often before anyone asks, and receiving feels uncomfortable, almost suspicious.</p>",
+          childhood: "<p>Your family had an imbalance — either a parent was struggling, absent, or emotionally unavailable — and you stepped into the adult role too early. You became the helper, the responsible one, the fixer. This wasn't your fault; it was survival.</p>",
+          adult: [
+            "You default to caretaking — fixing, planning, managing — before your partner even asks",
+            "You feel uneasy when you can't contribute or solve problems",
+            "Receiving help feels awkward or undeserved",
+            "You may be attracted to partners who need a lot of care — or who are emotionally unavailable",
+            "Resentment builds quietly because you're giving more than you're receiving, but you don't feel allowed to ask for more"
+          ],
+          belief: "\"I am lovable when I'm useful. If I stop doing, I'll be left.\"",
+          growth: "<p>Your capacity to show up, anticipate needs, and create structure is extraordinary — it's why people lean on you. The invitation is to distinguish between <em>caring for</em> someone and <em>carrying</em> them. Real intimacy requires two whole people. Your growth edge is letting someone else be responsible for themselves — and yourself.</p>",
+          steps: [
+            "<strong>Notice the urge before you act.</strong> When you feel the pull to fix or help, pause and ask: <em>Did anyone ask me to do this?</em></p>",
+            "<strong>Let someone struggle without rescuing.</strong> This is not cruelty — it is respect for their own capacity to grow.</p>",
+            "<strong>Receive something fully.</strong> When someone offers help or compliments you, practice saying \"Thank you\" — and then sitting with the discomfort of being on the receiving end.</p>"
+          ],
+          resource: "<p><strong>Resource:</strong> Look into \"parentification\" and Bowen Family Systems' concept of the \"overfunctioner\" — labels that illuminate rather than pathologize.</p>"
+        },
+        C: {
+          name: "The Lost Self",
+          tagline: "You learned that love means merging — and forgetting who you are.",
+          portrait: "<p>In your family, there wasn't a lot of room for separate selves. Either through enmeshment, high control, or intense enmeshment-adjacent dynamics, you learned that your wants, preferences, and identity needed to fit the family mold to be accepted. You became highly attuned to what others needed — but your own inner voice got quiet. As an adult, you may still struggle to know where you end and others begin.</p>",
+          childhood: "<p>Your sense of self was either second to the family's needs, absorbed into a parent's emotional world, or simply not encouraged to develop independently. Individuation — the healthy process of becoming your own person — was interrupted or discouraged.</p>",
+          adult: [
+            "You merge quickly with partners — their taste, mood, and goals become yours",
+            "You struggle to identify your own wants, needs, or opinions independently",
+            "Relationships feel most comfortable when you're aligned with your partner",
+            "You may feel empty or directionless when single — who are you outside a connection?",
+            "You tend to agree to avoid rejection, then feel unseen or walked over"
+          ],
+          belief: "\"Who I am isn't enough on its own. I have to become what they need to be loved.\"",
+          growth: "<p>Your attunement to others is profound — you may be the most emotionally perceptive person in the room. The invitation is to turn that same attention inward. What do <em>you</em> like? What does <em>your</em> inner world look like, separate from anyone else's? The Lost Self who finds their own voice discovers a depth of intimacy that was always possible — because they finally have a self to bring.</p>",
+          steps: [
+            "<strong>Practice the question: \"What do I want?\"</strong> Not what they want, not what's right — what do <em>you</em> want? Start small, even about things like where to eat.</p>",
+            "<strong>Spend time alone without guilt.</strong> Solo activities that you choose — not curated to impress anyone — are how you start building a self that exists outside of connection.</p>",
+            "<strong>Name one opinion you have that differs from your partner's.</strong> Practice saying it out loud, not to start a fight, but to prove to yourself that a separate self exists and is safe.</p>"
+          ],
+          resource: "<p><strong>Resource:</strong> Look into \"differentiation of self\" from Murray Bowen's family systems theory — it's specifically about this journey from merged to separate (and back, by choice).</p>"
+        },
+        D: {
+          name: "The Perfectionist Distancer",
+          tagline: "You learned that closeness is a risk — so you made yourself safe through achievement.",
+          portrait: "<p>In your family, vulnerability was not safe. Emotional expression may have been met with criticism, dismissal, or worse. Or perhaps your family valued self-sufficiency above all else — asking for help was weakness. You adapted by building a self that didn't <em>need</em> anyone. Achievement became your armor, and emotional distance became your comfort.</p>",
+          childhood: "<p>Your family either implicitly or explicitly taught that emotions are a liability, that you should handle things on your own, or that your worth is measured by performance. Closeness and vulnerability felt dangerous — so you found a different path to connection that didn't require either.</p>",
+          adult: [
+            "You may appear emotionally self-sufficient to a fault — \"I don't need anyone\"",
+            "Deep emotional conversations feel uncomfortable; you intellectualize or deflect",
+            "You might use achievement, humor, or competence to maintain distance",
+            "Long-term intimacy can feel like a threat — routines and daily closeness may feel suffocating",
+            "Partners may describe you as \"hard to reach\" or \"always just out of reach emotionally\""
+          ],
+          belief: "\"If I let them in and they leave, I'll be destroyed. Safer to stay here.\"",
+          growth: "<p>Your discipline, self-reliance, and ability to handle challenges alone are genuine strengths. The invitation is not to <em>stop</em> being capable — it's to notice what you're protecting by staying guarded. The Perfectionist Distancer who takes one small emotional risk at a time discovers that intimacy doesn't actually destroy — it builds.</p>",
+          steps: [
+            "<strong>Notice the exit cue.</strong> When a conversation gets emotionally close, do you deflect, get busy, or make a joke? Just notice — no judgment.</p>",
+            "<strong>Share one small, imperfect feeling.</strong> \"I'm actually a little nervous about this\" — said to someone safe, without explaining or defending it.</p>",
+            "<strong>Let someone see you struggle.</strong> Ask for help with something small. Practice being on the receiving end — it won't kill you, and it might just build something.</p>"
+          ],
+          resource: "<p><strong>Resource:</strong> Look up \"avoidant attachment\" from a family systems lens rather than just an attachment style lens — it often has roots exactly here.</p>"
+        }
+      };
+
+      /* ─── Quiz State ─── */
+      const STORAGE_KEY = 'rbq_progress';
+      const TOTAL_Q = QUESTIONS.length;
+
+      let state = {
+        currentQ: 0,
+        answers: [],
+        result: null
+      };
+
+      function loadState() {
+        try {
+          const saved = localStorage.getItem(STORAGE_KEY);
+          if (saved) {
+            const parsed = JSON.parse(saved);
+            if (parsed && typeof parsed.currentQ === 'number') {
+              state = parsed;
+            }
+          }
+        } catch (e) { /* ignore */ }
+      }
+
+      function saveState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (e) { /* ignore */ }
+      }
+
+      function clearState() {
+        try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+        state = { currentQ: 0, answers: [], result: null };
+      }
+
+      /* ─── Screen Management ─── */
+      function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        const screen = document.getElementById(id);
+        if (screen) screen.classList.add('active');
+
+        const footer = document.getElementById('quiz-footer');
+        if (footer) footer.style.display = (id === 'screen-result') ? 'block' : 'none';
+      }
+
+      /* ─── Render Question ─── */
+      function renderQuestion() {
+        const q = QUESTIONS[state.currentQ];
+        const pct = Math.round(((state.currentQ + 1) / TOTAL_Q) * 100);
+
+        document.getElementById('progress-label').textContent = `Question ${state.currentQ + 1} of ${TOTAL_Q}`;
+        document.getElementById('progress-percent').textContent = `${pct}%`;
+
+        const pbar = document.querySelector('.progress-bar');
+        pbar.setAttribute('aria-valuenow', state.currentQ + 1);
+        document.getElementById('progress-fill').style.width = `${pct}%`;
+
+        document.getElementById('question-label').textContent = q.label;
+        document.getElementById('question-text').textContent = q.text;
+        document.getElementById('question-scenario').textContent = q.scenario;
+
+        const legend = document.getElementById('answers-legend');
+        legend.textContent = `Select your answer for: ${q.text}`;
+
+        const container = document.getElementById('answers-container');
+        container.innerHTML = '';
+
+        q.answers.forEach((ans, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'answer-option';
+          btn.setAttribute('role', 'radio');
+          btn.setAttribute('aria-checked', 'false');
+          btn.setAttribute('data-letter', ans.letter);
+          btn.setAttribute('data-index', idx);
+          btn.setAttribute('tabindex', '0');
+
+          const prevAnswer = state.answers[state.currentQ];
+          if (prevAnswer === ans.letter) {
+            btn.classList.add('selected');
+            btn.setAttribute('aria-checked', 'true');
+          }
+
+          btn.innerHTML = `<span class="answer-letter">${ans.letter}</span>${ans.text}`;
+          btn.addEventListener('click', () => selectAnswer(ans.letter, idx));
+          container.appendChild(btn);
+        });
+      }
+
+      function selectAnswer(letter, idx) {
+        state.answers[state.currentQ] = letter;
+        saveState();
+
+        document.querySelectorAll('.answer-option').forEach((btn, i) => {
+          btn.classList.toggle('selected', i === idx);
+          btn.setAttribute('aria-checked', String(i === idx));
+        });
+
+        setTimeout(() => {
+          if (state.currentQ < TOTAL_Q - 1) {
+            state.currentQ++;
+            saveState();
+            renderQuestion();
+          } else {
+            calculateAndShowResult();
+          }
+        }, 420);
+      }
+
+      /* ─── Calculate Result ─── */
+      function calculateAndShowResult() {
+        showScreen('screen-processing');
+        setTimeout(() => {
+          const tally = { A: 0, B: 0, C: 0, D: 0 };
+          state.answers.forEach(a => { if (a) tally[a]++; });
+
+          const coreIndices = [0, 4, 6]; // Q1, Q5, Q7 (0-indexed)
+          let dominant = 'A';
+          let max = 0;
+          for (const key of ['A', 'B', 'C', 'D']) {
+            if (tally[key] > max) { max = tally[key]; dominant = key; }
+          }
+
+          // Tiebreaker using core questions
+          const coreTally = coreIndices.reduce((acc, idx) => {
+            const a = state.answers[idx];
+            if (a) acc[a] = (acc[a] || 0) + 1;
+            return acc;
+          }, {});
+          const coreMax = Math.max(...Object.values(coreTally));
+          const coreWinner = Object.keys(coreTally).find(k => coreTally[k] === coreMax);
+          if (coreTally[coreWinner] === max && coreWinner) {
+            dominant = coreWinner;
+          }
+
+          // Check for Emotional Broker overlay (D in Q2 and Q8)
+          const q2ans = state.answers[1];
+          const q8ans = state.answers[7];
+          const isBroker = (q2ans === 'D' && q8ans === 'D');
+
+          state.result = dominant;
+          saveState();
+          renderResult(dominant, isBroker);
+          showScreen('screen-result');
+        }, 1600);
+      }
+
+      /* ─── Render Result ─── */
+      function renderResult(type, isBroker) {
+        const r = RESULTS[type];
+
+        document.getElementById('result-type-name').textContent = r.name;
+        document.getElementById('result-tagline').textContent = r.tagline;
+        document.getElementById('result-portrait').innerHTML = r.portrait;
+        document.getElementById('result-childhood').innerHTML = r.childhood;
+
+        const adultList = document.getElementById('result-adult');
+        adultList.innerHTML = '';
+        r.adult.forEach(item => {
+          const li = document.createElement('li');
+          li.textContent = item;
+          adultList.appendChild(li);
+        });
+
+        document.getElementById('result-belief').textContent = r.belief;
+        document.getElementById('result-growth').innerHTML = r.growth;
+
+        const stepsList = document.getElementById('result-steps');
+        stepsList.innerHTML = '';
+        r.steps.forEach(step => {
+          const li = document.createElement('li');
+          li.innerHTML = step;
+          stepsList.appendChild(li);
+        });
+
+        document.getElementById('result-resource').innerHTML = r.resource;
+
+        // Share preview
+        document.getElementById('share-card-type').textContent = r.name;
+        document.getElementById('share-card-tagline').textContent = r.tagline;
+      }
+
+      /* ─── Share ─── */
+      const QUIZ_URL = 'https://psychomaster.site/quiz';
+      const QUIZ_TITLE = 'Your Relationship Blueprint Quiz';
+
+      function getShareText() {
+        const r = RESULTS[state.result];
+        return `My Relationship Blueprint is "${r.name}" — ${r.tagline} Take the quiz: ${QUIZ_URL}`;
+      }
+
+      function showFeedback(msg) {
+        const el = document.getElementById('share-feedback');
+        el.textContent = msg;
+        setTimeout(() => { el.textContent = ''; }, 3000);
+      }
+
+      document.getElementById('btn-copy').addEventListener('click', () => {
+        navigator.clipboard.writeText(getShareText()).then(() => {
+          showFeedback('✓ Link copied to clipboard!');
+        }).catch(() => {
+          // fallback
+          const ta = document.createElement('textarea');
+          ta.value = getShareText();
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          showFeedback('✓ Link copied!');
+        });
+      });
+
+      document.getElementById('btn-twitter').addEventListener('click', () => {
+        const text = encodeURIComponent(getShareText());
+        window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank', 'noopener,noreferrer');
+      });
+
+      document.getElementById('btn-whatsapp').addEventListener('click', () => {
+        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        const isWeChat = /MicroMessenger/i.test(navigator.userAgent);
+        if (isWeChat) {
+          document.getElementById('modal-wechat').classList.add('active');
+        } else if (isMobile) {
+          window.open(`whatsapp://send?text=${encodeURIComponent(getShareText())}`, '_blank');
+        } else {
+          window.open(`https://web.whatsapp.com/send?text=${encodeURIComponent(getShareText())}`, '_blank', 'noopener,noreferrer');
+        }
+      });
+
+      document.getElementById('btn-wechat-copy-link').addEventListener('click', () => {
+        navigator.clipboard.writeText(getShareText()).then(() => {
+          showFeedback('✓ Link copied! Paste it into WeChat.');
+          document.getElementById('modal-wechat').classList.remove('active');
+        }).catch(() => {
+          showFeedback('Could not copy — please copy the link manually.');
+        });
+      });
+
+      document.getElementById('btn-canvas').addEventListener('click', () => {
+        const r = RESULTS[state.result];
+        const canvas = document.getElementById('shareCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Background
+        ctx.fillStyle = '#FAF6F0';
+        ctx.fillRect(0, 0, 1200, 630);
+
+        // Top accent bar
+        ctx.fillStyle = '#C4785A';
+        ctx.fillRect(0, 0, 1200, 8);
+
+        // Bottom accent bar
+        ctx.fillStyle = '#5C3D5E';
+        ctx.fillRect(0, 622, 1200, 8);
+
+        // Subtle shape decorations
+        ctx.fillStyle = 'rgba(196,120,90,0.07)';
+        ctx.beginPath();
+        ctx.ellipse(1100, 100, 300, 200, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = 'rgba(92,61,94,0.06)';
+        ctx.beginPath();
+        ctx.ellipse(100, 530, 250, 180, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Eyebrow
+        ctx.fillStyle = '#C4785A';
+        ctx.font = 'bold 18px Inter, system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('MY RELATIONSHIP BLUEPRINT', 600, 130);
+
+        // Divider line
+        ctx.strokeStyle = '#D4A853';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(500, 148);
+        ctx.lineTo(700, 148);
+        ctx.stroke();
+
+        // Type name
+        ctx.fillStyle = '#2C2825';
+        ctx.font = 'bold 72px Playfair Display, Georgia, serif';
+        ctx.fillText(r.name, 600, 280);
+
+        // Tagline
+        ctx.fillStyle = '#5C3D5E';
+        ctx.font = 'italic 28px Playfair Display, Georgia, serif';
+        ctx.fillText(r.tagline, 600, 360);
+
+        // URL
+        ctx.fillStyle = '#C4785A';
+        ctx.font = '20px Inter, system-ui, sans-serif';
+        ctx.fillText(QUIZ_URL, 600, 540);
+
+        // Small footer
+        ctx.fillStyle = '#6B6259';
+        ctx.font = '16px Inter, system-ui, sans-serif';
+        ctx.fillText('psychomaster.site — A psychology-based self-awareness quiz', 600, 580);
+
+        canvas.toBlob(blob => {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `relationship-blueprint-${state.result.toLowerCase()}.png`;
+          a.click();
+          URL.revokeObjectURL(url);
+          showFeedback('✓ Share card downloaded!');
+        }, 'image/png');
+      });
+
+      /* ─── Modal ─── */
+      document.getElementById('btn-privacy').addEventListener('click', e => {
+        e.preventDefault();
+        document.getElementById('modal-privacy').classList.add('active');
+        document.getElementById('modal-privacy-close').focus();
+      });
+      document.getElementById('modal-privacy-close').addEventListener('click', () => {
+        document.getElementById('modal-privacy').classList.remove('active');
+      });
+      document.getElementById('modal-privacy').addEventListener('click', e => {
+        if (e.target === document.getElementById('modal-privacy')) {
+          document.getElementById('modal-privacy').classList.remove('active');
+        }
+      });
+
+      document.getElementById('modal-wechat-close').addEventListener('click', () => {
+        document.getElementById('modal-wechat').classList.remove('active');
+      });
+      document.getElementById('modal-wechat').addEventListener('click', e => {
+        if (e.target === document.getElementById('modal-wechat')) {
+          document.getElementById('modal-wechat').classList.remove('active');
+        }
+      });
+
+      /* ─── Keyboard nav for answers ─── */
+      document.addEventListener('keydown', e => {
+        if (!document.getElementById('screen-question').classList.contains('active')) return;
+        const opts = Array.from(document.querySelectorAll('.answer-option'));
+        const focused = document.activeElement;
+        const idx = opts.indexOf(focused);
+
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+          e.preventDefault();
+          const next = opts[(idx + 1) % opts.length];
+          if (next) next.focus();
+        } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          const prev = opts[(idx - 1 + opts.length) % opts.length];
+          if (prev) prev.focus();
+        } else if (e.key === 'Enter' || e.key === ' ') {
+          if (focused.classList.contains('answer-option') && !focused.classList.contains('selected')) {
+            e.preventDefault();
+            focused.click();
+          }
+        }
+      });
+
+      /* ─── Buttons ─── */
+      document.getElementById('btn-start').addEventListener('click', () => showScreen('screen-intro'));
+      document.getElementById('btn-start-quiz').addEventListener('click', () => {
+        if (state.currentQ > 0 || state.answers.length > 0) {
+          renderQuestion();
+          showScreen('screen-question');
+        } else {
+          state.currentQ = 0;
+          state.answers = [];
+          saveState();
+          renderQuestion();
+          showScreen('screen-question');
+        }
+      });
+      document.getElementById('btn-retake').addEventListener('click', () => {
+        clearState();
+        showScreen('screen-intro');
+      });
+
+      /* ─── Init ─── */
+      loadState();
+
+      if (state.answers.length > 0 && !state.result) {
+        // Resume: go to question
+        renderQuestion();
+        showScreen('screen-question');
+      } else if (state.result) {
+        // Show result directly (completed quiz)
+        renderResult(state.result, false);
+        showScreen('screen-result');
+      }
+      // Otherwise: landing screen is already shown
+
+    })();
+  </script>
+</body>
+</html>
