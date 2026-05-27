@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enneagram Quiz — What's Your Type?</title>
+  <meta name="description" content="Discover your Enneagram type — the 9 faces of human nature. A psycho-spiritual self-discovery quiz.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito+Sans:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0D0F1A; --surface: #161829; --surfaceRaised: #1E2240;
+      --primary: #C9A96E; --primaryMuted: #8B7355; --accent: #7B68EE;
+      --textPrimary: #F0EBE0; --textSecondary: #9B97B0; --textMuted: #6B6880;
+      --border: #2A2D4A; --error: #E07070;
+      --type1: #B8860B; --type2: #CD5C5C; --type3: #C9A96E; --type4: #9B4080;
+      --type5: #4A6FA5; --type6: #5C7C8A; --type7: #7CB342; --type8: #8B4513; --type9: #6B8E7B;
+      --radius: 16px; --radiusSm: 12px; --radiusPill: 999px;
+      --fontDisplay: 'Cormorant Garamond', Georgia, serif;
+      --fontBody: 'Nunito Sans', Inter, sans-serif;
+      --fontCN: 'Noto Serif SC', 'Songti SC', serif;
+    }
+    html { font-size: 16px; }
+    body {
+      font-family: var(--fontBody); background: var(--bg); color: var(--textPrimary);
+      min-height: 100vh; line-height: 1.6; overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    .screen { display: none; min-height: 100vh; }
+    .screen.active { display: flex; flex-direction: column; }
+    .container { width: 100%; max-width: 640px; margin: 0 auto; padding: 24px; flex: 1; }
+    .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+    /* WELCOME */
+    .welcome-screen { justify-content: center; align-items: center; text-align: center; padding: 40px 24px; }
+    .welcome-eyebrow { font-family: var(--fontBody); font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--primary); margin-bottom: 20px; }
+    .welcome-title { font-family: var(--fontCN); font-size: 36px; font-weight: 600; color: var(--textPrimary); margin-bottom: 8px; line-height: 1.3; }
+    .welcome-subtitle { font-family: var(--fontDisplay); font-size: 20px; font-style: italic; color: var(--textSecondary); margin-bottom: 32px; }
+    .enneagram-figure { width: 160px; height: 160px; margin: 0 auto 32px; animation: rotateSlow 30s linear infinite; }
+    .enneagram-figure svg { width: 100%; height: 100%; }
+    @keyframes rotateSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .welcome-tagline { font-size: 15px; color: var(--textSecondary); max-width: 380px; margin: 0 auto 28px; line-height: 1.7; }
+    .welcome-consent { font-size: 12px; color: var(--textMuted); max-width: 360px; margin: 0 auto 32px; line-height: 1.6; background: var(--surface); border-radius: var(--radius); padding: 16px; border: 1px solid var(--border); }
+    .btn-primary { display: block; width: 100%; max-width: 360px; margin: 0 auto; padding: 16px 32px; background: var(--primary); color: var(--bg); font-family: var(--fontBody); font-size: 16px; font-weight: 700; border: none; border-radius: var(--radiusSm); cursor: pointer; transition: all 0.2s; letter-spacing: 0.5px; }
+    .btn-primary:hover { background: #D4B87A; transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+    /* QUESTION */
+    .question-screen { padding-top: 20px; }
+    .progress-container { margin-bottom: 8px; }
+    .progress-bar { height: 4px; background: var(--surface); border-radius: var(--radiusPill); overflow: hidden; display: flex; gap: 3px; padding: 0; }
+    .progress-segment { flex: 1; height: 100%; background: var(--border); border-radius: 2px; transition: background 0.3s; }
+    .progress-segment.filled { background: var(--primary); }
+    .progress-segment.current { background: var(--primary); opacity: 0.6; }
+    .step-indicator { font-size: 12px; color: var(--textMuted); text-align: center; margin-bottom: 28px; letter-spacing: 0.5px; }
+    .question-text { font-family: var(--fontDisplay); font-size: 22px; font-weight: 600; color: var(--textPrimary); line-height: 1.5; margin-bottom: 28px; text-align: center; }
+    .options-list { display: flex; flex-direction: column; gap: 12px; }
+    .option-btn { display: flex; align-items: flex-start; gap: 14px; width: 100%; padding: 16px 18px; background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radiusSm); cursor: pointer; transition: all 0.2s; text-align: left; }
+    .option-btn:hover { border-color: var(--primaryMuted); background: var(--surfaceRaised); transform: translateY(-1px); }
+    .option-btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+    .option-btn.selected { border-color: var(--primary); background: var(--surfaceRaised); }
+    .option-label { flex-shrink: 0; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background: var(--surfaceRaised); border-radius: var(--radiusPill); font-size: 13px; font-weight: 700; color: var(--textMuted); transition: all 0.2s; }
+    .option-btn.selected .option-label { background: var(--primary); color: var(--bg); }
+    .option-text { font-size: 15px; color: var(--textPrimary); line-height: 1.5; padding-top: 3px; }
+    .option-hint { font-size: 12px; color: var(--textMuted); text-align: center; margin-top: 20px; }
+    @media (prefers-reduced-motion: reduce) {
+      .enneagram-figure { animation: none; }
+      .option-btn, .btn-primary { transition: none; transform: none; }
+    }
+
+    /* PROCESSING */
+    .processing-screen { justify-content: center; align-items: center; text-align: center; }
+    .processing-figure { width: 120px; height: 120px; margin: 0 auto 32px; position: relative; }
+    .processing-ring { position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--border); animation: pulse 2s ease-in-out infinite; }
+    .processing-ring:nth-child(2) { animation-delay: 0.3s; }
+    .processing-ring:nth-child(3) { animation-delay: 0.6s; }
+    @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.15); opacity: 1; } }
+    .processing-center { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 36px; color: var(--primary); font-family: var(--fontDisplay); font-weight: 700; }
+    .processing-title { font-family: var(--fontDisplay); font-size: 24px; color: var(--textPrimary); margin-bottom: 12px; }
+    .processing-sub { font-size: 14px; color: var(--textMuted); }
+    @media (prefers-reduced-motion: reduce) {
+      .processing-ring { animation: none; }
+    }
+
+    /* RESULT */
+    .result-screen { padding-top: 40px; }
+    .result-badge { font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--textMuted); text-align: center; margin-bottom: 8px; }
+    .result-type-number { font-family: var(--fontDisplay); font-size: 72px; font-weight: 700; text-align: center; line-height: 1; margin-bottom: 4px; transition: color 0.5s; }
+    .result-archetype { font-family: var(--fontDisplay); font-size: 34px; font-weight: 600; text-align: center; color: var(--textPrimary); margin-bottom: 6px; }
+    .result-tagline { font-family: var(--fontDisplay); font-size: 17px; font-style: italic; text-align: center; color: var(--textSecondary); margin-bottom: 32px; padding: 0 20px; }
+    .result-divider { width: 80px; height: 2px; margin: 0 auto 32px; border-radius: 1px; transition: background 0.5s; }
+    .result-hero-gradient { position: absolute; top: 0; left: 0; right: 0; height: 320px; pointer-events: none; transition: opacity 0.5s; }
+    .result-content { position: relative; z-index: 1; }
+    .result-section { margin-bottom: 28px; padding: 0 4px; }
+    .result-section-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--textMuted); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+    .result-section-label::before { content: ''; display: inline-block; width: 16px; height: 1.5px; border-radius: 1px; transition: background 0.5s; }
+    .result-section-text { font-size: 15px; color: var(--textPrimary); line-height: 1.7; }
+    .result-section-text strong { color: var(--primary); }
+    .result-traits { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; padding: 0 4px; }
+    .trait-pill { padding: 6px 14px; border-radius: var(--radiusPill); font-size: 13px; font-weight: 600; border: 1.5px solid; transition: border-color 0.5s, color 0.5s, background 0.5s; }
+    .result-steps { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; padding: 0 4px; }
+    .result-step { display: flex; gap: 14px; align-items: flex-start; }
+    .step-number { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; transition: background 0.5s, color 0.5s; }
+    .step-text { font-size: 14px; color: var(--textPrimary); line-height: 1.6; padding-top: 2px; }
+    .wing-note { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin: 28px 0; font-size: 14px; color: var(--textSecondary); line-height: 1.6; }
+    .wing-note strong { color: var(--textPrimary); }
+    .result-share-section { padding: 28px 4px; border-top: 1px solid var(--border); margin-top: 8px; }
+    .share-label { font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--textMuted); margin-bottom: 16px; }
+    .share-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
+    .share-btn { display: flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radiusSm); font-size: 13px; font-weight: 600; color: var(--textSecondary); cursor: pointer; transition: all 0.2s; }
+    .share-btn:hover { background: var(--surfaceRaised); color: var(--textPrimary); border-color: var(--primaryMuted); }
+    .share-btn svg { width: 16px; height: 16px; }
+    .result-support { background: var(--surface); border-radius: var(--radius); padding: 16px; margin-top: 24px; text-align: center; font-size: 13px; color: var(--textMuted); }
+    .result-support a { color: var(--primary); text-decoration: none; }
+    .result-support a:hover { text-decoration: underline; }
+    .btn-retake { display: inline-block; width: auto; padding: 12px 28px; background: transparent; color: var(--textMuted); font-family: var(--fontBody); font-size: 14px; font-weight: 600; border: 1px solid var(--border); border-radius: var(--radiusSm); cursor: pointer; transition: all 0.2s; margin-top: 20px; }
+    .btn-retake:hover { border-color: var(--primaryMuted); color: var(--textPrimary); }
+
+    /* Toast */
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--surfaceRaised); color: var(--textPrimary); padding: 12px 24px; border-radius: var(--radiusSm); font-size: 14px; font-weight: 600; border: 1px solid var(--border); opacity: 0; transition: all 0.3s; z-index: 1000; pointer-events: none; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* Mobile adjustments */
+    @media (max-width: 480px) {
+      .welcome-title { font-size: 30px; }
+      .question-text { font-size: 20px; }
+      .result-type-number { font-size: 60px; }
+      .result-archetype { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- WELCOME SCREEN -->
+<div id="screen-welcome" class="screen welcome-screen active">
+  <div class="container" style="display:flex;flex-direction:column;align-items:center;">
+    <p class="welcome-eyebrow">Enneagram Self-Discovery</p>
+    <h1 class="welcome-title">你的九型人格是哪种？</h1>
+    <p class="welcome-subtitle">What's Your Enneagram Type?</p>
+    <div class="enneagram-figure" aria-hidden="true">
+      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="100" cy="100" r="80" stroke="#2A2D4A" stroke-width="1"/>
+        <circle cx="100" cy="100" r="50" stroke="#2A2D4A" stroke-width="1"/>
+        <polygon points="100,20 178,145 22,145" stroke="#C9A96E" stroke-width="1.5" fill="none" opacity="0.6"/>
+        <polygon points="100,180 22,55 178,55" stroke="#C9A96E" stroke-width="1.5" fill="none" opacity="0.6"/>
+        <line x1="100" y1="20" x2="100" y2="180" stroke="#2A2D4A" stroke-width="0.5" opacity="0.5"/>
+        <line x1="22" y1="145" x2="178" y2="55" stroke="#2A2D4A" stroke-width="0.5" opacity="0.5"/>
+        <line x1="178" y1="145" x2="22" y2="55" stroke="#2A2D4A" stroke-width="0.5" opacity="0.5"/>
+        <circle cx="100" cy="20" r="4" fill="#C9A96E" opacity="0.7"/>
+        <circle cx="178" cy="145" r="4" fill="#C9A96E" opacity="0.7"/>
+        <circle cx="22" cy="145" r="4" fill="#C9A96E" opacity="0.7"/>
+        <circle cx="178" cy="55" r="4" fill="#C9A96E" opacity="0.7"/>
+        <circle cx="22" cy="55" r="4" fill="#C9A96E" opacity="0.7"/>
+        <circle cx="100" cy="180" r="4" fill="#C9A96E" opacity="0.7"/>
+        <circle cx="61" cy="70" r="3" fill="#8B7355" opacity="0.5"/>
+        <circle cx="139" cy="70" r="3" fill="#8B7355" opacity="0.5"/>
+        <circle cx="100" cy="100" r="5" fill="#C9A96E"/>
+      </svg>
+    </div>
+    <p class="welcome-tagline">The 9 Faces of Human Nature — Discover What Drives You</p>
+    <div class="welcome-consent">
+      Based on the Enneagram personality framework. For self-reflection only — not a clinical diagnosis. Your answers are processed entirely in your browser.
+    </div>
+    <button class="btn-primary" id="btn-start" aria-label="Begin the Enneagram Quiz">Begin the Quiz →</button>
+  </div>
+</div>
+
+<!-- QUESTION SCREEN -->
+<div id="screen-question" class="screen question-screen">
+  <div class="container">
+    <div class="progress-container">
+      <div class="progress-bar" id="progress-bar" role="progressbar" aria-label="Quiz progress" aria-valuenow="1" aria-valuemin="1" aria-valuemax="12"></div>
+    </div>
+    <p class="step-indicator" id="step-indicator">Question 1 of 12</p>
+    <h2 class="question-text" id="question-text"></h2>
+    <div class="options-list" id="options-list" role="radiogroup"></div>
+    <p class="option-hint">Select A, B, C, or D</p>
+  </div>
+</div>
+
+<!-- PROCESSING SCREEN -->
+<div id="screen-processing" class="screen processing-screen">
+  <div class="container" style="display:flex;flex-direction:column;align-items:center;">
+    <div class="processing-figure" aria-hidden="true">
+      <div class="processing-ring"></div>
+      <div class="processing-ring"></div>
+      <div class="processing-ring"></div>
+      <div class="processing-center">9</div>
+    </div>
+    <h2 class="processing-title">Mapping your Enneagram type...</h2>
+    <p class="processing-sub">Reading your patterns, motivations, and defenses...</p>
+  </div>
+</div>
+
+<!-- RESULT SCREEN -->
+<div id="screen-result" class="screen result-screen">
+  <div class="result-hero-gradient" id="result-gradient"></div>
+  <div class="container result-content">
+    <p class="result-badge">Your Enneagram Type</p>
+    <div class="result-type-number" id="result-number"></div>
+    <div class="result-archetype" id="result-archetype"></div>
+    <div class="result-tagline" id="result-tagline"></div>
+    <div class="result-divider" id="result-divider"></div>
+    <div id="result-body"></div>
+    <div class="wing-note" id="wing-note"></div>
+    <div class="result-share-section">
+      <p class="share-label">Share your result</p>
+      <div class="share-buttons">
+        <button class="share-btn" id="share-telegram" aria-label="Share on Telegram">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 1 0 24 12 12.013 12.013 0 0 0-12 12v-.616a3.49 3.49 0 0 0-.356-1.409 2.006 2.006 0 0 0-.629-1.018c-.32-.3-.72-.6-1.49-1.1A10.5 10.5 0 0 0 0 10a12.066 12.066 0 0 0 2.176 6.4 10.526 10.526 0 0 1-2.1-2.8L1.5 12l4.5-3 2.9 2.2 3.4 2.5a10.6 10.6 0 0 1 3.944 4.23V24a12.014 12.014 0 0 1-4.5-9.9 12.014 12.014 0 0 1-4.006-7.07A12 12 0 0 1 11.944 0z"/></svg>
+          Telegram
+        </button>
+        <button class="share-btn" id="share-whatsapp" aria-label="Share on WhatsApp">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.489l4.49-1.483A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.137 0-4.147-.671-5.803-1.805l-.416-.288-2.738.905.932-2.597-.34-.408A9.84 9.84 0 0 1 2 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+          WhatsApp
+        </button>
+        <button class="share-btn" id="share-clipboard" aria-label="Copy share text">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy
+        </button>
+        <button class="share-btn" id="share-download" aria-label="Download share card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Save Card
+        </button>
+      </div>
+    </div>
+    <div class="result-support">If this quiz brought up difficult feelings, that's a normal part of self-reflection.<br><a href="https://findahelpline.com" target="_blank" rel="noopener">Find professional support →</a></div>
+    <div style="text-align:center;">
+      <button class="btn-retake" id="btn-retake">Retake Quiz</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+// ─── ENNEAGRAM DATA ───────────────────────────────────────────────────────────
+const TYPES = {
+  1: {
+    name: "The Reformer", nameCN: "完美主义者",
+    tagline: '"I want things to be right — and I know the right way."',
+    color: "#B8860B",
+    fear: "Being corrupt, defective, or wrong",
+    desire: "To be good, right, and virtuous",
+    description: "You have a clear inner compass pointing toward integrity and improvement — both for yourself and for the world around you. High standards aren't the enemy; they're your way of caring. But that same drive can tip into perfectionism and judgment of others. You're here to learn that \"right\" has many faces — and that letting go of control doesn't mean letting go of values.",
+    traits: ["Conscientious and principled", "Organized and detail-oriented", "Strong sense of right and wrong", "Often frustrated with inefficiency", "Self-disciplined but hard on yourself", "See possibilities for improvement everywhere"],
+    showsUp: "At work: You produce high-quality output and expect the same from others. Deadlines matter. Sloppiness doesn't. In relationships: You want to do things \"right\" — being a good partner, a good friend. This can come across as critical. Under stress: You become more critical, anxious, and convinced you're not doing enough.",
+    costs: "Rigid standards can mean missed moments of joy, strained relationships when \"right\" trumps \"connected,\" and a constant feeling that nothing is ever quite good enough.",
+    steps: [
+      "Notice judgment before it becomes criticism — ask \"is this true, or am I projecting my own standard?\"",
+      "Practice \"good enough\" — intentionally let small things be imperfect and observe what happens.",
+      "Lead with curiosity, not correction — ask questions before offering solutions.",
+      "Channel the reformer into advocacy — your drive for improvement can change systems, not just people."
+    ],
+    wing: { 9: "1w9: The Idealist — more inner quietude and stoicism, prefers harmony over reform.", 2: "1w2: The Advocate — more other-focused, wants to help others be better too." }
+  },
+  2: {
+    name: "The Helper", nameCN: "助人者",
+    tagline: '"I give because giving is how I know I\'m loveable."',
+    color: "#CD5C5C",
+    fear: "Being unwanted or unworthy of love",
+    desire: "To feel loved and wanted",
+    description: "Your heart is generous and attuned to others' needs — often before your own. You offer help not from obligation but from genuine care. The risk? When giving becomes transactional, or when you resent others for not recognizing your sacrifices. You're here to learn that receiving is just as courageous as giving — and that your worth isn't measured by how useful you are.",
+    traits: ["Warm, empathetic, and emotionally perceptive", "Great at anticipating others' needs", "Generous with time and energy", "Struggle to ask for help or acknowledge own needs", "Can become manipulative through guilt", "Deep fear of being seen as selfish"],
+    showsUp: "At work: You remember birthdays, check in on struggling colleagues, and make the team feel emotionally safe. In relationships: You prioritize your partner's comfort and happiness — sometimes at the cost of your own voice. Under stress: You either over-give until depleted, or become passive-aggressively resentful.",
+    costs: "Neglecting your own needs, burning out from over-giving, and building relationships on guilt rather than genuine connection.",
+    steps: [
+      "Name your needs out loud — not as a hint, but as a clear statement. \"I need...\"",
+      "Notice when giving feels transactional — if you're keeping score, pause.",
+      "Ask yourself: \"What do I actually want right now?\" before offering anything.",
+      "Receive gracefully — let others help you. It's a gift you give them."
+    ],
+    wing: { 1: "2w1: The Servant — adds principled ethics to your helping, wants to help the \"right\" way.", 3: "2w3: The Matchmaker — helping becomes more performance-oriented, wants to be seen as indispensable." }
+  },
+  3: {
+    name: "The Achiever", nameCN: "成就者",
+    tagline: '"I am what I accomplish. So I must accomplish everything."',
+    color: "#C9A96E",
+    fear: "Being worthless or unsuccessful without achievements",
+    desire: "To feel valuable and successful",
+    description: "You're driven, ambitious, and incredibly capable of setting goals and crushing them. Adaptability is your superpower — you can read a room and become whatever version of yourself will succeed. The shadow side: when achievement becomes the only source of self-worth, you can lose touch with who you are beneath the resume. You're here to learn that you are valuable beyond what you do — and that the mask, while effective, is exhausting to wear.",
+    traits: ["Highly motivated and goal-oriented", "Excellent at self-presentation and reading the room", "Charismatic and inspiring to others", "Fear of failure runs deep", "Can sacrifice health and relationships for the next milestone", "Skips emotional processing in favor of \"moving forward\""],
+    showsUp: "At work: You set ambitious targets and actually hit them. You're the person others rally behind. In relationships: You show up as your most polished, impressive self — sometimes at the cost of genuine intimacy. Under stress: You work harder, sleep less, and deny anything is wrong. Burnout comes fast.",
+    costs: "Authentic connection (because you're performing, not being), physical health, and a grounded sense of self-worth independent of achievements.",
+    steps: [
+      "Name your feelings before naming your goals — check in: \"What am I actually feeling right now?\"",
+      "Let someone see you fail — practice being valued without your armor.",
+      "Set a goal that has nothing to do with performance — rest, connect, create without outcome.",
+      "Separate \"doing\" from \"being\" — you have value even when you're not producing."
+    ],
+    wing: { 2: "3w2: The Charmer — warmer, more people-focused in achievements, more relational.", 4: "3w4: The Professional — more introspective, driven by being uniquely special rather than just successful." }
+  },
+  4: {
+    name: "The Individualist", nameCN: "个人主义者",
+    tagline: '"I\'m not like everyone else — and that\'s both my gift and my wound."',
+    color: "#9B4080",
+    fear: "Being insignificant or without identity",
+    desire: "To be authentically themselves and uniquely special",
+    description: "You feel things more deeply than most and have a rich inner world that the outside world rarely sees fully. Your authenticity is your superpower — you see beauty and depth where others see mundane. The shadow: a sense of being fundamentally different can tip into feeling like an outsider, or envying others' apparent ease. You're here to learn that belonging isn't about being the same — and that your difference is not a barrier to connection.",
+    traits: ["Deeply emotional and introspective", "Strong sense of aesthetics and personal style", "Perceptive about emotional nuance and authenticity", "Can feel misunderstood or like an outsider", "Creative and original in thinking", "Tendency to romanticize the past or yearn for an idealized future"],
+    showsUp: "At work: You bring creative vision and emotional intelligence. You struggle with repetitive or purely procedural tasks. In relationships: You want deep, soulful connection — and can feel empty in surface-level interactions. Under stress: You withdraw inward, may become moody or catastrophically envious.",
+    costs: "Isolation from wanting to be \"too different,\" difficulty fitting in when you'd rather stand out, and emotional intensity that can overwhelm yourself.",
+    steps: [
+      "Notice when comparison steals your joy — \"they have what I don't\" is a trap.",
+      "Speak your feelings out loud — your inner world is rich; let others in.",
+      "Practice participating in the ordinary — not everything needs to be profound to matter.",
+      "Ground identity in presence, not difference — you belong exactly as you are, not because of what makes you special."
+    ],
+    wing: { 3: "4w3: The Aristocrat — adds ambition and social polish, wants to be both unique AND recognized.", 5: "4w5: The Bohemian — deeper introspection, more private, more philosophical, more withdrawn." }
+  },
+  5: {
+    name: "The Investigator", nameCN: "探索者",
+    tagline: '"The world is complex. I need to understand it before I can engage with it."',
+    color: "#4A6FA5",
+    fear: "Being overwhelmed or incapable",
+    desire: "To be competent and capable",
+    description: "You crave knowledge and understanding more than most. Your mind is your sanctuary — a place where you're fully capable and never caught off guard. Detachment is your defense: when emotions feel too overwhelming, you retreat into observation. The shadow: isolation becomes a prison, and knowledge without connection leaves you feeling empty. You're here to learn that you don't have to understand everything before participating — and that your presence, not just your insights, matters.",
+    traits: ["Intellectually curious and deeply analytical", "Self-sufficient and comfortable with solitude", "Excellent at complex problem-solving", "Emotionally private — others often don't know what you're feeling", "Can be so focused on thinking that feeling gets missed", "Expert at setting boundaries around energy and time"],
+    showsUp: "At work: You produce deeply researched, thoughtful work. You prefer to work independently. Meetings can feel draining. In relationships: You show love through problem-solving and shared intellectual pursuits. Physical affection may not be your first language. Under stress: You withdraw further, become more detached, and may intellectualize emotions.",
+    costs: "Loneliness from excessive withdrawal, missed connection because you process emotions privately, and a tendency to let understanding become a form of procrastination.",
+    steps: [
+      "Stay present when emotions arise — observe them without judgment before retreating.",
+      "Share one feeling before sharing one insight — practice emotional presence.",
+      "Engage before you're fully ready — you know enough to participate.",
+      "Remember: others can hold space for you — solitude is restful, not nourishing."
+    ],
+    wing: { 4: "5w4: The Iconoclast — adds emotional depth and a sense of being outside the norm, more romantic, more creative.", 6: "5w6: The Problem Solver — adds loyalty and anxiety, more practical, more oriented toward security and systems." }
+  },
+  6: {
+    name: "The Loyalist", nameCN: "忠诚者",
+    tagline: '"If I can just figure out what\'s dangerous, I can stay safe."',
+    color: "#5C7C8A",
+    fear: "Being without guidance or support; losing security",
+    desire: "To feel safe and supported by people and systems",
+    description: "You're loyal, responsible, and deeply attuned to threats and risks — in yourself, in relationships, and in the world. Your inner radar for danger keeps you prepared, but it can also keep you anxious and second-guessing. The question you're always asking: \"Can I trust this?\" — applies to people, systems, and sometimes yourself. You're here to learn that inner security can be built, not just found through external certainty — and that not every threat is real.",
+    traits: ["Highly loyal to people and principles they believe in", "Excellent at anticipating what could go wrong", "Conscientious and follows through on commitments", "Anxiety runs beneath the surface", "Great at problem-solving around worst-case scenarios", "Can oscillate between doubting authority and needing it"],
+    showsUp: "At work: You catch mistakes others miss. You're reliable and follow through. You need clarity on expectations and authority structures. In relationships: You're fiercely loyal once trust is established. But you may test partners or friends unconsciously. Under stress: Anxiety intensifies. You may become paranoid, indecisive, or defiant against the very authority you sought.",
+    costs: "Decisions paralyzed by doubt, relationships strained by unconscious testing, and a lifetime spent managing anxiety rather than building inner certainty.",
+    steps: [
+      "Notice the story before checking facts — \"what if\" is not the same as \"this is.\"",
+      "Build one trusted relationship where you can be vulnerable — not everyone needs to earn constant proof.",
+      "Practice small acts of trust — let someone else drive. Let plans shift.",
+      "Notice inner authority — you have more inner resources than you give yourself credit for."
+    ],
+    wing: { 5: "6w5: The Defender — more withdrawn, intellectual, focused on building competence as security.", 7: "6w7: The Buddy — more social and engaging, using humor and connection to manage anxiety." }
+  },
+  7: {
+    name: "The Enthusiast", nameCN: "热情者",
+    tagline: '"Life is full of possibilities. Why would I choose just one?"',
+    color: "#7CB342",
+    fear: "Being deprived, trapped, or in pain",
+    desire: "To be satisfied and fulfilled through experiences",
+    description: "You see possibility everywhere. Your energy is infectious, your ideas are abundant, and your optimism can light up a room. You're here to escape pain — not through denial, but through perpetual forward motion. The shadow: when life feels like too much, you run. New plans replace unfinished ones. Depth gets traded for breadth. You're here to learn that presence — staying with one thing, one person, one feeling — is where the real richness is.",
+    traits: ["Optimistic, energetic, and full of ideas", "Excellent at inspiring others and generating enthusiasm", "Naturally skilled at multiple pursuits", "Difficulty with commitment and finishing what you start", "Will do almost anything to avoid sitting with discomfort", "Can miss depth by always chasing the next high"],
+    showsUp: "At work: You bring creative energy and can pivot quickly. Brainstorming is your sweet spot. Execution is your challenge. In relationships: You're exciting, playful, and adventurous. But you may flee when conflict or depth feels threatening. Under stress: You plan the next escape, idealize a future where everything is better.",
+    costs: "Unfinished projects, relationships that never go deep, and a lifetime of \"what if\" without ever arriving at \"this is enough.\"",
+    steps: [
+      "Name the feeling you're running from — what's underneath the next plan?",
+      "Practice finishing — one project, one commitment, one conversation to completion.",
+      "Let yourself be bored — boredom is the gateway to depth, not the enemy.",
+      "Choose presence over possibility — being here is enough."
+    ],
+    wing: { 6: "7w6: The Entertainer — adds anxiety and social connection needs, more relationship-oriented, more uncertain.", 8: "7w8: The Realist — adds directness and intensity, more decisive, more willing to push through resistance." }
+  },
+  8: {
+    name: "The Challenger", nameCN: "挑战者",
+    tagline: '"I\'d rather be the one making the rules than following them."',
+    color: "#8B4513",
+    fear: "Being controlled or harmed by others",
+    desire: "To be independent and in control of their own destiny",
+    description: "You're direct, powerful, and unafraid to take up space. Your presence commands attention — not because you seek it, but because you're fully yourself in a way that makes others take notice. Control is your armor: when you lead, no one can hurt you. The shadow: force can become domination, and the drive to never be controlled can make you controlling. You're here to learn that vulnerability — not power — is true strength, and that allowing softness doesn't mean allowing harm.",
+    traits: ["Direct, assertive, and unafraid of confrontation", "Naturally takes charge and makes things happen", "Strong sense of justice and protecting the underdog", "Can be intimidating without meaning to", "Suppresses vulnerability — appears tougher than they are", "Sees the world in terms of strength and weakness"],
+    showsUp: "At work: You lead decisively and take bold action. You're protective of your team. You can run over people who won't push back. In relationships: You love fiercely and protect those you care about. But you may struggle with emotional intimacy and being truly seen. Under stress: You become more aggressive, controlling, and dismissive of any sign of weakness.",
+    costs: "Loneliness from pushing people away, relationships where others feel overpowered, and a missing layer of emotional intimacy that your deeper self craves.",
+    steps: [
+      "Notice what's underneath the anger — hurt, fear, and need are all there.",
+      "Practice softness on purpose — let someone see the tender part without jumping to protect it.",
+      "Lead by enabling others, not dominating them — real power is making others powerful.",
+      "Let others be responsible — not every problem is yours to solve by force."
+    ],
+    wing: { 7: "8w7: The Maverick — adds more energy, excitement-seeking, and volatility.", 9: "8w9: The Bear — adds calm, steadiness, and more inner reserve, more diplomatic, harder to provoke." }
+  },
+  9: {
+    name: "The Peacemaker", nameCN: "和平者",
+    tagline: '"If I just go along, no one will get hurt. And maybe I\'ll finally feel at peace."',
+    color: "#6B8E7B",
+    fear: "Loss, separation, and fragmentation of the self",
+    desire: "To have inner stability and peace of mind",
+    description: "You are the glue that holds groups together — the person who smooths tensions, accommodates others, and keeps the peace. Your ability to see all sides is remarkable — and so is your talent for losing yourself in the process. \"What do I want?\" is the question that gets lost. Your greatest act of courage is claiming your own voice, your own preferences, your own presence. You're here to learn that your needs matter — that peace is not the absence of conflict, but the presence of your own self.",
+    traits: ["Easy-going, calm, and easy to be around", "Excellent at seeing and validating multiple perspectives", "Strong at mediating and keeping peace", "Frequently says \"whatever you prefer\" — and means it", "Has a rich inner world they rarely share", "Tendency to defer, minimize, and self-efface"],
+    showsUp: "At work: You smooth team conflict and make others feel heard. You struggle to assert your own ideas in meetings. You may agree to deadlines you know you can't keep. In relationships: You're the supportive, easy partner — until resentment builds silently. Under stress: You numb out — TV, food, sleep, dissociation. The more stressed, the more absent you become.",
+    costs: "Your own voice, your own desires, your own direction — and eventually, a deep resentment toward others for \"making\" you accommodate while never knowing what you really want.",
+    steps: [
+      "Ask yourself: \"What do I actually think/want/feel?\" — practice having an opinion.",
+      "Notice when you're absorbing someone else's mood — that's theirs, not yours.",
+      "Speak up in small moments — not every accommodation is peaceful, sometimes it's self-erasure.",
+      "Get angry when something violates your boundary — anger is information. It means something matters to you."
+    ],
+    wing: { 8: "9w8: The Referee — adds more assertiveness and presence, more willing to push back, more grounded in their own space.", 1: "9w1: The Dreamer — adds a principled, reform-minded streak, more oriented toward \"the right way\" to create peace." }
+  }
+};
+
+const QUESTIONS = [
+  {
+    text: "You're stuck in a long queue at a coffee shop. What's your immediate internal reaction?",
+    options: [
+      { label: "A", text: '"This is wasting my time. I should say something."', type: 8 },
+      { label: "B", text: '"Let me use this time to think through my to-do list."', type: 5 },
+      { label: "C", text: '"I wonder if I should just let the person ahead know I\'m in a rush."', type: 3 },
+      { label: "D", text: '"I\'ll just breathe and enjoy the moment of stillness."', type: 9 }
+    ]
+  },
+  {
+    text: "A friend cancels plans on you last-minute. What do you feel first?",
+    options: [
+      { label: "A", text: "Resentment — they should have told me sooner.", type: 1 },
+      { label: "B", text: "Hurt — do they not value our connection?", type: 4 },
+      { label: "C", text: "Concern — I hope they're okay.", type: 2 },
+      { label: "D", text: "Relief — now I have time for other things.", type: 5 }
+    ]
+  },
+  {
+    text: "At a group dinner, you notice no one is engaging with the quieter person. You:",
+    options: [
+      { label: "A", text: "Go out of your way to include them and make them feel seen.", type: 2 },
+      { label: "B", text: "Stay quiet but observe the social dynamics carefully.", type: 6 },
+      { label: "C", text: "Make a bold entrance and shift the energy of the whole table.", type: 7 },
+      { label: "D", text: "Mentally check out — this isn't your thing to manage.", type: 9 }
+    ]
+  },
+  {
+    text: "You receive critical feedback on a project you worked hard on. Your first response:",
+    options: [
+      { label: "A", text: '"Let me analyze this objectively and figure out what to improve."', type: 5 },
+      { label: "B", text: '"What did I do wrong — how do I fix it?"', type: 3 },
+      { label: "C", text: '"This is unfair. They didn\'t understand my vision."', type: 4 },
+      { label: "D", text: '"I feel deflated but I\'ll use this to do better next time."', type: 1 }
+    ]
+  },
+  {
+    text: "You're scrolling through social media and see someone your age doing amazing things. You feel:",
+    options: [
+      { label: "A", text: "Inspired — maybe I could do something like that!", type: 7 },
+      { label: "B", text: "Envious and like an outsider looking in.", type: 4 },
+      { label: "C", text: "Competitive — I'll show them what I can do.", type: 3 },
+      { label: "D", text: "It doesn't really affect me much.", type: 9 }
+    ]
+  },
+  {
+    text: "Your boss asks you to take on a project outside your job description. You:",
+    options: [
+      { label: "A", text: "Assess the risk and loyalty implications before deciding.", type: 6 },
+      { label: "B", text: "Say yes immediately — I want to prove myself useful.", type: 3 },
+      { label: "C", text: "Negotiate terms or quietly push back.", type: 8 },
+      { label: "D", text: "Consider it carefully, wondering if it aligns with your values.", type: 1 }
+    ]
+  },
+  {
+    text: "You're planning a vacation. What matters most?",
+    options: [
+      { label: "A", text: "Deep, meaningful connection — somewhere that feeds my soul.", type: 4 },
+      { label: "B", text: "Adventure and new experiences — I want to see everything!", type: 7 },
+      { label: "C", text: "Comfort, structure, and knowing exactly what's planned.", type: 6 },
+      { label: "D", text: "Where my partner/family wants to go.", type: 9 }
+    ]
+  },
+  {
+    text: "A disagreement with a close friend escalates. You:",
+    options: [
+      { label: "A", text: "Confront them directly — this needs to be resolved now.", type: 8 },
+      { label: "B", text: "Withdraw emotionally and need space before talking.", type: 4 },
+      { label: "C", text: "Try to smooth things over and keep the peace.", type: 9 },
+      { label: "D", text: "Analyze who is right and present a logical argument.", type: 5 }
+    ]
+  },
+  {
+    text: "What motivates you most to get out of bed in the morning?",
+    options: [
+      { label: "A", text: "Making a difference in people's lives.", type: 2 },
+      { label: "B", text: "Being recognized for my accomplishments.", type: 3 },
+      { label: "C", text: "Understanding the truth, even if it's uncomfortable.", type: 5 },
+      { label: "D", text: "Creating something beautiful that matters.", type: 4 }
+    ]
+  },
+  {
+    text: "You walk into a party where you know almost no one. You:",
+    options: [
+      { label: "A", text: "Work the room — introduce yourself to everyone.", type: 3 },
+      { label: "B", text: "Find one interesting person and have a deep conversation.", type: 4 },
+      { label: "C", text: "Hang back, assess, and approach only when you feel comfortable.", type: 6 },
+      { label: "D", text: "Feel uncomfortable until the host introduces you to people.", type: 1 }
+    ]
+  },
+  {
+    text: "What's your relationship with rules and structure?",
+    options: [
+      { label: "A", text: "I believe rules exist for good reason — follow them.", type: 1 },
+      { label: "B", text: "Rules are meant to be challenged — I forge my own path.", type: 4 },
+      { label: "C", text: "I follow rules when they make sense, ignore them when they don't.", type: 7 },
+      { label: "D", text: "I prefer flexibility — structure feels confining.", type: 9 }
+    ]
+  },
+  {
+    text: "What do you most want people to understand about you?",
+    options: [
+      { label: "A", text: "That I'm more capable than they think.", type: 3 },
+      { label: "B", text: "That I'm genuinely there for them, not for applause.", type: 2 },
+      { label: "C", text: "That I'm trying to figure out who I really am.", type: 4 },
+      { label: "D", text: "That I just want everyone to get along.", type: 9 }
+    ]
+  }
+];
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+let currentQ = 0;
+let scores = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 };
+let answered = false;
+let currentResultType = null;
+
+// ─── SCREENS ─────────────────────────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ─── WELCOME ─────────────────────────────────────────────────────────────────
+document.getElementById('btn-start').addEventListener('click', () => {
+  currentQ = 0;
+  scores = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 };
+  showScreen('question');
+  renderQuestion();
+});
+
+// ─── QUESTIONS ────────────────────────────────────────────────────────────────
+function renderQuestion() {
+  const q = QUESTIONS[currentQ];
+  answered = false;
+
+  // Progress
+  const bar = document.getElementById('progress-bar');
+  bar.innerHTML = '';
+  for (let i = 0; i < 12; i++) {
+    const seg = document.createElement('div');
+    seg.className = 'progress-segment';
+    if (i < currentQ) seg.classList.add('filled');
+    else if (i === currentQ) seg.classList.add('current');
+    bar.appendChild(seg);
+  }
+  bar.setAttribute('aria-valuenow', currentQ + 1);
+
+  document.getElementById('step-indicator').textContent = `Question ${currentQ + 1} of 12`;
+  document.getElementById('question-text').textContent = q.text;
+
+  const list = document.getElementById('options-list');
+  list.innerHTML = '';
+  q.options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.setAttribute('role', 'radio');
+    btn.setAttribute('aria-checked', 'false');
+    btn.innerHTML = `<span class="option-label">${opt.label}</span><span class="option-text">${opt.text}</span>`;
+    btn.addEventListener('click', () => selectOption(opt.type, btn));
+    list.appendChild(btn);
+  });
+}
+
+function selectOption(type, btn) {
+  if (answered) return;
+  answered = true;
+  scores[type]++;
+
+  // Visual selection
+  document.querySelectorAll('.option-btn').forEach(b => {
+    b.classList.remove('selected');
+    b.setAttribute('aria-checked', 'false');
+  });
+  btn.classList.add('selected');
+  btn.setAttribute('aria-checked', 'true');
+
+  setTimeout(() => {
+    currentQ++;
+    if (currentQ < QUESTIONS.length) {
+      renderQuestion();
+    } else {
+      showScreen('processing');
+      setTimeout(showResult, 3500);
+    }
+  }, 350);
+}
+
+// ─── RESULT ──────────────────────────────────────────────────────────────────
+function showResult() {
+  // Find dominant type
+  let maxScore = 0, dominantType = 1;
+  for (let t = 1; t <= 9; t++) {
+    if (scores[t] > maxScore) { maxScore = scores[t]; dominantType = t; }
+  }
+  currentResultType = dominantType;
+  const type = TYPES[dominantType];
+
+  // Determine wing (adjacent type with higher score)
+  const wingNum = scores[dominantType - 1] >= scores[dominantType + 1] ?
+    (dominantType === 1 ? 9 : dominantType - 1) :
+    (dominantType === 9 ? 1 : dominantType + 1);
+  wingNum === dominantType && (wingNum === 1 ? 2 : (wingNum === 9 ? 8 : dominantType + 1));
+
+  // Build result HTML
+  const body = document.getElementById('result-body');
+  body.innerHTML = `
+    <div class="result-section">
+      <div class="result-section-label" style="--accent:${type.color}">Core Fear</div>
+      <p class="result-section-text"><strong>${type.fear}</strong></p>
+    </div>
+    <div class="result-section">
+      <div class="result-section-label" style="--accent:${type.color}">Core Desire</div>
+      <p class="result-section-text"><strong>${type.desire}</strong></p>
+    </div>
+    <div class="result-section">
+      <div class="result-section-label" style="--accent:${type.color}">What It Looks Like</div>
+      <p class="result-section-text">${type.description}</p>
+    </div>
+    <div class="result-traits" id="result-traits"></div>
+    <div class="result-section">
+      <div class="result-section-label" style="--accent:${type.color}">How It Shows Up</div>
+      <p class="result-section-text">${type.showsUp}</p>
+    </div>
+    <div class="result-section">
+      <div class="result-section-label" style="--accent:${type.color}">What It Costs</div>
+      <p class="result-section-text">${type.costs}</p>
+    </div>
+    <div class="result-section">
+      <div class="result-section-label" style="--accent:${type.color}">How to Work With It</div>
+      <div class="result-steps">
+        ${type.steps.map((s, i) => `
+          <div class="result-step">
+            <div class="step-number" style="background:${type.color}20;color:${type.color}">${i + 1}</div>
+            <p class="step-text">${s}</p>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+
+  // Traits pills
+  const traitsEl = document.getElementById('result-traits');
+  type.traits.slice(0, 4).forEach(trait => {
+    const pill = document.createElement('span');
+    pill.className = 'trait-pill';
+    pill.textContent = trait;
+    pill.style.borderColor = type.color + '60';
+    pill.style.color = type.color;
+    pill.style.background = type.color + '15';
+    traitsEl.appendChild(pill);
+  });
+
+  // Wing note
+  const wingDesc = type.wing[wingNum] || type.wing[dominantType === 1 ? 2 : 1];
+  const wingKey = wingNum < dominantType ? `${dominantType}w${wingNum}` : `${dominantType}w${wingNum}`;
+  document.getElementById('wing-note').innerHTML = `<strong>Your wing: ${dominantType}w${wingNum}</strong> — ${wingDesc}`;
+
+  // Colors
+  document.getElementById('result-number').textContent = `Type ${dominantType}`;
+  document.getElementById('result-number').style.color = type.color;
+  document.getElementById('result-archetype').textContent = type.name;
+  document.getElementById('result-tagline').textContent = type.tagline;
+  document.getElementById('result-divider').style.background = `linear-gradient(90deg, transparent, ${type.color}, transparent)`;
+  document.getElementById('result-gradient').style.background = `linear-gradient(180deg, ${type.color}25 0%, #0D0F1A 100%)`;
+
+  // Section label lines
+  document.querySelectorAll('.result-section-label').forEach(el => {
+    el.style.setProperty('--accent', type.color);
+    el.style.cssText = `color: var(--textMuted); margin-bottom: 8px; display: flex; align-items: center; gap: 8px;`;
+  });
+  // Pseudo-element for the line before labels
+  const style = document.createElement('style');
+  style.textContent = `.result-section-label::before { content: ''; display: inline-block; width: 16px; height: 1.5px; background: ${type.color}; border-radius: 1px; flex-shrink: 0; }`;
+  document.head.appendChild(style);
+
+  showScreen('result');
+}
+
+// ─── SHARING ─────────────────────────────────────────────────────────────────
+document.getElementById('share-telegram').addEventListener('click', () => {
+  const type = TYPES[currentResultType];
+  const msg = encodeURIComponent(`I'm a Type ${currentResultType} — ${type.name}. ${type.tagline} Take the quiz: psychomaster.site/quiz`);
+  window.open(`https://t.me/share/url?url=psychomaster.site/quiz&text=${msg}`, '_blank');
+});
+
+document.getElementById('share-whatsapp').addEventListener('click', () => {
+  const type = TYPES[currentResultType];
+  const msg = encodeURIComponent(`I'm a Type ${currentResultType} — ${type.name}. ${type.tagline} Take the quiz: psychomaster.site/quiz`);
+  window.open(`https://wa.me/?text=${msg}`, '_blank');
+});
+
+document.getElementById('share-clipboard').addEventListener('click', () => {
+  const type = TYPES[currentResultType];
+  const text = `I'm a Type ${currentResultType} — ${type.name}. ${type.tagline} Take the quiz: psychomaster.site/quiz`;
+  navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard!')).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('Copied to clipboard!');
+  });
+});
+
+document.getElementById('share-download').addEventListener('click', () => {
+  generateShareCard();
+});
+
+function generateShareCard() {
+  const type = TYPES[currentResultType];
+  const canvas = document.createElement('canvas');
+  canvas.width = 1080; canvas.height = 1350;
+  const ctx = canvas.getContext('2d');
+
+  // Background
+  const grad = ctx.createLinearGradient(0, 0, 0, 1350);
+  grad.addColorStop(0, '#0D0F1A');
+  grad.addColorStop(0.4, type.color + '30');
+  grad.addColorStop(1, '#0D0F1A');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, 1080, 1350);
+
+  // Eyebrow
+  ctx.fillStyle = '#9B97B0';
+  ctx.font = '500 14px Nunito Sans, sans-serif';
+  ctx.letterSpacing = '4px';
+  ctx.fillText('MY ENNEAGRAM TYPE IS', 60, 160);
+
+  // Type number
+  ctx.fillStyle = type.color;
+  ctx.font = 'bold 120px Cormorant Garamond, Georgia, serif';
+  ctx.fillText(currentResultType.toString(), 60, 280);
+
+  // Archetype name
+  ctx.fillStyle = '#F0EBE0';
+  ctx.font = 'bold 52px Cormorant Garamond, Georgia, serif';
+  ctx.fillText(type.name, 60, 370);
+
+  // Tagline
+  ctx.fillStyle = '#9B97B0';
+  ctx.font = 'italic 22px Nunito Sans, sans-serif';
+  ctx.fillText(type.tagline, 60, 415);
+
+  // Divider
+  ctx.fillStyle = type.color;
+  ctx.fillRect(60, 455, 160, 2);
+
+  // Traits
+  ctx.fillStyle = '#F0EBE0';
+  ctx.font = '500 18px Nunito Sans, sans-serif';
+  const traits = type.traits.slice(0, 4);
+  traits.forEach((trait, i) => {
+    ctx.fillStyle = type.color;
+    ctx.beginPath();
+    ctx.arc(70, 520 + i * 38, 5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#F0EBE0';
+    ctx.fillText(trait, 90, 528 + i * 38);
+  });
+
+  // URL
+  ctx.fillStyle = '#6B6880';
+  ctx.font = '500 14px Nunito Sans, sans-serif';
+  ctx.fillText('psychomaster.site/quiz', 60, 1290);
+
+  // Type label
+  ctx.fillStyle = type.color + '40';
+  ctx.font = 'bold 300px Cormorant Garamond, serif';
+  ctx.fillText(currentResultType.toString(), 700, 900);
+
+  const link = canvas.toDataURL('image/png');
+  const a = document.createElement('a');
+  a.href = link;
+  a.download = `enneagram-type-${currentResultType}.png`;
+  a.click();
+}
+
+// ─── RETAKE ──────────────────────────────────────────────────────────────────
+document.getElementById('btn-retake').addEventListener('click', () => {
+  currentQ = 0;
+  scores = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 };
+  showScreen('welcome');
+});
+</script>
+</body>
+</html>
