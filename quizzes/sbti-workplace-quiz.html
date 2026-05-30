@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我是哪种职场濒危生物</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #FF6B35;
+      --navy: #1A1A2E;
+      --gold: #FFD700;
+      --bg: #0F0F1A;
+      --card-bg: #16213E;
+      --cream: #FAF6F0;
+      --text: #F0EAD6;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .screen {
+      display: none;
+      width: 100%;
+      max-width: 480px;
+      text-align: center;
+      animation: fadeIn 0.4s ease;
+    }
+    .screen.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Welcome Screen */
+    .welcome-icon { font-size: 80px; margin-bottom: 24px; }
+    .welcome-title { font-size: 28px; font-weight: 700; color: var(--primary); margin-bottom: 12px; line-height: 1.3; }
+    .welcome-sub { font-size: 15px; color: #999; margin-bottom: 36px; line-height: 1.6; }
+    .start-btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 16px 48px;
+      font-size: 17px;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .start-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,107,53,0.4); }
+
+    /* Question Screen */
+    .progress-wrap { margin-bottom: 32px; }
+    .progress-label { font-size: 13px; color: #666; margin-bottom: 8px; }
+    .progress-bar { height: 4px; background: #333; border-radius: 4px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--primary); border-radius: 4px; transition: width 0.4s ease; width: 0%; }
+    .question-text { font-size: 18px; font-weight: 600; margin-bottom: 28px; line-height: 1.5; color: var(--cream); }
+    .options { display: flex; flex-direction: column; gap: 12px; }
+    .option-btn {
+      background: var(--card-bg);
+      color: var(--text);
+      border: 2px solid #2a2a4a;
+      padding: 14px 16px;
+      border-radius: 14px;
+      font-size: 14px;
+      text-align: left;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.15s, background 0.2s;
+      line-height: 1.5;
+    }
+    .option-btn:hover { border-color: var(--primary); transform: translateX(4px); background: #1e2a4a; }
+    .option-btn:active { transform: scale(0.98); }
+
+    /* Processing Screen */
+    .processing-icon { font-size: 64px; margin-bottom: 24px; animation: pulse 1s ease infinite; }
+    .processing-text { font-size: 18px; color: #888; }
+
+    /* Result Screen */
+    .result-animal { font-size: 80px; margin-bottom: 16px; }
+    .result-type { font-size: 26px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+    .result-desc { font-size: 15px; color: #aaa; margin-bottom: 24px; line-height: 1.6; max-width: 360px; margin-left: auto; margin-right: auto; }
+    .result-tags { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 28px; }
+    .tag {
+      background: rgba(255,107,53,0.15);
+      color: var(--primary);
+      border: 1px solid rgba(255,107,53,0.3);
+      padding: 4px 12px;
+      border-radius: 50px;
+      font-size: 12px;
+    }
+    .share-btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 14px 40px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      margin: 8px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .share-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,107,53,0.3); }
+    .share-btn.secondary { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+    .retake-btn { display: block; margin: 16px auto 0; background: none; border: none; color: #666; font-size: 13px; cursor: pointer; }
+    .retake-btn:hover { color: var(--text); }
+    .disclaimer { font-size: 11px; color: #444; margin-top: 24px; }
+  </style>
+</head>
+<body>
+
+<!-- Welcome Screen -->
+<div id="screen-welcome" class="screen active">
+  <div class="welcome-icon">🐾</div>
+  <div class="welcome-title">我是哪种职场濒危生物</div>
+  <div class="welcome-sub">测一测你在职场食物链上属于哪一级<br>5个维度 × 5道题 · 8种结果类型</div>
+  <button class="start-btn" onclick="startQuiz()">开始测试 →</button>
+</div>
+
+<!-- Question Screen -->
+<div id="screen-question" class="screen">
+  <div class="progress-wrap">
+    <div class="progress-label">第 <span id="q-num">1</span> / 25 题</div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+  <div class="question-text" id="q-text"></div>
+  <div class="options" id="options"></div>
+</div>
+
+<!-- Processing Screen -->
+<div id="screen-processing" class="screen">
+  <div class="processing-icon">🔮</div>
+  <div class="processing-text">正在分析你的职场属性…</div>
+</div>
+
+<!-- Result Screen -->
+<div id="screen-result" class="screen">
+  <div class="result-animal" id="r-emoji"></div>
+  <div class="result-type" id="r-name"></div>
+  <div class="result-desc" id="r-desc"></div>
+  <div class="result-tags" id="r-tags"></div>
+  <button class="share-btn" onclick="shareResult()">分享我的职场濒危生物</button>
+  <button class="share-btn secondary" onclick="copyResult()">复制结果</button>
+  <button class="retake-btn" onclick="retake()">重新测试</button>
+  <div class="disclaimer">仅供娱乐参考，非职业心理评估</div>
+</div>
+
+<script>
+const SCORES = { work_attitude:0, stress_response:0, office_social:0, deadline_response:0, ambition_flat:0 };
+let Q = 0;
+const ANSWERS = [];
+
+const Q_DATA = [
+  {dim:"work_attitude",opts:[{s:8},{s:5},{s:2},{s:3}]},
+  {dim:"work_attitude",opts:[{s:10},{s:7},{s:3},{s:1}]},
+  {dim:"work_attitude",opts:[{s:10},{s:5},{s:3},{s:2}]},
+  {dim:"work_attitude",opts:[{s:10},{s:6},{s:4},{s:1}]},
+  {dim:"work_attitude",opts:[{s:8},{s:5},{s:3},{s:1}]},
+  {dim:"stress_response",opts:[{s:10},{s:8},{s:10},{s:8}]},
+  {dim:"stress_response",opts:[{s:10},{s:7},{s:10},{s:8}]},
+  {dim:"stress_response",opts:[{s:10},{s:8},{s:10},{s:10}]},
+  {dim:"stress_response",opts:[{s:10},{s:8},{s:7},{s:10}]},
+  {dim:"stress_response",opts:[{s:10},{s:10},{s:8},{s:8}]},
+  {dim:"office_social",opts:[{s:10},{s:10},{s:8},{s:8}]},
+  {dim:"office_social",opts:[{s:10},{s:7},{s:10},{s:5}]},
+  {dim:"office_social",opts:[{s:8},{s:8},{s:10},{s:6}]},
+  {dim:"office_social",opts:[{s:10},{s:10},{s:9},{s:8}]},
+  {dim:"office_social",opts:[{s:10},{s:8},{s:10},{s:8}]},
+  {dim:"deadline_response",opts:[{s:10},{s:10},{s:10},{s:8}]},
+  {dim:"deadline_response",opts:[{s:10},{s:10},{s:6},{s:10}]},
+  {dim:"deadline_response",opts:[{s:10},{s:10},{s:10},{s:8}]},
+  {dim:"deadline_response",opts:[{s:10},{s:6},{s:10},{s:8}]},
+  {dim:"deadline_response",opts:[{s:10},{s:8},{s:10},{s:6}]},
+  {dim:"ambition_flat",opts:[{s:10},{s:10},{s:7},{s:10}]},
+  {dim:"ambition_flat",opts:[{s:10},{s:8},{s:6},{s:10}]},
+  {dim:"ambition_flat",opts:[{s:10},{s:10},{s:10},{s:7}]},
+  {dim:"ambition_flat",opts:[{s:10},{s:10},{s:10},{s:7}]},
+  {dim:"ambition_flat",opts:[{s:10},{s:10},{s:10},{s:8}]}
+];
+
+const Q_TEXTS = [
+  "周五下午4点55分，老板突然在群里发了一个紧急任务，要求下周一早上交。你的第一反应是？",
+  "看到同事在朋友圈晒加班照片，你的内心OS是？",
+  "周一早上9点，你到公司的状态是？",
+  "公司推出一个新的内部竞聘机会，条件刚好符合你。你会？",
+  "你的工作文件夹命名习惯最接近哪一种？",
+  "周一早会上，老板突然点名让你汇报上周的工作，你还没准备好。你的反应是？",
+  "连续加班一周后，周五晚上10点收到老板的修改意见，你的反应是？",
+  "公司突然宣布要裁员，你听到消息的第一反应是？",
+  "同事不小心在群里发了一张你的丑照，你的反应是？",
+  "你辛辛苦苦做的方案，被老板在全员会上说"这个不行，重做"，你的反应是？",
+  "午休时间，你会怎么度过？",
+  "公司组织团建，投票选地点，你的态度是？",
+  "隔壁桌的同事跟你吐槽老板，你会？",
+  "公司年会上，老板突然点名让你表演节目，你的反应是？",
+  "加了一个新同事的微信，对方秒发一条"你好！我是xxx，多多关照！"，你会？",
+  "一个任务要求周五交，你一般会什么时候开始做？",
+  "看到日历上标注的"距deadline还有3天"，你的心情是？",
+  "你的项目进度是这样的："开始-开始做-差不多-快好了-提交"，分别对应哪个阶段？",
+  "如果所有任务都提前一天完成，你会？",
+  "你在什么情况下效率最高？",
+  "晚上下班后，你一般会做什么？",
+  "看到以前的同学在朋友圈晒升职加薪，你的反应是？",
+  "你给自己设定的职业规划是？",
+  "周末两天，你一般怎么度过？",
+  "如果给你一个超长假期（三个月），你会怎么规划？"
+];
+
+const OPT_TEXTS = [
+  ["立刻打开电脑，表示"没问题！我来搞定！"", "深呼吸，回一句"好的收到"，然后默默把机票取消", "已读不回，等到周一早上8点再回复"抱歉刚看到"", "直接私信老板"这个时间有点紧，我可以先做一部分""],
+  ["心里警铃大作：完了完了，赶紧补发一条工作动态", "默默点个赞，心想这人真是精力充沛", "划走，继续看我的剧，工作而已不至于", "截图发给我妈，说"您看人家多努力""],
+  ["已经列好今日清单，泡好咖啡，准备好迎接挑战", "踩点到，坐在工位上发呆10分钟才进入状态", "先吃早餐刷手机，10点半再假装忙碌", "周一综合症发作，能拖则拖"],
+  ["连夜准备材料，第二天就提交申请", "犹豫三天，问了五个人的意见，最后一天才决定", "把公告转发到家族群，说"有没有适合我的"", "已读-收藏-吃灰，这关我什么事"],
+  ["「最终版」「最终版改」「最终版再改」「真的最终版」", "「工作」「新建文件夹」「新建文件夹(2)」", "桌面就是我的文件夹，靠颜色和位置记住", "根本不需要文件夹，反正明天再做"],
+  ["当场硬着头皮临场发挥，讲得头头是道", "心跳加速，小声说"不好意思，我整理一下稍后发您"", "大脑一片空白，只能说"嗯……那个……"", "疯狂给旁边的同事使眼色，求救式地小声说"],
+  ["深吸一口气，默默打开电脑，周末本来就没什么安排", "怒火中烧想怼回去，打到一半又删掉", "手机直接扔到床尾，眼不见为净", "躺在床上翻来覆去睡不着，脑子里全是修改意见"],
+  ["立刻打开招聘网站，更新简历", "假装镇定继续工作，偷看同事表情", "主动找老板表态表忠心", "心里燃起一团火：凭什么是我？开始写申诉邮件"],
+  ["私信同事"亲，删一下呗，谢谢啦~"", "截图保存，这是下次让对方请客的筹码", "假装没看见，关掉手机，默默拉黑", "站在原地石化，大脑宕机10分钟"],
+  ["点头微笑说"好的，我重新思考一下"，去茶水间深呼吸", "当场反驳：这个方向是有道理的", "低头假装记笔记，偷偷搜索"被当众批评怎么办"", "会后冲回工位，把方案扔进回收站"],
+  ["主动邀请不同部门的同事一起吃饭，打听公司八卦", "一个人默默在工位上吃饭，边吃边看综艺", "只和固定的三两个同事吃饭，多一个陌生人都浑身不自在", "等所有人都去吃饭了，再一个人悠悠地去食堂"],
+  ["积极发言，建议去海边轰趴", "随便选哪个都行，不想表态但会服从大多数", "直接说"我不去了，帮我垫付一下"或者请病假", "投了票但心里想：反正你们也不会选我想去的"],
+  ["加入吐槽，同仇敌忾，评论区见", "微笑点头，时不时回应"嗯嗯""但丁不透露真实想法", "假装没听见，低头继续工作，等对方说完说"我去倒杯水"", "不但听，还认真分析：其实老板也有难处……被翻白眼"],
+  ["大方站起来说"那我唱首歌吧"，气场全开", "疯狂摇头摆手，说"我不会表演"", "假装去厕所，在门口徘徊到活动结束", "说"我有个提议，可以让XX来表演"精准抛锅"],
+  ["认真回复一大段，介绍自己、业务范围", "回一个"hi"，然后设置朋友圈分组可见", "24小时后才回，因为不记得加过这个人", "已读不回，等下次见面再当面打招呼"],
+  ["周一早上第一件事就做，提前完成", "周四周五开始，启动"紧急模式"，咖啡翻倍", "周五下午三四点才动手，边做边想能搞定", "根本不会开始做，要么"忘记"提交要么现编"],
+  ["已经开始焦虑，恨不得第一天就做完", "心想：还有三天，不急，最后一天再说", "没什么感觉，反正DDL就是用来打破的", "精神一振：终于有时间压力了，效率要爆发了"],
+  ["周一-周二-周三-周四-周五11:50", "周一-周三-周四-周五9:00-周四18:00", "周一-周一-周二-周三-周三", "没有这个流程，到了该交的时候自然会有办法"],
+  ["不可能发生这种事，我永远在最后一刻", "感到一种莫名的失落，失去了挑战的快感", "很不习惯，总觉得少了点什么，非得拖到最后一秒才安心", "惊讶于自己的靠谱，然后陷入对未来的焦虑"],
+  ["当老板说"这个很急，下午就要"的时候，潜力瞬间被激发", "当我把所有娱乐软件都卸载了的时候（维持不到一天）", "当提前完成任务能得到正向反馈时", "当我独处没人打扰的时候"],
+  ["学习考证的同时刷招聘网站，为下次跳槽做准备", "偶尔看书学习，三分钟热度，过几天就忘了", "健身、做饭、研究美食，生活品质拉满", "躺着玩手机，这一天的反内耗任务就算完成了"],
+  ["关掉朋友圈，打开招聘网站，我不差，换个地方试试", "点个赞，然后躺下想：算了，人各有命", "评论区发自拍"我也很好"，然后继续躺", "直接划走，眼不见为净，反正和我没关系"],
+  ["三年内升到管理层，一直在默默考证", "有个大概方向，但每年都会重新想一下", "职业规划？没想过，先把明天的工作应付过去再说", "我的规划就是没有规划，见招拆招"],
+  ["周六上午睡懒觉，下午学习或健身，晚上娱乐；周日复盘", "周六出去玩（或者睡一天），周日晚上开始莫名焦虑", "两天都在休息，睡到自然醒，刷剧打游戏", "周六处理杂事，周日下午突然想起周一要汇报"],
+  ["列好书单、课程清单、旅行计划，三个月后回来惊艳所有人", "前两周疯狂玩，然后开始无聊，第三周开始投简历", "第一天就躺下，最后一天才起来，靠外卖和综艺续命", "不知道，因为我知道不会有这种假期，所以根本不敢想"]
+];
+
+const RESULTS = [
+  {id:"ctrl_c",name:"CTRL+C型",emoji:"⌨️",desc:"复制粘贴型执行者，熟练掌握"借鉴的艺术"，堪称职场缝合怪本怪。",tags:["借鉴大师","缝合怪","效率之王","搜索引擎十级"]},
+  {id:"deadline_slave",name:"Deadline奴隶型",emoji:"⏰",desc:"离Deadline不成活的你，DDL是你的第一生产力，也是你快乐的源泉（和噩梦）。",tags:["DDL战士","踩点达人","最后通牒爱好者","效率临界点专家"]},
+  {id:"invisible_cloak",name:"职场隐形斗篷型",emoji:"🥷",desc:"我在工位，但我已下线。开会时你在人群中，但存在感约等于零。隐形是你的超能力。",tags:["透明存在","小透明","背景板达人","存在感打卡器"]},
+  {id:"quanjun_reserve",name:"卷王预备役型",emoji:"📈",desc:"不是我想卷，是你们太能卷了，卷到我不得不加入这场没有终点的军备竞赛。",tags:["被迫营业","军备竞赛选手","卷心菜","别人家的员工"]},
+  {id:"slacking_artist",name:"摆烂艺术家型",emoji:"🛋️",desc:"精通"战略性放弃"，深谙躺平哲学，是当代打工人的精神导师与躺平先锋。",tags:["战略性摸鱼","躺平学博士","反内卷先锋","低功耗运转"]},
+  {id:"acting_school",name:"职场演技派型",emoji:"🎭",desc:"每根汗毛都在表演"我很忙"，你的演技如果出道，早就拿奖了。",tags:["影帝影后","忙碌表演艺术家","PPT作曲家","会议室存在感大师"]},
+  {id:"office_therapist",name:"办公室心理咨询师型",emoji:"🧋",desc:"每天花3小时听同事吐槽，你是办公室的情感垃圾桶，也是大家的心灵港湾。",tags:["知心姐姐","人肉树洞","情绪收容所","八卦情报站"]},
+  {id:"overtime_escape",name:"加班是为了逃避回家型",emoji:"🏢",desc:"工作是我的安全屋，加班是为了躲开生活的暴风雨——或者，躲开回家后的安静。",tags:["工作成瘾","家庭逃离者","安全屋居民","加班积极分子"]}
+];
+
+const DIM_MAP = ["work_attitude","stress_response","office_social","deadline_response","ambition_flat"];
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+}
+
+function startQuiz() {
+  Q=0; ANSWERS.length=0;
+  DIM_MAP.forEach(d=>SCORES[d]=0);
+  showScreen('question');
+  renderQ();
+}
+
+function renderQ() {
+  const pct = (Q/25)*100;
+  document.getElementById('progress-fill').style.width=pct+'%';
+  document.getElementById('q-num').textContent=Q+1;
+  document.getElementById('q-text').textContent=Q_TEXTS[Q];
+  const container=document.getElementById('options');
+  container.innerHTML='';
+  OPT_TEXTS[Q].forEach((text,i)=>{
+    const btn=document.createElement('button');
+    btn.className='option-btn';
+    btn.textContent=['A','B','C','D'][i]+'. '+text;
+    btn.onclick=()=>selectOpt(i);
+    container.appendChild(btn);
+  });
+}
+
+function selectOpt(idx) {
+  const dim=DIM_MAP[Math.floor(Q/5)];
+  SCORES[dim]+=Q_DATA[Q].opts[idx].s;
+  ANSWERS.push(idx);
+  Q++;
+  if(Q<25) {
+    renderQ();
+  } else {
+    showScreen('processing');
+    setTimeout(showResult,1600);
+  }
+}
+
+function getResult() {
+  let maxScore=0,topDim='';
+  DIM_MAP.forEach(d=>{ if(SCORES[d]>maxScore){maxScore=SCORES[d];topDim=d;} });
+  const map={work_attitude:0,stress_response:1,office_social:2,deadline_response:3,ambition_flat:4};
+  return RESULTS[map[topDim]];
+}
+
+function showResult() {
+  const r=getResult();
+  document.getElementById('r-emoji').textContent=r.emoji;
+  document.getElementById('r-name').textContent=r.name;
+  document.getElementById('r-desc').textContent=r.desc;
+  const tagsEl=document.getElementById('r-tags');
+  tagsEl.innerHTML='';
+  r.tags.forEach(t=>{ const span=document.createElement('span'); span.className='tag'; span.textContent=t; tagsEl.appendChild(span); });
+  showScreen('result');
+}
+
+function shareResult() {
+  const r=getResult();
+  const text=`我在职场竟然是「${r.name}」${r.emoji}！${r.desc} 测一测你是哪种？🐾 #我是哪种职场濒危生物 #职场测试 #打工人`;
+  if(navigator.share){ navigator.share({title:document.title,text}); }
+  else { copyResult(); }
+}
+
+function copyResult() {
+  const r=getResult();
+  const text=`我在职场竟然是「${r.name}」${r.emoji}！${r.desc} 测一测你是哪种？🐾 #我是哪种职场濒危生物 #职场测试 #打工人`;
+  navigator.clipboard.writeText(text).then(()=>alert('已复制到剪贴板！')).catch(()=>alert('复制失败'));
+}
+
+function retake() { startQuiz(); }
+</script>
+</body>
+</html>
