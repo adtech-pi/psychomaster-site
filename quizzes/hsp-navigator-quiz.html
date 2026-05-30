@@ -2,38 +2,56 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Discover your HSP subtype — a personalised guide to understanding your sensitivity. 12 science-backed questions.">
-  <title>HSP Navigator Quiz — Discover Your Sensitivity Profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="HSP Navigator Quiz — Discover your unique Highly Sensitive Person profile. 12 questions, science-backed, ~5 minutes.">
+  <title>HSP Navigator Quiz | PsychoMaster</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
-    /* ===== CSS Custom Properties ===== */
+    /* ============================================
+       CSS CUSTOM PROPERTIES — STILL WATER PALETTE
+    ============================================ */
     :root {
-      --hsp-bg: #F8F5F0;
-      --hsp-surface: #EDEAE5;
-      --hsp-text: #3A3632;
-      --hsp-text-secondary: #7A756F;
-      --hsp-accent: #7A9E8A;
-      --hsp-accent-dark: #5F7D6B;
-      --hsp-accent-light: #E8F0EA;
-      --hsp-lavender: #9B8FA8;
-      --hsp-border: #D9D4CC;
-      --hsp-white: #FFFFFF;
+      --bg-base: #F8F5F0;
+      --bg-surface: #EDEAE5;
+      --bg-elevated: #E5E0DA;
+      --text-primary: #3A3632;
+      --text-secondary: #7A756F;
+      --text-muted: #9A958D;
+      --border: #D9D4CC;
+      --accent-primary: #7A9E8A;
+      --accent-primary-light: #E8F0EA;
+      --accent-secondary: #9B8FA8;
+      --accent-secondary-light: #F0EDF5;
 
-      --hsp-font-serif: 'Cormorant Garamond', Georgia, serif;
-      --hsp-font-sans: 'Nunito Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Nunito Sans', system-ui, -apple-system, sans-serif;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
 
-      --hsp-radius: 12px;
-      --hsp-radius-sm: 8px;
-      --hsp-transition: 450ms ease-in-out;
-      --hsp-transition-fast: 200ms ease;
+      --space-xs: 8px;
+      --space-sm: 12px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 32px;
+      --space-2xl: 48px;
+      --space-3xl: 64px;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-pill: 999px;
+
+      --duration-fast: 200ms;
+      --duration-normal: 450ms;
+      --duration-slow: 600ms;
+      --ease-gentle: ease-in-out;
     }
 
-    /* ===== Reset & Base ===== */
+    /* ============================================
+       RESET & BASE
+    ============================================ */
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
@@ -41,35 +59,42 @@
     }
 
     html {
-      scroll-behavior: smooth;
       font-size: 16px;
+      -webkit-text-size-adjust: 100%;
+      -webkit-tap-highlight-color: transparent;
+      scroll-behavior: smooth;
     }
 
     body {
-      font-family: var(--hsp-font-sans);
-      background-color: var(--hsp-bg);
-      color: var(--hsp-text);
+      font-family: var(--font-body);
+      background-color: var(--bg-base);
+      color: var(--text-primary);
       line-height: 1.7;
       min-height: 100dvh;
+      min-height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 24px 16px 80px;
+      padding: var(--space-lg) var(--space-md);
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    /* ===== Quiz Container ===== */
-    .quiz-wrapper {
+    /* ============================================
+       LAYOUT
+    ============================================ */
+    .quiz-container {
       width: 100%;
       max-width: 640px;
+      position: relative;
     }
 
     .screen {
       display: none;
       opacity: 0;
       transform: translateY(8px);
-      transition: opacity var(--hsp-transition), transform var(--hsp-transition);
+      transition: opacity var(--duration-normal) var(--ease-gentle),
+                  transform var(--duration-normal) var(--ease-gentle);
     }
 
     .screen.is-active {
@@ -78,121 +103,142 @@
       transform: translateY(0);
     }
 
-    .screen.is-exiting {
-      display: block;
-      opacity: 0;
-      transform: translateY(-8px);
-    }
-
     @media (prefers-reduced-motion: reduce) {
       .screen {
         transition: none;
-        transform: none !important;
+        opacity: 1;
+        transform: none;
       }
     }
 
-    /* ===== Typography ===== */
-    h1, h2, h3 {
-      font-family: var(--hsp-font-serif);
-      font-weight: 400;
-      line-height: 1.3;
-      color: var(--hsp-text);
+    /* ============================================
+       INTRO SCREEN
+    ============================================ */
+    .intro-screen {
+      text-align: center;
+      padding: var(--space-xl) 0;
     }
 
-    .headline {
-      font-size: clamp(26px, 5vw, 36px);
-      margin-bottom: 20px;
-    }
-
-    .subheadline {
-      font-size: clamp(16px, 3vw, 19px);
-      line-height: 1.6;
-      color: var(--hsp-text-secondary);
-      margin-bottom: 28px;
-    }
-
-    .section-label {
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--hsp-text-secondary);
-      margin-bottom: 12px;
-    }
-
-    /* ===== Intro Screen ===== */
-    .intro-screen .logo {
-      font-family: var(--hsp-font-serif);
+    .intro-logo {
+      font-family: var(--font-display);
       font-size: 14px;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--hsp-text-secondary);
-      margin-bottom: 40px;
+      color: var(--accent-primary);
+      margin-bottom: var(--space-2xl);
     }
 
-    .intro-bullets {
-      list-style: none;
-      margin: 20px 0 28px;
+    .intro-headline {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 6vw, 36px);
+      font-weight: 600;
+      line-height: 1.25;
+      color: var(--text-primary);
+      margin-bottom: var(--space-lg);
+    }
+
+    .intro-headline em {
+      font-style: italic;
+      color: var(--accent-primary);
+    }
+
+    .intro-subtext {
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      max-width: 520px;
+      margin: 0 auto var(--space-lg);
+    }
+
+    .intro-outcomes {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: var(--space-xs);
+      margin-bottom: var(--space-xl);
+      text-align: left;
+      max-width: 360px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    .intro-bullets li {
+    .intro-outcome-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
       font-size: 15px;
-      color: var(--hsp-text-secondary);
-      padding-left: 20px;
-      position: relative;
+      color: var(--text-secondary);
     }
 
-    .intro-bullets li::before {
-      content: '✓';
-      position: absolute;
-      left: 0;
-      color: var(--hsp-accent);
-      font-weight: 600;
+    .intro-outcome-item::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background: var(--accent-primary-light);
+      border-radius: 50%;
+      flex-shrink: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237A9E8A' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+      background-size: 12px;
+      background-position: center;
+      background-repeat: no-repeat;
     }
 
-    .privacy-note {
-      font-size: 13px;
-      color: var(--hsp-text-secondary);
-      margin: 20px 0 28px;
-      text-align: center;
+    .intro-divider {
+      width: 48px;
+      height: 1px;
+      background: var(--border);
+      margin: var(--space-xl) auto;
     }
 
-    /* ===== Buttons ===== */
+    .intro-meta {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: var(--space-xl);
+    }
+
+    .intro-privacy {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: var(--space-xl);
+    }
+
+    /* ============================================
+       BUTTONS
+    ============================================ */
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      font-family: var(--hsp-font-sans);
+      gap: var(--space-xs);
+      font-family: var(--font-body);
       font-size: 16px;
       font-weight: 600;
-      padding: 15px 32px;
-      border-radius: var(--hsp-radius);
+      padding: 14px 32px;
       border: none;
+      border-radius: var(--radius-pill);
       cursor: pointer;
-      transition: background-color var(--hsp-transition-fast), transform var(--hsp-transition-fast), box-shadow var(--hsp-transition-fast);
+      transition: background-color var(--duration-fast) var(--ease-gentle),
+                  transform var(--duration-fast) var(--ease-gentle),
+                  box-shadow var(--duration-fast) var(--ease-gentle);
       text-decoration: none;
+      line-height: 1;
       min-height: 48px;
-      min-width: 120px;
     }
 
     .btn:focus-visible {
-      outline: 2px solid var(--hsp-accent);
+      outline: 2px solid var(--accent-primary);
       outline-offset: 2px;
     }
 
     .btn-primary {
-      background-color: var(--hsp-accent);
-      color: var(--hsp-white);
+      background: var(--accent-primary);
+      color: #ffffff;
     }
 
     .btn-primary:hover {
-      background-color: var(--hsp-accent-dark);
+      background: #6B8E7A;
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(122, 158, 138, 0.35);
+      box-shadow: 0 4px 12px rgba(122, 158, 138, 0.3);
     }
 
     .btn-primary:active {
@@ -200,86 +246,129 @@
     }
 
     .btn-secondary {
-      background-color: var(--hsp-surface);
-      color: var(--hsp-text);
-      border: 1px solid var(--hsp-border);
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
     }
 
     .btn-secondary:hover {
-      background-color: var(--hsp-border);
+      background: var(--bg-surface);
+      color: var(--text-primary);
     }
 
     .btn-ghost {
       background: transparent;
-      color: var(--hsp-text-secondary);
+      color: var(--text-secondary);
       padding: 10px 16px;
       min-height: 44px;
     }
 
     .btn-ghost:hover {
-      color: var(--hsp-text);
-      background-color: var(--hsp-surface);
+      color: var(--text-primary);
+      background: var(--bg-surface);
     }
 
-    .btn-full {
-      width: 100%;
+    /* ============================================
+       DISCLAIMER SCREEN
+    ============================================ */
+    .disclaimer-screen {
+      padding: var(--space-xl) 0;
     }
 
-    /* ===== Progress Bar ===== */
-    .progress-wrap {
-      margin-bottom: 32px;
+    .screen-title {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 5vw, 30px);
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: var(--space-lg);
+      line-height: 1.3;
     }
 
-    .progress-track {
+    .disclaimer-body {
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: var(--space-lg);
+    }
+
+    .disclaimer-body strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .disclaimer-note {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-bottom: var(--space-xl);
+      padding: var(--space-md);
+      background: var(--bg-surface);
+      border-radius: var(--radius-md);
+      border-left: 3px solid var(--accent-primary);
+    }
+
+    /* ============================================
+       QUESTION SCREEN
+    ============================================ */
+    .question-screen {
+      padding: var(--space-xl) 0 var(--space-lg);
+    }
+
+    .question-header {
+      margin-bottom: var(--space-xl);
+    }
+
+    .question-counter {
+      font-size: 14px;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      margin-bottom: var(--space-sm);
+    }
+
+    /* Progress bar */
+    .progress-bar {
       width: 100%;
       height: 4px;
-      background-color: var(--hsp-border);
-      border-radius: 2px;
+      background: var(--border);
+      border-radius: var(--radius-pill);
       overflow: hidden;
-      margin-top: 8px;
+      margin-bottom: var(--space-xs);
     }
 
     .progress-fill {
       height: 100%;
-      background-color: var(--hsp-accent);
-      border-radius: 2px;
+      background: var(--accent-primary);
+      border-radius: var(--radius-pill);
       transition: width 400ms ease;
+      width: 0%;
     }
 
-    #quiz-progress[aria-valuenow="12"] .progress-fill {
-      background-color: var(--hsp-accent);
-    }
-
-    /* ===== Question Screen ===== */
-    .question-counter {
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--hsp-text-secondary);
-      margin-bottom: 24px;
+    .progress-text {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-align: right;
     }
 
     .question-text {
-      font-family: var(--hsp-font-sans);
-      font-size: clamp(17px, 3vw, 18px);
-      line-height: 1.7;
-      margin-bottom: 28px;
-      color: var(--hsp-text);
+      font-family: var(--font-display);
+      font-size: clamp(20px, 4.5vw, 24px);
+      font-weight: 400;
+      line-height: 1.45;
+      color: var(--text-primary);
+      margin-bottom: var(--space-xl);
     }
 
+    /* Options */
     .options-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      margin-bottom: 32px;
+      gap: var(--space-sm);
     }
 
     .option-item {
       position: relative;
     }
 
-    .option-item input[type="radio"] {
+    .option-radio {
       position: absolute;
       opacity: 0;
       width: 0;
@@ -289,1389 +378,1435 @@
     .option-label {
       display: flex;
       align-items: flex-start;
-      gap: 14px;
-      padding: 16px 18px;
-      background-color: var(--hsp-surface);
-      border: 1px solid var(--hsp-border);
-      border-radius: var(--hsp-radius);
+      gap: var(--space-md);
+      padding: var(--space-md) var(--space-lg);
+      background: var(--bg-surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
       cursor: pointer;
-      transition: background-color var(--hsp-transition-fast), border-color var(--hsp-transition-fast), box-shadow var(--hsp-transition-fast);
+      transition: border-color var(--duration-fast) var(--ease-gentle),
+                  background-color var(--duration-fast) var(--ease-gentle);
       min-height: 56px;
+      font-size: 16px;
+      line-height: 1.55;
+      color: var(--text-primary);
     }
 
     .option-label:hover {
-      background-color: #E8E4DE;
-      border-color: #C8C2B8;
+      border-color: var(--accent-primary);
+      background: var(--accent-primary-light);
     }
 
-    .option-item input[type="radio"]:checked + .option-label {
-      background-color: var(--hsp-accent-light);
-      border-color: var(--hsp-accent);
-      box-shadow: 0 0 0 1px var(--hsp-accent);
+    .option-radio:checked + .option-label {
+      border-color: var(--accent-primary);
+      background: var(--accent-primary-light);
     }
 
-    .option-item input[type="radio"]:focus-visible + .option-label {
-      outline: 2px solid var(--hsp-accent);
+    .option-radio:focus-visible + .option-label {
+      outline: 2px solid var(--accent-primary);
       outline-offset: 2px;
     }
 
-    .option-indicator {
-      flex-shrink: 0;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      border: 2px solid var(--hsp-border);
-      background-color: var(--hsp-bg);
-      margin-top: 2px;
-      transition: border-color var(--hsp-transition-fast), background-color var(--hsp-transition-fast);
+    .option-letter {
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-
-    .option-item input[type="radio"]:checked + .option-label .option-indicator {
-      border-color: var(--hsp-accent);
-      background-color: var(--hsp-accent);
-    }
-
-    .option-indicator::after {
-      content: '';
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background-color: var(--hsp-white);
-      opacity: 0;
-      transition: opacity var(--hsp-transition-fast);
-    }
-
-    .option-item input[type="radio"]:checked + .option-label .option-indicator::after {
-      opacity: 1;
-    }
-
-    .option-text {
-      font-size: 16px;
-      line-height: 1.6;
-      color: var(--hsp-text);
-    }
-
-    .question-nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    /* ===== Calculating Screen ===== */
-    .calculating-screen {
-      text-align: center;
-      padding: 60px 0;
-    }
-
-    .calculating-screen .pulse-dot {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background-color: var(--hsp-accent);
-      margin: 0 auto 28px;
-      animation: pulse 1.6s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 0.4; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.15); }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .pulse-dot { animation: none; opacity: 1; }
-    }
-
-    .calculating-headline {
-      font-family: var(--hsp-font-serif);
-      font-size: clamp(22px, 4vw, 28px);
-      font-style: italic;
-      margin-bottom: 16px;
-    }
-
-    .calculating-sub {
-      font-size: 15px;
-      color: var(--hsp-text-secondary);
-      line-height: 1.7;
-    }
-
-    /* ===== Results Screen ===== */
-    .results-header {
-      text-align: center;
-      margin-bottom: 36px;
-    }
-
-    .results-header .pre-title {
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--hsp-text-secondary);
-      margin-bottom: 10px;
-    }
-
-    .result-name {
-      font-family: var(--hsp-font-serif);
-      font-size: clamp(26px, 6vw, 34px);
-      font-style: italic;
-      font-weight: 400;
-      color: var(--hsp-text);
-      margin-bottom: 6px;
-    }
-
-    .result-tagline {
-      font-family: var(--hsp-font-serif);
-      font-size: clamp(16px, 3vw, 19px);
-      color: var(--hsp-text-secondary);
-      font-style: italic;
-      margin-bottom: 24px;
-    }
-
-    .result-divider {
-      width: 48px;
-      height: 2px;
-      background-color: var(--hsp-accent);
-      margin: 24px auto;
-      border-radius: 1px;
-    }
-
-    /* ===== Profile Section ===== */
-    .profile-section {
-      margin-bottom: 28px;
-    }
-
-    .profile-section-title {
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--hsp-text-secondary);
-      margin-bottom: 14px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--hsp-border);
-    }
-
-    .trait-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .trait-list li {
-      font-size: 16px;
-      line-height: 1.6;
-      padding-left: 20px;
-      position: relative;
-    }
-
-    .trait-list li::before {
-      content: '·';
-      position: absolute;
-      left: 4px;
-      color: var(--hsp-accent);
-      font-weight: 700;
-      font-size: 20px;
-      line-height: 1.4;
-    }
-
-    .action-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      counter-reset: action-counter;
-    }
-
-    .action-list li {
-      display: flex;
-      gap: 14px;
-      font-size: 16px;
-      line-height: 1.6;
-      counter-increment: action-counter;
-    }
-
-    .action-number {
-      flex-shrink: 0;
       width: 28px;
       height: 28px;
       border-radius: 50%;
-      background-color: var(--hsp-accent-light);
-      border: 1px solid var(--hsp-accent);
-      color: var(--hsp-accent-dark);
+      border: 1.5px solid var(--border);
       font-size: 13px;
       font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 2px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      transition: border-color var(--duration-fast) var(--ease-gentle),
+                  background-color var(--duration-fast) var(--ease-gentle),
+                  color var(--duration-fast) var(--ease-gentle);
+      margin-top: 1px;
     }
 
-    /* ===== Results Actions ===== */
-    .results-actions {
+    .option-radio:checked + .option-label .option-letter {
+      border-color: var(--accent-primary);
+      background: var(--accent-primary);
+      color: #ffffff;
+    }
+
+    .option-text {
+      flex: 1;
+    }
+
+    /* Navigation */
+    .question-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: var(--space-xl);
+      padding-top: var(--space-lg);
+      border-top: 1px solid var(--border);
+    }
+
+    .btn-next {
+      margin-left: auto;
+      opacity: 0.4;
+      pointer-events: none;
+      transition: opacity var(--duration-fast) var(--ease-gentle);
+    }
+
+    .btn-next.is-enabled {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ============================================
+       CALCULATING SCREEN
+    ============================================ */
+    .calculating-screen {
+      text-align: center;
+      padding: var(--space-3xl) 0;
+    }
+
+    .calculating-headline {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 5vw, 28px);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--text-primary);
+      margin-bottom: var(--space-lg);
+    }
+
+    .calculating-dots {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-xs);
+      margin-bottom: var(--space-xl);
+    }
+
+    .calculating-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-primary);
+      animation: dotPulse 1.4s ease-in-out infinite;
+    }
+
+    .calculating-dot:nth-child(2) { animation-delay: 0.2s; }
+    .calculating-dot:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes dotPulse {
+      0%, 80%, 100% { transform: scale(0.8); opacity: 0.4; }
+      40% { transform: scale(1.2); opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .calculating-dot { animation: none; }
+    }
+
+    .calculating-sub {
+      font-size: 16px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ============================================
+       RESULTS SCREEN
+    ============================================ */
+    .results-screen {
+      padding: var(--space-xl) 0;
+    }
+
+    .results-pre-title {
+      font-size: 14px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: var(--space-sm);
+    }
+
+    .results-type-name {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 7vw, 38px);
+      font-weight: 600;
+      font-style: italic;
+      color: var(--accent-primary);
+      line-height: 1.2;
+      margin-bottom: var(--space-sm);
+    }
+
+    .results-type-tag {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: var(--space-lg);
+    }
+
+    .results-description {
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: var(--space-xl);
+    }
+
+    .results-divider {
+      width: 48px;
+      height: 1px;
+      background: var(--border);
+      margin: var(--space-lg) auto;
+    }
+
+    .results-section {
+      margin-bottom: var(--space-xl);
+    }
+
+    .results-section-title {
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: var(--space-md);
+    }
+
+    .results-strengths {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      margin-top: 36px;
-      padding-top: 28px;
-      border-top: 1px solid var(--hsp-border);
+      gap: var(--space-xs);
     }
 
-    /* ===== Share Modal ===== */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background-color: rgba(58, 54, 50, 0.5);
-      z-index: 100;
-      align-items: center;
-      justify-content: center;
-      padding: 24px 16px;
-      backdrop-filter: blur(4px);
-    }
-
-    .modal-overlay.is-open {
+    .results-strength-item {
       display: flex;
+      align-items: flex-start;
+      gap: var(--space-sm);
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.5;
     }
 
-    .modal-card {
-      background-color: var(--hsp-bg);
-      border-radius: var(--hsp-radius);
-      padding: 32px 28px;
-      max-width: 480px;
+    .results-strength-item::before {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      margin-top: 3px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237A9E8A' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'%3E%3C/path%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    .results-ctas {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      margin-top: var(--space-xl);
+      padding-top: var(--space-xl);
+      border-top: 1px solid var(--border);
+    }
+
+    .results-ctas .btn {
       width: 100%;
-      position: relative;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
     }
 
-    .modal-close {
-      position: absolute;
-      top: 16px;
-      right: 16px;
+    /* ============================================
+       FULL PROFILE SCREEN
+    ============================================ */
+    .profile-screen {
+      padding: var(--space-xl) 0;
+    }
+
+    .profile-back {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      font-size: 14px;
+      color: var(--text-muted);
+      cursor: pointer;
       background: none;
       border: none;
-      cursor: pointer;
-      color: var(--hsp-text-secondary);
-      padding: 8px;
-      border-radius: var(--hsp-radius-sm);
-      font-size: 20px;
-      line-height: 1;
-      transition: color var(--hsp-transition-fast);
+      font-family: var(--font-body);
+      margin-bottom: var(--space-xl);
+      padding: var(--space-xs) 0;
+      transition: color var(--duration-fast) var(--ease-gentle);
     }
 
-    .modal-close:hover {
-      color: var(--hsp-text);
+    .profile-back:hover {
+      color: var(--text-primary);
     }
 
-    .modal-close:focus-visible {
-      outline: 2px solid var(--hsp-accent);
+    .profile-back:focus-visible {
+      outline: 2px solid var(--accent-primary);
       outline-offset: 2px;
     }
 
-    .share-card-preview {
-      background-color: var(--hsp-surface);
-      border: 1px solid var(--hsp-border);
-      border-radius: var(--hsp-radius);
-      padding: 20px;
-      margin: 20px 0;
+    .profile-type-name {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 7vw, 38px);
+      font-weight: 600;
+      font-style: italic;
+      color: var(--accent-primary);
+      line-height: 1.2;
+      margin-bottom: var(--space-xs);
+    }
+
+    .profile-superpower {
+      font-size: 16px;
+      color: var(--text-secondary);
+      margin-bottom: var(--space-lg);
+      font-style: italic;
+    }
+
+    .profile-divider {
+      width: 48px;
+      height: 1px;
+      background: var(--border);
+      margin: var(--space-lg) 0;
+    }
+
+    .profile-section {
+      margin-bottom: var(--space-xl);
+    }
+
+    .profile-section-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: var(--space-md);
+    }
+
+    .profile-description {
+      font-size: 16px;
+      line-height: 1.75;
+      color: var(--text-secondary);
+    }
+
+    .profile-description p {
+      margin-bottom: var(--space-md);
+    }
+
+    .profile-description p:last-child {
+      margin-bottom: 0;
+    }
+
+    .profile-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .profile-list-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-sm);
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--text-secondary);
+      padding: var(--space-sm) 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .profile-list-item:last-child {
+      border-bottom: none;
+    }
+
+    .profile-list-bullet {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-primary);
+      flex-shrink: 0;
+      margin-top: 8px;
+    }
+
+    .profile-strategy {
+      background: var(--bg-surface);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+      margin-bottom: var(--space-md);
+    }
+
+    .profile-strategy:last-child {
+      margin-bottom: 0;
+    }
+
+    .profile-strategy-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: var(--space-xs);
+    }
+
+    .profile-strategy-desc {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    .profile-resource-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-sm);
+      padding: var(--space-sm) 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .profile-resource-item:last-child {
+      border-bottom: none;
+    }
+
+    .profile-resource-type {
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--accent-primary);
+      background: var(--accent-primary-light);
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .profile-resource-info {
+      flex: 1;
+    }
+
+    .profile-resource-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+
+    .profile-resource-note {
       font-size: 14px;
-      line-height: 1.7;
-      color: var(--hsp-text);
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .profile-retake {
+      margin-top: var(--space-xl);
+      padding-top: var(--space-xl);
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    /* ============================================
+       SHARE MODAL
+    ============================================ */
+    .share-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(58, 54, 50, 0.5);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 100;
+      padding: var(--space-md);
+    }
+
+    .share-modal.is-open {
+      display: flex;
+    }
+
+    .share-panel {
+      background: var(--bg-base);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      padding: var(--space-xl);
+      max-width: 640px;
+      width: 100%;
+      animation: slideUp 300ms ease-out;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .share-panel { animation: none; }
+    }
+
+    .share-panel-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: var(--space-lg);
+    }
+
+    .share-text {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      margin-bottom: var(--space-lg);
       white-space: pre-wrap;
+    }
+
+    .share-copy-btn {
+      width: 100%;
+      margin-bottom: var(--space-sm);
     }
 
     .share-platforms {
       display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
+      gap: var(--space-sm);
     }
 
-    .share-btn {
-      display: inline-flex;
+    .share-platform-btn {
+      flex: 1;
+      display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 10px 18px;
-      border-radius: var(--hsp-radius-sm);
-      border: 1px solid var(--hsp-border);
-      background-color: var(--hsp-surface);
-      font-family: var(--hsp-font-sans);
+      justify-content: center;
+      gap: var(--space-xs);
+      padding: 12px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
       font-size: 14px;
       font-weight: 600;
-      color: var(--hsp-text);
+      color: var(--text-secondary);
       cursor: pointer;
-      transition: background-color var(--hsp-transition-fast);
+      font-family: var(--font-body);
       text-decoration: none;
-      min-height: 44px;
+      transition: background var(--duration-fast) var(--ease-gentle);
+      min-height: 48px;
     }
 
-    .share-btn:hover {
-      background-color: var(--hsp-border);
+    .share-platform-btn:hover {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
     }
 
-    .share-btn:focus-visible {
-      outline: 2px solid var(--hsp-accent);
+    .share-platform-btn:focus-visible {
+      outline: 2px solid var(--accent-primary);
       outline-offset: 2px;
     }
 
-    .share-btn.telegram { background-color: #E8F0EA; border-color: #C8D8CE; }
-    .share-btn.whatsapp { background-color: #E8F0EA; border-color: #C8D8CE; }
+    .share-close {
+      width: 100%;
+      margin-top: var(--space-sm);
+      color: var(--text-muted);
+    }
 
-    /* ===== Toast ===== */
     .toast {
       position: fixed;
-      bottom: 32px;
+      bottom: var(--space-xl);
       left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background-color: var(--hsp-text);
-      color: var(--hsp-bg);
+      transform: translateX(-50%) translateY(100px);
+      background: var(--text-primary);
+      color: var(--bg-base);
+      padding: var(--space-sm) var(--space-lg);
+      border-radius: var(--radius-pill);
       font-size: 14px;
       font-weight: 600;
-      padding: 14px 24px;
-      border-radius: var(--hsp-radius);
       z-index: 200;
-      transition: transform 300ms ease;
+      opacity: 0;
+      transition: transform 300ms ease, opacity 300ms ease;
       pointer-events: none;
-      white-space: nowrap;
     }
 
     .toast.is-visible {
       transform: translateX(-50%) translateY(0);
+      opacity: 1;
     }
 
-    /* ===== Disclaimer Screen ===== */
-    .disclaimer-box {
-      background-color: var(--hsp-surface);
-      border: 1px solid var(--hsp-border);
-      border-radius: var(--hsp-radius);
-      padding: 24px 20px;
-      margin-bottom: 28px;
-      font-size: 15px;
+    /* ============================================
+       OUTRO SECTION (within results)
+    ============================================ */
+    .outro-section {
+      border-top: 1px solid var(--border);
+      padding-top: var(--space-xl);
+      margin-top: var(--space-xl);
+    }
+
+    .outro-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: var(--space-md);
+    }
+
+    .outro-body {
+      font-size: 16px;
       line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: var(--space-lg);
     }
 
-    .disclaimer-box p {
-      margin-bottom: 12px;
-    }
-
-    .disclaimer-box p:last-child {
-      margin-bottom: 0;
-    }
-
-    .disclaimer-note {
-      font-size: 13px;
-      color: var(--hsp-text-secondary);
-      margin-top: 20px;
-      padding: 14px 16px;
-      background-color: #FEF6E8;
-      border: 1px solid #E8D8B8;
-      border-radius: var(--hsp-radius-sm);
-      line-height: 1.6;
-    }
-
-    /* ===== Trigger Warning ===== */
-    .trigger-warning {
-      font-size: 13px;
-      color: var(--hsp-text-secondary);
-      margin: 16px 0;
-      padding: 12px 16px;
-      background-color: #FDF5F0;
-      border: 1px solid #E8D8C8;
-      border-radius: var(--hsp-radius-sm);
-      line-height: 1.6;
-    }
-
-    /* ===== Privacy Policy ===== */
-    .privacy-policy {
-      font-size: 13px;
-      color: var(--hsp-text-secondary);
-      margin-top: 32px;
-      padding-top: 20px;
-      border-top: 1px solid var(--hsp-border);
-      line-height: 1.6;
-    }
-
-    .privacy-policy a {
-      color: var(--hsp-accent-dark);
-      text-decoration: underline;
-    }
-
-    .privacy-policy a:focus-visible {
-      outline: 2px solid var(--hsp-accent);
-      outline-offset: 2px;
-    }
-
-    /* ===== Professional Support CTA ===== */
-    .support-cta {
-      background-color: var(--hsp-accent-light);
-      border: 1px solid var(--hsp-accent);
-      border-radius: var(--hsp-radius);
-      padding: 20px;
-      margin-top: 28px;
-      font-size: 14px;
+    .outro-closing {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-style: italic;
+      color: var(--text-secondary);
       line-height: 1.7;
-    }
-
-    .support-cta strong {
-      color: var(--hsp-accent-dark);
-    }
-
-    /* ===== Accessibility ===== */
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-
-    /* ===== Responsive ===== */
-    @media (max-width: 480px) {
-      .question-nav {
-        flex-direction: column-reverse;
-      }
-
-      .question-nav .btn {
-        width: 100%;
-      }
-
-      .share-platforms {
-        flex-direction: column;
-      }
-
-      .share-btn {
-        width: 100%;
-        justify-content: center;
-      }
-    }
-
-    /* ===== Canvas Share Card ===== */
-    #share-canvas {
-      display: none;
-    }
-
-    /* ===== Full Profile Toggle ===== */
-    .full-profile {
-      display: none;
-    }
-
-    .full-profile.is-open {
-      display: block;
-    }
-
-    .profile-back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 14px;
-      color: var(--hsp-text-secondary);
-      text-decoration: none;
-      margin-bottom: 24px;
-      padding: 8px 0;
-      cursor: pointer;
-      background: none;
-      border: none;
-      font-family: var(--hsp-font-sans);
-      transition: color var(--hsp-transition-fast);
-    }
-
-    .profile-back-link:hover {
-      color: var(--hsp-text);
-    }
-
-    .profile-back-link:focus-visible {
-      outline: 2px solid var(--hsp-accent);
-      outline-offset: 2px;
-      border-radius: 4px;
-    }
-
-    /* ===== Retake ===== */
-    .retake-section {
-      margin-top: 36px;
-      padding-top: 24px;
-      border-top: 1px solid var(--hsp-border);
+      margin: var(--space-xl) 0;
+      padding: var(--space-lg);
+      background: var(--bg-surface);
+      border-radius: var(--radius-md);
       text-align: center;
     }
 
-    /* ===== Subtype illustration (decorative SVG) ===== */
-    .subtype-illustration {
-      width: 100%;
-      max-width: 200px;
-      margin: 0 auto 24px;
-      display: block;
+    .outro-footer {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-top: var(--space-xl);
+      padding-top: var(--space-md);
+      border-top: 1px solid var(--border);
     }
   </style>
 </head>
 <body>
-  <main class="quiz-wrapper" id="quiz-app" role="main">
+  <main class="quiz-container" id="quiz">
 
-    <!-- ===== SCREEN: Intro ===== -->
+    <!-- ============================================
+         SCREEN 1: INTRO
+    ============================================ -->
     <section class="screen intro-screen is-active" id="screen-intro" aria-label="Introduction">
-      <div class="logo" aria-hidden="true">PsychoMaster · HSP Navigator</div>
-
-      <h1 class="headline">You Feel Things Deeply.<br>That Is Not a Weakness.</h1>
-
-      <p class="subheadline">
-        Discovering how your sensitivity works can change everything — from how you work, to how you rest, to how you love. This 12-question quiz maps your unique HSP profile and gives you a personalised navigation guide.
-      </p>
-
-      <ul class="intro-bullets" aria-label="What to expect">
-        <li>12 questions · ~5 minutes</li>
-        <li>Science-backed SPS framework</li>
-        <li>Personalised subtype profile + action roadmap</li>
-      </ul>
-
-      <p class="privacy-note">Your answers are private. Always. Nothing is stored on any server.</p>
-
-      <div class="trigger-warning" role="note" aria-label="Content note">
-        <strong>Note:</strong> This quiz explores personal emotional and sensory experiences. If you're currently in a difficult period, take care of yourself first.
+      <p class="intro-logo">PsychoMaster</p>
+      <h1 class="intro-headline">You Feel Things Deeply.<br>That Is <em>Not</em> a Weakness.</h1>
+      <p class="intro-subtext">Discovering how your sensitivity works can change everything — from how you work, to how you rest, to how you love.</p>
+      <div class="intro-outcomes">
+        <div class="intro-outcome-item">12 scenario-based questions · ~5 minutes</div>
+        <div class="intro-outcome-item">Science-backed framework — Elaine Aron's SPS research</div>
+        <div class="intro-outcome-item">Personalised subtype profile + practical roadmap</div>
       </div>
-
-      <button class="btn btn-primary btn-full" id="btn-begin" aria-label="Begin the HSP Navigator Quiz">
-        Begin Your Journey
-      </button>
+      <div class="intro-divider"></div>
+      <p class="intro-privacy">Your answers are private. Always.</p>
+      <button class="btn btn-primary" id="btn-begin" aria-label="Begin the HSP Navigator Quiz">Begin Your Journey</button>
     </section>
 
-    <!-- ===== SCREEN: Disclaimer ===== -->
-    <section class="screen" id="screen-disclaimer" aria-label="Before you begin">
-      <h2 class="headline" style="font-size:clamp(22px,4vw,28px)">Before You Begin</h2>
-
-      <div class="disclaimer-box">
-        <p>The <strong>HSP Navigator Quiz</strong> is a self-reflection tool, not a clinical diagnosis. It is grounded in Dr. Elaine Aron's Sensory Processing Sensitivity (SPS) research.</p>
-        <p>There are no right or wrong answers. Answer as honestly as you can, without trying to figure out what the "best" answer is.</p>
-        <p>Take your time. You can always go back to previous questions.</p>
-      </div>
-
-      <button class="btn btn-primary btn-full" id="btn-ready" aria-label="I'm ready to begin the quiz">
-        I'm Ready to Begin
-      </button>
+    <!-- ============================================
+         SCREEN 2: DISCLAIMER
+    ============================================ -->
+    <section class="screen disclaimer-screen" id="screen-disclaimer" aria-label="Before you begin" aria-hidden="true">
+      <h2 class="screen-title">Before You Begin</h2>
+      <p class="disclaimer-body">The <strong>HSP Navigator Quiz</strong> is a self-reflection tool, not a clinical diagnosis. It is grounded in <strong>Elaine Aron's Sensory Processing Sensitivity (SPS)</strong> research framework.</p>
+      <p class="disclaimer-body">There are no right or wrong answers. Answer as honestly as you can, without trying to figure out what the "best" answer is.</p>
+      <p class="disclaimer-note">Take your time. You can always go back to previous questions.</p>
+      <button class="btn btn-primary" id="btn-disclaimer-ready" aria-label="I'm ready to begin the quiz">I'm Ready to Begin</button>
     </section>
 
-    <!-- ===== SCREEN: Question ===== -->
-    <section class="screen" id="screen-question" aria-label="Quiz question" aria-live="polite">
-      <p class="question-counter" id="question-counter" aria-atomic="true">Question 1 of 12</p>
-
-      <div class="progress-wrap" aria-label="Quiz progress">
-        <progress id="quiz-progress" value="1" max="12" aria-label="Quiz progress: question 1 of 12" aria-valuenow="1" aria-valuemin="1" aria-valuemax="12"></progress>
-        <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progress-fill" style="width:8.33%"></div></div>
+    <!-- ============================================
+         SCREEN 3–14: QUESTIONS
+    ============================================ -->
+    <section class="screen question-screen" id="screen-question" aria-label="Question" aria-hidden="true">
+      <div class="question-header">
+        <p class="question-counter" id="question-counter" aria-live="polite"></p>
+        <div class="progress-bar" role="progressbar" aria-label="Quiz progress" aria-valuenow="1" aria-valuemin="1" aria-valuemax="12">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
       </div>
-
-      <fieldset style="border:none;padding:0;margin:0">
-        <legend class="question-text" id="question-text"></legend>
-        <div class="options-list" id="options-list" role="radiogroup" aria-label="Answer options"></div>
-      </fieldset>
-
+      <p class="question-text" id="question-text"></p>
+      <div class="options-list" id="options-list" role="radiogroup"></div>
       <div class="question-nav">
-        <button class="btn btn-ghost" id="btn-back" aria-label="Go to previous question" style="display:none">
-          ← Back
+        <button class="btn btn-ghost" id="btn-back" aria-label="Go to previous question" style="display:none;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          Back
         </button>
-        <button class="btn btn-primary" id="btn-next" aria-label="Go to next question" disabled>
-          Next →
+        <button class="btn btn-primary btn-next" id="btn-next" aria-label="Go to next question">
+          Next
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </button>
       </div>
     </section>
 
-    <!-- ===== SCREEN: Calculating ===== -->
-    <section class="screen calculating-screen" id="screen-calculating" aria-label="Calculating your results" aria-live="assertive">
-      <div class="pulse-dot" aria-hidden="true"></div>
+    <!-- ============================================
+         SCREEN: CALCULATING
+    ============================================ -->
+    <section class="screen calculating-screen" id="screen-calculating" aria-label="Calculating your results" aria-hidden="true">
       <h2 class="calculating-headline">Your pattern is forming…</h2>
+      <div class="calculating-dots" aria-hidden="true">
+        <span class="calculating-dot"></span>
+        <span class="calculating-dot"></span>
+        <span class="calculating-dot"></span>
+      </div>
       <p class="calculating-sub">Good. Take another breath.<br>This is not a test you can fail.</p>
     </section>
 
-    <!-- ===== SCREEN: Results ===== -->
-    <section class="screen" id="screen-results" aria-label="Your results" aria-live="polite">
-      <div class="results-header">
-        <p class="pre-title">Your HSP Profile</p>
-        <h1 class="result-name" id="result-name" aria-label="Your result"></h1>
-        <p class="result-tagline" id="result-tagline"></p>
-        <div class="result-divider" aria-hidden="true"></div>
+    <!-- ============================================
+         SCREEN: RESULTS
+    ============================================ -->
+    <section class="screen results-screen" id="screen-results" aria-label="Your results" aria-hidden="true">
+      <p class="results-pre-title">Your HSP Profile</p>
+      <h1 class="results-type-name" id="results-type-name"></h1>
+      <p class="results-type-tag" id="results-type-tag"></p>
+      <p class="results-description" id="results-description"></p>
+      <div class="results-divider"></div>
+      <div class="results-section">
+        <p class="results-section-title">Your Signature Strengths</p>
+        <div class="results-strengths" id="results-strengths"></div>
       </div>
-
-      <div class="profile-section">
-        <p class="profile-section-title">Your Signature Traits</p>
-        <ul class="trait-list" id="result-traits" aria-label="Your signature traits"></ul>
+      <div class="results-section">
+        <p class="results-section-title">Your Navigation Priorities</p>
+        <div class="results-strengths" id="results-challenges"></div>
       </div>
-
-      <div class="profile-section">
-        <p class="profile-section-title">Your Growth Edge</p>
-        <p id="result-growth" style="font-size:16px;line-height:1.7"></p>
-      </div>
-
-      <div class="profile-section">
-        <p class="profile-section-title">Three Steps to Thrive</p>
-        <ol class="action-list" id="result-actions" aria-label="Three steps to thrive"></ol>
-      </div>
-
-      <div class="support-cta" role="note">
-        <strong>If you're experiencing persistent distress, anxiety, or overwhelm</strong> — please consider reaching out to a qualified mental health professional. This quiz is for self-discovery, not clinical diagnosis. You deserve support from someone trained to help.
-      </div>
-
-      <div class="results-actions">
-        <button class="btn btn-primary btn-full" id="btn-full-profile" aria-label="Explore your full HSP profile">
-          Explore Your Full Profile
-        </button>
-        <button class="btn btn-secondary btn-full" id="btn-share" aria-label="Share your result">
-          Share Your Result
-        </button>
-        <button class="btn btn-ghost btn-full" id="btn-retake" aria-label="Retake the quiz">
-          Retake the Quiz
-        </button>
+      <div class="results-ctas">
+        <button class="btn btn-primary" id="btn-explore" aria-label="Explore your full profile">Explore Your Full Profile</button>
+        <button class="btn btn-secondary" id="btn-share" aria-label="Share your result">Share Your Result</button>
+        <button class="btn btn-ghost" id="btn-retake" aria-label="Retake the quiz">Retake the Quiz</button>
       </div>
     </section>
 
-    <!-- ===== SCREEN: Full Profile ===== -->
-    <section class="screen" id="screen-full-profile" aria-label="Full HSP profile">
-      <button class="profile-back-link" id="btn-profile-back" aria-label="Back to your result">
-        ← Back to Your Result
+    <!-- ============================================
+         SCREEN: FULL PROFILE
+    ============================================ -->
+    <section class="screen profile-screen" id="screen-profile" aria-label="Full profile" aria-hidden="true">
+      <button class="profile-back" id="btn-profile-back" aria-label="Back to your result">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        Back to Your Result
       </button>
+      <h1 class="profile-type-name" id="profile-type-name"></h1>
+      <p class="profile-superpower" id="profile-superpower"></p>
+      <div class="profile-divider"></div>
 
-      <div class="results-header">
-        <p class="pre-title">Your HSP Profile</p>
-        <h1 class="result-name" id="fp-result-name"></h1>
-        <div class="result-divider" aria-hidden="true"></div>
+      <div class="profile-section" id="profile-description-section">
+        <h2 class="profile-section-title">What This Means for You</h2>
+        <div class="profile-description" id="profile-description"></div>
       </div>
 
-      <p id="fp-description" style="font-size:16px;line-height:1.8;margin-bottom:28px"></p>
-
-      <div class="profile-section">
-        <p class="profile-section-title">Your Strengths</p>
-        <ul class="trait-list" id="fp-strengths"></ul>
+      <div class="profile-section" id="profile-strengths-section">
+        <h2 class="profile-section-title">Your Signature Strengths</h2>
+        <ul class="profile-list" id="profile-strengths"></ul>
       </div>
 
-      <div class="profile-section">
-        <p class="profile-section-title">Your Navigation Priorities</p>
-        <ul class="trait-list" id="fp-challenges"></ul>
+      <div class="profile-section" id="profile-challenges-section">
+        <h2 class="profile-section-title">Your Navigation Challenges</h2>
+        <ul class="profile-list" id="profile-challenges"></ul>
       </div>
 
-      <div class="profile-section">
-        <p class="profile-section-title">Thriving Strategies</p>
-        <ol class="action-list" id="fp-actions"></ol>
+      <div class="profile-section" id="profile-strategies-section">
+        <h2 class="profile-section-title">Thriving Strategies</h2>
+        <div id="profile-strategies"></div>
       </div>
 
-      <div class="profile-section">
-        <p class="profile-section-title">Recommended Resources</p>
-        <p id="fp-resources" style="font-size:15px;line-height:1.8;color:var(--hsp-text-secondary)"></p>
+      <div class="profile-section" id="profile-resources-section">
+        <h2 class="profile-section-title">Curated Resources</h2>
+        <div id="profile-resources"></div>
       </div>
 
-      <div class="support-cta" role="note">
-        <strong>If you're experiencing persistent distress, anxiety, or overwhelm</strong> — please consider reaching out to a qualified mental health professional.
+      <div class="profile-section outro-section">
+        <h2 class="outro-title">Your HSP Navigator Results</h2>
+        <p class="outro-body">What you've just completed is not a test with a pass or fail. It's a mirror — and what it reflects is the particular shape of your sensitivity.</p>
+        <p class="outro-body" id="outro-combined-note" style="display:none;"></p>
+        <div class="outro-closing" id="outro-closing"></div>
+        <div class="outro-footer" id="outro-footer"></div>
       </div>
 
-      <div class="retake-section">
-        <button class="btn btn-secondary" id="btn-fp-retake" aria-label="Retake the quiz">
-          Retake the Quiz
-        </button>
-      </div>
-
-      <div class="privacy-policy" id="fp-privacy" style="margin-top:28px;padding-top:20px;border-top:1px solid var(--hsp-border)">
-        Your data is yours. This quiz uses localStorage only to preserve your progress during the session. No answers are sent to any server. See our <a href="#privacy" id="privacy-link-full">privacy policy</a>.
+      <div class="profile-retake">
+        <button class="btn btn-secondary" id="btn-profile-retake" aria-label="Retake the quiz">Retake the Quiz</button>
       </div>
     </section>
 
   </main>
 
-  <!-- ===== Share Modal ===== -->
-  <div class="modal-overlay" id="share-modal" role="dialog" aria-modal="true" aria-labelledby="share-modal-title">
-    <div class="modal-card">
-      <button class="modal-close" id="share-modal-close" aria-label="Close share dialog">✕</button>
-      <h2 id="share-modal-title" style="font-family:var(--hsp-font-serif);font-size:22px;font-weight:400;margin-bottom:4px">Share Your Result</h2>
-      <p style="font-size:14px;color:var(--hsp-text-secondary)">Copy the text below or share directly:</p>
-
-      <div class="share-card-preview" id="share-card-text" aria-label="Share card text" role="text"></div>
-
+  <!-- SHARE MODAL -->
+  <div class="share-modal" id="share-modal" role="dialog" aria-label="Share your result" aria-hidden="true">
+    <div class="share-panel">
+      <h3 class="share-panel-title">Share Your Result</h3>
+      <div class="share-text" id="share-text"></div>
+      <button class="btn btn-primary share-copy-btn" id="btn-copy">Copy to Clipboard</button>
       <div class="share-platforms">
-        <button class="share-btn telegram" id="share-telegram" aria-label="Share on Telegram">
-          ✈ Telegram
-        </button>
-        <button class="share-btn whatsapp" id="share-whatsapp" aria-label="Share on WhatsApp">
-          💬 WhatsApp
-        </button>
-        <button class="share-btn" id="share-copy" aria-label="Copy to clipboard">
-          📋 Copy
-        </button>
-        <button class="share-btn" id="share-canvas-btn" aria-label="Download share image">
-          🖼 Download Image
-        </button>
+        <a class="share-platform-btn" id="btn-share-telegram" href="#" target="_blank" rel="noopener" aria-label="Share on Telegram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          Telegram
+        </a>
+        <a class="share-platform-btn" id="btn-share-whatsapp" href="#" target="_blank" rel="noopener" aria-label="Share on WhatsApp">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+          WhatsApp
+        </a>
       </div>
-
-      <canvas id="share-canvas" width="1200" height="630" aria-hidden="true"></canvas>
+      <button class="btn btn-ghost share-close" id="btn-share-close">Close</button>
     </div>
   </div>
 
-  <!-- ===== Privacy Modal ===== -->
-  <div class="modal-overlay" id="privacy-modal" role="dialog" aria-modal="true" aria-labelledby="privacy-modal-title">
-    <div class="modal-card">
-      <button class="modal-close" id="privacy-modal-close" aria-label="Close privacy policy">✕</button>
-      <h2 id="privacy-modal-title" style="font-family:var(--hsp-font-serif);font-size:22px;font-weight:400;margin-bottom:16px">Privacy Policy</h2>
-      <div style="font-size:14px;line-height:1.8;color:var(--hsp-text-secondary);max-height:60dvh;overflow-y:auto">
-        <p style="margin-bottom:12px"><strong style="color:var(--hsp-text)">No data leaves your device.</strong></p>
-        <p style="margin-bottom:12px">The HSP Navigator Quiz uses <strong style="color:var(--hsp-text)">localStorage</strong> only to preserve your progress during a single session. Your answers are never sent to any server, transmitted to any third party, or stored permanently.</p>
-        <p style="margin-bottom:12px">When you close or refresh this page, all quiz data is cleared. No cookies are used for tracking or advertising.</p>
-        <p style="margin-bottom:12px">The share feature uses the Web Share API on supported devices. No data is shared unless you explicitly choose to do so.</p>
-        <p>If you have questions, contact the PsychoMaster team.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== Toast ===== -->
-  <div class="toast" id="toast" role="status" aria-live="polite" aria-label="Notification"></div>
+  <!-- TOAST -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
-  (() => {
-    'use strict';
-
-    // ===== QUIZ DATA =====
-    const QUESTIONS = [
-      {
-        text: "You're at a social gathering — a friend's birthday dinner with 15 people in a noisy restaurant. After about two hours, you most likely feel:",
-        options: [
-          { letter: 'A', text: "Energised and engaged — you've been enjoying the conversation and the buzz" },
-          { letter: 'B', text: "Deeply connected — you've been absorbing everyone's emotions and stories, and it's been meaningful" },
-          { letter: 'C', text: "Fatigued and irritable — the noise, the clinking glasses, and the competing conversations have drained you" },
-          { letter: 'D', text: "Relieved when it's over — you're glad you went but also glad to step back into quiet" }
-        ]
+    // ============================================
+    // QUIZ DATA — embedded from content JSON
+    // ============================================
+    const QUIZ_DATA = {
+      "meta": {
+        "title": "HSP Navigator Quiz",
+        "tagline": "Sensitivity is a trait, not a flaw. Understanding yours is the first step to living well with it.",
+        "version": "1.0",
+        "psychologicalFramework": "Sensory Processing Sensitivity (SPS) — Elaine Aron",
+        "scoringMethod": "dominant-subtype",
+        "disclaimer": "This quiz is for self-discovery and insight. It is not a clinical diagnostic tool. If you're experiencing significant distress, overwhelm, or mental health concerns, please speak with a qualified mental health professional."
       },
-      {
-        text: "Your friend shares some difficult news — they've received a serious medical diagnosis. Your instinctive response is to:",
-        options: [
-          { letter: 'A', text: "Listen carefully, ask thoughtful questions, and process the information fully before responding" },
-          { letter: 'B', text: "Feel your friend's pain intensely — you find yourself tearing up and needing to step away to compose yourself" },
-          { letter: 'C', text: "Notice the physical weight of the situation — the atmosphere in the room has shifted, and you feel it in your body" },
-          { letter: 'D', text: "Want to help practically — you immediately start thinking through next steps, logistics, and how to support them" }
-        ]
+      "questions": [
+        {
+          "id": 1,
+          "text": "You're at a social gathering — a friend's birthday dinner with 15 people in a noisy restaurant. After about two hours, you most likely feel:",
+          "options": [
+            { "letter": "A", "label": "Energised and engaged — you've been enjoying the conversation and the buzz", "subtype": "deep_processor" },
+            { "letter": "B", "label": "Deeply connected — you've been absorbing everyone's emotions and stories, and it's been meaningful", "subtype": "emotional_resonator" },
+            { "letter": "C", "label": "Fatigued and irritable — the noise, the clinking glasses, and the competing conversations have drained you", "subtype": "sensory_awarer" },
+            { "letter": "D", "label": "Relieved when it's over — you're glad you went but also glad to step back into quiet", "subtype": "environment_sensitive" }
+          ]
+        },
+        {
+          "id": 2,
+          "text": "Your friend shares some difficult news — they've received a serious medical diagnosis. Your instinctive response is to:",
+          "options": [
+            { "letter": "A", "label": "Listen carefully, ask thoughtful questions, and process the information fully before responding", "subtype": "deep_processor" },
+            { "letter": "B", "label": "Feel your friend's pain intensely — you find yourself tearing up and needing to step away to compose yourself", "subtype": "emotional_resonator" },
+            { "letter": "C", "label": "Notice the physical weight of the situation — the atmosphere in the room has shifted, and you feel it in your body", "subtype": "sensory_awarer" },
+            { "letter": "D", "label": "Want to help practically — you immediately start thinking through next steps, logistics, and how to support them", "subtype": "environment_sensitive" }
+          ]
+        },
+        {
+          "id": 3,
+          "text": "You have an important decision to make — whether to take a new job in a different city. You typically:",
+          "options": [
+            { "letter": "A", "label": "Need significant time alone to weigh all the options, consider every angle, and sit with the decision before feeling ready", "subtype": "deep_processor" },
+            { "letter": "B", "label": "Consider how this change affects the people around you — your partner, your family, your friends — deeply", "subtype": "emotional_resonator" },
+            { "letter": "C", "label": "Immediately notice the sensory implications — the new commute, the office environment, the quality of light in a new apartment", "subtype": "sensory_awarer" },
+            { "letter": "D", "label": "Feel the emotional weight of leaving your current community and wonder how the environment shift will affect your wellbeing", "subtype": "environment_sensitive" }
+          ]
+        },
+        {
+          "id": 4,
+          "text": "You walk into a workspace — a bright, open-plan office with fluorescent lights, hard surfaces, and background music playing. Your first instinct is:",
+          "options": [
+            { "letter": "A", "label": "To assess the room intellectually — you take in the full picture and start forming impressions", "subtype": "deep_processor" },
+            { "letter": "B", "label": "To absorb the emotional atmosphere — you can sense the mood of the people in the room before anyone speaks", "subtype": "emotional_resonator" },
+            { "letter": "C", "label": "To feel your body react — the glare of the lights, the echo of footsteps, and the volume of the music register immediately", "subtype": "sensory_awarer" },
+            { "letter": "D", "label": "To feel slightly overwhelmed and start scanning for a quieter corner or a way to make the space more comfortable", "subtype": "environment_sensitive" }
+          ]
+        },
+        {
+          "id": 5,
+          "text": "You're watching the news and a story comes on about a natural disaster affecting many people. You most likely:",
+          "options": [
+            { "letter": "A", "label": "Feel a deep need to understand the full picture — you want all the facts, context, and implications before reacting", "subtype": "deep_processor" },
+            { "letter": "B", "label": "Feel overwhelmed by the suffering — the emotional weight of it stays with you long after you've turned off the screen", "subtype": "emotional_resonator" },
+            { "letter": "C", "label": "Are affected by the sensory intensity of the coverage — the sounds, the images, the urgency in the reporter's voice hit hard", "subtype": "sensory_awarer" },
+            { "letter": "D", "label": "Want to do something — anything — to help; you feel the urge to take practical action rather than sit with the feeling", "subtype": "environment_sensitive" }
+          ]
+        },
+        {
+          "id": 6,
+          "text": "At a creative project — a work assignment, an artistic endeavour, or a personal craft — you most naturally shine when:",
+          "options": [
+            { "letter": "A", "label": "You have time to go deep — you produce your best work when you can explore it thoroughly without pressure", "subtype": "deep_processor" },
+            { "letter": "B", "label": "You're able to bring emotional depth and nuance — your work is often described as moving, perceptive, or emotionally rich", "subtype": "emotional_resonator" },
+            { "letter": "C", "label": "The details matter — you notice things others miss, catch errors, spot inconsistencies, and bring precision", "subtype": "sensory_awarer" },
+            { "letter": "D", "label": "The environment supports your process — you need the right conditions (quiet, comfort, low interruption) to do your best thinking", "subtype": "environment_sensitive" }
+          ]
+        },
+        {
+          "id": 7,
+          "text": "You're planning a vacation. What matters most to you?",
+          "options": [
+            { "letter": "A", "label": "Having enough time to fully experience the destination — you don't want to rush from place to place", "subtype": "deep_processor" },
+            { "letter": "B", "label": "The emotional quality of the experience — you want to feel something real, not just see things", "subtype": "emotional_resonator" },
+            { "letter": "C", "label": "Knowing what you're walking into — you research extensively so nothing catches you off guard", "subtype": "sensory_awarer" },
+            { "letter": "D", "label": "Physical comfort and sensory environment — a noisy hostel would undermine the whole trip for you", "subtype": "environment_sensitive" }
+          ]
+        },
+        {
+          "id": 8,
+          "text": "Someone close to you criticises your work or an important project you've done. Your first reaction is usually:",
+          "options": [
+            { "letter": "A", "label": "To turn inward and ruminate — you replay the criticism repeatedly, processing it deeply before you know how you feel", "subtype": "deep_processor" },
+            { "letter": "B", "label": "To feel it emotionally first — the hurt is real and immediate, even if you don't show it externally", "subtype": "emotional_resonator" },
+            { "letter": "C", "label": "To notice how the environment seems to shift — suddenly the room feels colder, the atmosphere heavier", "subtype": "sensory_awarer" },
+            { "letter": "D", "label": "To want to withdraw and recover somewhere quiet before you can think about what was said", "subtype": "environment_sensitive" }
+          ]
+        },
+        {
+          "id": 9,
+          "text": "You're in a meeting where multiple people are talking over each other, voices are raised, and energy is high. You most likely:",
+          "options": [
+            { "letter": "A", "label": "Quietly take in all the information, process it, and then offer a carefully considered perspective once things calm down", "subtype": "deep_processor" },
+            { "letter": "B", "label": "Find yourself absorbing the tension in the room — the emotional atmosphere is affecting you whether you want it to or not", "subtype": "emotional_resonator" },
+            { "letter": "C", "label": "Feel physically overwhelmed — the noise, the competing stimuli, the speed of conversation is genuinely uncomfortable", "subtype": "sensory_awarer" },
+            { "letter": "D", "label": "Try to find a way to create order — you instinctively look for a quieter moment or a way to slow the pace down", "subtype": "environment_sensitive" }
+          ]
+        },
+        {
+          "id": 10,
+          "text": "You walk into a beautifully designed space — a gallery, a restaurant, a garden. What catches your attention first?",
+          "options": [
+            { "letter": "A", "label": "The concept and meaning — you want to understand what the designer was trying to convey", "subtype": "deep_processor" },
+            { "letter": "B", "label": "The emotional quality of the space — you sense whether it feels warm, cold, inviting, or austere almost immediately", "subtype": "emotional_resonator" },
+            { "letter": "C", "label": "The sensory details — the quality of light, the textures, the colours, the temperature, the soundscape", "subtype": "sensory_awarer" },
+            { "letter": "D", "label": "Whether it feels comfortable and calming — you immediately notice if it feels like a place you could relax in", "subtype": "environment_sensitive" }
+          ]
+        },
+        {
+          "id": 11,
+          "text": "You need to give a presentation or speak in front of a group. What is your biggest internal experience?",
+          "options": [
+            { "letter": "A", "label": "You prepare extensively — you think through every possible question, every angle, and rehearse deeply because depth of preparation calms you", "subtype": "deep_processor" },
+            { "letter": "B", "label": "You feel the weight of the room's attention and are acutely aware of how your words are landing emotionally", "subtype": "emotional_resonator" },
+            { "letter": "C", "label": "You notice every external factor — the lighting, the temperature, whether people can hear you clearly, the feel of the chair", "subtype": "sensory_awarer" },
+            { "letter": "D", "label": "You need significant time to mentally recover afterwards — public performance takes a real toll on your energy", "subtype": "environment_sensitive" }
+          ]
+        },
+        {
+          "id": 12,
+          "text": "It's a regular weekend. You've had a full week of work and social commitments. What do you most need to recharge?",
+          "options": [
+            { "letter": "A", "label": "Genuine solitude — real, uninterrupted time alone with your own thoughts is non-negotiable", "subtype": "deep_processor" },
+            { "letter": "B", "label": "Quiet emotional connection — one meaningful conversation or time with one trusted person restores you", "subtype": "emotional_resonator" },
+            { "letter": "C", "label": "A calm, pleasant physical environment — soft lighting, natural spaces, pleasant sounds, comfortable textures", "subtype": "sensory_awarer" },
+            { "letter": "D", "label": "Distance from demands and expectations — space where no one needs anything from you", "subtype": "environment_sensitive" }
+          ]
+        }
+      ],
+      "scoring": {
+        "method": "dominant-subtype",
+        "subtypeMapping": { "A": "deep_processor", "B": "emotional_resonator", "C": "sensory_awarer", "D": "environment_sensitive" },
+        "resultRules": {
+          "singleDominant": "Return the dominant subtype as primary result.",
+          "tieBreak": "If two subtypes tie at the top, return a Combined Type with both in descending order by count. Combined format: 'Primary · Secondary'.",
+          "fullTie": "If all four subtypes are equally distributed, return 'Full-Spectrum HSP' combining all four profiles."
+        }
       },
-      {
-        text: "You have an important decision to make — whether to take a new job in a different city. You typically:",
-        options: [
-          { letter: 'A', text: "Need significant time alone to weigh all the options, consider every angle, and sit with the decision before feeling ready" },
-          { letter: 'B', text: "Consider how this change affects the people around you — your partner, your family, your friends — deeply" },
-          { letter: 'C', text: "Immediately notice the sensory implications — the new commute, the office environment, the quality of light in a new apartment" },
-          { letter: 'D', text: "Feel the emotional weight of leaving your current community and wonder how the environment shift will affect your wellbeing" }
-        ]
-      },
-      {
-        text: "You walk into a workspace — a bright, open-plan office with fluorescent lights, hard surfaces, and background music playing. Your first instinct is:",
-        options: [
-          { letter: 'A', text: "To assess the room intellectually — you take in the full picture and start forming impressions" },
-          { letter: 'B', text: "To absorb the emotional atmosphere — you can sense the mood of the people in the room before anyone speaks" },
-          { letter: 'C', text: "To feel your body react — the glare of the lights, the echo of footsteps, and the volume of the music register immediately" },
-          { letter: 'D', text: "To feel slightly overwhelmed and start scanning for a quieter corner or a way to make the space more comfortable" }
-        ]
-      },
-      {
-        text: "You're watching the news and a story comes on about a natural disaster affecting many people. You most likely:",
-        options: [
-          { letter: 'A', text: "Feel a deep need to understand the full picture — you want all the facts, context, and implications before reacting" },
-          { letter: 'B', text: "Feel overwhelmed by the suffering — the emotional weight of it stays with you long after you've turned off the screen" },
-          { letter: 'C', text: "Are affected by the sensory intensity of the coverage — the sounds, the images, the urgency in the reporter's voice hit hard" },
-          { letter: 'D', text: "Want to do something — anything — to help; you feel the urge to take practical action rather than sit with the feeling" }
-        ]
-      },
-      {
-        text: "At a creative project — a work assignment, an artistic endeavour, or a personal craft — you most naturally shine when:",
-        options: [
-          { letter: 'A', text: "You have time to go deep — you produce your best work when you can explore it thoroughly without pressure" },
-          { letter: 'B', text: "You're able to bring emotional depth and nuance — your work is often described as moving, perceptive, or emotionally rich" },
-          { letter: 'C', text: "The details matter — you notice things others miss, catch errors, spot inconsistencies, and bring precision" },
-          { letter: 'D', text: "The environment supports your process — you need the right conditions (quiet, comfort, low interruption) to do your best thinking" }
-        ]
-      },
-      {
-        text: "You're planning a vacation. What matters most to you?",
-        options: [
-          { letter: 'A', text: "Having enough time to fully experience the destination — you don't want to rush from place to place" },
-          { letter: 'B', text: "The emotional quality of the experience — you want to feel something real, not just see things" },
-          { letter: 'C', text: "Knowing what you're walking into — you research extensively so nothing catches you off guard" },
-          { letter: 'D', text: "Physical comfort and sensory environment — a noisy hostel would undermine the whole trip for you" }
-        ]
-      },
-      {
-        text: "Someone close to you criticises your work or an important project you've done. Your first reaction is usually:",
-        options: [
-          { letter: 'A', text: "To turn inward and ruminate — you replay the criticism repeatedly, processing it deeply before you know how you feel" },
-          { letter: 'B', text: "To feel it emotionally first — the hurt is real and immediate, even if you don't show it externally" },
-          { letter: 'C', text: "To notice how the environment seems to shift — suddenly the room feels colder, the atmosphere heavier" },
-          { letter: 'D', text: "To want to withdraw and recover somewhere quiet before you can think about what was said" }
-        ]
-      },
-      {
-        text: "You're in a meeting where multiple people are talking over each other, voices are raised, and energy is high. You most likely:",
-        options: [
-          { letter: 'A', text: "Quietly take in all the information, process it, and then offer a carefully considered perspective once things calm down" },
-          { letter: 'B', text: "Find yourself absorbing the tension in the room — the emotional atmosphere is affecting you whether you want it to or not" },
-          { letter: 'C', text: "Feel physically overwhelmed — the noise, the competing stimuli, the speed of conversation is genuinely uncomfortable" },
-          { letter: 'D', text: "Try to find a way to create order — you instinctively look for a quieter moment or a way to slow the pace down" }
-        ]
-      },
-      {
-        text: "You walk into a beautifully designed space — a gallery, a restaurant, a garden. What catches your attention first?",
-        options: [
-          { letter: 'A', text: "The concept and meaning — you want to understand what the designer was trying to convey" },
-          { letter: 'B', text: "The emotional quality of the space — you sense whether it feels warm, cold, inviting, or austere almost immediately" },
-          { letter: 'C', text: "The sensory details — the quality of light, the textures, the colours, the temperature, the soundscape" },
-          { letter: 'D', text: "Whether it feels comfortable and calming — you immediately notice if it feels like a place you could relax in" }
-        ]
-      },
-      {
-        text: "You need to give a presentation or speak in front of a group. What is your biggest internal experience?",
-        options: [
-          { letter: 'A', text: "You prepare extensively — you think through every possible question, every angle, and rehearse deeply because depth of preparation calms you" },
-          { letter: 'B', text: "You feel the weight of the room's attention and are acutely aware of how your words are landing emotionally" },
-          { letter: 'C', text: "You notice every external factor — the lighting, the temperature, whether people can hear you clearly, the feel of the chair" },
-          { letter: 'D', text: "You need significant time to mentally recover afterwards — public performance takes a real toll on your energy" }
-        ]
-      },
-      {
-        text: "It's a regular weekend. You've had a full week of work and social commitments. What do you most need to recharge?",
-        options: [
-          { letter: 'A', text: "Genuine solitude — real, uninterrupted time alone with your own thoughts is non-negotiable" },
-          { letter: 'B', text: "Quiet emotional connection — one meaningful conversation or time with one trusted person restores you" },
-          { letter: 'C', text: "A calm, pleasant physical environment — soft lighting, natural spaces, pleasant sounds, comfortable textures" },
-          { letter: 'D', text: "Distance from demands and expectations — space where no one needs anything from you" }
-        ]
-      }
-    ];
-
-    // ===== SUBTYPE PROFILES =====
-    const SUBTYPES = {
-      'A': {
-        id: 'deep-processor',
-        name: 'The Deep Processor',
-        tagline: 'You turn the world over in your mind like a gem held up to the light — and you will not stop until you understand it.',
-        traits: [
-          'Exceptional analytical ability — you see patterns, inconsistencies, and implications others genuinely cannot see',
-          'High accuracy in judgment — your decisions tend to be well-considered and hold up over time',
-          'Creative problem-solving — you hold multiple layers of a problem simultaneously and find hidden connections',
-          'Intellectual honesty — you are willing to sit with complexity and uncertainty rather than reach for comfortable oversimplifications'
-        ],
-        growth: 'Your growth edge is learning to trust that your conclusions will come — without forcing them. The depth is your gift; the challenge is knowing when enough processing is enough.',
-        actions: [
-          'Schedule 20–30 minutes of decision-free processing time each day — journal to externalise looping thoughts before they loop',
-          'Use a written decision framework for high-stakes choices — pros/cons weighted by your values creates a boundary around your natural depth',
-          'Protect 60–90 minutes of uninterrupted deep work several times a week — treat it as non-negotiable, not a luxury'
-        ],
-        description: 'You process the world thoroughly — and we mean thoroughly. Where others might form a quick opinion or make a snap decision, you turn information over in your mind like a gem held up to the light, examining every facet before you truly know how you feel. Deep Processors are characterised by a high degree of cognitive elaboration. You may have been told you overthink or take too long to decide. What is actually happening is that your nervous system is doing exactly what it was designed to do: process sensory and emotional information at a deeper level than average.',
-        strengths: [
-          'Exceptional analytical ability — patterns and implications others miss',
-          'Creative and holistic problem-solving',
-          'Thorough, reliable work that holds up over time',
-          'Intellectual honesty and tolerance for complexity'
-        ],
-        challenges: [
-          'Decision paralysis under high stakes',
-          'Rumination — looping through the same material compulsively',
-          'Exhaustion from information overload',
-          'Feeling misunderstood when others rush you'
-        ],
-        resources: '• The Highly Sensitive Person — Dr. Elaine Aron (Ch. 7 on "slow and deep"; Ch. 12 on overstimulation)\n• Thinking, Fast and Slow — Daniel Kahneman\n• Mindful awareness meditation to observe thoughts without being swept up in them'
-      },
-      'B': {
-        id: 'emotional-resonator',
-        name: 'The Emotional Resonator',
-        tagline: 'You feel things at full volume — and you have never known how to do it any other way.',
-        traits: [
-          'Exceptional empathy — you understand another person\'s inner life with a depth and accuracy that is genuinely rare',
-          'High emotional intelligence — you have rich access to your own emotional landscape',
-          'Deep relational bonds — people feel genuinely held by you in a way that creates lasting loyalty and trust',
-          'Creative expression — emotional depth is the raw material of art, music, writing, and anything that moves others'
-        ],
-        growth: 'Your growth edge is learning to distinguish your own emotional landscape from the ones you absorb from others. Emotional resonance without boundaries leads to burnout — but with the right skills, your empathy becomes your greatest asset rather than your deepest vulnerability.',
-        actions: [
-          'Develop an evening "emotional check-in ritual" — ask: "What am I feeling, and is this mine?" Journal to distinguish what belongs to you versus what you\'ve taken in',
-          'Create a 15-minute "energy reset" after emotionally demanding interactions before moving to the next thing — a walk alone, a specific playlist, or quiet solitude',
-          'Choose high-quality connection over high-quantity — one meaningful conversation restores you more than five surface-level ones'
-        ],
-        description: 'You feel things — and you feel them at full volume. Emotional Resonators are the HSP subtype most visibly connected to the feeling lives of the people around them. Where others might register that a friend is upset, you don\'t just know it — you experience it as if it were happening to you. This is called emotional contagion, and research suggests it is genuinely neurological: your mirror neuron system and empathic brain pathways are unusually responsive.',
-        strengths: [
-          'Extraordinary empathy and emotional attunement',
-          'Rich emotional literacy and inner life',
-          'Deep relational bonds that create lasting loyalty',
-          'Creative expression informed by profound emotional perception'
-        ],
-        challenges: [
-          'Emotional contagion — absorbing others\' emotions without realising it',
-          'Difficulty setting boundaries around care',
-          'Feeling responsible for others\' emotional states',
-          'Overwhelm in high-emotion environments'
-        ],
-        resources: '• The Highly Sensitive Person — Dr. Elaine Aron (chapters on emotionally reactive dimension and relationships)\n• The Empath\'s Survival Guide — Judith Orloff\n• Internal Family Systems (IFS) therapy or parts-work\n• Grounding techniques (5-4-3-2-1 sensory grounding)'
-      },
-      'C': {
-        id: 'sensory-awarer',
-        name: 'The Sensory Awarer',
-        tagline: 'The world arrives at your nervous system in high resolution — and there is nothing wrong with you for noticing what others miss.',
-        traits: [
-          'Exceptional attention to detail — you notice what others miss in textures, sounds, colours, and small quality markers',
-          'Aesthetic sensitivity — your physical world is experienced more vividly, translating to refined taste and appreciation for beauty',
-          'Accurate assessment of environments — you can sense when a space is unsafe, unhealthy, or off in ways others rationalise away',
-          'Rich sensory experience — you feel pleasure, beauty, and comfort more intensely because your sensory system is not dulled'
-        ],
-        growth: 'Your growth edge is accepting that your physical sensory needs are real, not fussy. The accumulation effect — not one big thing, but the gradual build-up of small sensory inputs — is your greatest challenge. Learning to track and manage your sensory load proactively changes everything.',
-        actions: [
-          'Build a sensory toolkit for high-stimulus situations — high-fidelity earplugs, an eye mask, a comfort item, and a small flashlight to control your immediate environment',
-          'Designate at least one low-stimulus anchor space at home — warm lamp light, soft textures, no synthetic fragrances — as your non-negotiable recharge zone',
-          'Track your sensory load across the day intentionally — if you know a noisy morning plus a social evening will push you past your threshold, schedule a 20-minute quiet reset between them'
-        ],
-        description: 'The world arrives at your nervous system in high resolution. Sensory Awares are the HSP subtype whose sensitivity manifests most acutely in the physical sensory register. You don\'t just notice that a room is bright — you feel the fluorescent glare as a physical sensation. You don\'t just hear music — certain frequencies, timbres, or volumes register in your body as discomfort or pleasure. You are exquisitely attuned to texture, smell, temperature, and the physical quality of the spaces and objects around you.',
-        strengths: [
-          'Exceptional attention to detail and quality',
-          'Refined aesthetic sensibility and appreciation for beauty',
-          'An accurate early-warning system for environmental discomfort',
-          'Intensely rich sensory experience of pleasure and beauty'
-        ],
-        challenges: [
-          'Physical overwhelm in high-stimulus environments',
-          'Clothing, textile, and food sensitivities that are hard to explain',
-          'The accumulation effect — small inputs build until you hit a wall',
-          'Being perceived as "difficult" or "fussy" by others'
-        ],
-        resources: '• The Highly Sensitive Person — Dr. Elaine Aron (chapters on physical sensitivity and environment)\n• High-fidelity earplugs (Etymotic ER-20 or Loop) — reduce volume without distorting sound quality\n• Sensory-based mindfulness practice\n• Online communities for SPS — sharing specific adaptation strategies is practical gold'
-      },
-      'D': {
-        id: 'environment-sensitive',
-        name: 'The Environment Sensitive',
-        tagline: 'Your surroundings are not a backdrop to your life — they are part of your life, shaping everything you feel and do.',
-        traits: [
-          'Exceptional environmental literacy — you can read a space or social context with accuracy that others cannot',
-          'Natural design intuition — your attunement to how spaces affect people makes you a natural at interior design, space planning, and event curation',
-          'Social intelligence — you read group dynamics, power structures, and relational undercurrents that most people are oblivious to',
-          'Holistic thinking — you naturally think in systems, connecting how environments shape moods, people, and experiences'
-        ],
-        growth: 'Your growth edge is accepting that your need for particular environmental conditions is not rigidity — it is self-knowledge. The world will not always accommodate you, but learning to advocate for your needs clearly and without apology is a skill that compounds across every area of your life.',
-        actions: [
-          'Conduct an honest environmental audit — rate your home, workplace, and frequent social settings from 1–10 on how genuinely supportive they are. Change what you can; plan recovery around what you cannot',
-          'Design micro-environments within larger environments you cannot control — a warm lamp instead of overhead lights, a specific chair, a plant, a pair of noise-cancelling headphones',
-          'Plan recovery time proportional to environmental demand — after a demanding week, schedule a full day (or weekend) in your most restorative environment. This is maintenance, not indulgence'
-        ],
-        description: 'Your surroundings are not a backdrop to your life — they are part of your life. Environment Sensitives are the HSP subtype for whom the physical, social, and energetic environment is not neutral. You feel the atmosphere of a room the moment you walk into it. You pick up on the unspoken relational dynamics in a group — who holds power, who\'s uncomfortable, who\'s genuinely engaged. This goes beyond physical sensory sensitivity: Environment Sensitivity encompasses the way spaces, environments, and social contexts shape your mood, energy, cognition, and wellbeing.',
-        strengths: [
-          'Exceptional ability to read and assess environments',
-          'Natural intuition for design and how spaces shape people',
-          'Strong social navigation skills through reading group dynamics',
-          'Holistic, systems-based thinking'
-        ],
-        challenges: [
-          'Deep, sustained fatigue in unsupportive environments',
-          'Difficulty relocating or entering new environments without destabilisation',
-          'Being perceived as demanding or inflexible when advocating for needs',
-          'Energetic sensitivity beyond physical environments'
-        ],
-        resources: '• The Highly Sensitive Person — Dr. Elaine Aron (chapters on environment and overstimulation)\n• Your Brain on Nature — Eva M. Selhub & Alan C. Logan\n• Feng shui and environmental psychology principles\n• Biophilic design elements — natural materials, plants, natural light, water features'
+      "subtypes": [
+        {
+          "id": "deep_processor",
+          "name": "The Deep Processor",
+          "superPower": "The thinker of the HSP world. Your super-power is depth.",
+          "description": "You are someone who processes the world thoroughly — and we mean *thoroughly*. Where others might form a quick opinion or make a snap decision, you turn information over in your mind like a gem held up to the light, examining every facet before you know how you truly feel about it.\n\nDeep Processors are characterised by a high degree of cognitive elaboration. You don't just notice something — you think *about* it, *with* it, and *through* it. This means your responses are often delayed not because you're uncertain, but because genuine understanding takes time.\n\nYou may have been told you're overthinking, that you analyse too much, or that you take too long to decide. What's actually happening is that your nervous system is doing exactly what it was designed to do: process sensory and emotional information at a deeper level than average. This is not a weakness. It is the trait that produced careful scientists, thoughtful leaders, meticulous craftspeople, and deep philosophers throughout history.",
+          "strengths": [
+            "Exceptional analytical ability — you see patterns, inconsistencies, and implications that others genuinely cannot see",
+            "High accuracy in judgment — your decisions tend to be well-considered and hold up over time",
+            "Creative problem-solving — you can hold multiple layers of a problem in mind simultaneously",
+            "Thoroughness — you are the person whose work others trust because you've caught what others missed",
+            "Intellectual honesty — you are willing to sit with complexity and uncertainty rather than reaching for comfortable oversimplifications"
+          ],
+          "challenges": [
+            "Decision paralysis — when the stakes are high, the depth of your processing can become a source of delay and anxiety",
+            "Rumination — processing deeply is adaptive; replaying the same material compulsively is not",
+            "Feeling misunderstood — being told to 'just decide already' can be deeply invalidating",
+            "Exhaustion from information overload — news, social media, complex social situations can overwhelm your deep processing system",
+            "Difficulty under pressure — fast-paced environments that demand quick decisions can make your depth feel like a liability"
+          ],
+          "thrivingStrategies": [
+            { "title": "Schedule decision-free processing time", "description": "Set aside 20–30 minutes each morning or evening specifically for thinking through open questions — without judgment, without forcing conclusions. Journaling during this time can help externalise the processing so it doesn't loop internally." },
+            { "title": "Use structured decision frameworks", "description": "When a major decision feels stuck, apply a written framework (pros/cons weighted by values, scenario planning, 'deadline testing') to create a boundary around your natural depth without it becoming infinite." },
+            { "title": "Curate your information environment", "description": "Limit high-volume news consumption and social media scrolling — both overwhelm the deep processor. Set specific times for information intake rather than allowing continuous streams." },
+            { "title": "Communicate your process to others", "description": "When someone asks 'what do you think?' and you're not ready, a simple 'I'm still processing this — I'll have something thoughtful for you by [specific time]' is both honest and sets a boundary." },
+            { "title": "Protect long-form thinking time", "description": "Block 60–90 minutes several times a week for uninterrupted, cognitively demanding work. Treat this as a non-negotiable — not a luxury. This is where your best thinking happens." }
+          ],
+          "resources": [
+            { "type": "book", "title": "The Highly Sensitive Person", "author": "Dr. Elaine Aron", "note": "Chapter 7 (on the 'slow and deep' processing style) and Chapter 12 (on overstimulation)" },
+            { "type": "book", "title": "Thinking, Fast and Slow", "author": "Daniel Kahneman", "note": "Understanding the dual-process model helps you appreciate why your 'slow thinking' is valuable, not deficient" },
+            { "type": "practice", "title": "Mindful awareness meditation", "author": null, "note": "Builds the capacity to observe your thoughts without being swept up in them, reducing rumination without suppressing natural processing depth" },
+            { "type": "community", "title": "HSP coaching circles and Deep Processors communities", "author": null, "note": "Finding others who share your cognitive style reduces the self-doubt that often accompanies being told you 'think too much'" }
+          ]
+        },
+        {
+          "id": "emotional_resonator",
+          "name": "The Emotional Resonator",
+          "superPower": "The empath of the HSP world. Your super-power is emotional depth.",
+          "description": "You feel things — and you feel them at full volume.\n\nEmotional Resonators are the HSP subtype most visibly connected to the feeling lives of the people around them. Where others might register that a friend is upset, you don't just know it — you *experience* it as if it were happening to you. This is called **emotional contagion**, and research suggests it is genuinely neurological: your mirror neuron system and empathic brain pathways are unusually responsive.\n\nDr. Elaine Aron refers to this as the 'emotional reactive' dimension of SPS. It is the trait that makes you an extraordinary friend, a perceptive partner, a gifted healer, therapist, or teacher. You pick up on the emotional subtext that most people miss entirely.\n\nThe challenge — and it is a genuine challenge — is that emotional resonance without boundaries can lead to overwhelm, burnout, and a loss of your own emotional centre. Learning to distinguish someone else's grief from your own inner life is one of the most important skills you can develop as an Emotional Resonator.",
+          "strengths": [
+            "Exceptional empathy — you are able to understand another person's inner life with a depth and accuracy that is genuinely rare",
+            "High emotional intelligence — you have rich access to your own emotional landscape, giving you sophisticated emotional literacy",
+            "Perceptiveness — you notice shifts in mood, unspoken feelings, and relational dynamics that others are oblivious to",
+            "Deep relational bonds — people feel genuinely held by you, creating lasting loyalty and trust",
+            "Creative expression — emotional depth is the raw material of art, music, writing, and any creative endeavour that moves others"
+          ],
+          "challenges": [
+            "Emotional contagion — absorbing others' emotions without realising it, then experiencing them as your own, is disorienting and exhausting",
+            "Setting boundaries around care — the impulse to help, fix, or absorb others' pain can override your own needs",
+            "Feeling responsible for others' emotions — you may have grown up feeling that it was your job to manage the emotional weather in your family",
+            "Overwhelm in high-emotion environments — crowds, conflict, grief, excitement — strong emotional energy from others can leave you depleted",
+            "Difficulty knowing your own feelings apart from others — when you've been absorbing all day, it can be hard to identify what *you* feel"
+          ],
+          "thrivingStrategies": [
+            { "title": "Develop an emotional 'check-in ritual'", "description": "At the end of each day, pause and ask: 'What am I feeling — and is this mine?' This sounds simple but is transformative for Emotional Resonators. Journaling can help distinguish what belongs to you versus what you've taken in." },
+            { "title": "Create an 'energy reset' practice", "description": "After emotionally demanding interactions, build in a 15-minute solo decompression ritual before moving to the next thing — a walk alone, a specific playlist, or sitting in a quiet room with no input." },
+            { "title": "Learn the language of boundary in empathy", "description": "Phrases like 'I hear that you're going through something really hard, and I want to be there for you — but I also need to protect my own energy right now' are not selfish. They are sustainable caring." },
+            { "title": "Choose high-quality connection over high-quantity", "description": "Your depth of relating means one meaningful conversation restores you more than five surface-level ones. Protect the quality of your relationships by being selective and intentional." },
+            { "title": "Channel emotional resonance into creation", "description": "Notice what you are naturally drawn to create versus absorb. Channel your emotional sensitivity into creative work, reflective writing, music, or art — this converts emotional resonance from a source of drain into a source of fuel." }
+          ],
+          "resources": [
+            { "type": "book", "title": "The Highly Sensitive Person", "author": "Dr. Elaine Aron", "note": "Chapters on the 'emotionally reactive' dimension and on relationships" },
+            { "type": "book", "title": "The Empath's Survival Guide", "author": "Judith Orloff", "note": "A practical, non-pathologising guide specifically for people who feel deeply and absorb emotional energy" },
+            { "type": "practice", "title": "Internal Family Systems (IFS) therapy / parts-work", "author": null, "note": "Particularly helpful for distinguishing your 'Self' from absorbed emotional content" },
+            { "type": "practice", "title": "5-4-3-2-1 grounding technique", "author": null, "note": "Physically returns you to your own body when you've been 'gone' into someone else's emotional experience" },
+            { "type": "community", "title": "HSP support groups for caregivers, healers, and helping professionals", "author": null, "note": "Burnout prevention is critical for this subtype — your type is heavily represented in the helping professions" }
+          ]
+        },
+        {
+          "id": "sensory_awarer",
+          "name": "The Sensory Aware",
+          "superPower": "The sensory oracle of the HSP world. Your super-power is physical perception.",
+          "description": "The world arrives at your nervous system in high resolution.\n\nSensory Awares are the HSP subtype whose sensitivity manifests most acutely in the physical sensory register. You don't just notice that a room is bright — you feel the fluorescent glare as a physical sensation. You don't just hear music — certain frequencies, timbres, or volumes register in your body as discomfort or pleasure. You are exquisitely attuned to texture, smell, temperature, and the physical quality of the spaces and objects around you.\n\nThis is consistent with the 'sensory sensitivity' subscale in Aron's HSP research: the dimension of SPS that relates to sensitivity to external stimuli — noise, light, touch, smell, and taste. For Sensory Awares, these inputs don't pass through unnoticed. They land, register, and accumulate.\n\nResearch using fMRI has confirmed that the brains of highly sensitive individuals show greater activation in response to sensory stimuli — not because they are 'more sensitive' in a metaphorical sense, but because their neurology is genuinely wired to process physical sensory data more deeply.",
+          "strengths": [
+            "Exceptional attention to detail — you notice what others miss: inconsistencies in textures, subtle colour variations, small details that define quality",
+            "Aesthetic sensitivity — your physical world is experienced more vividly, often translating to a refined aesthetic sensibility and appreciation for beauty and craftsmanship",
+            "Accurate assessment of environments — you can sense when a space is unsafe, unhealthy, or off in ways that others rationalise away. Your body is an instrument.",
+            "Rich sensory experience — pleasure, beauty, and comfort are experienced more intensely because your sensory system is not dulled",
+            "Early warning system — your body registers discomfort and danger signals that others may not consciously process until later"
+          ],
+          "challenges": [
+            "Physical overwhelm — high-stimulus environments can produce genuine physical symptoms: headaches, nausea, fatigue, muscle tension, sensory 'burnout'",
+            "Clothing and textile sensitivity — many Sensory Awares have strong preferences or aversions around fabrics, seams, tags, and fit",
+            "Food and scent sensitivity — strong or synthetic smells, highly processed foods, and certain flavour profiles can be not just unpleasant but overwhelming",
+            "Being perceived as 'difficult' or 'fussy' — the effort to manage your sensory environment can be invisible to others",
+            "Accumulation effect — it's not always one big thing that overwhelms; it's the accumulation of small sensory inputs over the course of a day"
+          ],
+          "thrivingStrategies": [
+            { "title": "Build a sensory toolkit for high-stimulus situations", "description": "Carry earplugs (high-fidelity concert earplugs such as Etymotic ER-20 or Loop earplugs), a small flashlight, an eye mask, and a comfort item. These are not crutches — they are your equaliser." },
+            { "title": "Create a low-stimulus anchor space at home", "description": "Designate at least one room or corner as your sensory sanctuary: natural light or warm lamp light, soft textures, no synthetic fragrances, controlled temperature. This is where you recharge after sensory overwhelm." },
+            { "title": "Audit your textiles and clothing proactively", "description": "Before purchasing clothing, test how seams, tags, and fabrics feel against your skin. Build a wardrobe of comfortable, sensory-friendly clothing. For a Sensory Aware, physical comfort is a prerequisite for mental wellbeing." },
+            { "title": "Manage the accumulation effect intentionally", "description": "Track your sensory load across the day rather than letting it accumulate invisibly. If a noisy morning followed by a social evening will push you past your threshold, schedule a 20-minute quiet reset between the two." },
+            { "title": "Communicate sensory needs practically, not apologetically", "description": "'I find loud environments physically uncomfortable — I'd love to join you but I'll need to step out for air' is a complete sentence. You don't need to justify or minimise your sensory needs to make them legitimate." }
+          ],
+          "resources": [
+            { "type": "book", "title": "The Highly Sensitive Person", "author": "Dr. Elaine Aron", "note": "Chapters on physical sensitivity and the environment" },
+            { "type": "product", "title": "High-fidelity earplugs (Etymotic ER-20 or Loop)", "author": null, "note": "These reduce volume without distorting sound quality, allowing you to stay in social and professional situations longer" },
+            { "type": "practice", "title": "Sensory-based mindfulness", "author": null, "note": "Specifically paying attention to what you can perceive through your senses right now, without judgment. Trains your already-active sensory system to be a source of information rather than overwhelm." },
+            { "type": "research", "title": "Sensory Processing Sensitivity and Physical Symptoms research literature", "author": null, "note": "Validating your experience with data can be powerfully grounding when others dismiss your sensory needs as 'picky'" },
+            { "type": "community", "title": "Online communities for Sensory Processing Sensitivity", "author": null, "note": "Sharing specific adaptation strategies — which restaurants have good lighting, which airlines have tolerable cabin pressure — is practical gold" }
+          ]
+        },
+        {
+          "id": "environment_sensitive",
+          "name": "The Environment Sensitive",
+          "superPower": "The environmental architect of the HSP world. Your super-power is environmental attunement.",
+          "description": "Your surroundings are not a backdrop to your life — they are part of your life.\n\nEnvironment Sensitives are the HSP subtype for whom the physical, social, and energetic environment is not neutral. You feel the atmosphere of a room the moment you walk into it. You pick up on the unspoken relational dynamics in a group — who holds power, who's uncomfortable, who's genuinely engaged. You are exquisitely attuned to the energetic quality of spaces, workplaces, homes, and social settings.\n\nThis goes beyond physical sensory sensitivity (though it may overlap with it). Environment Sensitivity encompasses the way spaces, environments, and social contexts shape your mood, energy, cognition, and wellbeing. You may have noticed that certain neighbourhoods, offices, or even cities feel fundamentally sustaining or depleting — not because of rational assessments but because your nervous system reads environments at a level most people don't access.\n\nDr. Elaine Aron's research identifies 'ease of excitation' as a core dimension of SPS: the tendency for multiple stimuli to produce disproportionate effects in HSP individuals. For Environment Sensitives, the environment is never 'just' an environment — it is a context that significantly influences your internal state.",
+          "strengths": [
+            "Exceptional environmental literacy — you can read a space or social context with accuracy that others cannot",
+            "Natural design intuition — your attunement to how spaces affect people makes you a natural at interior design, space planning, event curation, and workplace design",
+            "Social intelligence — you read group dynamics, power structures, and relational undercurrents that most people are oblivious to",
+            "Boundary intuition — you know when an environment is pushing you past your limits — often before you're consciously aware of it",
+            "Holistic thinking — you naturally think in systems, which is increasingly valuable in design, leadership, and community-building"
+          ],
+          "challenges": [
+            "Environmental overwhelm — open offices, chaotic homes, high-energy social settings can produce deep, sustained fatigue that takes real time to recover from",
+            "Difficulty in unsupportive environments — a bad fit between you and your environment affects your functioning in ways that are hard to explain to others",
+            "Being perceived as demanding or inflexible — your need for particular environmental conditions can be seen as rigidity or excessive fussiness",
+            "Relocation difficulty — moving to a new city, starting a new job, or entering a new social environment is more destabilising for you because the environmental context takes time to calibrate",
+            "Energetic sensitivity — beyond physical environments, you may be sensitive to the emotional 'atmosphere' of places, which can be hard to articulate or control"
+          ],
+          "thrivingStrategies": [
+            { "title": "Conduct an honest environmental audit", "description": "Take a clear-eyed look at the environments you spend the most time in: your home, your workplace, your most frequent social settings. Rate each from 1–10 on how genuinely supportive it is. If your home is a 3 and your office is a 4, you now understand why you're exhausted. Change what you can; plan recovery around what you can't." },
+            { "title": "Design micro-environments intentionally", "description": "You may not control the open-plan office, but you can control your desk area: a plant, a warm lamp instead of overhead fluorescents, a small speaker for background noise you control. These micro-environments within larger environments are your adaptive tool." },
+            { "title": "Use transitions as environmental calibration moments", "description": "Coming home from work is not just a physical transition — it's an environmental one. Build a short transition ritual (changing clothes, a brief walk, a specific tea) to consciously mark the shift rather than letting your environment change without a psychological boundary." },
+            { "title": "Plan recovery time proportional to environmental demand", "description": "After a week in a demanding environment, plan a weekend (or at minimum a full day) in your most restorative environment. This is not indulgent — it is the maintenance that keeps you functional." },
+            { "title": "Seek environments where you can be generative, not just comfortable", "description": "The ideal environment for an Environment Sensitive is not merely low-stimulation — it's *affirming* — a space where your sensitivity is valued, your perceptions are respected, and your need for a certain quality of environment is understood." }
+          ],
+          "resources": [
+            { "type": "book", "title": "The Highly Sensitive Person", "author": "Dr. Elaine Aron", "note": "Chapters on the environment and on overstimulation" },
+            { "type": "book", "title": "Your Brain on Nature", "author": "Eva M. Selhub and Alan C. Logan", "note": "Research on how natural environments regulate the nervous system; particularly relevant for Environment Sensitives who find nature profoundly restorative" },
+            { "type": "practice", "title": "Feng shui and environmental psychology principles", "author": null, "note": "Applying an intentional, systems-based approach to how spaces affect mood and energy can transform your home environment from depleting to supportive" },
+            { "type": "practice", "title": "Biophilic design elements", "author": null, "note": "Incorporating natural materials, plants, natural light, water features, and organic shapes into your living and working spaces is not aesthetic preference — it is nervous system support" },
+            { "type": "community", "title": "HSP communities and forums", "author": null, "note": "Finding environments (including social environments) where being HSP is normalised and valued is one of the most powerful things you can do for long-term wellbeing" }
+          ]
+        }
+      ],
+      "outro": {
+        "title": "Your HSP Navigator Results",
+        "subtitle": "What you've just completed is not a test with a pass or fail. It's a mirror — and what it reflects is the particular shape of your sensitivity.",
+        "primaryResultLabel": "Your dominant sensitivity subtype is",
+        "combinedResultNote": "If your results showed a tie between two subtypes, you may be a Combined Type — someone who draws from multiple sensitivity patterns. These combinations are common and reflect the richness of the HSP experience.",
+        "fullTieNote": "If all four subtypes were equally distributed in your responses, you may be what we call a 'Full-Spectrum HSP' — someone who experiences all four dimensions of sensitivity strongly.",
+        "aNoteOnSubtypes": "Subtypes are a useful framework, not a perfect box. You may read your primary subtype and feel that it fits you like a glove — or you may find that another subtype resonates equally. Both are valid. Sensitivity exists on a spectrum, and most people draw from multiple subtypes.",
+        "thrivingSection": {
+          "title": "Your Thriving Is Not Optional",
+          "body": "One of the most important things the HSP research confirms is that **highly sensitive people can thrive** — not just cope, not just survive, but genuinely thrive. But thriving as an HSP requires something that non-HSP individuals often don't need as urgently: **intentional environment design, boundary maintenance, and self-knowledge.**\n\nYour subtype profile is a map. Where you go with it is up to you."
+        },
+        "closingStatement": "Sensitivity is not your flaw. It is your inheritance. The world needs the depth you bring to it — your careful thinking, your emotional attunement, your sensory perception, your environmental awareness. These are not liabilities in an overstimulating world. They are navigational tools for building a life that actually fits you.\n\n*You are not broken. You are finely made.*\n\n**Welcome to understanding yourself. Now go live it.**",
+        "footer": "This quiz is based on the work of Dr. Elaine Aron and the Sensory Processing Sensitivity research community. It is intended for self-discovery and personal development, not clinical diagnosis. If you're experiencing persistent distress, anxiety, or depression, please consult a qualified mental health professional."
       }
     };
 
-    // Subtype for combined/tie results
-    const SUBTYPE_KEYS = ['A', 'B', 'C', 'D'];
-    const SUBTYPE_NAMES = {
-      'A': 'Deep Processor',
-      'B': 'Emotional Resonator',
-      'C': 'Sensory Awarer',
-      'D': 'Environment Sensitive'
-    };
-
-    // ===== STATE =====
-    let state = {
+    // ============================================
+    // STATE
+    // ============================================
+    const state = {
+      currentScreen: 'intro',
       currentQuestion: 0,
-      answers: new Array(12).fill(null), // null or 'A'/'B'/'C'/'D'
-      resultType: null,   // 'A','B','C','D' or 'AB','AC',etc.
-      resultSecondary: null,
-      showingFullProfile: false
+      answers: [],
+      result: null
     };
 
-    // ===== DOM REFS =====
-    const $ = id => document.getElementById(id);
+    // ============================================
+    // DOM REFS
+    // ============================================
     const screens = {
-      intro: $('screen-intro'),
-      disclaimer: $('screen-disclaimer'),
-      question: $('screen-question'),
-      calculating: $('screen-calculating'),
-      results: $('screen-results'),
-      fullProfile: $('screen-full-profile')
+      intro: document.getElementById('screen-intro'),
+      disclaimer: document.getElementById('screen-disclaimer'),
+      question: document.getElementById('screen-question'),
+      calculating: document.getElementById('screen-calculating'),
+      results: document.getElementById('screen-results'),
+      profile: document.getElementById('screen-profile')
     };
 
-    // ===== LOCALSTORAGE =====
-    const STORAGE_KEY = 'hsp-navigator-state';
-
-    function saveState() {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      } catch(e) {}
-    }
-
-    function loadState() {
-      try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          // Only restore if it makes sense
-          if (typeof parsed.currentQuestion === 'number' && Array.isArray(parsed.answers)) {
-            state = parsed;
-          }
-        }
-      } catch(e) {}
-    }
-
-    function clearState() {
-      try {
-        localStorage.removeItem(STORAGE_KEY);
-      } catch(e) {}
-    }
-
-    // ===== SCREEN TRANSITIONS =====
-    function showScreen(name) {
-      const target = screens[name];
-      if (!target) return;
-
-      // Find active screen
+    // ============================================
+    // SCREEN TRANSITIONS
+    // ============================================
+    function showScreen(screenId) {
       Object.values(screens).forEach(s => {
-        if (s.classList.contains('is-active')) {
-          s.classList.remove('is-active');
-          s.classList.add('is-exiting');
-          setTimeout(() => s.classList.remove('is-exiting'), 500);
-        }
+        s.classList.remove('is-active');
+        s.setAttribute('aria-hidden', 'true');
       });
-
-      requestAnimationFrame(() => {
-        target.classList.add('is-active');
-        target.scrollTop = 0;
-
-        // Accessibility: focus first meaningful element
-        const focusTarget = target.querySelector('h1, h2, button:not([aria-hidden])') || target;
-        setTimeout(() => focusTarget.focus({ preventScroll: true }), 100);
-      });
+      screens[screenId].classList.add('is-active');
+      screens[screenId].setAttribute('aria-hidden', 'false');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      state.currentScreen = screenId;
     }
 
-    // ===== QUIZ LOGIC =====
-    function getSelectedOption() {
-      const radios = document.querySelectorAll('#options-list input[type="radio"]');
-      for (const r of radios) {
-        if (r.checked) return r.value;
+    // ============================================
+    // RENDER QUESTION
+    // ============================================
+    function renderQuestion() {
+      const q = QUIZ_DATA.questions[state.currentQuestion];
+      const qNum = state.currentQuestion + 1;
+      const total = QUIZ_DATA.questions.length;
+
+      document.getElementById('question-counter').textContent = `Question ${qNum} of ${total}`;
+
+      // Progress bar
+      const progressFill = document.getElementById('progress-fill');
+      progressFill.style.width = `${(qNum / total) * 100}%`;
+
+      document.getElementById('question-text').textContent = q.text;
+
+      const optionsList = document.getElementById('options-list');
+      optionsList.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const item = document.createElement('div');
+        item.className = 'option-item';
+
+        const radioId = `opt-${qNum}-${idx}`;
+        item.innerHTML = `
+          <input type="radio" name="answer" id="${radioId}" class="option-radio" value="${opt.letter}" data-subtype="${opt.subtype}">
+          <label for="${radioId}" class="option-label">
+            <span class="option-letter">${opt.letter}</span>
+            <span class="option-text">${opt.label}</span>
+          </label>
+        `;
+
+        optionsList.appendChild(item);
+      });
+
+      // Restore previous answer if any
+      const prevAnswer = state.answers[state.currentQuestion];
+      if (prevAnswer) {
+        const radio = optionsList.querySelector(`input[value="${prevAnswer}"]`);
+        if (radio) radio.checked = true;
+        updateNextButtonState();
       }
-      return null;
+
+      // Show/hide back button
+      const backBtn = document.getElementById('btn-back');
+      backBtn.style.display = state.currentQuestion > 0 ? 'inline-flex' : 'none';
     }
 
+    function updateNextButtonState() {
+      const nextBtn = document.getElementById('btn-next');
+      const hasAnswer = state.answers[state.currentQuestion] !== undefined;
+      nextBtn.classList.toggle('is-enabled', hasAnswer);
+    }
+
+    // ============================================
+    // SCORING
+    // ============================================
     function calculateResult() {
       const counts = { A: 0, B: 0, C: 0, D: 0 };
       state.answers.forEach(a => { if (a) counts[a]++; });
 
       const max = Math.max(...Object.values(counts));
-      const winners = Object.keys(counts).filter(k => counts[k] === max);
+      const dominant = Object.entries(counts).filter(([, v]) => v === max).map(([k]) => k);
 
-      if (winners.length === 1) {
-        return { primary: winners[0], secondary: null };
+      if (dominant.length === 4) {
+        // Full-spectrum — show combined all four
+        return { type: 'full_tie', letters: dominant, counts };
+      } else if (dominant.length === 2) {
+        // Tie-break: pick based on first appearance order of max values
+        // Since they're tied, return combined
+        return { type: 'combined', letters: dominant, counts };
+      } else {
+        return { type: 'single', letters: dominant, counts };
       }
+    }
 
-      // Return primary + secondary (for ties)
-      // Sort by count desc, then alphabetically for consistency
-      const sorted = Object.entries(counts).sort((a, b) => {
-        if (b[1] !== a[1]) return b[1] - a[1];
-        return a[0].localeCompare(b[0]);
+    function getResultSubtypes(result) {
+      const subtypeMap = { A: 'deep_processor', B: 'emotional_resonator', C: 'sensory_awarer', D: 'environment_sensitive' };
+      if (result.type === 'full_tie') {
+        return result.letters.map(l => subtypeMap[l]);
+      }
+      return result.letters.map(l => subtypeMap[l]);
+    }
+
+    function getResultName(result) {
+      const subtypes = getResultSubtypes(result);
+      if (result.type === 'full_tie') {
+        return 'Full-Spectrum HSP';
+      }
+      const names = subtypes.map(id => {
+        const s = QUIZ_DATA.subtypes.find(s => s.id === id);
+        return s ? s.name : id;
       });
-
-      if (sorted[0][1] === sorted[1][1]) {
-        return { primary: sorted[0][0], secondary: sorted[1][0] };
+      if (result.type === 'combined') {
+        return names.join(' · ');
       }
-      return { primary: sorted[0][0], secondary: null };
+      return names[0];
     }
 
-    function getResultProfile(primary, secondary) {
-      if (!secondary) {
-        return SUBTYPES[primary];
-      }
-      // Combined type
-      const p = SUBTYPES[primary];
-      const s = SUBTYPES[secondary];
-      return {
-        id: `${p.id}-${s.id}`,
-        name: `${p.name} · ${s.name}`,
-        tagline: `${p.tagline} ${s.tagline}`,
-        traits: [...p.traits.slice(0, 2), ...s.traits.slice(0, 2)],
-        growth: `As a ${p.name.replace('The ', '')} with ${s.name.replace('The ', '').toLowerCase()} traits, your growth edge is integrating both dimensions — finding environments, relationships, and practices that honour both your processing depth and your environmental or sensory needs.`,
-        actions: [
-          p.actions[0],
-          s.actions[1] || s.actions[0],
-          p.actions[2] || s.actions[2]
-        ],
-        description: `You are a combination type — showing traits of both ${p.name} and ${s.name}. This is more common than most people realise. Your sensitivity manifests across multiple dimensions, which means your path to thriving requires attention to more than one area. The good news: you have access to the strengths of both subtypes.`,
-        strengths: [...p.strengths.slice(0, 2), ...s.strengths.slice(0, 2)],
-        challenges: [...p.challenges.slice(0, 2), ...s.challenges.slice(0, 2)],
-        resources: `${p.resources}\n\n${s.resources}`
-      };
+    function getResultTag(result) {
+      if (result.type === 'full_tie') return 'All four sensitivity dimensions equally present';
+      if (result.type === 'combined') return 'Combined Type — drawing from multiple sensitivity patterns';
+      return QUIZ_DATA.outro.primaryResultLabel;
     }
 
+    function getResultDescription(result) {
+      const subtypes = getResultSubtypes(result);
+      if (result.type === 'full_tie') {
+        return "You score equally across all four HSP sensitivity dimensions. You may experience deep processing, emotional resonance, sensory awareness, and environmental sensitivity in balanced measure. This is sometimes called 'Full-Spectrum HSP' — and it reflects the richness, not the complexity, of your sensitivity.";
+      }
+      if (result.type === 'combined' || subtypes.length > 1) {
+        return `Your sensitivity profile draws from multiple dimensions. ${subtypes.map(id => {
+          const s = QUIZ_DATA.subtypes.find(s => s.id === id);
+          return s ? `**${s.name}** — ${s.superPower}` : '';
+        }).join(' ')} This combination is common and reflects the full dimensionality of the HSP experience.`;
+      }
+      const s = QUIZ_DATA.subtypes.find(s => s.id === subtypes[0]);
+      return s ? `**${s.superPower}** ${s.description.split('\n')[0]}` : '';
+    }
+
+    // ============================================
+    // RENDER RESULTS
+    // ============================================
     function renderResults() {
-      const { primary, secondary } = calculateResult();
-      state.resultType = primary;
-      state.resultSecondary = secondary;
-      const profile = getResultProfile(primary, secondary);
+      const result = calculateResult();
+      state.result = result;
+      const subtypes = getResultSubtypes(result);
+      const resultName = getResultName(result);
+      const primarySubtype = subtypes[0];
+      const subtypeData = QUIZ_DATA.subtypes.find(s => s.id === primarySubtype);
 
-      // Results screen
-      $('result-name').textContent = profile.name;
-      $('result-tagline').textContent = profile.tagline;
+      document.getElementById('results-type-name').textContent = resultName;
+      document.getElementById('results-type-tag').textContent = getResultTag(result);
 
-      const traitsEl = $('result-traits');
-      traitsEl.innerHTML = '';
-      profile.traits.forEach(t => {
-        const li = document.createElement('li');
-        li.textContent = t;
-        traitsEl.appendChild(li);
+      let desc = getResultDescription(result);
+      // Strip markdown bold for plain text display
+      desc = desc.replace(/\*\*(.*?)\*\*/g, '$1');
+      document.getElementById('results-description').textContent = desc;
+
+      // Strengths
+      const strengthsEl = document.getElementById('results-strengths');
+      strengthsEl.innerHTML = '';
+      const strengths = subtypeData ? subtypeData.strengths.slice(0, 3) : [];
+      if (result.type === 'full_tie' || result.type === 'combined') {
+        const combinedStrengths = subtypes.flatMap(id => {
+          const s = QUIZ_DATA.subtypes.find(s => s.id === id);
+          return s ? s.strengths.slice(0, 1) : [];
+        });
+        combinedStrengths.forEach(s => {
+          const el = document.createElement('div');
+          el.className = 'results-strength-item';
+          el.textContent = s;
+          strengthsEl.appendChild(el);
+        });
+      } else {
+        strengths.forEach(s => {
+          const el = document.createElement('div');
+          el.className = 'results-strength-item';
+          el.textContent = s;
+          strengthsEl.appendChild(el);
+        });
+      }
+
+      // Challenges
+      const challengesEl = document.getElementById('results-challenges');
+      challengesEl.innerHTML = '';
+      const challenges = subtypeData ? subtypeData.challenges.slice(0, 3) : [];
+      challenges.forEach(c => {
+        const el = document.createElement('div');
+        el.className = 'results-strength-item';
+        el.textContent = c;
+        challengesEl.appendChild(el);
       });
-
-      $('result-growth').textContent = profile.growth;
-
-      const actionsEl = $('result-actions');
-      actionsEl.innerHTML = '';
-      profile.actions.forEach((a, i) => {
-        const li = document.createElement('li');
-        li.innerHTML = `<span class="action-number">${i + 1}</span><span>${a}</span>`;
-        actionsEl.appendChild(li);
-      });
-
-      // Full profile screen
-      $('fp-result-name').textContent = profile.name;
-      $('fp-description').textContent = profile.description;
-
-      const fpStrengths = $('fp-strengths');
-      fpStrengths.innerHTML = '';
-      profile.strengths.forEach(s => {
-        const li = document.createElement('li');
-        li.textContent = s;
-        fpStrengths.appendChild(li);
-      });
-
-      const fpChallenges = $('fp-challenges');
-      fpChallenges.innerHTML = '';
-      profile.challenges.forEach(c => {
-        const li = document.createElement('li');
-        li.textContent = c;
-        fpChallenges.appendChild(li);
-      });
-
-      const fpActions = $('fp-actions');
-      fpActions.innerHTML = '';
-      profile.actions.forEach((a, i) => {
-        const li = document.createElement('li');
-        li.innerHTML = `<span class="action-number">${i + 1}</span><span>${a}</span>`;
-        fpActions.appendChild(li);
-      });
-
-      $('fp-resources').innerHTML = profile.resources.replace(/\n/g, '<br>');
-
-      saveState();
     }
 
-    function renderQuestion() {
-      const qIndex = state.currentQuestion;
-      const q = QUESTIONS[qIndex];
-      const total = QUESTIONS.length;
+    // ============================================
+    // RENDER FULL PROFILE
+    // ============================================
+    function renderProfile() {
+      if (!state.result) return;
+      const result = state.result;
+      const subtypes = getResultSubtypes(result);
+      const resultName = getResultName(result);
+      const primarySubtype = subtypes[0];
+      const subtypeData = QUIZ_DATA.subtypes.find(s => s.id === primarySubtype);
 
-      $('question-counter').textContent = `Question ${qIndex + 1} of ${total}`;
-      $('question-text').textContent = q.text;
+      document.getElementById('profile-type-name').textContent = resultName;
+      document.getElementById('profile-superpower').textContent = subtypeData ? subtypeData.superPower : '';
 
-      const progress = $('quiz-progress');
-      progress.value = qIndex + 1;
-      progress.setAttribute('aria-valuenow', qIndex + 1);
-      $('progress-fill').style.width = `${((qIndex + 1) / total) * 100}%`;
+      // Description
+      const descSection = document.getElementById('profile-description');
+      descSection.innerHTML = '';
+      if (subtypeData) {
+        const paragraphs = subtypeData.description.split('\n\n');
+        paragraphs.forEach(p => {
+          const pp = document.createElement('p');
+          pp.textContent = p.replace(/\*\*(.*?)\*\*/g, '$1');
+          descSection.appendChild(pp);
+        });
+      }
 
-      const optionsList = $('options-list');
-      optionsList.innerHTML = '';
-
-      q.options.forEach(opt => {
-        const item = document.createElement('div');
-        item.className = 'option-item';
-
-        const input = document.createElement('input');
-        input.type = 'radio';
-        input.id = `opt-${opt.letter}`;
-        input.name = 'quiz-option';
-        input.value = opt.letter;
-        if (state.answers[qIndex] === opt.letter) input.checked = true;
-
-        const label = document.createElement('label');
-        label.className = 'option-label';
-        label.htmlFor = `opt-${opt.letter}`;
-
-        const indicator = document.createElement('span');
-        indicator.className = 'option-indicator';
-        indicator.setAttribute('aria-hidden', 'true');
-
-        const text = document.createElement('span');
-        text.className = 'option-text';
-        text.textContent = opt.text;
-
-        label.appendChild(indicator);
-        label.appendChild(text);
-        item.appendChild(input);
-        item.appendChild(label);
-        optionsList.appendChild(item);
-
-        input.addEventListener('change', onOptionSelected);
+      // Strengths
+      const strengthsEl = document.getElementById('profile-strengths');
+      strengthsEl.innerHTML = '';
+      const strengths = subtypeData ? subtypeData.strengths : [];
+      strengths.forEach(s => {
+        const li = document.createElement('li');
+        li.className = 'profile-list-item';
+        li.innerHTML = `<span class="profile-list-bullet"></span><span>${s}</span>`;
+        strengthsEl.appendChild(li);
       });
 
-      // Back button visibility
-      $('btn-back').style.display = qIndex > 0 ? 'inline-flex' : 'none';
+      // Challenges
+      const challengesEl = document.getElementById('profile-challenges');
+      challengesEl.innerHTML = '';
+      const challenges = subtypeData ? subtypeData.challenges : [];
+      challenges.forEach(c => {
+        const li = document.createElement('li');
+        li.className = 'profile-list-item';
+        li.innerHTML = `<span class="profile-list-bullet"></span><span>${c}</span>`;
+        challengesEl.appendChild(li);
+      });
 
-      // Next button state
-      $('btn-next').disabled = state.answers[qIndex] === null;
+      // Strategies
+      const strategiesEl = document.getElementById('profile-strategies');
+      strategiesEl.innerHTML = '';
+      const strategies = subtypeData ? subtypeData.thrivingStrategies : [];
+      strategies.forEach(strat => {
+        const div = document.createElement('div');
+        div.className = 'profile-strategy';
+        div.innerHTML = `<p class="profile-strategy-title">${strat.title}</p><p class="profile-strategy-desc">${strat.description}</p>`;
+        strategiesEl.appendChild(div);
+      });
 
-      saveState();
+      // Resources
+      const resourcesEl = document.getElementById('profile-resources');
+      resourcesEl.innerHTML = '';
+      const resources = subtypeData ? subtypeData.resources : [];
+      resources.forEach(res => {
+        const div = document.createElement('div');
+        div.className = 'profile-resource-item';
+        const authorLine = res.author ? ` — ${res.author}` : '';
+        div.innerHTML = `
+          <span class="profile-resource-type">${res.type}</span>
+          <div class="profile-resource-info">
+            <p class="profile-resource-title">${res.title}${authorLine}</p>
+            <p class="profile-resource-note">${res.note}</p>
+          </div>
+        `;
+        resourcesEl.appendChild(div);
+      });
+
+      // Outro
+      document.getElementById('outro-closing').textContent = QUIZ_DATA.outro.closingStatement.replace(/\*\*(.*?)\*\*/g, '$1').replace(/\*(.*?)\*/g, '$1');
+      document.getElementById('outro-footer').textContent = QUIZ_DATA.outro.footer;
+
+      // Combined note
+      const combinedNote = document.getElementById('outro-combined-note');
+      if (result.type === 'combined') {
+        combinedNote.style.display = 'block';
+        combinedNote.textContent = QUIZ_DATA.outro.combinedResultNote;
+      } else if (result.type === 'full_tie') {
+        combinedNote.style.display = 'block';
+        combinedNote.textContent = QUIZ_DATA.outro.fullTieNote;
+      } else {
+        combinedNote.style.display = 'none';
+      }
     }
 
-    function onOptionSelected() {
-      const selected = getSelectedOption();
-      state.answers[state.currentQuestion] = selected;
-      $('btn-next').disabled = selected === null;
-      saveState();
-    }
-
-    // ===== SHARE FEATURE =====
+    // ============================================
+    // SHARE
+    // ============================================
     function getShareText() {
-      const profile = getResultProfile(state.resultType, state.resultSecondary);
-      const hook = profile.tagline.split('—')[0].trim();
-      return `I just discovered my HSP profile: ${profile.name}\n\n"${hook}" — Take the quiz\n\n#HSP #HighlySensitivePerson #SelfDiscovery`;
-    }
-
-    function buildCanvasCard() {
-      const canvas = $('share-canvas');
-      const ctx = canvas.getContext('2d');
-      const profile = getResultProfile(state.resultType, state.resultSecondary);
-
-      const W = 1200, H = 630;
-
-      // Background
-      ctx.fillStyle = '#F8F5F0';
-      ctx.fillRect(0, 0, W, H);
-
-      // Top accent bar
-      ctx.fillStyle = '#7A9E8A';
-      ctx.fillRect(0, 0, W, 8);
-
-      // Subtle side decoration
-      ctx.fillStyle = '#E8F0EA';
-      ctx.fillRect(0, 0, 12, H);
-
-      // Result name
-      ctx.fillStyle = '#3A3632';
-      ctx.font = 'italic 64px "Cormorant Garamond", Georgia, serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(profile.name, W / 2, 260);
-
-      // Tagline
-      ctx.fillStyle = '#7A756F';
-      ctx.font = '28px "Nunito Sans", sans-serif';
-      ctx.fillText(profile.tagline.substring(0, 60) + (profile.tagline.length > 60 ? '…' : ''), W / 2, 330);
-
-      // Divider
-      ctx.fillStyle = '#7A9E8A';
-      ctx.fillRect(W / 2 - 60, 365, 120, 3);
-
-      // HSP Navigator label
-      ctx.fillStyle = '#7A756F';
-      ctx.font = '22px "Nunito Sans", sans-serif';
-      ctx.fillText('HSP Navigator Quiz · PsychoMaster', W / 2, 420);
-
-      // URL hint
-      ctx.fillStyle = '#D9D4CC';
-      ctx.font = '20px "Nunito Sans", sans-serif';
-      ctx.fillText('psycho-master.com/hsp-navigator', W / 2, 560);
-
-      // Bottom accent bar
-      ctx.fillStyle = '#7A9E8A';
-      ctx.fillRect(0, H - 8, W, 8);
-
-      return canvas;
+      if (!state.result) return '';
+      const name = getResultName(state.result);
+      const subtypes = getResultSubtypes(state.result);
+      const primarySubtype = QUIZ_DATA.subtypes.find(s => s.id === subtypes[0]);
+      const hook = primarySubtype ? primarySubtype.superPower : 'Sensitivity is a trait, not a flaw.';
+      const url = 'https://adtech-pi.github.io/psychomaster-site/quizzes/hsp-navigator-quiz.html';
+      return `I just discovered my HSP profile: ${name}\n\n"${hook}"\n\nTake the quiz at ${url}\n\n#HSP #HighlySensitivePerson #SelfDiscovery`;
     }
 
     function openShareModal() {
-      $('share-card-text').textContent = getShareText();
-      buildCanvasCard();
-      $('share-modal').classList.add('is-open');
-      $('share-modal-close').focus();
+      const modal = document.getElementById('share-modal');
+      document.getElementById('share-text').textContent = getShareText();
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.getElementById('btn-copy').focus();
     }
 
     function closeShareModal() {
-      $('share-modal').classList.remove('is-open');
+      const modal = document.getElementById('share-modal');
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
     }
 
     function showToast(msg) {
-      const toast = $('toast');
+      const toast = document.getElementById('toast');
       toast.textContent = msg;
       toast.classList.add('is-visible');
-      setTimeout(() => toast.classList.remove('is-visible'), 3000);
+      setTimeout(() => toast.classList.remove('is-visible'), 2500);
     }
 
-    async function shareToTelegram() {
-      const text = encodeURIComponent(getShareText());
-      const url = `https://t.me/share/url?url=${encodeURIComponent('https://psycho-master.com/hsp-navigator')}&text=${text}`;
-      window.open(url, '_blank', 'noopener,noreferrer');
-    }
-
-    async function shareToWhatsApp() {
-      const text = encodeURIComponent(getShareText());
-      const url = `https://wa.me/?text=${text}`;
-      window.open(url, '_blank', 'noopener,noreferrer');
-    }
-
-    async function copyToClipboard() {
-      try {
-        await navigator.clipboard.writeText(getShareText());
+    function copyToClipboard() {
+      const text = getShareText();
+      navigator.clipboard.writeText(text).then(() => {
         showToast('Copied to clipboard!');
-      } catch(e) {
-        // Fallback
-        const ta = document.createElement('textarea');
-        ta.value = getShareText();
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        showToast('Copied to clipboard!');
-      }
+      }).catch(() => {
+        showToast('Could not copy — please copy manually');
+      });
     }
 
-    function downloadCanvasCard() {
-      const canvas = $('share-canvas');
-      const link = document.createElement('a');
-      const profile = getResultProfile(state.resultType, state.resultSecondary);
-      link.download = `hsp-navigator-${profile.id}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-      showToast('Image downloaded!');
-    }
+    // ============================================
+    // EVENT LISTENERS
+    // ============================================
 
-    // ===== EVENT LISTENERS =====
+    // Intro → Disclaimer
+    document.getElementById('btn-begin').addEventListener('click', () => {
+      showScreen('disclaimer');
+    });
 
-    // Intro
-    $('btn-begin').addEventListener('click', () => showScreen('disclaimer'));
+    // Disclaimer → First question
+    document.getElementById('btn-disclaimer-ready').addEventListener('click', () => {
+      state.currentQuestion = 0;
+      state.answers = new Array(QUIZ_DATA.questions.length).fill(undefined);
+      renderQuestion();
+      showScreen('question');
+    });
 
-    // Disclaimer
-    $('btn-ready').addEventListener('click', () => {
-      if (state.currentQuestion === 0 && state.answers.every(a => a === null)) {
-        // Fresh start — go to Q1
-        state.currentQuestion = 0;
-        renderQuestion();
-        showScreen('question');
-      } else {
-        // Resume
-        renderQuestion();
-        showScreen('question');
+    // Option selection
+    document.getElementById('options-list').addEventListener('change', (e) => {
+      if (e.target.name === 'answer') {
+        const subtype = e.target.dataset.subtype;
+        const letter = e.target.value;
+        state.answers[state.currentQuestion] = letter;
+        updateNextButtonState();
       }
     });
 
-    // Question navigation
-    $('btn-next').addEventListener('click', () => {
-      if (state.currentQuestion < QUESTIONS.length - 1) {
+    // Next button
+    document.getElementById('btn-next').addEventListener('click', () => {
+      if (state.answers[state.currentQuestion] === undefined) return;
+
+      if (state.currentQuestion < QUIZ_DATA.questions.length - 1) {
         state.currentQuestion++;
         renderQuestion();
       } else {
-        // Last question — show calculating
+        // Last question → calculating
         showScreen('calculating');
         setTimeout(() => {
           renderResults();
@@ -1680,98 +1815,68 @@
       }
     });
 
-    $('btn-back').addEventListener('click', () => {
+    // Back button
+    document.getElementById('btn-back').addEventListener('click', () => {
       if (state.currentQuestion > 0) {
         state.currentQuestion--;
         renderQuestion();
-      } else {
-        showScreen('intro');
       }
     });
 
-    // Results
-    $('btn-full-profile').addEventListener('click', () => {
-      state.showingFullProfile = true;
-      showScreen('fullProfile');
+    // Results → Full Profile
+    document.getElementById('btn-explore').addEventListener('click', () => {
+      renderProfile();
+      showScreen('profile');
     });
 
-    $('btn-share').addEventListener('click', openShareModal);
+    // Results → Share
+    document.getElementById('btn-share').addEventListener('click', openShareModal);
 
-    $('btn-retake').addEventListener('click', () => {
-      clearState();
-      state = { currentQuestion: 0, answers: new Array(12).fill(null), resultType: null, resultSecondary: null, showingFullProfile: false };
-      showScreen('intro');
+    // Share modal close/copy/platforms
+    document.getElementById('btn-share-close').addEventListener('click', closeShareModal);
+    document.getElementById('btn-copy').addEventListener('click', copyToClipboard);
+
+    document.getElementById('btn-share-telegram').addEventListener('click', (e) => {
+      e.preventDefault();
+      const text = encodeURIComponent(getShareText());
+      window.open(`https://t.me/share/url?url=${encodeURIComponent('https://adtech-pi.github.io/psychomaster-site/quizzes/hsp-navigator-quiz.html')}&text=${text}`, '_blank');
     });
 
-    // Full profile back
-    $('btn-profile-back').addEventListener('click', () => {
-      state.showingFullProfile = false;
+    document.getElementById('btn-share-whatsapp').addEventListener('click', (e) => {
+      e.preventDefault();
+      const text = encodeURIComponent(getShareText());
+      window.open(`https://wa.me/?text=${text}`, '_blank');
+    });
+
+    document.getElementById('share-modal').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('share-modal')) closeShareModal();
+    });
+
+    // Profile back
+    document.getElementById('btn-profile-back').addEventListener('click', () => {
       showScreen('results');
     });
 
-    $('btn-fp-retake').addEventListener('click', () => {
-      clearState();
-      state = { currentQuestion: 0, answers: new Array(12).fill(null), resultType: null, resultSecondary: null, showingFullProfile: false };
+    // Retake
+    function retakeQuiz() {
+      state.currentQuestion = 0;
+      state.answers = new Array(QUIZ_DATA.questions.length).fill(undefined);
+      state.result = null;
       showScreen('intro');
-    });
+    }
 
-    // Share modal
-    $('share-modal-close').addEventListener('click', closeShareModal);
-    $('share-modal').addEventListener('click', e => {
-      if (e.target === $('share-modal')) closeShareModal();
-    });
+    document.getElementById('btn-retake').addEventListener('click', retakeQuiz);
+    document.getElementById('btn-profile-retake').addEventListener('click', retakeQuiz);
 
-    $('share-telegram').addEventListener('click', shareToTelegram);
-    $('share-whatsapp').addEventListener('click', shareToWhatsApp);
-    $('share-copy').addEventListener('click', copyToClipboard);
-    $('share-canvas-btn').addEventListener('click', downloadCanvasCard);
-
-    // Privacy modal
-    $('privacy-link-full') && $('privacy-link-full').addEventListener('click', e => {
-      e.preventDefault();
-      $('privacy-modal').classList.add('is-open');
-    });
-
-    $('privacy-modal-close').addEventListener('click', () => {
-      $('privacy-modal').classList.remove('is-open');
-    });
-
-    $('privacy-modal').addEventListener('click', e => {
-      if (e.target === $('privacy-modal')) {
-        $('privacy-modal').classList.remove('is-open');
+    // Keyboard: Enter to advance on question screen
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && state.currentScreen === 'question') {
+        const nextBtn = document.getElementById('btn-next');
+        if (nextBtn.classList.contains('is-enabled')) {
+          nextBtn.click();
+        }
       }
     });
-
-    // Keyboard navigation
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') {
-        closeShareModal();
-        $('privacy-modal').classList.remove('is-open');
-      }
-    });
-
-    // ===== INIT =====
-    (function init() {
-      loadState();
-
-      // If quiz was in progress or completed, show appropriate screen
-      const hasAnswers = state.answers.some(a => a !== null);
-
-      if (state.resultType && state.showingFullProfile) {
-        renderResults();
-        showScreen('fullProfile');
-      } else if (state.resultType) {
-        renderResults();
-        showScreen('results');
-      } else if (hasAnswers && state.currentQuestion > 0) {
-        renderQuestion();
-        showScreen('question');
-      } else {
-        showScreen('intro');
-      }
-    })();
-
-  })();
   </script>
 </body>
 </html>

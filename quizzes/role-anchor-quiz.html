@@ -1,967 +1,1430 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Role Anchor Quiz — What Defines Your Sense of Self?</title>
-<meta name="description" content="At the crossroads of retirement, empty nesting, and transition, this quiz helps you rediscover who you are. Find the core roles that define your worth.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --ochre:#C48A5E;--ochre-dark:#A8724A;--ochre-light:rgba(196,138,94,0.08);
-  --deep-tea:#7B5B3A;--forest:#4A6741;--warm-white:#FAF7F2;--ivory:#F5EFE6;
-  --warm-gray:#8B7E74;--charcoal:#3D3530;--rose-gray:#D4A5A5;
-  --calm-blue:#7A9BB5;--soft-gold:#D4B896;
-  --amber:#D4956A;--terracotta:#B57B5E;--dusty-blue:#8B9DB5;--warm-mauve:#9B8AA5;--moss:#8A9B7A;
-  --type-career:#B57B5E;--type-family:#9B8AA5;--type-social:#8B9DB5;--type-free:#D4956A;--type-spirit:#8A9B7A;
-  --shadow-card:0 2px 12px rgba(61,53,48,0.08);--shadow-btn:0 4px 12px rgba(196,138,94,0.25);--shadow-hover:0 6px 20px rgba(61,53,48,0.12);
-  --radius-sm:4px;--radius-md:8px;--radius-lg:12px;--radius-xl:16px;
-  --font-serif:'Merriweather',Georgia,serif;--font-sans:'Inter','Helvetica Neue',Arial,sans-serif;
-}
-html{font-size:16px}
-body{font-family:var(--font-sans);background:var(--warm-white);color:var(--charcoal);line-height:1.8;min-height:100vh;
-  -webkit-font-smoothing:antialiased}
-.screen{display:none;min-height:100vh;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px;opacity:0;transition:opacity 0.3s ease-out}
-.screen.active{display:flex;opacity:1}
-.container{max-width:640px;width:100%;margin:0 auto}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Role Anchor Quiz — 身份锚点测验</title>
+  <meta name="description" content="Discover the invisible role pattern that shapes how you show up in relationships, career, and life. 14 questions. Based on identity psychology research.">
+  <style>
+/* ── Reset & Base ──────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* Landing */
-.landing-bg{position:fixed;inset:0;z-index:-1;overflow:hidden}
-.landing-bg::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(196,138,94,0.12) 0%,transparent 60%),
-  radial-gradient(ellipse at 70% 80%,rgba(74,103,65,0.08) 0%,transparent 60%),var(--warm-white)}
-.landing-inner{text-align:center;padding-top:10vh}
-.landing-badge{display:inline-flex;align-items:center;gap:6px;background:var(--ivory);border:1px solid rgba(196,138,94,0.2);border-radius:var(--radius-full,9999px);
-  padding:6px 16px;font-size:13px;color:var(--warm-gray);margin-bottom:24px}
-.landing-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--ochre);animation:pulse-dot 2s infinite}
-@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:0.4}}
-.landing-title{font-family:var(--font-serif);font-size:clamp(32px,8vw,44px);font-weight:700;color:var(--deep-tea);letter-spacing:2px;
-  line-height:1.3;margin-bottom:12px}
-.landing-subtitle{font-size:18px;color:var(--warm-gray);margin-bottom:32px;font-weight:400}
-.landing-desc{font-size:15px;color:var(--warm-gray);max-width:480px;margin:0 auto 40px;line-height:1.8}
-.landing-desc em{color:var(--charcoal);font-style:normal}
+:root {
+  --bg: #FFFBF5;
+  --surface: #FFFFFF;
+  --surface-elevated: #F5EFE6;
+  --surface-card: #FAF7F2;
+  --text-primary: #3D2914;
+  --text-secondary: #7A5C3E;
+  --text-muted: #A89070;
+  --border: #E8D5C0;
+  --primary: #D97706;
+  --primary-light: #E8A832;
+  --primary-dark: #B5620A;
+  --accent: #0D9488;
+  --accent-light: #14B8A6;
+  --result-primary: #D97706;
+  --result-glow: #E8A832;
 
-/* Buttons */
-.btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--ochre);color:#fff;
-  border:none;border-radius:var(--radius-lg);padding:16px 40px;font-size:17px;font-weight:500;cursor:pointer;
-  box-shadow:var(--shadow-btn);transition:background 0.2s,transform 0.15s,box-shadow 0.2s;font-family:var(--font-sans);
-  min-height:56px;min-width:200px;text-decoration:none}
-.btn-primary:hover{background:var(--ochre-dark);transform:translateY(-1px);box-shadow:var(--shadow-hover)}
-.btn-primary:active{transform:translateY(0)}
-.btn-primary:focus-visible{outline:3px solid var(--ochre);outline-offset:3px}
-.btn-primary:disabled{background:#D4C4B0;color:#A09080;box-shadow:none;cursor:not-allowed;transform:none}
-.btn-secondary{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:transparent;
-  color:var(--ochre);border:1.5px solid var(--ochre);border-radius:var(--radius-lg);padding:14px 32px;font-size:16px;font-weight:500;
-  cursor:pointer;transition:background 0.2s,transform 0.15s;font-family:var(--font-sans);min-height:52px;text-decoration:none}
-.btn-secondary:hover{background:var(--ochre-light)}
-.btn-secondary:focus-visible{outline:3px solid var(--ochre);outline-offset:3px}
-.btn-text{background:none;border:none;color:var(--calm-blue);font-size:14px;cursor:pointer;text-decoration:underline;
-  padding:4px 8px;font-family:var(--font-sans)}
-.btn-text:hover{color:var(--charcoal)}
-.btn-icon{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:var(--radius-md);
-  border:1.5px solid var(--ochre);background:transparent;color:var(--ochre);cursor:pointer;transition:background 0.2s;font-size:18px}
-.btn-icon:hover{background:var(--ochre-light)}
+  --font-body: 'Nunito Sans', 'PingFang SC', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+  --font-display: 'Cormorant Garamond', 'Noto Serif SC', Georgia, serif;
 
-/* Warning */
-.trigger-warn{display:flex;gap:12px;background:rgba(212,165,165,0.1);border-left:4px solid var(--rose-gray);
-  border-radius:0 var(--radius-md) var(--radius-md) 0;padding:16px 20px;margin-top:24px;text-align:left;max-width:480px;margin-left:auto;margin-right:auto}
-.trigger-warn-icon{font-size:20px;flex-shrink:0;margin-top:2px}
-.trigger-warn p{font-size:13px;color:#7A6560;line-height:1.6}
-.warn-link{color:var(--calm-blue);cursor:pointer;text-decoration:underline;font-size:13px}
-.warn-link:hover{color:var(--charcoal)}
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
 
-/* Progress */
-.progress-wrap{width:100%;max-width:640px;margin:0 auto 32px}
-.progress-bar{height:4px;background:#E8DFD4;border-radius:2px;overflow:hidden}
-.progress-fill{height:100%;background:var(--ochre);border-radius:2px;transition:width 0.4s ease-out;width:0%}
-.progress-label{font-size:13px;color:var(--warm-gray);margin-top:8px;text-align:center}
+  --space-xs: 8px;
+  --space-sm: 14px;
+  --space-md: 20px;
+  --space-lg: 28px;
+  --space-xl: 40px;
+  --space-2xl: 56px;
 
-/* Quiz */
-.quiz-card{background:var(--ivory);border-radius:var(--radius-xl);padding:clamp(24px,5vw,40px);box-shadow:var(--shadow-card)}
-.question-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.question-num{font-size:14px;color:var(--warm-gray);font-weight:500}
-.question-jump{display:flex;gap:6px;flex-wrap:wrap}
-.q-jump-btn{width:28px;height:28px;border-radius:var(--radius-sm);border:1px solid rgba(196,138,94,0.3);
-  background:transparent;font-size:12px;color:var(--warm-gray);cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;font-family:var(--font-sans)}
-.q-jump-btn.answered{background:var(--ochre);color:#fff;border-color:var(--ochre)}
-.q-jump-btn.current{background:var(--ochre-dark);color:#fff;border-color:var(--ochre-dark)}
-.q-jump-btn:hover{background:var(--ochre-light);border-color:var(--ochre)}
-.q-jump-btn:focus-visible{outline:2px solid var(--ochre);outline-offset:1px}
-.scenario-text{font-size:clamp(16px,4vw,18px);font-weight:600;color:var(--deep-tea);line-height:1.7;margin-bottom:24px;padding-left:16px;
-  border-left:3px solid var(--ochre);font-family:var(--font-serif)}
-.options-list{display:flex;flex-direction:column;gap:12px;margin-bottom:28px}
-.option-card{display:flex;align-items:flex-start;gap:14px;background:var(--warm-white);border:2px solid transparent;
-  border-radius:var(--radius-lg);padding:16px 20px;cursor:pointer;transition:all 0.2s;min-height:56px}
-.option-card:hover{background:rgba(245,239,230,0.8);border-color:rgba(196,138,94,0.5)}
-.option-card.selected{background:var(--ochre-light);border-color:var(--ochre);transform:scale(1.01)}
-.option-card:focus-visible{outline:3px solid var(--ochre);outline-offset:2px}
-.option-letter{flex-shrink:0;width:28px;height:28px;border-radius:50%;border:2px solid var(--warm-gray);display:flex;align-items:center;
-  justify-content:center;font-weight:600;font-size:13px;color:var(--warm-gray);transition:all 0.2s;margin-top:1px}
-.option-card.selected .option-letter{background:var(--ochre);border-color:var(--ochre);color:#fff}
-.option-text{flex:1;font-size:15px;color:var(--charcoal);line-height:1.7;padding-top:2px}
-.quiz-nav{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:8px}
-.quiz-nav .btn-secondary{padding:12px 24px;font-size:15px;min-height:48px}
-.quiz-nav .btn-primary{min-height:48px}
-
-/* Calculating */
-.calc-screen{text-align:center}
-.calc-icon{font-size:64px;margin-bottom:24px;animation:float 2s ease-in-out infinite}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-.calc-dots{display:flex;justify-content:center;gap:8px;margin-top:20px}
-.calc-dot{width:10px;height:10px;border-radius:50%;background:var(--ochre-light);animation:calc-pulse 1.4s ease-in-out infinite}
-.calc-dot:nth-child(2){animation-delay:0.2s}
-.calc-dot:nth-child(3){animation-delay:0.4s}
-@keyframes calc-pulse{0%,80%,100%{transform:scale(0.6);opacity:0.4}40%{transform:scale(1);opacity:1}}
-.calc-text{font-size:16px;color:var(--warm-gray);margin-top:16px}
-
-/* Results */
-.result-header{text-align:center;margin-bottom:32px}
-.result-type-tag{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:var(--radius-full,9999px);
-  font-size:13px;font-weight:500;margin-bottom:16px;color:#fff}
-.result-type-tag.career{background:var(--type-career)}
-.result-type-tag.family{background:var(--type-family)}
-.result-type-tag.social{background:var(--type-social)}
-.result-type-tag.free{background:var(--type-free)}
-.result-type-tag.spirit{background:var(--type-spirit)}
-.result-name{font-family:var(--font-serif);font-size:clamp(28px,7vw,38px);font-weight:700;color:var(--deep-tea);
-  letter-spacing:1px;margin-bottom:10px}
-.result-tagline{font-size:16px;color:var(--warm-gray);font-style:italic;max-width:420px;margin:0 auto}
-.result-divider{width:60px;height:3px;background:var(--ochre);border-radius:2px;margin:28px auto}
-.result-section{margin-bottom:28px}
-.result-section-title{font-family:var(--font-serif);font-size:17px;font-weight:600;color:var(--deep-tea);margin-bottom:14px;
-  display:flex;align-items:center;gap:8px}
-.traits-list{list-style:none;display:flex;flex-direction:column;gap:10px}
-.traits-list li{display:flex;align-items:flex-start;gap:10px;font-size:15px;color:var(--charcoal);line-height:1.6}
-.traits-list li .trait-icon{font-size:16px;flex-shrink:0;margin-top:2px}
-.growth-block{background:rgba(212,165,165,0.08);border-left:4px solid var(--rose-gray);border-radius:0 var(--radius-md) var(--radius-md) 0;
-  padding:20px 24px;margin:20px 0}
-.growth-block p{font-size:15px;color:#5A4A46;line-height:1.8;font-style:italic}
-.actions-list{list-style:none;counter-reset:action-counter;display:flex;flex-direction:column;gap:16px}
-.action-item{display:flex;gap:16px;counter-increment:action-counter}
-.action-num{flex-shrink:0;width:32px;height:32px;border-radius:50%;background:var(--ochre);color:#fff;
-  display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;margin-top:2px}
-.action-content h4{font-size:15px;font-weight:600;color:var(--deep-tea);margin-bottom:4px;font-family:var(--font-serif)}
-.action-content p{font-size:14px;color:var(--warm-gray);line-height:1.6}
-.result-ctas{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:32px}
-.result-footer{margin-top:40px;padding-top:24px;border-top:1px solid rgba(196,138,94,0.2)}
-
-/* Share */
-.share-card-wrap{position:relative;background:#fff;border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-card);
-  margin:24px 0;aspect-ratio:3/4;max-width:320px;margin-left:auto;margin-right:auto}
-.share-canvas{display:block;width:100%;height:auto}
-.share-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:20px}
-.share-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:var(--radius-md);
-  border:1.5px solid var(--ochre);background:transparent;color:var(--ochre);font-size:14px;font-weight:500;
-  cursor:pointer;transition:all 0.2s;font-family:var(--font-sans);min-height:44px}
-.share-btn:hover{background:var(--ochre-light)}
-.share-btn:focus-visible{outline:3px solid var(--ochre);outline-offset:2px}
-.share-btn.wechat{background:#07C160;color:#fff;border-color:#07C160}
-.share-btn.wechat:hover{background:#059B4A}
-.share-btn.copied{background:var(--forest);color:#fff;border-color:var(--forest)}
-.toast{position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--charcoal);
-  color:#fff;padding:12px 24px;border-radius:var(--radius-lg);font-size:14px;opacity:0;transition:all 0.3s;
-  pointer-events:none;z-index:999;white-space:nowrap}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* Modal */
-.modal-overlay{position:fixed;inset:0;background:rgba(61,53,48,0.5);display:none;align-items:center;justify-content:center;
-  z-index:1000;padding:24px;backdrop-filter:blur(4px)}
-.modal-overlay.show{display:flex}
-.modal{background:var(--warm-white);border-radius:var(--radius-xl);max-width:560px;width:100%;max-height:85vh;overflow-y:auto;
-  box-shadow:var(--shadow-hover);padding:clamp(28px,5vw,40px)}
-.modal-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.modal-hd h2{font-family:var(--font-serif);font-size:20px;font-weight:600;color:var(--deep-tea)}
-.modal-close{width:36px;height:36px;border-radius:var(--radius-md);border:none;background:transparent;
-  cursor:pointer;font-size:20px;color:var(--warm-gray);display:flex;align-items:center;justify-content:center}
-.modal-close:hover{background:var(--ivory)}
-.modal-close:focus-visible{outline:2px solid var(--ochre);outline-offset:1px}
-.modal-content{font-size:14px;color:var(--charcoal);line-height:1.8}
-.modal-content h3{font-family:var(--font-serif);font-size:16px;font-weight:600;margin:16px 0 8px;color:var(--deep-tea)}
-.modal-content h3:first-child{margin-top:0}
-.modal-content p{margin-bottom:12px}
-.support-modal{text-align:center}
-.support-modal p{text-align:left}
-.support-numbers{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0;text-align:left}
-.support-num-card{background:var(--ivory);border-radius:var(--radius-lg);padding:16px}
-.support-num-card .num-label{font-size:12px;color:var(--warm-gray);margin-bottom:4px}
-.support-num-card .num-value{font-size:18px;font-weight:600;color:var(--ochre);font-family:'Inter',sans-serif}
-.support-resources{list-style:none;display:flex;flex-direction:column;gap:8px;text-align:left}
-.support-resources li{display:flex;align-items:flex-start;gap:8px;font-size:14px;color:var(--charcoal)}
-.support-resources li::before{content:'•';color:var(--ochre);font-weight:700;margin-top:1px}
-
-/* Utility */
-.text-center{text-align:center}
-.mt-16{margin-top:16px}.mt-24{margin-top:24px}.mt-32{margin-top:32px}
-.mb-16{margin-bottom:16px}.mb-24{margin-bottom:24px}
-.flex-center{display:flex;align-items:center;justify-content:center}
-.gap-8{gap:8px}.gap-12{gap:12px}
-
-/* Reduced motion */
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;
-    transition-duration:0.01ms!important}
-  .progress-fill{transition:none}
-  .option-card{transition:none}
-  .btn-primary,.btn-secondary{transition:none}
+  --transition-fast: 220ms ease;
+  --transition-normal: 380ms ease;
+  --transition-slow: 550ms ease;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar{width:6px}
-::-webkit-scrollbar-track{background:var(--ivory)}
-::-webkit-scrollbar-thumb{background:var(--soft-gold);border-radius:3px}
-
-/* Responsive */
-@media(max-width:480px){
-  .question-jump{display:none}
-  .quiz-nav{flex-wrap:wrap}
-  .quiz-nav .btn-secondary,.quiz-nav .btn-primary{flex:1}
-  .support-numbers{grid-template-columns:1fr}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
-</style>
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.65;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Screens ───────────────────────────────────────────────────────────── */
+.quiz-screen {
+  display: none;
+  min-height: 100dvh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl) var(--space-md);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+.quiz-screen.active {
+  display: flex;
+  opacity: 1;
+}
+
+.screen-inner {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+  text-align: center;
+}
+
+/* ── Language Toggle ─────────────────────────────────────────────────── */
+.lang-toggle {
+  position: fixed;
+  top: var(--space-md);
+  right: var(--space-md);
+  z-index: 100;
+  display: flex;
+  gap: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  box-shadow: 0 2px 12px rgba(61, 41, 20, 0.08);
+}
+
+.lang-btn {
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 5px 14px;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  letter-spacing: 0.04em;
+}
+
+.lang-btn.active {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* ── Intro Screen ───────────────────────────────────────────────────────── */
+.screen-intro {
+  justify-content: center;
+}
+
+.screen-intro .intro-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--primary);
+}
+
+.screen-intro .intro-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 9vw, 3.2rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.screen-intro .intro-tagline {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  max-width: 400px;
+  line-height: 1.6;
+}
+
+.screen-intro .intro-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 6px 16px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.intro-outcomes {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  text-align: left;
+  width: 100%;
+}
+
+.intro-outcomes h3 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.intro-outcomes ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.intro-outcomes li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.intro-outcomes li::before {
+  content: '✦';
+  color: var(--primary);
+  flex-shrink: 0;
+  margin-top: 1px;
+  font-size: 0.7rem;
+}
+
+.intro-privacy {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* ── Disclaimer Screen ──────────────────────────────────────────────────── */
+.screen-disclaimer .disclaimer-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl) var(--space-md);
+  text-align: left;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  max-width: 480px;
+}
+
+.screen-disclaimer .disclaimer-box p {
+  margin-bottom: var(--space-sm);
+}
+
+.screen-disclaimer .disclaimer-box p:last-child {
+  margin-bottom: 0;
+}
+
+.screen-disclaimer .disclaimer-box .disclaimer-emoji {
+  font-size: 1.2em;
+  margin-right: 4px;
+}
+
+/* ── Quiz Screen ────────────────────────────────────────────────────────── */
+.screen-quiz {
+  justify-content: flex-start;
+  padding-top: var(--space-xl);
+  gap: var(--space-lg);
+}
+
+.quiz-header {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+/* Progress bar */
+.progress-track {
+  width: 100%;
+  height: 4px;
+  background: var(--border);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+  border-radius: var(--radius-pill);
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+.q-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+/* Question */
+.question-container {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.q-text {
+  font-family: var(--font-body);
+  font-size: clamp(0.98rem, 4vw, 1.15rem);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-primary);
+  text-align: left;
+}
+
+/* Options */
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 520px;
+}
+
+.option-btn {
+  width: 100%;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  color: var(--text-primary);
+  line-height: 1.55;
+}
+
+.option-btn:hover {
+  background: var(--surface-elevated);
+  border-color: var(--primary);
+  box-shadow: 0 2px 12px rgba(217, 119, 6, 0.1);
+}
+
+.option-btn:active {
+  transform: scale(0.985);
+}
+
+.option-btn.selected {
+  background: color-mix(in srgb, var(--primary) 10%, var(--surface));
+  border-color: var(--primary);
+  box-shadow: 0 2px 16px rgba(217, 119, 6, 0.15);
+}
+
+.opt-letter {
+  font-weight: 800;
+  color: var(--primary);
+  flex-shrink: 0;
+  min-width: 1.6em;
+  font-size: 0.85rem;
+  margin-top: 1px;
+}
+
+.opt-text {
+  color: var(--text-primary);
+}
+
+/* Quiz navigation */
+.quiz-nav {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-xs);
+}
+
+.back-btn {
+  display: none;
+  align-items: center;
+  gap: var(--space-xs);
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast);
+}
+
+.back-btn:hover { color: var(--text-primary); }
+
+/* ── Result Screen ──────────────────────────────────────────────────────── */
+.screen-result {
+  justify-content: flex-start;
+  padding-top: var(--space-xl);
+  gap: var(--space-xl);
+  padding-bottom: var(--space-2xl);
+}
+
+.result-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.result-type-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--result-primary);
+}
+
+.result-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 8vw, 2.8rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.result-title-cn {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--primary);
+  margin-top: 2px;
+}
+
+.result-divider {
+  width: 48px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--result-primary), transparent);
+  border-radius: 2px;
+  margin: 4px auto;
+}
+
+.result-description {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.result-desc-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  text-align: left;
+}
+
+.result-desc-block h3 {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--result-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.result-desc-block p {
+  font-size: 0.93rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+.result-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.trait-tag {
+  background: color-mix(in srgb, var(--result-primary) 10%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--result-primary) 25%, transparent);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  font-size: 0.73rem;
+  font-weight: 600;
+  color: var(--result-primary);
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+
+.share-quote {
+  border-left: 3px solid var(--result-primary);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--surface);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  font-style: italic;
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  line-height: 1.65;
+  text-align: left;
+}
+
+.result-footer {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  padding-bottom: var(--space-md);
+}
+
+.result-footer .footer-note {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  max-width: 380px;
+  line-height: 1.6;
+}
+
+.retake-btn {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  padding: 8px 20px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.retake-btn:hover {
+  border-color: var(--primary);
+  color: var(--text-primary);
+}
+
+.share-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+
+.share-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  box-shadow: 0 2px 12px rgba(217, 119, 6, 0.1);
+}
+
+/* ── Primary CTA Button ─────────────────────────────────────────────────── */
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 14px 36px;
+  cursor: pointer  ;
+  transition:
+    background var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+  letter-spacing: 0.02em;
+  min-width: 180px;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(217, 119, 6, 0.25);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* ── Animations ────────────────────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.screen-intro.active .screen-inner {
+  animation: fadeInUp 500ms cubic-bezier(0.4, 0, 0.6, 1) both;
+}
+
+.screen-intro.active .intro-eyebrow { animation: fadeInUp 500ms cubic-bezier(0.4, 0, 0.6, 1) 50ms both; }
+.screen-intro.active .intro-title { animation: fadeInUp 500ms cubic-bezier(0.4, 0, 0.6, 1) 100ms both; }
+.screen-intro.active .intro-tagline { animation: fadeInUp 500ms cubic-bezier(0.4, 0, 0.6, 1) 160ms both; }
+.screen-intro.active .intro-time { animation: fadeInUp 500ms cubic-bezier(0.4, 0, 0.6, 1) 220ms both; }
+.screen-intro.active .intro-outcomes { animation: fadeInUp 500ms cubic-bezier(0.4, 0, 0.6, 1) 280ms both; }
+.screen-intro.active .btn-primary { animation: fadeInUp 500ms cubic-bezier(0.4, 0, 0.6, 1) 340ms both; }
+.screen-intro.active .intro-privacy { animation: fadeInUp 500ms cubic-bezier(0.4, 0, 0.6, 1) 400ms both; }
+
+.screen-disclaimer.active .screen-inner { animation: fadeInUp 500ms cubic-bezier(0.4, 0, 0.6, 1) both; }
+.screen-disclaimer.active .disclaimer-box { animation: fadeInUp 500ms cubic-bezier(0.4, 0, 0.6, 1) 100ms both; }
+.screen-disclaimer.active .btn-primary { animation: fadeInUp 500ms cubic-bezier(0.4, 0, 0.6, 1) 200ms both; }
+
+.screen-quiz.active .quiz-header { animation: fadeInUp 400ms cubic-bezier(0.4, 0, 0.6, 1) both; }
+.screen-quiz.active .question-container { animation: fadeInUp 400ms cubic-bezier(0.4, 0, 0.6, 1) 80ms both; }
+.screen-quiz.active .quiz-nav { animation: fadeInUp 400ms cubic-bezier(0.4, 0, 0.6, 1) 160ms both; }
+
+.screen-result .result-header,
+.screen-result .result-description,
+.screen-result .result-tags {
+  animation: fadeInUp 600ms cubic-bezier(0.4, 0, 0.6, 1) both;
+}
+
+.screen-result .result-description { animation-delay: 150ms; }
+.screen-result .result-tags { animation-delay: 250ms; }
+.screen-result .share-quote { animation: fadeInUp 600ms cubic-bezier(0.4, 0, 0.6, 1) 350ms both; }
+.screen-result .result-footer { animation: fadeInUp 600ms cubic-bezier(0.4, 0, 0.6, 1) 450ms both; }
+
+/* ── Responsive ────────────────────────────────────────────────────────── */
+@media (min-width: 640px) {
+  body { font-size: 17px; }
+  .quiz-screen { padding: var(--space-2xl) var(--space-lg); }
+}
+
+/* ── Accessibility ─────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .screen-intro.active .screen-inner,
+  .screen-intro.active .intro-eyebrow,
+  .screen-intro.active .intro-title,
+  .screen-intro.active .intro-tagline,
+  .screen-intro.active .intro-time,
+  .screen-intro.active .intro-outcomes,
+  .screen-intro.active .btn-primary,
+  .screen-intro.active .intro-privacy,
+  .screen-disclaimer.active .screen-inner,
+  .screen-disclaimer.active .disclaimer-box,
+  .screen-disclaimer.active .btn-primary,
+  .screen-quiz.active .quiz-header,
+  .screen-quiz.active .question-container,
+  .screen-quiz.active .quiz-nav,
+  .screen-result .result-header,
+  .screen-result .result-description,
+  .screen-result .result-tags,
+  .screen-result .share-quote,
+  .screen-result .result-footer {
+    animation: fadeIn 300ms ease both;
+  }
+}
+
+/* ── Thinking/Reflecting overlay ─────────────────────────────────────── */
+.thinking-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 251, 245, 0.92);
+  z-index: 200;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  backdrop-filter: blur(4px);
+}
+
+.thinking-overlay.active {
+  display: flex;
+}
+
+.thinking-text {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.thinking-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.thinking-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  animation: dotPulse 1.4s ease-in-out infinite;
+}
+
+.thinking-dots span:nth-child(2) { animation-delay: 0.2s; }
+.thinking-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotPulse {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
+  </style>
 </head>
 <body>
-<div class="landing-bg"></div>
 
-<!-- Screen: Landing -->
-<div id="screen-landing" class="screen active">
-  <div class="container landing-inner">
-    <div class="landing-badge"><span class="landing-badge-dot"></span>Self-Assessment · 8 min</div>
-    <h1 class="landing-title">What Defines Your Sense of Self?</h1>
-    <p class="landing-subtitle">Discover the core roles that define your worth</p>
-    <p class="landing-desc">
-      At the crossroads of <em>retirement, empty nesting, and transition</em>,<br>this quiz helps you rediscover who you are.
-    </p>
-    <button class="btn-primary" id="btn-start" aria-label="Start the quiz">Start the Quiz</button>
-    <div class="trigger-warn">
-      <span class="trigger-warn-icon" aria-hidden="true">⚠️</span>
-      <p>This quiz involves self-reflection and may trigger emotional responses related to past experiences. If you feel uncomfortable, you may pause or exit at any time.</p>
-    </div>
-    <p class="mt-16"><span class="warn-link" id="link-warn" role="button" tabindex="0" aria-label="Read the trigger warning details">Please read the instructions before proceeding ›</span></p>
-  </div>
+<!-- Language Toggle -->
+<div class="lang-toggle" id="lang-toggle">
+  <button class="lang-btn active" id="lang-en" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" id="lang-cn" onclick="setLang('cn')">中文</button>
 </div>
 
-<!-- Screen: Quiz -->
-<div id="screen-quiz" class="screen">
-  <div class="container">
-    <div class="progress-wrap">
-      <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="12">
-        <div class="progress-fill" id="progress-fill"></div>
-      </div>
-      <div class="progress-label" id="progress-label">Question 1 of 12</div>
-    </div>
-    <div class="quiz-card">
-      <div class="question-header">
-        <span class="question-num" id="question-num-label">Question 1</span>
-        <div class="question-jump" id="question-jump" role="navigation" aria-label="Question navigation"></div>
-      </div>
-      <p class="scenario-text" id="scenario-text" aria-live="polite"></p>
-      <div class="options-list" id="options-list" role="radiogroup" aria-label="Options"></div>
-      <div class="quiz-nav">
-        <button class="btn-secondary" id="btn-prev" aria-label="Previous question" style="visibility:hidden">
-          <span aria-hidden="true">‹</span> Previous
-        </button>
-        <button class="btn-primary" id="btn-next" aria-label="Next question" disabled>
-          Next <span aria-hidden="true">›</span>
-        </button>
-      </div>
-    </div>
-  </div>
+<!-- Thinking/Reflecting overlay -->
+<div class="thinking-overlay" id="thinking-overlay">
+  <div class="thinking-dots"><span></span><span></span><span></span></div>
+  <p class="thinking-text" id="thinking-text">Your pattern is forming...</p>
 </div>
 
-<!-- Screen: Calculating -->
-<div id="screen-calc" class="screen calc-screen">
-  <div class="container">
-    <div class="calc-icon" aria-hidden="true">⚓</div>
-    <p class="calc-text">Analyzing your answers…</p>
-    <div class="calc-dots" aria-hidden="true">
-      <div class="calc-dot"></div><div class="calc-dot"></div><div class="calc-dot"></div>
+<!-- ── INTRO SCREEN ─────────────────────────────────────────────── -->
+<div id="screen-intro" class="quiz-screen screen-intro active">
+  <div class="screen-inner">
+    <span class="intro-eyebrow" id="intro-eyebrow">Self-Reflection Quiz</span>
+    <h1 class="intro-title" id="intro-title">Role Anchor Quiz</h1>
+    <p class="intro-tagline" id="intro-tagline">Discover the invisible role pattern that shapes how you show up in relationships, career, and life.</p>
+    <div class="intro-time">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span id="intro-time-text">8–12 minutes · 14 questions</span>
     </div>
-  </div>
-</div>
-
-<!-- Screen: Result -->
-<div id="screen-result" class="screen">
-  <div class="container">
-    <div class="quiz-card" id="result-card"></div>
-  </div>
-</div>
-
-<!-- Modal: Warning -->
-<div class="modal-overlay" id="modal-warn" role="dialog" aria-modal="true" aria-labelledby="modal-warn-title">
-  <div class="modal">
-    <div class="modal-hd">
-      <h2 id="modal-warn-title">⚠️ Trigger Warning & Disclaimer</h2>
-      <button class="modal-close" id="modal-warn-close" aria-label="Close">&times;</button>
-    </div>
-    <div class="modal-content">
-      <p>This quiz involves self-reflection and may trigger emotional responses related to past experiences or current challenges. If you feel uncomfortable during the quiz, you may pause or exit at any time.</p>
-      <p>Your emotional responses are real and important. If you need to, please stop the quiz at any time.</p>
-      <h3>Professional Support</h3>
-      <p>This quiz is for reference only and does not constitute professional psychological diagnosis or treatment. If you are experiencing significant emotional distress, depression, anxiety, or a life crisis, please seek professional psychological support promptly:</p>
-      <div class="support-numbers">
-        <div class="support-num-card">
-          <div class="num-label">Crisis Helpline (24/7, China)</div>
-          <div class="num-value">400-161-9995</div>
-        </div>
-        <div class="support-num-card">
-          <div class="num-label">Beijing Crisis Prevention & Intervention Center</div>
-          <div class="num-value">010-82951332</div>
-        </div>
-      </div>
-      <p>You may also seek help at your local top-tier hospital's psychology or psychiatry department, university counseling center (open to alumni and the public), or a reputable counseling practice.</p>
-      <p>You are not alone — reaching out for help takes courage.</p>
-    </div>
-  </div>
-</div>
-
-<!-- Modal: Privacy -->
-<div class="modal-overlay" id="modal-privacy" role="dialog" aria-modal="true" aria-labelledby="modal-privacy-title">
-  <div class="modal">
-    <div class="modal-hd">
-      <h2 id="modal-privacy-title">Privacy Policy</h2>
-      <button class="modal-close" id="modal-privacy-close" aria-label="Close">&times;</button>
-    </div>
-    <div class="modal-content">
-      <h3>1. Data Collection</h3>
-      <p>This quiz only collects your answer data for calculating results. We do not collect personal identification information such as name, phone number, or ID number.</p>
-      <h3>2. Data Storage</h3>
-      <p>Your answer records are stored on your local device and can be cleared at any time after completing the quiz.</p>
-      <h3>3. Data Use</h3>
-      <p>Your data is used solely to generate your personal quiz report. It will not be sold, shared with, or provided to any third-party advertisers or commercial entities.</p>
-      <h3>4. Cookies</h3>
-      <p>If using the website version, only essential cookies may be used to ensure basic functionality — no tracking or advertising cookies are used.</p>
-      <h3>5. Your Rights</h3>
-      <p>You may clear your local data at any time (see your browser settings).</p>
-    </div>
-  </div>
-</div>
-
-<!-- Modal: Support -->
-<div class="modal-overlay" id="modal-support" role="dialog" aria-modal="true" aria-labelledby="modal-support-title">
-  <div class="modal">
-    <div class="modal-hd">
-      <h2 id="modal-support-title">💬 If You Need More Support</h2>
-      <button class="modal-close" id="modal-support-close" aria-label="Close">&times;</button>
-    </div>
-    <div class="modal-content support-modal">
-      <p>This quiz cannot replace professional psychological counseling or treatment. If you are experiencing persistent emotional distress, please seek professional help:</p>
-      <div class="support-numbers">
-        <div class="support-num-card">
-          <div class="num-label">Crisis Helpline (24/7, China)</div>
-          <div class="num-value">400-161-9995</div>
-        </div>
-        <div class="support-num-card">
-          <div class="num-label">Beijing Crisis Prevention & Intervention Center</div>
-          <div class="num-value">010-82951332</div>
-        </div>
-      </div>
-      <h3>Where to Seek Help</h3>
-      <ul class="support-resources">
-        <li>Local top-tier hospital — Psychology or Psychiatry department</li>
-        <li>University counseling center (open to alumni and the public)</li>
-        <li>Reputable psychological counseling practice (verify counselor credentials)</li>
+    <div class="intro-outcomes">
+      <h3 id="intro-outcomes-title">What you'll discover</h3>
+      <ul>
+        <li id="intro-outcome-1">Your core role anchor — the pattern that quietly drives your biggest choices</li>
+        <li id="intro-outcome-2">How it shapes your relationships, decisions, and sense of self</li>
+        <li id="intro-outcome-3">A growth edge — one direction where genuine change becomes possible</li>
       </ul>
-      <p class="mt-24"><em>You are not alone — reaching out for help takes courage.</em></p>
     </div>
+    <button id="start-btn" class="btn-primary" onclick="startQuiz()">Begin →</button>
+    <p class="intro-privacy" id="intro-privacy">Your responses are private and never shared. This is self-reflection, not diagnosis.</p>
   </div>
 </div>
 
-<!-- Toast -->
-<div class="toast" id="toast" role="alert" aria-live="polite"></div>
+<!-- ── DISCLAIMER SCREEN ─────────────────────────────────────────── -->
+<div id="screen-disclaimer" class="quiz-screen screen-disclaimer">
+  <div class="screen-inner">
+    <div class="disclaimer-box">
+      <p id="disclaimer-text-1">There's a pattern you've been living — in how you show up for others, how you make decisions, what you reach for when life gets hard. Most people never name it. This quiz helps you see yours clearly.</p>
+      <p id="disclaimer-text-2">There are no wrong answers. It's not a test — it's a mirror.</p>
+      <p id="disclaimer-text-3" style="margin-top:12px;">This quiz is for self-reflection and entertainment purposes. It is not a clinical diagnosis or psychological assessment. Results represent patterns you may recognize, not fixed identities.</p>
+      <p id="disclaimer-text-4" style="margin-top:12px;color:var(--primary);font-weight:600;" class="disclaimer-emoji">If you're experiencing a personal crisis, please seek professional support.</p>
+    </div>
+    <button id="begin-btn" class="btn-primary" onclick="handleDisclaimer()">I understand →</button>
+  </div>
+</div>
+
+<!-- ── QUIZ SCREEN ──────────────────────────────────────────────── -->
+<div id="screen-quiz" class="quiz-screen screen-quiz">
+  <div class="quiz-header">
+    <div class="progress-track">
+      <div id="progress-fill" class="progress-fill" style="width:0%"></div>
+    </div>
+    <span id="q-number" class="q-label">Question 1 of 14</span>
+  </div>
+  <div class="question-container">
+    <p id="q-text" class="q-text"></p>
+    <div id="options-container" class="options-list"></div>
+  </div>
+  <div class="quiz-nav">
+    <button id="back-btn" class="back-btn" onclick="goBack()">← <span id="back-label">Back</span></button>
+    <div class="quiz-nav-spacer"></div>
+  </div>
+</div>
+
+<!-- ── RESULT SCREEN ───────────────────────────────────────────── -->
+<div id="screen-result" class="quiz-screen screen-result">
+  <div class="screen-inner">
+    <div class="result-header">
+      <span id="result-type-label" class="result-type-label">Your Role Anchor</span>
+      <h1 id="result-title" class="result-title"></h1>
+      <p id="result-title-cn" class="result-title-cn"></p>
+      <div class="result-divider"></div>
+    </div>
+    <div id="result-description" class="result-description"></div>
+    <div id="result-tags" class="result-tags"></div>
+    <div id="result-share" class="result-footer">
+      <blockquote id="share-quote" class="share-quote"></blockquote>
+      <div class="share-row">
+        <a id="share-copy-btn" class="share-btn" onclick="copyShareLink()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <span id="share-copy-text">Copy Result Link</span>
+        </a>
+      </div>
+    </div>
+    <div id="result-footer" class="result-footer">
+      <p class="footer-note" id="result-footer-note">If this brings up things that feel heavy, you're not alone. Speaking with a trusted friend or a mental health professional can help.</p>
+      <button class="retake-btn" onclick="retakeQuiz()" id="retake-btn">Retake Quiz</button>
+    </div>
+  </div>
+</div>
 
 <script>
-// ─── Content Data ───────────────────────────────────────────────────────────
-const QUESTIONS = [
-  {
-    scenario:"You just finished your retirement procedures. The moment you walk out of the company gates, the first thought that comes to mind is:",
-    options:[
-      {text:"The experience and connections I've built over the years — how can I still put them to use? I still plan to take on a few major projects.",dim:"career"},
-      {text:"Finally, I have time for family. My grandchildren must have missed me so much.",dim:"family"},
-      {text:"What will my colleagues think of me? How should I introduce myself at industry events from now on?",dim:"social"},
-      {text:"Finally free! I want to learn painting, travel everywhere, and finally read all those books I've never had time for.",dim:"free"}
-    ]
-  },
-  {
-    scenario:"It's the weekend and you're home alone. Someone sends you an invitation to a classmates' reunion in the group chat. You would:",
-    options:[
-      {text:"Hesitate: 'Do I have any recent work progress or industry achievements to share?' Then decide whether to go.",dim:"career"},
-      {text:"Sign up immediately: 'Haven't seen everyone in so long! Perfect time to catch up!'",dim:"family"},
-      {text:"Think carefully: 'Who will be at this reunion? Am I in good enough shape for it?'",dim:"social"},
-      {text:"Politely decline: 'Thanks for the invite, but I have my own plans that day.' Then enjoy a quiet afternoon alone.",dim:"free"}
-    ]
-  },
-  {
-    scenario:"You see an old classmate share an article about their entrepreneurial success on social media, receiving countless likes and comments. You would:",
-    options:[
-      {text:"Truly admire them and consider reaching out to explore potential collaboration.",dim:"career"},
-      {text:"Feel happy for your friend, give it a like, then think of that photo of you with your kids and share a family picture instead.",dim:"family"},
-      {text:"Silently liked it, then start wondering if there's anything noteworthy happening in your own life worth sharing.",dim:"social"},
-      {text:"Scroll past it, continue watching a travel documentary on your phone — other people's success doesn't feel relevant to you.",dim:"spirit"}
-    ]
-  },
-  {
-    scenario:"Your child has gone off to college, gotten married, or started working in another city. Now it's just you and your partner at home, and the kitchen feels too quiet. You would:",
-    options:[
-      {text:"Redecorate your study and start planning: 'What else can I accomplish in retirement?'",dim:"career"},
-      {text:"Discuss with your partner: 'Should we visit our parents more often / help our kids take care of the grandkids?'",dim:"family"},
-      {text:"Join social activities, meet new friends, so you don't feel so 'left alone.'",dim:"social"},
-      {text:"Start reflecting on questions you've never had time to consider: 'What kind of life do I actually want to live?'",dim:"spirit"}
-    ]
-  },
-  {
-    scenario:"Someone asks you to describe yourself in three words. You would say:",
-    options:[
-      {text:"Professional, reliable, results-driven.",dim:"career"},
-      {text:"Warm, caring, responsible.",dim:"family"},
-      {text:"Well-connected, respected, socially skilled.",dim:"social"},
-      {text:"Free, authentic, easygoing.",dim:"free"}
-    ]
-  },
-  {
-    scenario:"You're facing a choice: one is a stable, respectable job opportunity; the other is an opportunity to pursue what you love, but with uncertain income. You would:",
-    options:[
-      {text:"Carefully evaluate which one allows my professional abilities to be better utilized and which has more 'future' potential.",dim:"career"},
-      {text:"Choose whichever option lets me spend more time with family and maintain family bonds.",dim:"family"},
-      {text:"Choose whichever option gives me more prestige and status among my friends and social circles.",dim:"social"},
-      {text:"Choose whichever option excites me and feels like 'this is exactly what I want.'",dim:"free"}
-    ]
-  },
-  {
-    scenario:"You're at a social event and someone asks you: 'What do you do now?' Your answer would be:",
-    options:[
-      {text:"Give a detailed introduction of your professional background, area of expertise, and industry influence.",dim:"career"},
-      {text:"'Right now I mainly help out at home, taking care of grandchildren and family.'",dim:"family"},
-      {text:"'Me? I have so many friends, I'm pretty busy with social stuff!'",dim:"social"},
-      {text:"'Well, I'm exploring some new directions…'",dim:"free"}
-    ]
-  },
-  {
-    scenario:"Late at night, you can't sleep. What keeps replaying in your mind is:",
-    options:[
-      {text:"'What goals haven't I achieved yet? What more value can I create?'",dim:"career"},
-      {text:"'Is my child doing okay in that other city? How are my parents' health lately?'",dim:"family"},
-      {text:"'Was what I said at the gathering today not quite appropriate? What does that person think of me?'",dim:"social"},
-      {text:"'What am I really chasing in this life? What truly matters?'",dim:"spirit"}
-    ]
-  },
-  {
-    scenario:"You see a very expensive piece of clothing at a department store — unique design but staggering price tag. You would:",
-    options:[
-      {text:"Hesitate, then buy it: 'Wearing it to meet clients/partners shows good taste — it's worth it.'",dim:"career"},
-      {text:"Take a photo and send it to your family: 'This is quite nice, what do you think — would it suit me?'",dim:"family"},
-      {text:"Try it on, take a photo, post it on social media to see if the likes and comments are plentiful, then decide whether to buy.",dim:"social"},
-      {text:"Think about it and realize you can wear whatever at home anyway, skip the purchase, and save the money for travel instead.",dim:"free"}
-    ]
-  },
-  {
-    scenario:"You participate in a charity event helping children at an orphanage. Your most fulfilling moment is:",
-    options:[
-      {text:"'I leveraged my professional experience to help this event gain greater visibility.'",dim:"career"},
-      {text:"Seeing the children hold the volunteers' hands and say 'Thank you, uncle and auntie' — it warms your heart.",dim:"family"},
-      {text:"After the photos are posted, friends flood the comments: 'You have such a big heart!'",dim:"social"},
-      {text:"In the process of being with the children, you find a sense of inner peace and fulfillment within yourself.",dim:"spirit"}
-    ]
-  },
-  {
-    scenario:"If you had ample time and money, with no practical constraints whatsoever, the very first thing you'd want to do is:",
-    options:[
-      {text:"Found my own institution or brand, passing on everything I've learned over the years.",dim:"career"},
-      {text:"Travel together with the whole family — everyone together, family bliss.",dim:"family"},
-      {text:"Become an influential figure in some field, giving speeches and being featured in media coverage.",dim:"social"},
-      {text:"Seclude myself somewhere, reading, writing, meditating — living a life of inner peace.",dim:"spirit"}
-    ]
-  },
-  {
-    scenario:"What would you want written on your epitaph?",
-    options:[
-      {text:"'He/She created tremendous value and nurtured countless talents.'",dim:"career"},
-      {text:"'He/She was a loving parent/partner/child — family was their greatest pride.'",dim:"family"},
-      {text:"'He/She lived the life many envied, with friends across the world.'",dim:"social"},
-      {text:"'He/She lived authentically and found inner peace.'",dim:"free"}
-    ]
-  }
-];
+// ─── Quiz Content ─────────────────────────────────────────────────────────
+const QUIZ_CONTENT = {
+  questionCount: 14,
+  hasDisclaimer: true,
+  // Scoring: each question maps options A/B/C/D to role types
+  questions: [
+    {
+      id: 1,
+      text: "You've been at your company for two years. A colleague notices that you seem different in a client meeting than you do around your close friends. When they mention this, you:",
+      textChinese: "你在公司工作了两年。一位同事注意到你在客户会议上和在亲密朋友身边看起来很不一样。当他们提到这点时，你：",
+      options: [
+        { text: "Feel briefly unsettled — you're not sure which version is the 'real' you.", textChinese: "短暂感到不安——你不确定哪个版本的才是'真正的'你。", mapsTo: "navigator" },
+        { text: "Recognize it immediately. You do adapt your approach depending on the audience, and you're comfortable with that flexibility.", textChinese: "立刻意识到。你确实会根据听众调整你的方式，而且你对这种灵活性感到舒适。", mapsTo: "achiever" },
+        { text: "Feel relieved they noticed the difference — it confirms what you've sensed about yourself.", textChinese: "感到释然，他们注意到了不同——这印证了你对自己隐约的感知。", mapsTo: "relater" },
+        { text: "Dismiss it as no big deal. You show up reliably for whoever needs you — that's what matters.", textChinese: "不以为然。你对每个需要你的人都能可靠地出现——这才是重要的。", mapsTo: "guardian" }
+      ]
+    },
+    {
+      id: 2,
+      text: "Your closest friend calls you at midnight, visibly upset about a major life decision. You:",
+      textChinese: "你最亲密的朋友午夜给你打电话，对一个重大人生决定明显感到不安。你：",
+      options: [
+        { text: "Listen deeply, reflect back what you hear, and stay on the line until they feel clearer — even if it takes hours.", textChinese: "深度倾听、反映你听到的内容，并在电话旁陪伴直到他们感觉更清晰——即使需要几个小时。", mapsTo: "relater" },
+        { text: "Help them map out a structured decision-making framework — pros, cons, values alignment.", textChinese: "帮他们构建一个结构化的决策框架——利弊、价值观一致性。", mapsTo: "achiever" },
+        { text: "Go to them in person without hesitation. Being physically present is the only appropriate response.", textChinese: "毫不犹豫地亲自过去。亲自在场是唯一恰当的回应。", mapsTo: "guardian" },
+        { text: "Listen, but quietly wonder if their need for external guidance is part of a larger pattern they're avoiding.", textChinese: "倾听，但暗暗好奇他们对外部指导的需求是否是他们在回避的更大模式的一部分。", mapsTo: "navigator" }
+      ]
+    },
+    {
+      id: 3,
+      text: "You're offered a high-visibility promotion that would require relocating to a new city within three months. The role is exciting, but it would mean leaving a community and people you've invested deeply in. You:",
+      textChinese: "你被提供一个高知名度的晋升机会，但需要在三个月内搬到另一个城市。这个角色令人兴奋，但这意味着离开你已经深度投入的社区和人。你：",
+      options: [
+        { text: "Negotiate for a remote or phased transition, or decline if the human cost feels too high.", textChinese: "协商远程或阶段性过渡方案，或者如果代价太高则拒绝。", mapsTo: "relater" },
+        { text: "Accept immediately. This is the kind of opportunity that defines a career — you can build new connections anywhere.", textChinese: "立即接受。这是一个定义职业生涯的机会——你在任何地方都能建立新的联系。", mapsTo: "achiever" },
+        { text: "Feel torn, but the security of the familiar and the people who depend on you feels impossible to walk away from.", textChinese: "感到纠结，但熟悉的安全感和依赖你的人让你感觉无法离开。", mapsTo: "guardian" },
+        { text: "Feel the familiar pull of something new — the excitement of an unknown city is compelling, almost instinctively.", textChinese: "感受到新鲜事物的熟悉拉力——未知城市的兴奋感很有吸引力，几乎是本能的。", mapsTo: "navigator" }
+      ]
+    },
+    {
+      id: 4,
+      text: "At a dinner party, someone asks what you've been up to lately. You find yourself:",
+      textChinese: "在一个晚宴上，有人问你最近在忙什么。你发现自己：",
+      options: [
+        { text: "Describing what you're building — a project, a goal, a skill you're developing.", textChinese: "描述你正在建设的东西——一个项目、一个目标、一项正在发展的技能。", mapsTo: "achiever" },
+        { text: "Telling stories about the people in your life and what you've been doing together.", textChinese: "讲述关于你生活中的人以及你们一起做的事情的故事。", mapsTo: "relater" },
+        { text: "Sharing what you've done to help or support someone — framed as 'just what anyone would do.'", textChinese: "分享你为帮助或支持某人做了什么——表述为'任何人都会做的事'。", mapsTo: "guardian" },
+        { text: "Giving an answer that surprises even you — something unconventional, or pivoting the question back to them.", textChinese: "给出一个连你自己都惊讶的答案——有些 unconventional，或者把问题转向他们。", mapsTo: "navigator" }
+      ]
+    },
+    {
+      id: 5,
+      text: "Think about your living space — the environment you come home to. Which description feels most accurate?",
+      textChinese: "想想你的居住空间——你回来的地方。哪个描述最准确？",
+      options: [
+        { text: "Organized around the people I love — photos, spaces arranged for connection.", textChinese: "围绕我爱的人组织——照片、为连接而安排的空间。", mapsTo: "relater" },
+        { text: "Efficient and goal-oriented — my workspace is set up for maximum output.", textChinese: "高效且目标导向——我的工作空间为最大产出而设置。", mapsTo: "achiever" },
+        { text: "Cozy, well-stocked, maintained — a reliable refuge for whoever might need it.", textChinese: "温馨、充足、维护良好——一个可靠的避风港，供任何可能需要的人使用。", mapsTo: "guardian" },
+        { text: "Frequently rearranged, mixed with things collected from different life phases — it changes as I do.", textChinese: "经常重新布置，混合着从不同人生阶段收集的东西——它随着我改变。", mapsTo: "navigator" }
+      ]
+    },
+    {
+      id: 6,
+      text: "You realize that in most of your important relationships, there's a consistent pattern: you give significantly more than you receive. When you notice this, you:",
+      textChinese: "你意识到在你大多数重要的关系中，有一个持续的模式：你给予的远比收到的多。当你注意到这一点时，你：",
+      options: [
+        { text: "Feel hurt, but struggle to bring it up because you fear the relationship can't survive the conversation.", textChinese: "感到受伤，但很难提出来，因为你担心这段关系无法承受这场对话。", mapsTo: "relater" },
+        { text: "Immediately recalibrate — you'll match what's given, nothing more. You don't need reciprocity anyway.", textChinese: "立即重新校准——你只会配合给出的分量，不会更多。反正你不需要回报。", mapsTo: "achiever" },
+        { text: "Acknowledge it, but rationalize it — giving more is simply who you are, and the relationship is worth it.", textChinese: "承认这一点，但合理化它——给予更多只是你的本性，而且这段关系是值得的。", mapsTo: "guardian" },
+        { text: "Take it as a signal to reassess the relationship entirely — this might be a reason to move on.", textChinese: "将其作为一个重新评估整段关系的信号——这可能是离开的一个理由。", mapsTo: "navigator" }
+      ]
+    },
+    {
+      id: 7,
+      text: "A conflict arises with someone you care about. Before addressing it, you tend to:",
+      textChinese: "与你关心的人发生了冲突。在处理之前，你倾向于：",
+      options: [
+        { text: "Put yourself in their position first — understanding their perspective feels like the essential starting point.", textChinese: "先站在他们的角度——理解他们的观点感觉是必要的起点。", mapsTo: "relater" },
+        { text: "Focus on the objective facts of what happened and what resolution actually looks like.", textChinese: "专注于发生的客观事实以及真正看起来像什么样的解决方案。", mapsTo: "achiever" },
+        { text: "Consider how your response will affect the stability of the relationship and the people involved.", textChinese: "考虑你的回应将如何影响这段关系的稳定性以及涉及的人。", mapsTo: "guardian" },
+        { text: "Assess whether this conflict signals a fundamental incompatibility — and whether this relationship still makes sense.", textChinese: "评估这个冲突是否暗示了根本的不相容——以及这段关系是否仍然有意义。", mapsTo: "navigator" }
+      ]
+    },
+    {
+      id: 8,
+      text: "You've been asked to introduce yourself at an event. You tend to lead with:",
+      textChinese: "你被要求在一个活动上自我介绍。你倾向于以：",
+      options: [
+        { text: "The work or projects you're currently focused on and excited about.", textChinese: "你目前专注并感到兴奋的工作或项目。", mapsTo: "achiever" },
+        { text: "Your role in relation to others — 'I'm a mother of two,' 'I co-run a community space,' etc.", textChinese: "你与他人的关系角色——'我是两个孩子的妈妈'，'我共同运营一个社区空间'等。", mapsTo: "relater" },
+        { text: "How you serve or support others — your professional or personal contribution to a group.", textChinese: "你如何服务或支持他人——你对一个群体的专业或个人贡献。", mapsTo: "guardian" },
+        { text: "Something unexpected or genuine that reflects your current inner state — which sometimes surprises people.", textChinese: "一些反映你当前内心状态的出乎意料或真实的东西——这有时会让人们感到惊讶。", mapsTo: "navigator" }
+      ]
+    },
+    {
+      id: 9,
+      text: "Your manager pressures you to take on a major project with an unrealistic timeline. You:",
+      textChinese: "你的经理向你施压，要求你承担一个时间线不现实的重要项目。你：",
+      options: [
+        { text: "Push back with data and logic — renegotiate scope or timeline based on what's actually achievable.", textChinese: "用数据和逻辑反击——根据实际可实现的来重新协商范围或时间线。", mapsTo: "achiever" },
+        { text: "Say yes, then quietly start rallying colleagues to help distribute the load.", textChinese: "先答应，然后悄悄开始召集同事来帮助分担工作量。", mapsTo: "guardian" },
+        { text: "Struggle to refuse because you don't want to disappoint them or damage the relationship.", textChinese: "很难拒绝，因为你不想让他们失望或损害这段关系。", mapsTo: "relater" },
+        { text: "Quietly start looking for an exit — this kind of environment wasn't part of the plan.", textChinese: "悄悄地开始寻找退路——这种环境不在计划之中。", mapsTo: "navigator" }
+      ]
+    },
+    {
+      id: 10,
+      text: "When you imagine your ideal life five years from now, it primarily looks like:",
+      textChinese: "当你想象五年后理想的生活，它主要看起来像：",
+      options: [
+        { text: "A close circle of deeply known, deeply loving relationships — the kind of intimacy that takes years to build.", textChinese: "一个彼此深度了解、深度相爱的亲密圈子——那种需要数年才能建立的亲密感。", mapsTo: "relater" },
+        { text: "A track record of significant achievements — something you built, led, or became that you're genuinely proud of.", textChinese: "一系列重大成就的记录——你建立、领导或成为的某件事，让你真正自豪。", mapsTo: "achiever" },
+        { text: "Having created a stable, secure foundation for the people you love — being the reason things run smoothly.", textChinese: "为你爱的人创造了一个稳定、安全的基础——成为事情顺利运行的原因。", mapsTo: "guardian" },
+        { text: "Honestly unclear — and you're comfortable with that. The point is the freedom to find out.", textChinese: "坦白说还不清楚——而且你对这一点感到舒适。重点是有去发现的自由。", mapsTo: "navigator" }
+      ]
+    },
+    {
+      id: 11,
+      text: "A close friend mentions they felt hurt by something you did, and they were hesitant to bring it up. You:",
+      textChinese: "一位亲密的朋友提到他们因为你做的事感到受伤，而且他们犹豫要不要说出来。你：",
+      options: [
+        { text: "Feel a strong emotional response — this kind of rupture in connection is painful and you want to fix it immediately.", textChinese: "感到强烈的情绪反应——这种连接中的裂痕是痛苦的，你想立即修复它。", mapsTo: "relater" },
+        { text: "Thank them for their honesty, ask for specifics, and work together on a concrete plan to do better.", textChinese: "感谢他们的诚实，要求具体说明，并共同制定一个具体计划来做得更好。", mapsTo: "achiever" },
+        { text: "Feel a pang of guilt and immediately shift into caretaker mode — what do they need from you right now?", textChinese: "感到一阵内疚，并立即转入照顾者模式——他们现在需要你做什么？", mapsTo: "guardian" },
+        { text: "Listen carefully, but part of you wonders if their hurt reflects their own pattern more than yours.", textChinese: "仔细倾听，但你的一部分在想他们的受伤是否更多反映的是他们自己的模式，而非你的。", mapsTo: "navigator" }
+      ]
+    },
+    {
+      id: 12,
+      text: "You've achieved something significant that you'd worked toward for years. When it finally happens, you primarily feel:",
+      textChinese: "你实现了一个你为之努力多年的重要目标。当它终于发生时，你主要感到：",
+      options: [
+        { text: "A bittersweet satisfaction — the achievement is real, but you already feel the pull toward what's next.", textChinese: "一种苦乐参半的满足感——成就是真实的，但你已经感到对下一个目标的拉力。", mapsTo: "achiever" },
+        { text: "A quiet sense of relief — now you can rest, share it with the people who matter, and just be.", textChinese: "一种平静的释然感——现在你可以休息，与重要的人分享，就这样存在。", mapsTo: "relater" },
+        { text: "Gratitude that the people you provide for will now have more stability because of what you've built.", textChinese: "感激——因为你建立的这个基础，你提供的人现在将拥有更多的稳定性。", mapsTo: "guardian" },
+        { text: "A subtle discomfort — something in you resists staying in this identity for too long.", textChinese: "一种微妙的不适——你内心的某些东西抗拒在过于长久地停留在这个身份中。", mapsTo: "navigator" }
+      ]
+    },
+    {
+      id: 13,
+      text: "Which of the following statements resonates most with how you see yourself?",
+      textChinese: "以下哪句话最符合你对自己的看法？",
+      options: [
+        { text: "I know who I am because of the people I love and who love me back.", textChinese: "我因为爱我的人和我爱的人而知道自己是谁。", mapsTo: "relater" },
+        { text: "I know who I am by what I do — my work, my projects, my track record of getting things done.", textChinese: "我通过我所做的事来了解自己——我的工作、我的项目、我完成事情的记录。", mapsTo: "achiever" },
+        { text: "I know who I am because people count on me — I'm the one who shows up, who holds things together.", textChinese: "我知道我是谁，因为人们依赖我——我是那个出现、维系一切的人。", mapsTo: "guardian" },
+        { text: "I resist the question — I am whoever I am in this moment, and I refuse to be permanently pinned down.", textChinese: "我抗拒这个问题——我是此刻的我，而我拒绝被永久地定义。", mapsTo: "navigator" }
+      ]
+    },
+    {
+      id: 14,
+      text: "You're reflecting on a time you felt truly fulfilled — not happy in a fleeting way, but deeply satisfied. What most consistently appears in that memory?",
+      textChinese: "你在反思一段你感到真正满足的时光——不是短暂的快乐，而是深深的满足。在那个记忆中，什么最一致地出现？",
+      options: [
+        { text: "The presence of specific people — a moment of being truly seen, heard, and connected.", textChinese: "特定的人的存在——一个被真正看见、听到和连接的瞬间。", mapsTo: "relater" },
+        { text: "The feeling of a challenge conquered — proving to yourself that you could do something hard.", textChinese: "征服挑战的感觉——向自己证明你能做困难的事。", mapsTo: "achiever" },
+        { text: "Knowing that something you did protected or stabilized things for people you care about.", textChinese: "知道你做的事保护或稳定了你关心的人的生活。", mapsTo: "guardian" },
+        { text: "A sense of freedom and aliveness — following your own path, even if it didn't make rational sense.", textChinese: "一种自由和活力的感觉——跟随你自己的道路，即使它没有理性的意义。", mapsTo: "navigator" }
+      ]
+    }
+  ]
+};
 
-const RESULTS = {
-  career:{
-    typeTag:"Career Achievement Type",tagClass:"career",
-    name:"Value Creator",
-    tagline:"Your meaning comes from what you can create",
-    traits:[
-      {icon:"🎯",text:"You equate personal worth with professional contribution and capability output"},
-      {icon:"📊",text:"You find security and fulfillment in achievements, rankings, and influence"},
-      {icon:"🏆",text:"You define who you are by 'what you've accomplished'"},
-      {icon:"💼",text:"One of the groups most prone to identity void after retirement or transition"}
+// ─── Role Types ────────────────────────────────────────────────────────────
+const ROLE_TYPES = {
+  relater: {
+    name: "The Relater",
+    nameChinese: "关系型锚点",
+    coreDescription: "Your identity is most deeply anchored in connection. The quality and depth of your relationships — and the degree to which you feel truly known within them — shapes your inner world more than any achievement or role could.",
+    coreDescriptionChinese: "你的身份最深地锚定在连接中。关系的质量和深度——以及你在其中感到被真正了解的程度——比任何成就或角色都更塑造你的内心世界。",
+    keyTraits: [
+      "Prioritizes emotional intimacy and mutual understanding over achievement",
+      "Naturally attuned to others' needs and feelings, often before your own",
+      "Feels a sense of incompleteness when connections are shallow or absent",
+      "Seeks relationships where you can be fully known — not just liked",
+      "Tends to define life milestones by relational events",
+      "Deep loyalty once trust is established; struggle to let go of significant bonds"
     ],
-    growth:"You've been living in 'being useful.' Now it's time to learn: **being itself is worthy of love.** You don't need to create value every minute — you deserve to be valued simply for being 'you.'",
-    actions:[
-      {title:"Take inventory of your 'achievement assets'",desc:"List the professional skills, networks, and transferable abilities you've built over 20 years — not to find a job, but to affirm: you have so much, you are already rich."},
-      {title:"Try a day of 'zero output' companionship",desc:"This month, set aside one day with no 'productive' agenda — just tea, walks, and conversation with family. Observe whether you can feel good doing 'nothing at all.'"},
-      {title:"Seek 'legacy' rather than 'continuation'",desc:"Instead of clinging to your professional identity, ask yourself: in what new form can your experience help others? Mentorship, writing, speaking… let value flow, rather than staying trapped in a job title."}
-    ]
+    keyTraitsChinese: [
+      "将情感亲密和相互理解置于成就之上",
+      "天生敏锐于他人的需求和感受，常优先于自己的",
+      "当连接浅薄或缺失时，会感到不完整",
+      "寻求那种被完全了解而不只是被喜欢的关",
+      "倾向于以关系事件来定义人生里程碑",
+      "一旦信任建立便极其忠诚；难以放下重要的情感纽带"
+    ],
+    relationalPattern: "You show up as a deep listener and emotional steward in relationships. You create space for others to be vulnerable, and you reciprocate by revealing your inner world. In conflict, your instinct is to preserve the bond — sometimes at the cost of your own needs. You may struggle with boundaries if a connection feels significant enough.",
+    relationalPatternChinese: "在关系中，你是一个深度倾听者和情感守护者。你为他人创造敞开心扉的空间，并通过展示自己的内心世界来回应。在冲突中，你的本能是维护这段关系——有时会以牺牲自己的需求为代价。如果一段连接足够重要，你可能在设立界限方面有困难。",
+    decisionMakingStyle: "You weigh decisions by how they affect your key relationships and the quality of connection they will create or preserve. Logical analysis matters, but if a choice feels like it will damage a meaningful bond, it becomes very difficult to justify — even intellectually.",
+    decisionMakingStyleChinese: "你通过决策如何影响你的核心关系及将创造或保留的连接质量来权衡决定。逻辑分析很重要，但如果一个选择感觉会损害一段有意义的联系，即使在理智上也很难说服自己。",
+    growthEdge: "You tend to avoid sitting with uncomfortable emotions alone, or making decisions that feel like they might cost you connection — even when that connection is not healthy for you. Growth edge: practicing sitting with solitude and discomfort, and trusting that healthy relationships can survive you having needs, setting limits, and occasionally choosing yourself.",
+    growthEdgeChinese: "你倾向于回避独自面对不适的情绪，或回避那些感觉可能让你失去连接的决策——即使那段连接对你并不健康。成长方向：练习独自与寂寞和不适共处，并信任健康的关系能够承受你有需求、设立界限、偶尔选择自己。"
   },
-  family:{
-    typeTag:"Family Connection Type",tagClass:"family",
-    name:"Guardian of Love",
-    tagline:"Your meaning comes from your bond with loved ones",
-    traits:[
-      {icon:"🏠",text:"Your core identity is anchored in the role of parent, child, or partner"},
-      {icon:"💞",text:"You derive self-worth from caring for others and being needed by family"},
-      {icon:"🤝",text:"Family harmony and loved ones' health are your greatest sources of peace"},
-      {icon:"⚠️",text:"Most vulnerable to feelings of loss when family members build independent lives and need you less"}
+  achiever: {
+    name: "The Achiever",
+    nameChinese: "成就型锚点",
+    coreDescription: "Your identity is most anchored in what you do and what you build. Progress, competence, and visible results are not just motivators — they are the lens through which you understand yourself and the world.",
+    coreDescriptionChinese: "你的身份最深地锚定在你所做的事和你所建立的东西中。进步、能力和可见的结果不仅仅是动力——它们是你理解自己和世界的镜头。",
+    keyTraits: [
+      "Motivated by clear goals, measurable progress, and visible results",
+      "Takes genuine satisfaction in developing skills and increasing competence",
+      "Responds to challenge with energy rather than anxiety — when in healthy range",
+      "Often seeks recognition or validation for your work",
+      "Defines life chapters by accomplishments, promotions, projects completed",
+      "Highly adaptable in structured, performance-oriented environments"
     ],
-    growth:"Your dedication to family is real and invaluable. But you also need to learn: **you are not only someone's someone — you are first and foremost yourself.** Finding yourself doesn't mean betraying your family; it makes your love for them more grounded.",
-    actions:[
-      {title:"Redefine your 'care'",desc:"Shift from physical presence to emotional presence — a heartfelt message means more than overstepping into your child's decisions. Love can be expressed through space, not intrusion."},
-      {title:"Claim a weekly 'me-time' ritual",desc:"Choose something that belongs entirely to you — a hobby, learning, socializing — with no purpose of being 'useful to family.' Simply because you enjoy it."},
-      {title:"Expand the boundaries of your 'family'",desc:"Help a neighbor, join community events, volunteer — let your capacity for love flow to a wider world. You won't love your family any less; instead, your love will become more abundant."}
-    ]
+    keyTraitsChinese: [
+      "被明确目标、可衡量的进展和可见成果所激励",
+      "从发展技能和提高能力中获得真正的满足感",
+      "用能量而非焦虑来回应挑战——在健康状态下",
+      "经常寻求对其工作的认可或肯定",
+      "以成就、晋升、完成的项目来定义人生章节",
+      "在结构化、绩效导向的环境中高度适应"
+    ],
+    relationalPattern: "You often show up as a driven, optimistic partner or colleague who inspires others through vision and momentum. You may default to 'doing' for people rather than 'being' with them — solving, fixing, or building alongside rather than just sitting in emotional presence. Relationships can feel like team projects.",
+    relationalPatternChinese: "你经常以一个有动力、乐观的伴侣或同事形象出现，通过愿景和势头激励他人。你可能默认用"做事"而非"陪伴"来对待他人——解决、修补或并肩建设，而非仅仅处于情感存在中。关系可能感觉像团队项目。",
+    decisionMakingStyle: "You make decisions through a lens of projected outcomes and strategic advantage. Options are weighed by their potential to create value, progress, or competitive edge. Risks that promise high reward are more compelling than safe options with limited upside.",
+    decisionMakingStyleChinese: "你通过预期结果和战略优势来做出决定。选项通过其创造价值、进展或竞争优势的潜力来权衡。承诺高回报的风险比有限上升空间的安稳选择更吸引你。",
+    growthEdge: "You tend to avoid resting, being still, or doing things without a clear ROI — which can lead to burnout or using achievement to self-worth interchangeably. Growth edge: practicing presence without purpose, learning to receive care without reciprocating with productivity, and discovering that your worth is not contingent on what you produce.",
+    growthEdgeChinese: "你倾向于回避休息、静止，或做没有明确回报的事情——这可能导致倦怠，或将成就与自我价值混为一谈。成长方向：练习不带目的地临在，学会不通过生产力来回报地接受关怀，并发现你的价值并非取决于你的产出。"
   },
-  social:{
-    typeTag:"Social Recognition Type",tagClass:"social",
-    name:"Connection Artist",
-    tagline:"Your meaning comes from the quality of your connections with others",
-    traits:[
-      {icon:"🌐",text:"Your self-worth heavily depends on external validation (likes, approval, recognition)"},
-      {icon:"🤳",text:"Social media affects your emotions more than the average person"},
-      {icon:"🎭",text:"Sometimes you feel exhausted maintaining your 'personal brand'"},
-      {icon:"🔍",text:"When the applause fades, solitude brings on the deepest emptiness"}
+  guardian: {
+    name: "The Guardian",
+    nameChinese: "守护型锚点",
+    coreDescription: "Your identity is most anchored in being the reliable, responsible presence that others can count on. Whether it's family, a team, or a cause you believe in — your sense of self is built on the stability and well-being you provide. Being needed feels like being real.",
+    coreDescriptionChinese: "你倾向于在成为他人可依赖、可依赖、陪伴的存在中找到自我。无论家人、团队还是你信仰的事业——你的自我感建立在你能提供的稳定和福祉之上。被需要的感觉就是存在感。",
+    keyTraits: [
+      "Deep sense of duty and personal responsibility for others' welfare",
+      "Reliable to the point of overcommitting — saying yes before thinking it through",
+      "Draws identity from being the steady presence others can count on",
+      "Often puts others' immediate needs before your own — sometimes unconsciously",
+      "Feels guilty or restless when not contributing or being useful",
+      "Creates and maintains structures, traditions, and safety nets for the people you care about"
     ],
-    growth:"Your sensitivity to relationships is a genuine gift — it enables you to connect people's emotions. But you need to start distinguishing: **being liked** vs. **being respected**, **a room full of acquaintances** vs. **one or two true confidants**. What truly calms your heart isn't a hundred likes — it's one person who truly understands you.",
-    actions:[
-      {title:"Conduct a 'digital detox' experiment",desc:"This week, go one full day without any social media. Record how your mood changes — how often do you reach for your phone? How do you feel when no one likes your posts? Awareness is the first step to change."},
-      {title:"Shift from 'breadth' to 'depth'",desc:"Reach out to someone you truly admire but haven't connected with in a long time — not a mass message, but a genuine conversation. The quality of relationships matters far more than the quantity."},
-      {title:"Learn to savor 'quiet validation'",desc:"Each night, take 5 minutes to reflect on your day — not asking 'who approved of me' but 'who did I positively impact today.' Your worth doesn't need the whole world to witness it."}
-    ]
+    keyTraitsChinese: [
+      "对他人福祉有强烈的义务感和个人责任感",
+      "可靠到过度承诺的程度——不假思索地说'是'",
+      "从成为他人可依靠的稳定存在中获得身份认同",
+      "经常在他人的即时需求面前优先考虑——有时是无意识的",
+      "当没有贡献或没有发挥作用时，会感到内疚或不安",
+      "为你关心的人创造并维护结构、传统和安全网"
+    ],
+    relationalPattern: "You show up as the rock — emotionally steady, practically helpful, and fiercely protective of those in your inner circle. You express love through acts of service and presence. But you can also struggle to receive care, seeing it as your role to give rather than receive.",
+    relationalPatternChinese: "你的出现就像一块磐石——情感稳定、实际有用、强烈保护你内心圈子的人。你通过服务和陪伴来表达爱。但你也可能在接受关怀方面有困难，将其视为给予而非接受的的角色。",
+    decisionMakingStyle: "You prioritize decisions by their impact on the people you are responsible for. Safety, stability, and continuity for your people come first. You may discount your own preferences or needs in favor of what protects or serves your family or team.",
+    decisionMakingStyleChinese: "你通过决策对你负责的人的影响来优先排序。你的人的安全、稳定和连续性是第一位的。你可能会为了保护或服务你的家庭或团队而牺牲自己的偏好或需求。",
+    growthEdge: "You tend to avoid feeling or expressing your own needs, vulnerabilities, or limitations — as if admitting weakness would collapse the stability you provide. Growth edge: allowing yourself to be cared for without reciprocation, recognizing that letting others give to you is also a gift, and that your people need you whole, not just present.",
+    growthEdgeChinese: "你倾向于回避感受或表达你自己的需求、脆弱或局限——仿佛承认弱点会瓦解你所提供的稳定性。成长方向：允许自己被关怀而不必回报，认识到让别人给予你也是一种礼物，以及你的人需要你作为一个完整的人，而非仅仅是在场。"
   },
-  free:{
-    typeTag:"Free Explorer Type",tagClass:"free",
-    name:"Life Explorer",
-    tagline:"Your meaning comes from staying true to your inner self",
-    traits:[
-      {icon:"🧭",text:"You resist being defined, rejecting labels and fixed identities"},
-      {icon:"✨",text:"You draw vitality from fresh experiences and personal breakthroughs"},
-      {icon:"🌱",text:"Conventional 'success' holds limited appeal for you"},
-      {icon:"🌀",text:"Sometimes the lack of a fixed anchor leaves you feeling adrift"}
+  navigator: {
+    name: "The Navigator",
+    nameChinese: "探索型锚点",
+    coreDescription: "Your identity resists being anchored at all — and that refusal is itself a kind of anchor. You define yourself through your capacity to choose freely, to reinvent, to leave, to explore, to remain authentic to your inner compass even when it defies external expectations. Freedom to self-determine is not a preference — it is who you are.",
+    coreDescriptionChinese: "你倾向于抗拒将自我锚定在任何单一角色、关系或成功定义中。你通过自由选择的能力来定义自己——去重新开始、离开、探索、保持真实于你内心的指南针，即使它违背外在期望。自由地自我决定不是偏好——它就是你。",
+    keyTraits: [
+      "Deeply values autonomy and resists roles that feel confining or inauthentic",
+      "Comfortable with ambiguity, change, and multiple parallel possibilities",
+      "Attracted to the 'untried path' — even when the known path is safer",
+      "Resists social scripts about what you 'should' want at a given life stage",
+      "Maintains a strong inner world that doesn't require external validation to feel real",
+      "Can struggle with deep long-term commitments because they can feel like identity cages"
     ],
-    growth:"Your free spirit is the most precious gift. But freedom also comes with responsibility — the responsibility of owning your life's direction. Finding your inner compass isn't about limiting yourself — it's about giving your freedom a sense of direction, your exploration a sense of roots.",
-    actions:[
-      {title:"Map out your 'map of possibilities'",desc:"Grab a piece of paper and write down 10 things you most want to experience in this lifetime (ignoring practicality). Then circle 3 you could start working on right now. Exploration doesn't wait until you're 'ready' — start today."},
-      {title:"Find a 'soul companion for the journey'",desc:"Explorers can feel lonely too. Find a like-minded friend and regularly share your discoveries and confusions — having a fellow traveler makes all the difference."},
-      {title:"Give your exploration a 'root'",desc:"Choose a value you believe in (environment, education, community service…) and let it serve as your stable anchor. Exploration rooted in values is the most powerful kind."}
-    ]
-  },
-  spirit:{
-    typeTag:"Spiritual Meaning Type",tagClass:"spirit",
-    name:"Inner Awakener",
-    tagline:"Your meaning comes from your dialogue with your inner self",
-    traits:[
-      {icon:"🕯️",text:"You've been asking fundamental questions — 'Who am I?' 'What do I live for?' — since early on"},
-      {icon:"📖",text:"You feel a natural draw toward philosophy, religion, and psychology"},
-      {icon:"🧘",text:"You value inner peace far more than external achievement"},
-      {icon:"🌊",text:"Sometimes your depth of thought creates distance from mainstream social circles"}
+    keyTraitsChinese: [
+      "深度重视自主权，回避感觉受限或不真实的角色",
+      "对模糊、变化和多重可能性感到舒适",
+      "被'未尝试的道路'吸引——即使已知的道路更安全",
+      "抗拒关于在某个人生阶段你应该'想要'什么的社会脚本",
+      "保持一个强大的内心世界，不需要外在肯定来感觉真实",
+      "可能难以深度长期承诺，因为它们可能感觉像身份牢笼"
     ],
-    growth:"You're on a deeply wise path. But please watch out: **excessive inward focus can disconnect you from the ground beneath your feet, leaving you living in the clouds of your own mind.** True awakening doesn't only happen on a meditation cushion — it also happens in the warmth of a kitchen, in the bickering with your child, in the roughness and realness of daily life.",
-    actions:[
-      {title:"Transform 'insight' into 'action'",desc:"The wisdom you've gained, the courses you've taken — don't let them stay trapped in notebooks. Choose one thing you already know but haven't yet done, and act on it this week. Integrating knowledge with action is true wisdom."},
-      {title:"Participate in some 'grounded' activities",desc:"Join a community event, volunteer for a day, help a friend solve a practical problem… Let your spiritual pursuits take root in the real world, and your strength will multiply."},
-      {title:"Share your 'awakenings' with others",desc:"Write down or speak aloud your reflections on life — even if you feel others may not understand. Sharing is the best way to deepen your spiritual growth."}
-    ]
+    relationalPattern: "You show up as genuine and unconventional — often drawing others in through your authenticity and refusal to perform. You are drawn to intensity and connection in the present moment. But you may pull back when a relationship starts to feel like an obligation or a fixed role you are expected to play.",
+    relationalPatternChinese: "你的出现真实且不按常规——经常通过你的真实性和拒绝表演而吸引他人。你被当下的强度和连接所吸引。但当一段关系开始感觉像义务或一个你被期望扮演的固定角色时，你可能会退缩。",
+    decisionMakingStyle: "You make decisions based on whether they preserve your sense of freedom and authenticity. Options that feel like a trap — even a comfortable one — are almost impossible to accept. You are drawn to decisions that expand possibility.",
+    decisionMakingStyleChinese: "你通过决策是否能保持你的自由感和真实感来做出决定。感觉像陷阱的选项——即使是舒适的陷阱——几乎不可能接受。你被扩展可能性的决策所吸引。",
+    growthEdge: "You tend to avoid committing fully to anything — a relationship, a path, a role — because full commitment can feel like losing yourself. Growth edge: learning that some anchors don't imprison you; that choosing a deep relationship or a defined path doesn't have to mean losing your freedom — it can mean discovering a dimension of yourself that only emerges through commitment.",
+    growthEdgeChinese: "你倾向于回避全身心投入任何事物——一段关系、一条道路、一个角色——因为全身心投入可能感觉像失去自己。成长方向：学习有些锚点不会囚禁你；选择一个深入的关系或明确的道路不一定意味着失去自由——它可能意味着发现一个只有通过承诺才能显现的自我维度。"
   }
 };
 
-// ─── State ───────────────────────────────────────────────────────────────────
-const TOTAL = 12;
-let currentQ = 0;
-let answers = new Array(TOTAL).fill(null); // null | 0|1|2|3 (option index)
-let clickCooldown = false;
+// ─── App State ────────────────────────────────────────────────────────────
+let currentLang = 'en';
+let state = {
+  screen: 'intro',
+  answers: {},
+  currentQuestion: 1,
+  resultType: null,
+  resultData: null
+};
 
-// ─── Storage ─────────────────────────────────────────────────────────────────
-const STORAGE_KEY = 'role_anchor_quiz';
-function saveProgress(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify({currentQ,answers}))}catch(e){}}
-function loadProgress(){
-  try{const d=JSON.parse(localStorage.getItem(STORAGE_KEY));if(d&&d.answers){currentQ=d.currentQ;answers=d.answers;return true}}catch(e){}
-  return false
+// ─── Language ─────────────────────────────────────────────────────────────
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+  document.getElementById('lang-cn').classList.toggle('active', lang === 'cn');
+  renderAllLangStrings();
+  if (state.screen === 'quiz') renderQuestion();
+  if (state.screen === 'result') renderResult();
 }
-function clearProgress(){try{localStorage.removeItem(STORAGE_KEY)}catch(e){}}
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
-function $(id){return document.getElementById(id)}
+// ─── All UI strings by lang ───────────────────────────────────────────────
+const STRINGS = {
+  intro: {
+    eyebrow: { en: "Self-Reflection Quiz", cn: "自我反思测验" },
+    title: { en: "Role Anchor Quiz", cn: "身份锚点测验" },
+    tagline: { en: "Discover the invisible role pattern that shapes how you show up in relationships, career, and life.", cn: "发现那个隐形的身影——它如何塑造你在关系、职业与生活中的角色。" },
+    timeText: { en: "8–12 minutes · 14 questions", cn: "8–12分钟 · 14道题" },
+    outcomesTitle: { en: "What you'll discover", cn: "你将发现什么" },
+    outcome1: { en: "Your core role anchor — the pattern that quietly drives your biggest choices", cn: "你的核心角色锚点——那个悄然驱动你最重要选择的模式" },
+    outcome2: { en: "How it shapes your relationships, decisions, and sense of self", cn: "它如何塑造你的关系、决定和自我感" },
+    outcome3: { en: "A growth edge — one direction where genuine change becomes possible", cn: "一个成长方向——真正的改变可能发生的方向" },
+    privacy: { en: "Your responses are private and never shared. This is self-reflection, not diagnosis.", cn: "你的回答是私密的，绝不会分享。这是自我反思，不是诊断。" }
+  },
+  disclaimer: {
+    text1: { en: "There's a pattern you've been living — in how you show up for others, how you make decisions, what you reach for when life gets hard. Most people never name it. This quiz helps you see yours clearly.", cn: "在你与他人相处的方式里，在你的每一次选择中，在那些你拼命抓住的东西背后，有一个一直在运作的模式。多数人从未命名它。这个测验帮你清晰地看见它。" },
+    text2: { en: "There are no wrong answers. It's not a test — it's a mirror.", cn: "没有标准答案。这不是一场考试——它是一面镜子。" },
+    text3: { en: "This quiz is for self-reflection and entertainment purposes. It is not a clinical diagnosis or psychological assessment. Results represent patterns you may recognize, not fixed identities.", cn: "本测验仅供自我反思和娱乐参考，不构成临床诊断或心理评估。结果展示的是你可能识别的模式，而非固定的性格标签。" },
+    text4: { en: "If you're experiencing a personal crisis, please seek professional support.", cn: "若你正处于人生危机中，请寻求专业帮助。" },
+    btn: { en: "I understand →", cn: "我已知晓 →" }
+  },
+  quiz: {
+    qNumber: { en: "Question %d of 14", cn: "第 %d 题，共 14 题" },
+    backLabel: { en: "Back", cn: "返回" }
+  },
+  result: {
+    typeLabel: { en: "Your Role Anchor", cn: "你的角色锚点" },
+    coreLabel: { en: "Core Pattern", cn: "核心模式" },
+    traitsLabel: { en: "Key Traits", cn: "关键特质" },
+    relationalLabel: { en: "Relational Pattern", cn: "关系模式" },
+    decisionLabel: { en: "Decision-Making Style", cn: "决策风格" },
+    growthLabel: { en: "Growth Edge", cn: "成长方向" },
+    whenServesLabel: { en: "When This Serves You", cn: "当这服务于你时" },
+    whenLimitsLabel: { en: "When This Limits You", cn: "当这限制你时" },
+    nextStepLabel: { en: "A Next Step", cn: "下一步" },
+    shareCopyText: { en: "Copy Result Link", cn: "复制结果链接" },
+    retakeText: { en: "Retake Quiz", cn: "重新测验" },
+    footerNote: { en: "If this brings up things that feel heavy, you're not alone. Speaking with a trusted friend or a mental health professional can help.", cn: "如果这让你感到沉重，你并不孤单。与信任的朋友或心理健康专业人士交谈可能会有所帮助。" },
+    disclaimer: { en: "This quiz is for self-reflection and entertainment purposes only. It is not a clinical diagnosis or psychological assessment.", cn: "本测验仅供自我反思和娱乐参考，不构成临床诊断或心理评估。" },
+    mayResonate: { en: "This may feel familiar. Or it may feel completely off. Either way, your experience is the final word.", cn: "这可能让你感到熟悉。也可能完全不匹配。无论哪种，你的体验才是最终答案。" }
+  },
+  thinking: {
+    text: { en: "Your pattern is forming...", cn: "你的模式正在浮现……" }
+  }
+};
 
-// ─── Screen transitions ───────────────────────────────────────────────────────
-function showScreenFn(name){
-  document.querySelectorAll('.screen').forEach(s=>{
-    s.classList.remove('active');
-    s.style.display='none';
-    s.style.opacity='0';
+function t(key) {
+  const keys = key.split('.');
+  let val = STRINGS;
+  for (const k of keys) val = val[k];
+  if (typeof val === 'object') return val[currentLang] || val.en || '';
+  return val;
+}
+
+function tf(key, ...args) {
+  let s = t(key);
+  for (let i = 0; i < args.length; i++) s = s.replace('%s', args[i]).replace('%d', args[i]);
+  return s;
+}
+
+function renderAllLangStrings() {
+  // Intro
+  document.getElementById('intro-eyebrow').textContent = t('intro.eyebrow');
+  document.getElementById('intro-title').textContent = t('intro.title');
+  document.getElementById('intro-tagline').textContent = t('intro.tagline');
+  document.getElementById('intro-time-text').textContent = t('intro.timeText');
+  document.getElementById('intro-outcomes-title').textContent = t('intro.outcomesTitle');
+  document.getElementById('intro-outcome-1').textContent = t('intro.outcome1');
+  document.getElementById('intro-outcome-2').textContent = t('intro.outcome2');
+  document.getElementById('intro-outcome-3').textContent = t('intro.outcome3');
+  document.getElementById('intro-privacy').textContent = t('intro.privacy');
+
+  // Disclaimer
+  document.getElementById('disclaimer-text-1').textContent = t('disclaimer.text1');
+  document.getElementById('disclaimer-text-2').textContent = t('disclaimer.text2');
+  document.getElementById('disclaimer-text-3').textContent = t('disclaimer.text3');
+  document.getElementById('disclaimer-text-4').textContent = t('disclaimer.text4');
+  document.getElementById('begin-btn').textContent = t('disclaimer.btn');
+
+  // Quiz
+  document.getElementById('back-label').textContent = t('quiz.backLabel');
+
+  // Result
+  document.getElementById('result-type-label').textContent = t('result.typeLabel');
+  document.getElementById('share-copy-text').textContent = t('result.shareCopyText');
+  document.getElementById('retake-btn').textContent = t('result.retakeText');
+  document.getElementById('result-footer-note').textContent = t('result.footerNote');
+}
+
+// ─── Navigation ───────────────────────────────────────────────────────────
+function showScreen(name) {
+  document.querySelectorAll('.quiz-screen').forEach(s => s.classList.remove('active'));
+  const screen = document.getElementById('screen-' + name);
+  if (screen) {
+    screen.classList.add('active');
+    // hide lang toggle on intro screen
+    const langToggle = document.getElementById('lang-toggle');
+    if (langToggle) langToggle.style.display = (name === 'intro' || name === 'disclaimer') ? 'none' : 'flex';
+  }
+  state.screen = name;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── Quiz Start ────────────────────────────────────────────────────────────
+function startQuiz() {
+  state.answers = {};
+  state.currentQuestion = 1;
+  showScreen('disclaimer');
+}
+
+function handleDisclaimer() {
+  state.answers = {};
+  state.currentQuestion = 1;
+  renderQuestion();
+  showScreen('quiz');
+}
+
+// ─── Question Rendering ────────────────────────────────────────────────────
+function renderQuestion() {
+  const q = QUIZ_CONTENT.questions[state.currentQuestion - 1];
+  const total = QUIZ_CONTENT.questionCount;
+  const progress = (state.currentQuestion - 1) / total * 100;
+
+  document.getElementById('progress-fill').style.width = progress + '%';
+  document.getElementById('q-number').textContent = tf('quiz.qNumber', state.currentQuestion);
+
+  const qText = currentLang === 'cn' ? q.textChinese : q.text;
+  document.getElementById('q-text').textContent = qText;
+
+  const optionsEl = document.getElementById('options-container');
+  optionsEl.innerHTML = '';
+
+  const letters = ['A', 'B', 'C', 'D'];
+  letters.forEach((letter, idx) => {
+    const opt = q.options[idx];
+    if (!opt) return;
+    const optText = currentLang === 'cn' ? opt.textChinese : opt.text;
+    const selected = state.answers[state.currentQuestion] === letter;
+
+    const btn = document.createElement('button');
+    btn.className = 'option-btn' + (selected ? ' selected' : '');
+    btn.setAttribute('data-letter', letter);
+    btn.setAttribute('data-q', state.currentQuestion);
+    btn.innerHTML = `<span class="opt-letter">${letter}.</span><span class="opt-text">${optText}</span>`;
+    btn.addEventListener('click', () => selectOption(letter));
+    optionsEl.appendChild(btn);
   });
-  const el=document.getElementById('screen-'+name);
-  if(el){
-    el.style.display='flex';
-    void el.offsetWidth;
-    requestAnimationFrame(()=>{
-      el.style.opacity='1';
-      el.classList.add('active');
+
+  const backBtn = document.getElementById('back-btn');
+  backBtn.style.display = state.currentQuestion > 1 ? 'inline-flex' : 'none';
+}
+
+function selectOption(letter) {
+  const q = QUIZ_CONTENT.questions[state.currentQuestion - 1];
+  const optIdx = ['A','B','C','D'].indexOf(letter);
+  state.answers[state.currentQuestion] = q.options[optIdx].mapsTo;
+
+  document.querySelectorAll('.option-btn').forEach(b => {
+    b.classList.toggle('selected', b.getAttribute('data-letter') === letter);
+  });
+
+  setTimeout(() => {
+    if (state.currentQuestion < QUIZ_CONTENT.questionCount) {
+      state.currentQuestion++;
+      renderQuestion();
+    } else {
+      showThinkingOverlay();
+    }
+  }, 300);
+}
+
+function goBack() {
+  if (state.currentQuestion > 1) {
+    state.currentQuestion--;
+    renderQuestion();
+  }
+}
+
+// ─── Thinking Overlay ──────────────────────────────────────────────────────
+function showThinkingOverlay() {
+  const overlay = document.getElementById('thinking-overlay');
+  const thinkingText = document.getElementById('thinking-text');
+  thinkingText.textContent = t('thinking.text');
+  overlay.classList.add('active');
+  setTimeout(() => {
+    overlay.classList.remove('active');
+    calculateResult();
+    renderResult();
+    showScreen('result');
+  }, 2200);
+}
+
+// ─── Result Calculation ────────────────────────────────────────────────────
+function calculateResult() {
+  const counts = { relater: 0, achiever: 0, guardian: 0, navigator: 0 };
+  const typeOrder = ['relater', 'achiever', 'guardian', 'navigator'];
+
+  for (const qNum in state.answers) {
+    const type = state.answers[qNum];
+    if (counts.hasOwnProperty(type)) counts[type]++;
+  }
+
+  let maxCount = 0;
+  let dominant = 'relater';
+  for (const [k, v] of Object.entries(counts)) {
+    if (v > maxCount) {
+      maxCount = v;
+      dominant = k;
+    }
+  }
+
+  state.resultType = dominant;
+  state.resultData = ROLE_TYPES[dominant];
+}
+
+// ─── Result Rendering ───────────────────────────────────────────────────────
+function renderResult() {
+  const r = state.resultData;
+  const isCN = currentLang === 'cn';
+
+  document.getElementById('result-title').textContent = isCN ? r.nameChinese : r.name;
+  document.getElementById('result-title-cn').textContent = isCN ? r.name : r.nameChinese;
+
+  const descEl = document.getElementById('result-description');
+  let html = '';
+
+  // Core description
+  html += `<div class="result-desc-block">
+    <h3>${t('result.coreLabel')}</h3>
+    <p>${isCN ? r.coreDescriptionChinese : r.coreDescription}</p>
+    <p style="margin-top:10px;font-size:0.82rem;color:var(--text-muted);font-style:italic;">${t('result.mayResonate')}</p>
+  </div>`;
+
+  // Key traits
+  const traits = isCN ? r.keyTraitsChinese : r.keyTraits;
+  html += `<div class="result-desc-block">
+    <h3>${t('result.traitsLabel')}</h3>
+    <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:4px;">
+      ${traits.map(trait => `<li style="font-size:0.9rem;color:var(--text-secondary);padding-left:12px;position:relative;line-height:1.5;">${trait}</li>`).join('')}
+    </ul>
+  </div>`;
+
+  // Relational pattern
+  html += `<div class="result-desc-block">
+    <h3>${t('result.relationalLabel')}</h3>
+    <p>${isCN ? r.relationalPatternChinese : r.relationalPattern}</p>
+  </div>`;
+
+  // Decision-making style
+  html += `<div class="result-desc-block">
+    <h3>${t('result.decisionLabel')}</h3>
+    <p>${isCN ? r.decisionMakingStyleChinese : r.decisionMakingStyle}</p>
+  </div>`;
+
+  // Growth edge
+  html += `<div class="result-desc-block" style="border-color:var(--accent);background:color-mix(in srgb, var(--accent) 5%, var(--surface));">
+    <h3 style="color:var(--accent);">${t('result.growthLabel')}</h3>
+    <p>${isCN ? r.growthEdgeChinese : r.growthEdge}</p>
+  </div>`;
+
+  descEl.innerHTML = html;
+
+  // Trait tags
+  const tagsEl = document.getElementById('result-tags');
+  tagsEl.innerHTML = traits.slice(0, 4).map(trait => {
+    const short = trait.length > 20 ? trait.substring(0, 20) + '…' : trait;
+    return `<span class="trait-tag">${short}</span>`;
+  }).join('');
+
+  // Share quote
+  const shareQuote = document.getElementById('share-quote');
+  const shareLine = isCN
+    ? `我刚发现了我的角色锚点——${r.nameChinese}：${r.coreDescriptionChinese.substring(0, 60)}……`
+    : `I just discovered my Role Anchor — ${r.name}: ${r.coreDescription.substring(0, 80)}…`;
+  shareQuote.textContent = `"${shareLine}"`;
+}
+
+function retakeQuiz() {
+  state.answers = {};
+  state.currentQuestion = 1;
+  state.resultType = null;
+  state.resultData = null;
+  showScreen('intro');
+}
+
+// ─── Share ─────────────────────────────────────────────────────────────────
+function copyShareLink() {
+  const resultName = currentLang === 'cn'
+    ? state.resultData.nameChinese
+    : state.resultData.name;
+  const shareText = currentLang === 'cn'
+    ? `我刚发现了我的角色锚点——${resultName}`
+    : `I just discovered my Role Anchor — ${resultName}`;
+  const url = window.location.href.split('?')[0];
+  const text = `${shareText}\n${url}`;
+
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('share-copy-btn');
+      const original = btn.innerHTML;
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span>${currentLang === 'cn' ? '已复制！' : 'Copied!'}</span>`;
+      setTimeout(() => { btn.innerHTML = original; }, 2000);
     });
   }
 }
 
-// ─── Render Quiz ─────────────────────────────────────────────────────────────
-function renderQuestion(){
-  const q=QUESTIONS[currentQ];
-  $('scenario-text').textContent=q.scenario;
-  $('question-num-label').textContent=`Question ${currentQ+1}`;
-
-  // Progress
-  const pct=(currentQ/TOTAL)*100;
-  const fill=document.getElementById('progress-fill');
-  fill.style.width=`${pct}%`;
-  fill.parentElement.setAttribute('aria-valuenow',currentQ+1);
-  $('progress-label').textContent=`Question ${currentQ+1} of ${TOTAL}`;
-
-  // Options
-  const list=document.getElementById('options-list');
-  list.innerHTML='';
-  const letters=['A','B','C','D'];
-  q.options.forEach((opt,i)=>{
-    const card=document.createElement('div');
-    card.className='option-card'+(answers[currentQ]===i?' selected':'');
-    card.setAttribute('role','radio');
-    card.setAttribute('aria-checked',answers[currentQ]===i?'true':'false');
-    card.setAttribute('tabindex','0');
-    card.setAttribute('aria-label',`Option ${letters[i]}: ${opt.text}`);
-    card.innerHTML=`<span class="option-letter">${letters[i]}</span><span class="option-text">${opt.text}</span>`;
-    card.addEventListener('click',()=>selectOption(i));
-    card.addEventListener('keydown',(e)=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectOption(i)}});
-    list.appendChild(card);
-  });
-
-  // Jump buttons
-  const jump=document.getElementById('question-jump');
-  jump.innerHTML='';
-  for(let i=0;i<TOTAL;i++){
-    const btn=document.createElement('button');
-    btn.className='q-jump-btn';
-    if(answers[i]!==null) btn.classList.add('answered');
-    if(i===currentQ) btn.classList.add('current');
-    btn.textContent=i+1;
-    btn.setAttribute('aria-label',`Go to question ${i+1}${answers[i]!==null?' (answered)':''}`);
-    btn.addEventListener('click',()=>jumpTo(i));
-    jump.appendChild(btn);
-  }
-
-  // Nav buttons
-  const prev=document.getElementById('btn-prev');
-  prev.style.visibility=currentQ===0?'hidden':'visible';
-  const next=document.getElementById('btn-next');
-  next.disabled=answers[currentQ]===null;
-  next.setAttribute('aria-label',currentQ===TOTAL-1?'View results':'Next question');
-  next.innerHTML=currentQ===TOTAL-1?'View Results <span aria-hidden="true">›</span>':'Next <span aria-hidden="true">›</span>';
-}
-
-function selectOption(idx){
-  if(clickCooldown) return;
-  clickCooldown=true;
-  setTimeout(()=>clickCooldown=false,200);
-  answers[currentQ]=idx;
-  saveProgress();
-  // Update UI immediately
-  document.querySelectorAll('.option-card').forEach((c,i)=>{
-    const sel=i===idx;
-    c.classList.toggle('selected',sel);
-    c.setAttribute('aria-checked',sel?'true':'false');
-  });
-  document.getElementById('btn-next').disabled=false;
-  // Update jump btn
-  const btns=document.querySelectorAll('.q-jump-btn');
-  if(btns[currentQ]) btns[currentQ].classList.add('answered');
-}
-
-function jumpTo(idx){
-  currentQ=idx;
-  renderQuestion();
-  // Focus scenario for screen readers
-  $('scenario-text').focus();
-}
-
-// ─── Scoring ──────────────────────────────────────────────────────────────────
-function scoreAnswers(){
-  const dims={career:0,family:0,social:0,free:0,spirit:0};
-  answers.forEach((aIdx,qIdx)=>{
-    if(aIdx===null) return;
-    const dim=QUESTIONS[qIdx].options[aIdx].dim;
-    dims[dim]=(dims[dim]||0)+1;
-  });
-  // Find dominant
-  let maxDim='';
-  let maxVal=-1;
-  const tieKeys=[];
-  for(const [k,v] of Object.entries(dims)){
-    if(v>maxVal){maxVal=v;maxDim=k;tieKeys.length=0;tieKeys.push(k)}
-    else if(v===maxVal){tieKeys.push(k)}
-  }
-  // Tie-break: spirit > free > others
-  if(tieKeys.length>1){
-    if(tieKeys.includes('spirit')) maxDim='spirit';
-    else if(tieKeys.includes('free')) maxDim='free';
-    else maxDim=tieKeys[0];
-  }
-  return {result:maxDim,scores:dims};
-}
-
-// ─── Render Result ────────────────────────────────────────────────────────────
-function renderResult(domResult){
-  const r=RESULTS[domResult];
-  const card=document.getElementById('result-card');
-
-  // Build share card canvas data
-  const canvas=document.createElement('canvas');
-  canvas.width=810;canvas.height=1080;
-  drawShareCard(canvas,domResult,r);
-
-  card.innerHTML=`
-    <div class="result-header">
-      <div class="result-type-tag ${r.tagClass}">${r.typeTag}</div>
-      <h2 class="result-name">${r.name}</h2>
-      <p class="result-tagline">"${r.tagline}"</p>
-      <div class="result-divider"></div>
-    </div>
-
-    <div class="result-section">
-      <h3 class="result-section-title">🔍 Core Traits</h3>
-      <ul class="traits-list">
-        ${r.traits.map(t=>`<li><span class="trait-icon" aria-hidden="true">${t.icon}</span><span>${t.text}</span></li>`).join('')}
-      </ul>
-    </div>
-
-    <div class="growth-block">
-      <p>${r.growth}</p>
-    </div>
-
-    <div class="result-section">
-      <h3 class="result-section-title">🚀 Three Action Steps</h3>
-      <ul class="actions-list">
-        ${r.actions.map((a,i)=>`
-          <li class="action-item">
-            <span class="action-num" aria-hidden="true">${i+1}</span>
-            <div class="action-content">
-              <h4>${a.title}</h4>
-              <p>${a.desc}</p>
-            </div>
-          </li>`).join('')}
-      </ul>
-    </div>
-
-    <div class="result-ctas">
-      <button class="btn-secondary" id="btn-retake">Retake Quiz</button>
-      <button class="btn-primary" id="btn-share">Share Results</button>
-    </div>
-
-    <div class="result-footer">
-      <button class="btn-text" id="btn-privacy">Privacy Policy</button>
-      <span aria-hidden="true" style="color:var(--warm-gray);margin:0 8px">|</span>
-      <button class="btn-text" id="btn-support">Need Professional Support</button>
-    </div>
-
-    <div style="margin-top:24px">
-      <div class="share-card-wrap" id="share-card-wrap" style="display:none">
-        <canvas id="share-canvas" class="share-canvas"></canvas>
-      </div>
-      <div class="share-actions" id="share-actions" style="display:none">
-        <button class="share-btn wechat" id="btn-wechat-share" aria-label="Share to WeChat">
-          <span aria-hidden="true">💬</span> WeChat
-        </button>
-        <button class="share-btn" id="btn-copy-link" aria-label="Copy share link">
-          <span aria-hidden="true">🔗</span> Copy Link
-        </button>
-        <button class="share-btn" id="btn-save-img" aria-label="Save image">
-          <span aria-hidden="true">📥</span> Save Image
-        </button>
-      </div>
-    </div>
-  `;
-
-  // Draw share canvas
-  const shareCanvas=document.getElementById('share-canvas');
-  if(shareCanvas){
-    shareCanvas.width=810;shareCanvas.height=1080;
-    const ctx=shareCanvas.getContext('2d');
-    ctx.drawImage(canvas,0,0);
-  }
-
-  // Bind events
-  document.getElementById('btn-retake').addEventListener('click',()=>{
-    clearProgress();
-    currentQ=0;answers=new Array(TOTAL).fill(null);
-    showScreenFn('landing');
-  });
-
-  document.getElementById('btn-share').addEventListener('click',()=>{
-    const wrap=document.getElementById('share-card-wrap');
-    const acts=document.getElementById('share-actions');
-    wrap.style.display='block';
-    acts.style.display='flex';
-    wrap.scrollIntoView({behavior:'smooth',block:'nearest'});
-    // Re-draw
-    const sc=document.getElementById('share-canvas');
-    sc.width=810;sc.height=1080;
-    sc.getContext('2d').drawImage(canvas,0,0);
-  });
-
-  document.getElementById('btn-wechat-share').addEventListener('click',()=>showToast('For WeChat sharing: long-press the saved image to send'));
-  document.getElementById('btn-copy-link').addEventListener('click',()=>{
-    navigator.clipboard.writeText(window.location.href.split('?')[0]).then(()=>showToast('Link copied to clipboard')).catch(()=>showToast('Copy failed, please copy manually'));
-  });
-  document.getElementById('btn-save-img').addEventListener('click',()=>{
-    const link=document.createElement('a');
-    link.download=`RoleAnchorQuiz_${r.name}.png`;
-    link.href=canvas.toDataURL('image/png');
-    link.click();
-    showToast('Image saved');
-  });
-  document.getElementById('btn-privacy').addEventListener('click',()=>openModal('modal-privacy'));
-  document.getElementById('btn-support').addEventListener('click',()=>openModal('modal-support'));
-}
-
-function drawShareCard(canvas,domResult,r){
-  const ctx=canvas.getContext('2d');
-  const W=canvas.width,H=canvas.height;
-
-  // Background
-  ctx.fillStyle='#FAF7F2';
-  ctx.fillRect(0,0,W,H);
-
-  // Top gradient accent
-  const grad=ctx.createRadialGradient(W*0.3,0,0,W*0.3,0,H*0.6);
-  grad.addColorStop(0,'rgba(196,138,94,0.15)');
-  grad.addColorStop(1,'rgba(196,138,94,0)');
-  ctx.fillStyle=grad;
-  ctx.fillRect(0,0,W,H);
-
-  const centerX=W/2;
-
-  // Brand
-  ctx.fillStyle='#8B7E74';
-  ctx.font='500 22px Inter,sans-serif';
-  ctx.textAlign='center';
-  ctx.fillText('Role Anchor Quiz',centerX,80);
-
-  // Main title
-  ctx.fillStyle='#7B5B3A';
-  ctx.font='700 52px Merriweather,serif';
-  ctx.textAlign='center';
-  ctx.fillText('What Defines Your Sense of Self?',centerX,160);
-
-  // Type color
-  const typeColors={career:'#B57B5E',family:'#9B8AA5',social:'#8B9DB5',free:'#D4956A',spirit:'#8A9B7A'};
-  const tc=typeColors[domResult]||'#C48A5E';
-
-  // Type name
-  ctx.fillStyle=tc;
-  ctx.font='700 80px Merriweather,serif';
-  ctx.textAlign='center';
-  ctx.fillText(r.name,centerX,300);
-
-  // Tagline
-  ctx.fillStyle='#8B7E74';
-  ctx.font='400 30px Merriweather,serif';
-  ctx.fillText(`"${r.tagline}"`,centerX,370);
-
-  // Divider
-  ctx.fillStyle=tc;
-  ctx.fillRect(centerX-60,400,120,4);
-
-  // Traits (first 2)
-  ctx.textAlign='center';
-  const traitY=[470,540];
-  r.traits.slice(0,2).forEach((t,i)=>{
-    ctx.font='400 26px Inter,sans-serif';
-    ctx.fillStyle='#3D3530';
-    ctx.fillText(`${t.icon} ${t.text}`,centerX,traitY[i]);
-  });
-
-  // Bottom brand
-  ctx.fillStyle='#C4B8AC';
-  ctx.font='400 20px Inter,sans-serif';
-  ctx.fillText('© 2026 Role Anchor Quiz',centerX,H-60);
-}
-
-// ─── Navigation ──────────────────────────────────────────────────────────────
-document.getElementById('btn-start').addEventListener('click',()=>{
-  showScreenFn('quiz');
-  renderQuestion();
+// ─── Init ──────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  showScreen('intro');
 });
-
-document.getElementById('btn-prev').addEventListener('click',()=>{
-  if(currentQ>0){currentQ--;renderQuestion()}
-});
-
-document.getElementById('btn-next').addEventListener('click',()=>{
-  if(answers[currentQ]===null) return;
-  if(currentQ<TOTAL-1){currentQ++;renderQuestion()}
-  else{
-    showScreenFn('calc');
-    clearProgress();
-    setTimeout(()=>{
-      const {result}=scoreAnswers();
-      showScreenFn('result');
-      renderResult(result);
-    },2200);
-  }
-});
-
-// ─── Modals ───────────────────────────────────────────────────────────────────
-function openModal(id){
-  const m=document.getElementById(id);
-  if(m){m.classList.add('show');m.querySelector('.modal-close,.btn-primary').focus()}
-}
-function closeModal(id){
-  const m=document.getElementById(id);
-  if(m)m.classList.remove('show');
-}
-
-$('link-warn')&&$('link-warn').addEventListener('click',()=>openModal('modal-warn'));
-$('link-warn')&&$('link-warn').addEventListener('keydown',(e)=>{if(e.key==='Enter')openModal('modal-warn')});
-$('modal-warn-close').addEventListener('click',()=>closeModal('modal-warn'));
-$('modal-privacy-close').addEventListener('click',()=>closeModal('modal-privacy'));
-$('modal-support-close').addEventListener('click',()=>closeModal('modal-support'));
-
-document.querySelectorAll('.modal-overlay').forEach(m=>{
-  m.addEventListener('click',(e)=>{if(e.target===m)m.classList.remove('show')});
-  m.addEventListener('keydown',(e)=>{if(e.key==='Escape')m.classList.remove('show')});
-});
-
-// ─── Toast ───────────────────────────────────────────────────────────────────
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
-}
-
-// ─── Init ─────────────────────────────────────────────────────────────────────
-(function init(){
-  document.querySelectorAll('.screen').forEach(s=>{
-    s.style.display='none';
-    s.style.opacity='0';
-    s.style.transition='opacity 0.3s ease-out';
-  });
-  if(loadProgress()){
-    showScreenFn('quiz');
-    renderQuestion();
-  } else {
-    const landing=document.getElementById('screen-landing');
-    if(landing){
-      landing.style.display='flex';
-      requestAnimationFrame(()=>{
-        landing.style.opacity='1';
-        landing.classList.add('active');
-      });
-    }
-  }
-})();
 </script>
 </body>
 </html>
