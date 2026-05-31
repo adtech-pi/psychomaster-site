@@ -1,292 +1,124 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>心理防御风格测验</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    :root {
-      --primary: #7B68EE;
-      --navy: #1A1A2E;
-      --gold: #FFD700;
-      --bg: #0F0F1A;
-      --card-bg: #16213E;
-      --text: #F0F0FF;
-      --dimmed: #8888AA;
-    }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
-    .screen { display: none; width: 100%; max-width: 480px; text-align: center; animation: fadeIn 0.4s ease; }
-    .screen.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
-
-    .welcome-icon { font-size: 72px; margin-bottom: 24px; }
-    .welcome-title { font-size: 26px; font-weight: 700; color: var(--primary); margin-bottom: 12px; line-height: 1.3; }
-    .welcome-sub { font-size: 14px; color: var(--dimmed); margin-bottom: 36px; line-height: 1.6; }
-    .start-btn {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      padding: 15px 44px;
-      font-size: 16px;
-      font-weight: 600;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .start-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(123,104,238,0.4); }
-
-    .progress-wrap { margin-bottom: 32px; }
-    .progress-label { font-size: 12px; color: var(--dimmed); margin-bottom: 8px; }
-    .progress-bar { height: 4px; background: #222; border-radius: 4px; overflow: hidden; }
-    .progress-fill { height: 100%; background: var(--primary); border-radius: 4px; transition: width 0.4s ease; width: 0%; }
-    .question-text { font-size: 17px; font-weight: 600; margin-bottom: 28px; line-height: 1.5; }
-    .options { display: flex; flex-direction: column; gap: 10px; }
-    .option-btn {
-      background: var(--card-bg);
-      color: var(--text);
-      border: 2px solid #2a2a4a;
-      padding: 13px 15px;
-      border-radius: 14px;
-      font-size: 13px;
-      text-align: left;
-      cursor: pointer;
-      transition: border-color 0.2s, transform 0.15s, background 0.2s;
-      line-height: 1.5;
-    }
-    .option-btn:hover { border-color: var(--primary); transform: translateX(4px); background: #1e2a4a; }
-    .option-btn:active { transform: scale(0.98); }
-
-    .processing-icon { font-size: 64px; margin-bottom: 24px; animation: pulse 1s ease infinite; }
-    .processing-text { font-size: 17px; color: var(--dimmed); }
-
-    .result-animal { font-size: 72px; margin-bottom: 16px; }
-    .result-type { font-size: 24px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
-    .result-desc { font-size: 14px; color: #aaa; margin-bottom: 22px; line-height: 1.6; max-width: 360px; margin-left: auto; margin-right: auto; }
-    .result-tags { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 24px; }
-    .tag {
-      background: rgba(123,104,238,0.15);
-      color: var(--primary);
-      border: 1px solid rgba(123,104,238,0.3);
-      padding: 4px 12px;
-      border-radius: 50px;
-      font-size: 11px;
-    }
-    .share-btn {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      padding: 13px 36px;
-      font-size: 15px;
-      font-weight: 600;
-      border-radius: 50px;
-      cursor: pointer;
-      margin: 6px;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .share-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(123,104,238,0.3); }
-    .share-btn.secondary { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
-    .retake-btn { display: block; margin: 14px auto 0; background: none; border: none; color: var(--dimmed); font-size: 12px; cursor: pointer; }
-    .retake-btn:hover { color: var(--text); }
-    .disclaimer { font-size: 10px; color: #444; margin-top: 22px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>心理防御风格测验</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--primary:#7B68EE;--secondary:#4A4A8A;--accent:#FFD700;--bg-dark:#0F0F1A;--bg-mid:#1A1A2E;--text:#F0F0FF;--text-muted:#A0A0C0;--card-bg:rgba(74,74,138,0.3);--border:rgba(123,104,238,0.3)}
+html,body{height:100%}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(160deg,var(--bg-dark) 0%,var(--bg-mid) 100%);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;overflow-x:hidden}
+.screen{display:none;width:100%;max-width:520px;flex-direction:column;align-items:center;gap:24px;animation:fadeIn 0.4s ease}
+.screen.active{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.quiz-title{font-size:28px;font-weight:800;text-align:center;color:var(--accent);letter-spacing:2px}
+.quiz-subtitle{font-size:16px;color:var(--text-muted);text-align:center}
+.disclaimer{font-size:12px;color:var(--text-muted);text-align:center;opacity:0.7}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 40px;border-radius:50px;font-size:16px;font-weight:700;cursor:pointer;border:none;transition:all 0.2s;letter-spacing:1px;min-height:50px;width:auto}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;box-shadow:0 4px 20px rgba(123,104,238,0.4)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(123,104,238,0.6)}
+.btn-ghost{background:transparent;color:var(--text-muted);border:1.5px solid var(--border)}
+.btn-ghost:hover{color:var(--text);border-color:var(--primary)}
+.card{background:var(--card-bg);border:1px solid var(--border);border-radius:20px;padding:28px 24px;width:100%}
+.progress-bar-wrap{width:100%}
+.progress-label{font-size:12px;color:var(--text-muted);margin-bottom:8px;display:flex;justify-content:space-between}
+.progress-bar{width:100%;height:6px;background:rgba(123,104,238,0.2);border-radius:3px;overflow:hidden}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:3px;transition:width 0.4s ease}
+.q-num{font-size:13px;color:var(--accent);font-weight:600;letter-spacing:1px}
+.q-text{font-size:17px;line-height:1.6;font-weight:600;color:var(--text);margin:12px 0 20px}
+.options{width:100%;display:flex;flex-direction:column;gap:12px}
+.option-btn{width:100%;padding:16px 18px;background:rgba(74,74,138,0.25);border:1.5px solid var(--border);border-radius:14px;text-align:left;font-size:15px;color:var(--text);cursor:pointer;transition:all 0.2s;line-height:1.5;display:flex;align-items:flex-start;gap:12px}
+.option-btn:hover{background:rgba(123,104,238,0.3);border-color:var(--primary);transform:translateX(4px)}
+.option-key{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--secondary);color:var(--accent);font-weight:800;font-size:13px;flex-shrink:0;margin-top:1px}
+.option-text{flex:1}
+.result-emoji{font-size:64px;text-align:center;margin-bottom:8px}
+.result-type{font-size:32px;font-weight:900;color:var(--accent);text-align:center;margin-bottom:4px;letter-spacing:2px}
+.result-core{font-size:15px;line-height:1.7;color:var(--text);text-align:center;margin:16px 0}
+.result-tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0}
+.tag{padding:5px 14px;border-radius:20px;font-size:12px;background:rgba(123,104,238,0.25);border:1px solid var(--border);color:var(--text-muted)}
+.result-section{width:100%;margin-top:16px}
+.result-section-title{font-size:14px;font-weight:700;color:var(--accent);margin-bottom:8px;letter-spacing:1px}
+.result-section-text{font-size:14px;line-height:1.7;color:var(--text-muted)}
+.result-closing{font-size:14px;line-height:1.7;color:var(--text);background:rgba(123,104,238,0.15);border-radius:12px;padding:16px;margin-top:16px;border-left:3px solid var(--accent)}
+.result-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.btn-sm{padding:10px 24px;font-size:14px;min-height:44px}
+.calc-screen{gap:32px}
+.calc-spinner{width:60px;height:60px;border:4px solid rgba(123,104,238,0.2);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite}
+.calc-text{font-size:18px;color:var(--text-muted);font-weight:600;animation:pulse 1.5s ease infinite}
+#shareCanvas{display:none}
+@media(max-width:480px){.quiz-title{font-size:24px}.q-text{font-size:16px}.result-type{font-size:26px}}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+</style>
 </head>
 <body>
-
 <div id="screen-welcome" class="screen active">
-  <div class="welcome-icon">🧠</div>
-  <div class="welcome-title">心理防御风格测验</div>
-  <div class="welcome-sub">你是哪种「心灵护盾」类型？<br>5个维度 × 5道题 · 5种结果类型</div>
-  <button class="start-btn" onclick="startQuiz()">开始测试 →</button>
-</div>
-
-<div id="screen-question" class="screen">
-  <div class="progress-wrap">
-    <div class="progress-label">第 <span id="q-num">1</span> / 25 题</div>
-    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div style="text-align:center;padding-top:40px">
+    <div style="font-size:56px;margin-bottom:16px">🛡️</div>
+    <h1 class="quiz-title">心理防御风格测验</h1>
+    <p class="quiz-subtitle">你是哪种「心灵护盾」类型？</p>
   </div>
-  <div class="question-text" id="q-text"></div>
-  <div class="options" id="options"></div>
+  <div class="card" style="text-align:center">
+    <p style="font-size:14px;line-height:1.8;color:var(--text-muted);margin-bottom:20px">面对压力时，你的内心如何运作？<br>25道情境题，揭示你的心理防御模式。</p>
+    <button class="btn btn-primary" onclick="startQuiz()">开始测验 →</button>
+  </div>
+  <p class="disclaimer">⚠️ 仅供娱乐参考，非心理诊疗工具</p>
 </div>
-
-<div id="screen-processing" class="screen">
-  <div class="processing-icon">⚙️</div>
-  <div class="processing-text">正在分析你的心灵护盾类型…</div>
+<div id="screen-instructions" class="screen">
+  <h2 class="quiz-title" style="font-size:22px">测验说明</h2>
+  <div class="card">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:flex-start;gap:12px"><span style="font-size:22px">📋</span><div><strong style="color:var(--accent)">25道情境题</strong><br><span style="font-size:13px;color:var(--text-muted)">模拟真实生活场景，感受你的第一反应</span></div></div>
+      <div style="display:flex;align-items:flex-start;gap:12px"><span style="font-size:22px">🔢</span><div><strong style="color:var(--accent)">每题4个选项</strong><br><span style="font-size:13px;color:var(--text-muted)">每个选项对应不同的心理防御维度</span></div></div>
+      <div style="display:flex;align-items:flex-start;gap:12px"><span style="font-size:22px">⏱️</span><div><strong style="color:var(--accent)">约3-5分钟</strong><br><span style="font-size:13px;color:var(--text-muted)">跟随直觉，快速选择最符合你的答案</span></div></div>
+      <div style="display:flex;align-items:flex-start;gap:12px"><span style="font-size:22px">🔒</span><div><strong style="color:var(--accent)">完全隐私</strong><br><span style="font-size:13px;color:var(--text-muted)">数据仅保存在本地，不会上传任何服务器</span></div></div>
+    </div>
+  </div>
+  <button class="btn btn-primary" onclick="startQuestions()">开始答题 →</button>
+  <button class="btn btn-ghost" onclick="goTo('screen-welcome')" style="margin-top:-8px">← 返回</button>
 </div>
-
+<div id="screen-questions" class="screen">
+  <div class="progress-bar-wrap">
+    <div class="progress-label"><span id="q-label">1 / 25</span><span id="q-dim-label"></span></div>
+    <div class="progress-bar"><div class="progress-bar-fill" id="progress-fill" style="width:4%"></div></div>
+  </div>
+  <div class="card" style="padding:20px 18px">
+    <div class="q-num" id="q-num">Q1</div>
+    <p class="q-text" id="q-text"></p>
+    <div class="options" id="options"></div>
+  </div>
+  <button class="btn btn-ghost" id="btn-prev" onclick="prevQuestion()" style="visibility:hidden;margin-top:-8px">← 上一题</button>
+</div>
+<div id="screen-calculating" class="screen calc-screen"><div class="calc-spinner"></div><p class="calc-text">正在分析你的心理防御模式…</p></div>
 <div id="screen-result" class="screen">
-  <div class="result-animal" id="r-emoji"></div>
-  <div class="result-type" id="r-name"></div>
-  <div class="result-desc" id="r-desc"></div>
-  <div class="result-tags" id="r-tags"></div>
-  <button class="share-btn" onclick="shareResult()">分享测验结果</button>
-  <button class="share-btn secondary" onclick="copyResult()">复制结果</button>
-  <button class="retake-btn" onclick="retake()">重新测试</button>
-  <div class="disclaimer">仅供娱乐参考，非心理诊疗工具</div>
+  <div class="result-emoji" id="res-emoji"></div>
+  <div class="result-type" id="res-type"></div>
+  <p class="result-core" id="res-core"></p>
+  <div class="result-tags" id="res-tags"></div>
+  <div class="card" style="width:100%">
+    <div class="result-section"><div class="result-section-title">🎭 典型场景</div><p class="result-section-text" id="res-scenario"></p></div>
+    <div class="result-section"><div class="result-section-title">🐙 形象比喻</div><p class="result-section-text" id="res-analogy"></p></div>
+    <div class="result-closing" id="res-closing"></div>
+  </div>
+  <div class="result-actions"><button class="btn btn-primary btn-sm" onclick="generateShareCard()">📤 生成分享卡</button><button class="btn btn-ghost btn-sm" onclick="restartQuiz()">🔄 重新测试</button></div>
+  <p class="disclaimer">仅供娱乐参考，非心理诊疗工具</p>
 </div>
-
+<canvas id="shareCanvas" width="1080" height="1350"></canvas>
 <script>
-const SCORES = { rationalization:0, denial:0, projection:0, displacement:0, repression:0 };
-let Q = 0;
-const ANSWERS = [];
-
-const Q_TEXTS = [
-  "你为一件很重要的事情准备了很久，结果却失败了。你会怎么想？",
-  "同事在背后说了你坏话，你听说后的第一反应是？",
-  "你申请了一个很想要的职位，结果没有被录用。你会告诉自己？",
-  "你在工作中犯了一个错误，被老板当众指出来。你的内心OS是？",
-  "你答应朋友的约会迟到了半小时，你会怎么解释？",
-  "你被诊断出某种需要调整生活方式的健康问题。你的第一反应是？",
-  "你的家人或伴侣向你表达了对你某个行为的担忧。你会？",
-  "你发现自己有某种上瘾行为（比如熬夜刷手机）。你会？",
-  "你听到一个关于自己的不好传闻。你的反应是？",
-  "你的银行账户发出了透支预警。你的第一反应是？",
-  "你在项目中搞砸了一件事，但你觉得真正的原因在于？",
-  "你和伴侣吵架，对方说"你总是把工作放在第一位"。你会？",
-  "你对某件事感到愤怒，但你说出来的时候却说的是？",
-  "你的朋友向你倾诉TA的烦恼，你会怎么说？",
-  "你在团队里感受到了阻力，但你认为阻力来源是？",
-  "你在公司受了气，回家后会？",
-  "你被路怒症司机惹怒了，你会？",
-  "你对老板有抱怨但不敢直接说，你会？",
-  "你感到沮丧时，通常会怎么发泄？",
-  "你在网上看到让人气愤的新闻，你会？",
-  "你经历了一次情绪很激动的事件（比如争吵、哭泣），事后你会？",
-  "有人提起你童年时发生的一件痛苦的事，你的第一反应是？",
-  "你在某段关系中受过伤，现在遇到类似的情况，你会？",
-  "你做梦梦到了很久以前发生的一件糟糕的事，醒来后你会？",
-  "你心里藏着一个从来没跟人说过秘密，它在你的生活中？"
-];
-
-const OPT_TEXTS = [
-  ["这件事本来就没那么重要，我也没真的很认真对待", "我一定是不够努力/不够聪明", "运气不好，正好赶上状态差的时候", "其实这个结果对我有好处，只是我当时没看出来"],
-  ["TA一定是嫉妒我，别人的评价不重要", "反思一下自己是不是真的有什么地方做得不好", "算了，不值得为这种事浪费时间", "TA 可能压力大，在找发泄口，我能理解"],
-  ["其实这个职位并不适合我，早知道就好了", "我还需要再积累一些经验，以后还有机会", "这次运气不好，评委不公平", "我被拒绝说明我不够好，我应该更努力"],
-  ["老板今天心情不好，拿我开刀而已", "确实是我不够仔细，我需要改进", "这种事谁都会犯，没必要大惊小怪", "我在这个岗位上的时间不长，犯错是正常的"],
-  ["地铁临时故障了，我也很无奈", "抱歉我迟到了，这是我的问题", "我一般都会提前出门的，今天是特殊情况", "反正你也没等多久，不用计较啦"],
-  ["没什么大不了的，该吃吃该喝喝", "仔细询问医生，制定康复计划", "我觉得检查结果可能有误，想再查一次", "先不管了，假装不知道该干啥"],
-  ["不认为这有什么问题，他们太小题大做了", "认真听Ta说，反思自己的行为", "谢谢你的关心，我会注意的（但不会真的改变）", "你的担忧有点过度了，事情没有那么严重"],
-  ["我并没有上瘾，我只是娱乐一下而已", "认识到问题的严重性，主动寻找解决方法", "大家都这样，这不是问题", "我知道这样做不好，但我觉得我能控制"],
-  ["没发生过这种事，不需要回应", "了解清楚传闻内容，看能不能当面澄清", "这种事情传一传就算了，清者自清", "完全不理会，继续做自己的事"],
-  ["银行系统出错了吧，我的账户不可能透支", "立刻查看账单，了解具体情况", "没关系，这个月省着点花就行了", "先把预警关了，回头再说"],
-  ["是队友配合不给力，不是我的问题", "我时间管理有问题，需要反省", "资源不足导致我无法发挥", "外部环境变化太快，谁能预料到"],
-  ["明明是你不成熟，不能理解工作的重要性", "我需要反思一下工作和生活的平衡", "大家都是这样，谁不是把工作放第一位呢", "如果赚更多钱你还会这样说吗？"],
-  ["我很冷静，是你反应过度了", "我对这件事感到非常生气，因为……", "所有人遇到这种事都会生气的", "我觉得你的问题更大"],
-  ["其实你这个问题很简单，就是你想太多了", "我能理解你，你一定很难受", "我之前也遇到过同样的事，情况比你更糟", "你想过没有，其实问题出在对方身上"],
-  ["团队里有人对我有意见，故意为难我", "我在沟通方式上还有提升空间", "大家对新变化都有抵触情绪，很正常", "这个组织文化不支持创新"],
-  ["对家人说话语气不好，自己也说不清为什么", "运动或独处，等情绪平复了再回家", "关起门来刷手机，谁也不理", "找一个合适的方式跟家人说今天不顺心"],
-  ["追上去跟对方理论", "深呼吸，不跟对方计较，直接开走", "在车里狠拍方向盘，然后默默消气", "把这件事讲给朋友听，发泄一下"],
-  ["在朋友圈含沙射影地发一条", "找个合适的时机私下与老板沟通", "找同事吐槽，发泄情绪", "忍下去，告诉自己没关系"],
-  ["吃一堆零食或喝奶茶，用物质犒劳自己", "写日记或找信任的人聊聊", "疯狂购物，买一堆不需要的东西", "去运动，把愤怒转成汗水"],
-  ["到评论区大战网友，发泄情绪", "看完默默关掉，不参与讨论", "转发到群里，问大家怎么看", "刷其他内容来转移注意力"],
-  ["假装这件事没发生过，继续该干嘛干嘛", "给自己一些时间消化，然后反思学到了什么", "把情绪压在心底，不愿意再提起", "跟信任的人聊聊那件事的感受"],
-  ["我有这样的经历吗？我不太记得了", "记得，那件事对我影响很深", "过去的事就让它过去吧，我不想再提", "我记得一些片段，但细节很模糊"],
-  ["压抑情绪，假装什么都没发生", "认识到旧伤还在，需要主动处理", "尽量避免类似的情况，不让自己回到那种情境", "跟朋友倾诉，寻求支持"],
-  ["不想了，起床该干嘛干嘛", "记录下来这个梦，分析它可能的意义", "感觉怪怪的，但选择忽略它", "花点时间想想这件事和现在的生活有什么联系"],
-  ["它已经被我压得很深，我很少想起它", "它仍然影响我的决定和行为，我要面对它", "它偶尔会在某个瞬间冲出来，让我很不舒服", "我在等待一个合适的时机和合适的人来分享它"]
-];
-
-const SCORE_MAPS = [
-  [[3],[0],[2],[1]],
-  [[3],[0],[1],[3]],
-  [[3],[0],[2],[1]],
-  [[3],[0],[2],[1]],
-  [[3],[0],[2],[1]],
-  [[3],[0],[2],[1]],
-  [[3],[0],[1],[2]],
-  [[3],[0],[2],[1]],
-  [[3],[0],[1],[2]],
-  [[3],[0],[1],[2]],
-  [[3],[0],[2],[1]],
-  [[3],[0],[1],[2]],
-  [[2],[0],[3],[1]],
-  [[2],[0],[3],[1]],
-  [[3],[0],[2],[1]],
-  [[3],[0],[2],[1]],
-  [[3],[0],[2],[1]],
-  [[3],[0],[2],[1]],
-  [[3],[0],[2],[1]],
-  [[3],[0],[2],[1]],
-  [[3],[0],[2],[1]],
-  [[3],[0],[2],[1]],
-  [[3],[0],[2],[1]],
-  [[3],[0],[2],[1]],
-  [[3],[0],[2],[1]]
-];
-
-const DIMS = ["rationalization","denial","projection","displacement","repression"];
-
-const RESULTS = [
-  {id:"rationalizer",name:"合理化者",emoji:"🧠",desc:"你是「心灵的建筑师」——擅长用逻辑和理由为现实包裹上一层糖衣，让一切看起来都"说得过去"。",tags:["逻辑型","解释大师","认知高手","压力转化师"]},
-  {id:"denial_master",name:"否认大师",emoji:"🚫",desc:"你是「视而不见的艺术家」——如果现实不够愉快，你的眼睛会自动为它加上滤镜。",tags:["屏蔽专家","Reality Filter","情绪护盾","鸵鸟心态"]},
-  {id:"projector",name:"投射者",emoji:"🔮",desc:"你是「内心的魔术师」——把自己不喜欢的部分变成别人身上的特质，仿佛问题都在别人那里。",tags:["外指高手","责任转移师","心灵移形师","影子投射专家"]},
-  {id:"displacer",name:"转移者",emoji:"⚡",desc:"你是「情绪的重新定向大师」——原始情绪找不到出口时，你总能找到一个更安全的发泄管道。",tags:["出气筒达人","情绪交通员","转移高手","安全发泄专家"]},
-  {id:"repressor",name:"压抑者",emoji:"🗄️",desc:"你是「心灵的深海档案馆馆长」——所有不愉快的情绪都被无意识地归档到最深的地方，不见天日。",tags:["情绪档案馆","深海遗忘师","压抑专家","内在静谧者"]}
-];
-
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('screen-'+id).classList.add('active');
-}
-function startQuiz() {
-  Q=0; ANSWERS.length=0;
-  DIMS.forEach(d=>SCORES[d]=0);
-  showScreen('question'); renderQ();
-}
-function renderQ() {
-  document.getElementById('progress-fill').style.width=((Q/25)*100)+'%';
-  document.getElementById('q-num').textContent=Q+1;
-  document.getElementById('q-text').textContent=Q_TEXTS[Q];
-  const container=document.getElementById('options'); container.innerHTML='';
-  OPT_TEXTS[Q].forEach((text,i)=>{
-    const btn=document.createElement('button');
-    btn.className='option-btn';
-    btn.textContent=['A','B','C','D'][i]+'. '+text;
-    btn.onclick=()=>selectOpt(i);
-    container.appendChild(btn);
-  });
-}
-function selectOpt(idx) {
-  SCORES[DIMS[Math.floor(Q/5)]] += SCORE_MAPS[Q][idx][0];
-  ANSWERS.push(idx);
-  Q++;
-  if(Q<25){ renderQ(); } else { showScreen('processing'); setTimeout(showResult,1600); }
-}
-function getResult() {
-  let max=0,top=''; DIMS.forEach(d=>{ if(SCORES[d]>max){max=SCORES[d];top=d;} });
-  const map={rationalization:0,denial:1,projection:2,displacement:3,repression:4};
-  return RESULTS[map[top]];
-}
-function showResult() {
-  const r=getResult();
-  document.getElementById('r-emoji').textContent=r.emoji;
-  document.getElementById('r-name').textContent=r.name;
-  document.getElementById('r-desc').textContent=r.desc;
-  const tagsEl=document.getElementById('r-tags'); tagsEl.innerHTML='';
-  r.tags.forEach(t=>{ const s=document.createElement('span'); s.className='tag'; s.textContent=t; tagsEl.appendChild(s); });
-  showScreen('result');
-}
-function shareResult() {
-  const r=getResult();
-  const text=`我的心理防御风格居然是「${r.name}」${r.emoji}！${r.desc} 🧠 #心理防御风格测验 #心理测试`;
-  if(navigator.share) navigator.share({title:document.title,text}); else copyResult();
-}
-function copyResult() {
-  const r=getResult();
-  const text=`我的心理防御风格居然是「${r.name}」${r.emoji}！${r.desc} 🧠 #心理防御风格测验 #心理测试`;
-  navigator.clipboard.writeText(text).then(()=>alert('已复制！')).catch(()=>alert('复制失败'));
-}
-function retake(){ startQuiz(); }
-</script>
-</body>
-</html>
+const QUESTIONS=[{id:1,dimension:"rationalization",text:"你为一件很重要的事情准备了很久，结果却失败了。你会怎么想？",options:[{key:"A",text:"这件事本来就没那么重要，我也没真的很认真对待",scores:{rationalization:3}},{key:"B",text:"我一定是不够努力/不够聪明",scores:{rationalization:0}},{key:"C",text:"运气不好，正好赶上状态差的时候",scores:{rationalization:2}},{key:"D",text:"其实这个结果对我有好处，只是我当时没看出来",scores:{rationalization:1}}]},{id:2,dimension:"rationalization",text:"同事在背后说了你坏话，你听说后的第一反应是？",options:[{key:"A",text:"TA一定是嫉妒我，别人的评价不重要",scores:{rationalization:2}},{key:"B",text:"反思一下自己是不是真的有什么地方做得不好",scores:{rationalization:0}},{key:"C",text:"算了，不值得为这种事浪费时间",scores:{rationalization:1}},{key:"D",text:"TA 可能压力大，在找发泄口，我能理解",scores:{rationalization:3}}]},{id:3,dimension:"rationalization",text:"你申请了一个很想要的职位，结果没有被录用。你会告诉自己？",options:[{key:"A",text:"其实这个职位并不适合我，早知道就好了",scores:{rationalization:3}},{key:"B",text:"我还需要再积累一些经验，以后还有机会",scores:{rationalization:1}},{key:"C",text:"这次运气不好，评委不公平",scores:{rationalization:2}},{key:"D",text:"我被拒绝说明我不够好，我应该更努力",scores:{rationalization:0}}]},{id:4,dimension:"rationalization",text:"你在工作中犯了一个错误，被老板当众指出来。你的内心OS是？",options:[{key:"A",text:"老板今天心情不好，拿我开刀而已",scores:{rationalization:3}},{key:"B",text:"确实是我不够仔细，我需要改进",scores:{rationalization:0}},{key:"C",text:"这种事谁都会犯，没必要大惊小怪",scores:{rationalization:2}},{key:"D",text:"我在这个岗位上的时间不长，犯错是正常的",scores:{rationalization:1}}]},{id:5,dimension:"rationalization",text:"你答应朋友的约会迟到了半小时，你会怎么解释？",options:[{key:"A",text:"地铁临时故障了，我也很无奈",scores:{rationalization:2}},{key:"B",text:"抱歉我迟到了，这是我的问题",scores:{rationalization:0}},{key:"C",text:"我一般都会提前出门的，今天是特殊情况",scores:{rationalization:3}},{key:"D",text:"反正你也没等多久，不用计较啦",scores:{rationalization:1}}]},{id:6,dimension:"denial",text:"你被诊断出某种需要调整生活方式的健康问题。你的第一反应是？",options:[{key:"A",text:"没什么大不了的，该吃吃该喝喝",scores:{denial:3}},{key:"B",text:"仔细询问医生，制定康复计划",scores:{denial:0}},{key:"C",text:"我觉得检查结果可能有误，想再查一次",scores:{denial:2}},{key:"D",text:"先不管了，假装不知道该干啥",scores:{denial:1}}]},{id:7,dimension:"denial",text:"你的家人或伴侣向你表达了对你某个行为的担忧。你会？",options:[{key:"A",text:"不认为这有什么问题，他们太小题大做了",scores:{denial:3}},{key:"B",text:"认真听Ta说，反思自己的行为",scores:{denial:0}},{key:"C",text:"谢谢你的关心，我会注意的（但不会真的改变）",scores:{denial:1}},{key:"D",text:"你的担忧有点过度了，事情没有那么严重",scores:{denial:2}}]},{id:8,dimension:"denial",text:"你发现自己有某种上瘾行为（比如熬夜刷手机）。你会？",options:[{key:"A",text:"我并没有上瘾，我只是娱乐一下而已",scores:{denial:3}},{key:"B",text:"认识到问题的严重性，主动寻找解决方法",scores:{denial:0}},{key:"C",text:"大家都这样，这不是问题",scores:{denial:2}},{key:"D",text:"我知道这样做不好，但我觉得我能控制",scores:{denial:1}}]},{id:9,dimension:"denial",text:"你听到一个关于自己的不好传闻。你的反应是？",options:[{key:"A",text:"没发生过这种事，不需要回应",scores:{denial:3}},{key:"B",text:"了解清楚传闻内容，看能不能当面澄清",scores:{denial:0}},{key:"C",text:"这种事情传一传就算了，清者自清",scores:{denial:1}},{key:"D",text:"完全不理会，继续做自己的事",scores:{denial:2}}]},{id:10,dimension:"denial",text:"你的银行账户发出了透支预警。你的第一反应是？",options:[{key:"A",text:"银行系统出错了吧，我的账户不可能透支",scores:{denial:3}},{key:"B",text:"立刻查看账单，了解具体情况",scores:{denial:0}},{key:"C",text:"没关系，这个月省着点花就行了",scores:{denial:1}},{key:"D",text:"先把预警关了，回头再说",scores:{denial:2}}]},{id:11,dimension:"projection",text:"你在项目中搞砸了一件事，但你觉得真正的原因在于？",options:[{key:"A",text:"是队友配合不给力，不是我的问题",scores:{projection:3}},{key:"B",text:"我时间管理有问题，需要反省",scores:{projection:0}},{key:"C",text:"资源不足导致我无法发挥",scores:{projection:2}},{key:"D",text:"外部环境变化太快，谁能预料到",scores:{projection:1}}]},{id:12,dimension:"projection",text:"你和伴侣吵架，对方说「你总是把工作放在第一位」。你会？",options:[{key:"A",text:"明明是你不成熟，不能理解工作的重要性",scores:{projection:3}},{key:"B",text:"我需要反思一下工作和生活的平衡",scores:{projection:0}},{key:"C",text:"大家都是这样，谁不是把工作放第一位呢",scores:{projection:1}},{key:"D",text:"如果赚更多钱你还会这样说吗？",scores:{projection:2}}]},{id:13,dimension:"projection",text:"你对某件事感到愤怒，但你说出来的时候却说的是？",options:[{key:"A",text:"我很冷静，是你反应过度了",scores:{projection:2}},{key:"B",text:"我对这件事感到非常生气，因为……",scores:{projection:0}},{key:"C",text:"所有人遇到这种事都会生气的",scores:{projection:3}},{key:"D",text:"我觉得你的问题更大",scores:{projection:1}}]},{id:14,dimension:"projection",text:"你的朋友向你倾诉TA的烦恼，你会怎么说？",options:[{key:"A",text:"其实你这个问题很简单，就是你想太多了",scores:{projection:2}},{key:"B",text:"我能理解你，你一定很难受",scores:{projection:0}},{key:"C",text:"我之前也遇到过同样的事，情况比你更糟",scores:{projection:3}},{key:"D",text:"你想过没有，其实问题出在对方身上",scores:{projection:1}}]},{id:15,dimension:"projection",text:"你在团队里感受到了阻力，但你认为阻力来源是？",options:[{key:"A",text:"团队里有人对我有意见，故意为难我",scores:{projection:3}},{key:"B",text:"我在沟通方式上还有提升空间",scores:{projection:0}},{key:"C",text:"大家对新变化都有抵触情绪，很正常",scores:{projection:2}},{key:"D",text:"这个组织文化不支持创新",scores:{projection:1}}]},{id:16,dimension:"displacement",text:"你在公司受了气，回家后会？",options:[{key:"A",text:"对家人说话语气不好，自己也说不清为什么",scores:{displacement:3}},{key:"B",text:"运动或独处，等情绪平复了再回家",scores:{displacement:0}},{key:"C",text:"关起门来刷手机，谁也不理",scores:{displacement:2}},{key:"D",text:"找一个合适的方式跟家人说今天不顺心",scores:{displacement:1}}]},{id:17,dimension:"displacement",text:"你被路怒症司机惹怒了，你会？",options:[{key:"A",text:"追上去跟对方理论",scores:{displacement:3}},{key:"B",text:"深呼吸，不跟对方计较，直接开走",scores:{displacement:0}},{key:"C",text:"在车里狠拍方向盘，然后默默消气",scores:{displacement:2}},{key:"D",text:"把这件事讲给朋友听，发泄一下",scores:{displacement:1}}]},{id:18,dimension:"displacement",text:"你对老板有抱怨但不敢直接说，你会？",options:[{key:"A",text:"在朋友圈含沙射影地发一条",scores:{displacement:3}},{key:"B",text:"找个合适的时机私下与老板沟通",scores:{displacement:0}},{key:"C",text:"找同事吐槽，发泄情绪",scores:{displacement:2}},{key:"D",text:"忍下去，告诉自己没关系",scores:{displacement:1}}]},{id:19,dimension:"displacement",text:"你感到沮丧时，通常会怎么发泄？",options:[{key:"A",text:"吃一堆零食或喝奶茶，用物质犒劳自己",scores:{displacement:3}},{key:"B",text:"写日记或找信任的人聊聊",scores:{displacement:0}},{key:"C",text:"疯狂购物，买一堆不需要的东西",scores:{displacement:2}},{key:"D",text:"去运动，把愤怒转成汗水",scores:{displacement:1}}]},{id:20,dimension:"displacement",text:"你在网上看到让人气愤的新闻，你会？",options:[{key:"A",text:"到评论区大战网友，发泄情绪",scores:{displacement:3}},{key:"B",text:"看完默默关掉，不参与讨论",scores:{displacement:0}},{key:"C",text:"转发到群里，问大家怎么看",scores:{displacement:2}},{key:"D",text:"刷其他内容来转移注意力",scores:{displacement:1}}]},{id:21,dimension:"repression",text:"你经历了一次情绪很激动的事件（比如争吵、哭泣），事后你会？",options:[{key:"A",text:"假装这件事没发生过，继续该干嘛干嘛",scores:{repression:3}},{key:"B",text:"给自己一些时间消化，然后反思学到了什么",scores:{repression:0}},{key:"C",text:"把情绪压在心底，不愿意再提起",scores:{repression:2}},{key:"D",text:"跟信任的人聊聊那件事的感受",scores:{repression:1}}]},{id:22,dimension:"repression",text:"有人提起你童年时发生的一件痛苦的事，你的第一反应是？",options:[{key:"A",text:"我有这样的经历吗？我不太记得了",scores:{repression:3}},{key:"B",text:"记得，那件事对我影响很深",scores:{repression:0}},{key:"C",text:"过去的事就让它过去吧，我不想再提",scores:{repression:2}},{key:"D",text:"我记得一些片段，但细节很模糊",scores:{repression:1}}]},{id:23,dimension:"repression",text:"你在某段关系中受过伤，现在遇到类似的情况，你会？",options:[{key:"A",text:"压抑情绪，假装什么都没发生",scores:{repression:3}},{key:"B",text:"认识到旧伤还在，需要主动处理",scores:{repression:0}},{key:"C",text:"尽量避免类似的情况，不让自己回到那种情境",scores:{repression:2}},{key:"D",text:"跟朋友倾诉，寻求支持",scores:{repression:1}}]},{id:24,dimension:"repression",text:"你做梦梦到了很久以前发生的一件糟糕的事，醒来后你会？",options:[{key:"A",text:"不想了，起床该干嘛干嘛",scores:{repression:3}},{key:"B",text:"记录下来这个梦，分析它可能的意义",scores:{repression:0}},{key:"C",text:"感觉怪怪的，但选择忽略它",scores:{repression:2}},{key:"D",text:"花点时间想想这件事和现在的生活有什么联系",scores:{repression:1}}]},{id:25,dimension:"repression",text:"你心里藏着一个从来没跟人说过秘密，它在你的生活中？",options:[{key:"A",text:"它已经被我压得很深，我很少想起它",scores:{repression:3}},{key:"B",text:"它仍然影响我的决定和行为，我要面对它",scores:{repression:0}},{key:"C",text:"它偶尔会在某个瞬间冲出来，让我很不舒服",scores:{repression:2}},{key:"D",text:"我在等待一个合适的时机和合适的人来分享它",scores:{repression:1}}]}];
+const RESULT_TYPES=[{id:"rationalizer",name:"合理化者",emoji:"🧠",core_description:"你是「心灵的建筑师」——擅长用逻辑和理由为现实包裹上一层糖衣，让一切看起来都「说得过去」。",tags:["逻辑型","解释大师","认知高手","压力转化师"],scenario:"当你面对不愉快的事实时，你的第一反应是找一个合理的解释。你的大脑像一台超级计算机，能在几秒钟内构建一套完美的理由链，让你自己都相信现实其实没那么糟。",animal_analogy:"就像一只灵巧的蜘蛛——不是逃避问题，而是编织一张网，把现实里尖锐的部分包裹起来，让它们看起来更容易接受。你织的不是谎言，而是保护自己的茧。",closing_message:"合理化者的你，拥有强大的认知调节能力——这是情商的一部分。但记得，有时候也需要掀开那层糖衣，直接感受现实的味道，那才是真正的成长。适度合理化是智慧，过度合理化是逃避。加油，合理化者也可以学会拥抱真实的感受。🧠✨"},{id:"denial_master",name:"否认大师",emoji:"🚫",core_description:"你是「视而不见的艺术家」——如果现实不够愉快，你的眼睛会自动为它加上滤镜。",tags:["屏蔽专家","Reality Filter","情绪护盾","鸵鸟心态"],scenario:"你的口头禅是「没的事」「不可能」「不重要」。在你的世界里，没有什么是真正值得担忧的——疾病会被你缩小，冲突会被你忽视，债务会被你折叠收进抽屉。",animal_analogy:"就像一只章鱼——受到威胁时会喷出墨汁掩护自己逃走。你不是看不到危险，而是选择让危险变得不可见。在短期内，这让你活得很轻松；在长期里，那些被否认的问题往往会累积成更大的麻烦。",closing_message:"否认大师的你，在短期内特别能扛住压力——这是你的生存天赋。但否认是把双刃剑，它保护你的同时也在限制你。偶尔练习「在安全的环境下承认现实」，会让你在重要时刻做出更明智的决定。你可以继续当否认大师，但也给自己留一扇诚实的窗。🚫💪"},{id:"projector",name:"投射者",emoji:"🔮",core_description:"你是「内心的魔术师」——把自己不喜欢的部分变成别人身上的特质，仿佛问题都在别人那里。",tags:["外指高手","责任转移师","心灵移形师","影子投射专家"],scenario:"当你的项目失败时，你会觉得是队友不够给力；当关系紧张时，你会觉得是对方太作；当事情不如意时，你的雷达总是自动扫描「是谁的错」——然后发现，永远是别人的。",animal_analogy:"就像一只晰蜴——遇到危险时，会掉一截尾巴逃跑，你的尾巴是「责任」。你不是没有责任，而是把责任像魔法一样转移到了别人身上。在你的世界里，问题永远不在你这边。",closing_message:"投射者的你，拥有敏锐的洞察力——你很擅长发现别人的问题。这本身是一种能力，只是需要用在对的地方。下次当事情不对的时候，试着先在自己的身上找一找，你会发现，当你开始承担责任时，改变就已经开始了。投射不是魔法，但它可以变成理解他人的超能力。🔮✨"},{id:"displacer",name:"转移者",emoji:"⚡",core_description:"你是「情绪的重新定向大师」——原始情绪找不到出口时，你总能找到一个更安全的发泄管道。",tags:["出气筒达人","情绪交通员","转移高手","安全发泄专家"],scenario:"在公司被老板骂了？回家对伴侣提高音量。路上遇到路怒症？对着方向盘狠拍。找不到人倾诉？到评论区去「对线」。你的情绪永远能找到出口，只是出口不一定是源头——这是一项绝技，也是一把双刃剑。",animal_analogy:"就像一只电鳗——受到威胁时，会把电流传给最近的水体。你不是没有情绪，而是让情绪在另一个渠道释放。",closing_message:"转移者的你，在短期内能有效地管理情绪压力——这是你的生存策略。但那些被转移的情绪并没有消失，只是换了地方上岸。下次当你想要转移情绪时，试着先停下来问一句：我真正在感受的是什么？允许自己感受真实的情绪，比转移它需要更大的勇气。你比你以为的更有力量。⚡💪"},{id:"repressor",name:"压抑者",emoji:"🗄️",core_description:"你是「心灵的深海档案馆馆长」——所有不愉快的情绪都被无意识地归档到最深的地方，不见天日。",tags:["情绪档案馆","深海遗忘师","压抑专家","内在静谧者"],scenario:"你的内心有一扇带锁的门，不愉快的事情会被立即归档上锁。过去的伤痛、愤怒、恐惧——你很少主动想起它们，因为它们被存放在一个很深很深的地方。你的情感在表面上平静如水，但这片水下面藏着什么，连你自己都不确定。",animal_analogy:"就像一只深海生物——在高压环境下进化出了独特的身体机构，能够在深海中无声地游动。你的情感世界也是这样——在高压的情绪环境下，你发展出了一种深海的生存方式，在那里没有波浪，没有声音，只有安静。但深海生物也需要偶尔浮到海面换气。",closing_message:"压抑者的你，其实非常坚强——你能在别人崩溃的时候保持镇静，这是难得的心理素质。但压抑也有代价：那些被关起来的情绪并没有消失，只是在等待被释放的机会。试着给你的情绪一些「露面」的时间，你会发现，承认脆弱并不可怕，它反而让你更完整。给自己一个拥抱吧，压抑者也有权利感受。🗄️🌱"}];
+const PRIORITY=["rationalization","denial","projection","displacement","repression"];
+let currentQ=0,answers={},dimScores={};
+function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function startQuiz(){goTo('screen-instructions');}
+function startQuestions(){currentQ=0;answers={};dimScores={};goTo('screen-questions');renderQuestion();}
+function prevQuestion(){if(currentQ>0){currentQ--;renderQuestion();}}
+function renderQuestion(){const q=QUESTIONS[currentQ];document.getElementById('q-num').textContent='Q'+q.id;document.getElementById('q-text').textContent=q.text;document.getElementById('q-label').textContent=(currentQ+1)+' / 25';const dimNames={rationalization:"合理化",denial:"否认",projection:"投射",displacement:"转移",repression:"压抑"};document.getElementById('q-dim-label').textContent=dimNames[q.dimension]||'';const pct=Math.round(((currentQ+1)/25)*100);document.getElementById('progress-fill').style.width=pct+'%';const opts=document.getElementById('options');opts.innerHTML='';q.options.forEach(o=>{const btn=document.createElement('button');btn.className='option-btn';btn.innerHTML='<span class="option-key">'+o.key+'</span><span class="option-text">'+o.text+'</span>';btn.onclick=()=>selectOption(q.id,o.key,o.scores);if(answers[q.id]===o.key)btn.style.borderColor='var(--primary)';opts.appendChild(btn);});document.getElementById('btn-prev').style.visibility=currentQ>0?'visible':'hidden';}
+function selectOption(qId,key,scores){answers[qId]=key;Object.keys(scores).forEach(k=>{dimScores[k]=(dimScores[k]||0)+scores[k];});if(currentQ<24){currentQ++;renderQuestion();}else{goTo('screen-calculating');setTimeout(calculateResult,1800);}}
+function calculateResult(){let maxScore=-1,winner=null;PRIORITY.forEach(dim=>{if((dimScores[dim]||0)>maxScore){maxScore=dimScores[dim]||0;winner=dim;}});const resultMap={rationalization:RESULT_TYPES[0],denial:RESULT_TYPES[1],projection:RESULT_TYPES[2],displacement:RESULT_TYPES[3],repression:RESULT_TYPES[4]};const r=resultMap[winner];document.getElementById('res-emoji').textContent=r.emoji;document.getElementById('res-type').textContent=r.name;document.getElementById('res-core').textContent=r.core_description;const tagsEl=document.getElementById('res-tags');tagsEl.innerHTML='';r.tags.forEach(t=>{const span=document.createElement('span');span.className='tag';span.textContent=t;tagsEl.appendChild(span);});document.getElementById('res-scenario').textContent=r.scenario;document.getElementById('res-analogy').textContent=r.animal_analogy;document.getElementById('res-closing').textContent=r.closing_message;try{localStorage.setItem('defense_style_result',JSON.stringify({type:winner,name:r.name,emoji:r.emoji,scores:dimScores}));}catch(e){}goTo('screen-result');}
+function restartQuiz(){goTo('screen-welcome');}
+function generateShareCard(){const canvas=document.getElementById('shareCanvas');const ctx=canvas.getContext('2d');const stored=localStorage.getItem('defense_style_result');let result={name:'合理化者',emoji:'🧠'};if(stored){try{result=JSON.parse(stored);}catch(e){}}const typeData=RESULT_TYPES.find(x=>x.name===result.name)||RESULT_TYPES[0];ctx.fillStyle='#1A1A2E';ctx.fillRect(0,0,1080,1350);ctx.fillStyle='#7B68EE';ctx.fillRect(0,0,1080,240);ctx.fillStyle='#FFD700';ctx.font='bold 96px sans-serif';ctx.textAlign='center';ctx.fillText(typeData.emoji,540,170);ctx.fillStyle='#FFD700';ctx.font='bold 72px sans-serif';ctx.fillText(typeData.name,540,280);ctx.fillStyle='#F0F0FF';ctx.font='36px sans-serif';ctx.fillText('你是哪种「心灵护盾」类型？',540,370);ctx.fillStyle='#A0A0C0';ctx.font='28px sans-serif';ctx.fillText('心理防御风格测验',540,420);ctx.fillStyle='#FFD700';ctx.font='bold 28px sans-serif';const tags=typeData.tags;let tagX=540-tags.length*100/2;tags.forEach(t=>{ctx.fillStyle='rgba(123,104,238,0.3)';ctx.beginPath();ctx.roundRect(tagX,480,160,50,25);ctx.fill();ctx.fillStyle='#F0F0FF';ctx.textAlign='center';ctx.fillText(t,tagX+80,515);tagX+=180;});ctx.fillStyle='#A0A0C0';ctx.font='22px sans-serif';ctx.textAlign='center';ctx.fillText('仅供娱乐参考，非心理诊疗工具',540,1300);const dataUrl=canvas.toDataURL('image/png');const link=document.createElement('a');link.download='心理防御风格测验.png';link.href=dataUrl;link.click();}
+</script></body></html>
