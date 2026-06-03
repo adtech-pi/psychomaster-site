@@ -1,0 +1,609 @@
+﻿  <!-- WELCOME -->
+  <div id="welcome-screen" class="screen active" role="main" aria-label="欢迎页面">
+    <div class="welcome-logo">PsychoMaster</div>
+    <div class="welcome-illustration" aria-hidden="true">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+    </div>
+    <h1 class="welcome-title">你的内在家族图谱</h1>
+    <p class="welcome-subtitle">Your Inner Family Map</p>
+    <p class="welcome-tagline">探索你的内在子人格，发现哪个部分在主导你的内在世界。基于IFS内在家庭系统疗法。</p>
+    <div class="content-note" role="note">
+      <p>本测验包含对内在情绪、童年记忆和内心冲突的探索，其中某些问题可能触动深层情感体验。如果你目前正在经历严重的情绪危机或心理创伤，请先寻求专业心理支持。你随时可以暂停或退出。每个部分都值得被温柔对待。</p>
+    </div>
+    <button class="btn-start" id="btn-start" aria-label="开始探索你的内在家族图谱">开始探索 <span class="arrow">→</span></button>
+    <p class="welcome-meta">约 3–5 分钟 · 12 道情境题</p>
+  </div>
+
+  <!-- RESUME MODAL -->
+  <div class="resume-modal" id="resume-modal" role="dialog" aria-modal="true" aria-labelledby="resume-title">
+    <div class="resume-card">
+      <h2 id="resume-title">欢迎回来</h2>
+      <p id="resume-subtitle">你已经完成了 0 道题</p>
+      <button class="btn-resume-primary" id="btn-resume">继续答题</button>
+      <button class="btn-resume-secondary" id="btn-restart">重新开始</button>
+    </div>
+  </div>
+
+  <!-- QUESTION -->
+  <div id="question-screen" class="screen" role="main" aria-label="答题页面">
+    <div class="question-header">
+      <button class="btn-prev" id="btn-prev" aria-label="上一题"><span>←</span> 上一题</button>
+      <div class="progress-wrapper">
+        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="progress-bar">
+          <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+        </div>
+        <span class="progress-text" id="progress-text">0%</span>
+      </div>
+    </div>
+    <p class="question-counter" id="question-counter" aria-live="polite">1 / 12</p>
+    <div class="question-card">
+      <p class="question-text" id="question-text"></p>
+      <div class="options-list" id="options-list" role="radiogroup" aria-label="请选择你的回答"></div>
+    </div>
+  </div>
+
+  <!-- PROCESSING -->
+  <div id="processing-screen" class="screen" role="main" aria-label="正在分析你的内在家族">
+    <div class="processing-circles" aria-hidden="true" id="processing-circles"></div>
+    <p class="processing-text">正在倾听你的内在家族……</p>
+    <p class="processing-sub">Listening to your inner family…</p>
+    <div class="processing-dots" aria-label="加载中">
+      <div class="processing-dot"></div>
+      <div class="processing-dot"></div>
+      <div class="processing-dot"></div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="result-screen" class="screen" role="main" aria-label="你的内在家族图谱结果">
+    <div class="result-hero">
+      <p class="result-part-label">你的主导子人格</p>
+      <h2 class="result-part-name" id="result-part-name"></h2>
+      <p class="result-part-name-en" id="result-part-name-en"></p>
+      <span class="secondary-badge" id="secondary-badge" style="display:none"></span>
+      <p class="result-tagline" id="result-tagline"></p>
+    </div>
+    <div class="result-card" id="result-card">
+      <div class="result-section" role="region" aria-label="核心特质">
+        <h3 class="result-section-title"><span class="icon">✦</span> 核心特质</h3>
+        <ul class="trait-list" id="trait-list"></ul>
+      </div>
+      <div class="divider"></div>
+      <div class="result-section" role="region" aria-label="重新协调步骤">
+        <h3 class="result-section-title"><span class="icon">↻</span> 重新协调之路</h3>
+        <ul class="reharmonize-list" id="reharmonize-list"></ul>
+      </div>
+      <div class="divider"></div>
+      <div class="share-panel" id="share-panel">
+        <div class="share-panel-header">✧ 分享你的结果</div>
+        <div class="share-buttons">
+          <button class="share-btn" id="share-telegram" aria-label="分享到Telegram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.286c.075.13.162.299.241.442l.693.603a.5.5 0 0 1-.03.95L11.684 18l-4.42 6.742a.5.5 0 0 1-.9.175l-.781-1.19a.5.5 0 0 1 .027-.757l5.482-5.534-1.484-1.464a.5.5 0 0 1-.03-.858l.361-.295.82 1.253c.31.477.86.687 1.315.475.395-.184.6-.566.647-1.015l.054-1.02a.5.5 0 0 1 .458.135z"/></svg>Telegram</button>
+          <button class="share-btn" id="share-whatsapp" aria-label="分享到WhatsApp">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.296-.767.966-.94 1.164-.173.199-.347.223-.644.074-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>WhatsApp</button>
+          <button class="share-btn" id="share-copy" aria-label="复制到剪贴板">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button>
+          <button class="share-btn" id="share-download" aria-label="下载图片">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>下载</button>
+        </div>
+      </div>
+      <div class="grounding-tip" role="region" aria-label="回到安全港">
+        <div class="grounding-tip-header">🌿 回到安全港</div>
+        <div class="grounding-tip-body">此刻，找一个舒适的姿势坐着或躺下。轻轻地把注意力放在你的呼吸上——不必改变它，只是观察它。吸气时默念"安"，呼气时默念"在"。让思绪来去自由，你只需要在这里，安稳地在这里。</div>
+      </div>
+      <div class="support-note" id="support-note" style="display:none" role="region" aria-label="寻求支持">
+        <div class="support-note-header">♥ 如果你感到难以承受，请寻求支持</div>
+        <div class="support-note-body">如果这些感受持续困扰你，请记得你不必独自面对。可以尝试联系心理咨询师 / 治疗师 / IFS治疗师。你不需要等到"足够严重"才去寻求帮助。</div>
+      </div>
+      <button class="retake-btn" id="retake-btn">重新测试 ?</button>
+    </div>
+  </div>
+
+  <script>
+    const QUESTIONS = [
+      { text: "你在工作中完成了一个重要项目，上司当众表扬了你。你的第一反应是：", options: [
+        { letter: "A", text: "感到一阵温暖，但很快怀疑这是不是真的——他们只是客气吧？" },
+        { letter: "B", text: "心里得意，但立刻想到下一个任务，开始担心自己能不能保持这个水平" },
+        { letter: "C", text: "感觉很好，立刻约朋友吃饭庆祝，把这份开心放大" },
+        { letter: "D", text: "谢谢上司，但立刻复盘整个过程，找出哪里还可以做得更好" }
+      ]},
+      { text: "周末晚上，你独自一人，窗外下着雨，你发现自己：", options: [
+        { letter: "A", text: "陷入一种模糊的、说不清的伤痛感，好像有什么东西被触动了" },
+        { letter: "B", text: "开始在脑子里反复播放白天发生的事，审视自己哪里做得不好" },
+        { letter: "C", text: "拿起手机刷短视频/点外卖/喝酒，用任何方式让自己不去感受那种安静" },
+        { letter: "D", text: "整理房间、制定下周计划、检查待办事项——总之不让大脑停下来" }
+      ]},
+      { text: "你的好朋友临时取消了你们约了很久的晚餐。你的第一反应是：", options: [
+        { letter: "A", text: "有点失落，但很快告诉自己没关系，我理解，内心其实有点受伤" },
+        { letter: "B", text: "心里立刻冒出一个声音：是不是我哪里做错了？或者她可能根本不想来" },
+        { letter: "C", text: "算了！——去打游戏/刷剧/做点冲动的事来填满这个空出来的晚上" },
+        { letter: "D", text: "没关系，正好有其他事情可以做，然后把注意力迅速转向自己的安排" }
+      ]},
+      { text: "你收到一条消息，对方说：你真的很好，你是一个值得被珍惜的人。你脑海里闪过的第一个念头是：", options: [
+        { letter: "A", text: "鼻子一酸——这句话触动了某种很深的需求，好像小时候没有被好好看见的感觉又浮现了" },
+        { letter: "B", text: "不相信——她不了解真实的我，等她知道我是什么样的人就不会这么说了" },
+        { letter: "C", text: "感到开心，但不知道怎么处理这份感情，所以立刻转移注意力去做别的事" },
+        { letter: "D", text: "感谢对方的肯定，然后默默提醒自己：保持清醒，不要因为一句话就飘飘然" }
+      ]},
+      { text: "你在地铁上看到一个陌生人突然情绪崩溃，大哭起来。你的第一反应是：", options: [
+        { letter: "A", text: "心里一紧，很想过去安慰他/她，但又担心自己会不会冒犯到对方" },
+        { letter: "B", text: "感到不自在，不知道该怎么办，脑子开始想我该怎么办的策略" },
+        { letter: "C", text: "非常不舒服，想赶紧下车或者把注意力转移到手机上，不要看到这一幕" },
+        { letter: "D", text: "观察周围环境，决定是否需要报告工作人员或采取行动，同时保持自己的情绪不受影响" }
+      ]},
+      { text: "你在一次会议上犯了一个小错误（说错了一个数据），被同事当场指出。你的第一感受是：", options: [
+        { letter: "A", text: "脸微微发热，感到一种熟悉的羞耻感，好像小时候被当众批评的记忆被激活了" },
+        { letter: "B", text: "头脑里立刻响起一个声音：你怎么这么不小心！——那个声音永远不会放过你" },
+        { letter: "C", text: "想找个地缝钻进去，然后可能冲动地反驳或者用喝酒/吃零食来压制这种尴尬" },
+        { letter: "D", text: "立刻修正数据并继续，但内心已经在分析：这个错误会不会影响别人对我的评价？" }
+      ]},
+      { text: "你发现自己最近一个月花了比平时更多的钱（买了平时不会买的东西）。你的反应是：", options: [
+        { letter: "A", text: "感到空虚和迷茫，不知道自己为什么需要用购物来填补什么" },
+        { letter: "B", text: "严厉自责：你总是这样，没有自控力！——然后制定一个严格的省钱计划来惩罚自己" },
+        { letter: "C", text: "告诉自己算了，我值得，然后继续花，反正花了再说，不管了" },
+        { letter: "D", text: "冷静分析开支，列出预算，并设立新的规则和限制，确保下不为例" }
+      ]},
+      { text: "一个重要的人对你说了一句伤人的话，虽然他/她后来道了歉，但你的感受是：", options: [
+        { letter: "A", text: "很难真正释怀，道歉了也还是会感到被刺痛的伤口在隐隐作痛" },
+        { letter: "B", text: "在心里反复回放那句话，即使对方道歉了，那个声音还是在反复播放" },
+        { letter: "C", text: "假装没事，但一段时间内心情烦躁，可能用某种冲动行为（暴饮暴食、冲动购物等）来转移" },
+        { letter: "D", text: "设定了边界：下一次再这样，我就不参与了，然后把自己的情绪好好收起来" }
+      ]},
+      { text: "你在半夜凌晨两点醒来，脑子里装着很多事情，你发现自己在：", options: [
+        { letter: "A", text: "感到一种淡淡的悲伤在胸口升起，好像有很多没有被好好处理的情绪在夜里浮上来" },
+        { letter: "B", text: "开始在脑子里排练明天要做的事，或者反复思考过去某件搞砸了的事" },
+        { letter: "C", text: "拿起手机刷到凌晨三四点，不让自己停下来，因为一停下来就会面对那些东西" },
+        { letter: "D", text: "起身写下待办事项清单，或者开始做一些效率很高的事情来压制焦虑" }
+      ]},
+      { text: "你被邀请参加一个朋友的聚会，但你其实很累，不太想去。你的内心对话是：", options: [
+        { letter: "A", text: "我去了会不会很开心？——但内心深处有一种隐隐的不安全感，好像不融入就会失去联系" },
+        { letter: "B", text: "你应该去，这是不锻炼社交的机会！——内在一个声音在命令你，不允许你休息" },
+        { letter: "C", text: "算了，不去了！然后打开外卖软件点一堆平时不敢吃的东西，或者做其他冲动的事" },
+        { letter: "D", text: "去不去要看值不值得。——评估利弊，然后做出理性决定，不太允许自己仅仅因为累就不去" }
+      ]},
+      { text: "你听到一个朋友分享自己的成功故事，你发现自己：", options: [
+        { letter: "A", text: "真心为他/她开心，但同时有一种模糊的感觉——我什么时候才能像他一样？那种渴望和无力的混合" },
+        { letter: "B", text: "心里立刻开始比较：我哪里不如他？我应该更努力，然后陷入自我怀疑" },
+        { letter: "C", text: "有点嫉妒，烦躁，然后可能想通过做点什么（买点什么、去哪里玩）来让自己感觉好一点" },
+        { letter: "D", text: "欣赏他/她的成就，然后思考：我有没有什么可以向他/她学习的？保持距离地分析" }
+      ]},
+      { text: "你现在坐下来，回想过去一个月自己的生活。你发现自己大多数时候：", options: [
+        { letter: "A", text: "被各种情绪的浪潮推着走——时而开心，时而莫名的伤感，没有明确的规律" },
+        { letter: "B", text: "在追求完美的路上不停地评判自己，做什么都有一个声音在说不够好，还可以更好" },
+        { letter: "C", text: "在高度投入（工作/游戏/刷剧/某种爱好）和崩溃（无力、躺平、暴饮暴食）之间来回摇摆" },
+        { letter: "D", text: "非常有规律地、目标导向地生活，但有时候会觉得自己像一台机器，不会休息" }
+      ]}
+    ];
+
+    const PART_DATA = {
+      exiled: {
+        name: "被放逐的内在小孩", nameEn: "Exiled Child",
+        tagline: "你内在那个最柔软、最渴望被看见的孩子，一直在等待一个安全的归宿。",
+        traits: [
+          "高度敏感，情感深邃——你能感受到别人感受不到的东西，这种敏感是天赋，也是负担",
+          "强烈渴望被认可和被爱——童年时期某些情感需求没有被充分满足，这种缺失感一直在影响你",
+          "容易感到受伤和被忽视——在人际互动中，你格外在意自己有没有被看见",
+          "有丰富的想象力和共情力——你天然能理解他人的痛苦，这种能力非常珍贵"
+        ],
+        steps: [
+          { title: "看见它，而不是修复它", desc: "当你感到情绪被触发时，不要急着压制或逃避。试着在内心问一句：现在是内在小孩在说话吗？仅仅这一句话，就能创造一个空间——让你从被情绪淹没，转变成在旁观察。" },
+          { title: "给内在小孩写一封短信", desc: "找一张纸，以承认它存在的方式写几句话：我知道你一直在，我知道你受了伤，我不会再忽视你了。这封信写给过去某个受伤时刻的自己。这被称为混合（Blend）的解除——你开始从内在小孩的角度分离出来，同时仍然保持对它的理解。" },
+          { title: "让真实自我成为内在的向导", desc: "IFS认为，每个人都有一个真实自我（Self）——它天然具备好奇心、同同理心、清晰和自信。当你的内在小孩感到被看见、被接纳时，它就不再需要用极端行为来吸引你的注意。你可以通过冥想或正念练习，轻轻地邀请真实自我出现，对内在小孩说：我在这里，你可以信任我。" }
+        ]
+      },
+      critic: {
+        name: "内心批判者", nameEn: "Inner Critic",
+        tagline: "你内在那个永不停歇的审判者，用完美的名义，把你困在永远不够好的牢笼里。",
+        traits: [
+          "严苛的内在声音——\"你应该更努力\"\"你怎么又犯错了？\"这个声音已经成为你的背景音乐",
+          "羞耻感驱动——你的行为更多被不能丢脸驱动，而非被热爱或好奇心驱动",
+          "高标准强迫症——不管做到什么程度，你的大脑总能找到不够好的地方",
+          "难以接受赞美——别人的夸奖会让你尴尬，因为你内心有个声音在说那只是他们客气"
+        ],
+        steps: [
+          { title: "听到声音，而不是相信它", desc: "第一步是认出：那个声音不是你。IFS把这称为混合（Blend）状态——你与自己的批判者混为一体。试着在它说话时，轻声说：谢谢你的提醒，但现在让我自己来评判。当你能在声音响起时觉察它，你就夺回了一部分力量。" },
+          { title: "追溯它的来源", desc: "找一个安静的时刻，问自己：这个批评的声音，最早是在什么时候开始出现在我生命里的？也许是你考了98分被质问那2分去哪了的那一天；也许是你第一次被取笑的时刻。找到它最初出现的场景，是IFS疗愈的关键一步——看见它从哪来，才能让它回到它该去的地方。" },
+          { title: "与真实自我连接", desc: "IFS相信，每个人都有一个比批判者更有智慧的内核——真实自我。当你感受到批判者声音很响时，试着深呼吸，把注意力放在胸口，问自己：如果我对自己没有要求，我会是什么样的人？我真正想要的是什么？这个问题能帮你绕过批判者的声音，听到来自更深处的答案——那个答案通常是温暖、好奇和清晰的。" }
+        ]
+      },
+      firefighter: {
+        name: "消防员", nameEn: "Firefighter",
+        tagline: "你内在的那个消防员，每次情绪起火时都会冲出来——不是灭火，而是用爆炸性的行动转移你的注意力。",
+        traits: [
+          "冲动性行为模式——在情绪高涨时，你倾向于立即行动，而不是先感受和处理",
+          "用行为掩盖感受——你习惯了用吃、买、刷、喝、玩游戏等方式来不去感受那些痛苦的情绪",
+          "危机模式思维——你的大脑倾向于把任何压力都解读为紧急状态，激活先行动再思考的模式",
+          "短期缓解，长期痛苦——你知道某些行为会让你事后后悔，但当下那一刻，你只想让痛苦消失"
+        ],
+        steps: [
+          { title: "识别冲动前的那个信号", desc: "消防员出动之前，你一定会有信号——也许是越来越不安的心跳，也许是突然想拿起手机的冲动，也许是胸口收紧的感觉。IFS疗愈的第一步是：在消防员已经冲出火场之前，先认出它。下次当你注意到自己想用某种冲动行为来不去感受时，轻轻在心里标记它：我注意到我现在想要逃避。" },
+          { title: "问自己：什么在燃烧？", desc: "消防员的每一次出动，背后都有一个被压制的火焰。每当你想要冲动逃避时，给自己一个暂停，然后问：如果我不去逃避，我现在需要面对的是什么？答案通常会让你惊讶——可能是一种被拒绝的痛，被忽视的悲伤，或者某个童年创伤的记忆。当你能够承受去感受那团火焰时，消防员就不需要那么拼命了。" },
+          { title: "与被放逐的内在小孩对话", desc: "IFS相信，消防员之所以不断出动，是因为它背后有一个不断呼喊的内在小孩。下一次冲动行为来临时，试着在内心对它说：我知道你在保护我不去感受某些东西。我想知道，如果你让我靠近那个受伤的地方，会发生什么？这个内在小孩可能太害怕说话，但你可以从给它写信、想象一个安全的空间开始。" }
+        ]
+      },
+      protector: {
+        name: "保护者", nameEn: "Protector",
+        tagline: "你内在的那道高墙，警觉地守卫着你的边界——但有时候，它把真正的连接也挡在了外面。",
+        traits: [
+          "高度警觉——你的雷达永远在扫描潜在威胁：他人的意图、环境的风险、人际关系的变量",
+          "界限清晰——你知道自己的底线在哪里，一旦被触碰，会迅速做出反应",
+          "战略思维——你倾向于在做任何事之前先制定计划，把风险降到最低",
+          "情感控制——你有能力在压力下保持冷静，不让情绪影响判断"
+        ],
+        steps: [
+          { title: "认出高墙下面的那个孩子", desc: "IFS疗法的关键洞见是：保护者背后，永远有一个它拼命在保护的人。下一次当你发现自己处于高度防御状态时，问自己这个问题：如果我放下这道墙，我害怕会发生什么？那个答案——失去控制、被拒绝、被伤害——会指向你的保护者想要保护的内在小孩。" },
+          { title: "有意识地练习不行动", desc: "你的本能是先行动，但IFS疗愈需要你练习一种反直觉的能力：在感到威胁时，先停下来，感受一下，然后才决定是否行动。这不一定容易，但哪怕每天练习一次（在小事上，比如当你想立刻回复一条让你不舒服的消息时，先等5分钟），都是在训练你的真实自我重新接管内在的指挥权。" },
+          { title: "在安全的关系中练习脆弱", desc: "保护者最深的恐惧是：如果我放下防线，就会被伤害。但真实的连接永远发生在脆弱的基础上。选择一个你信任的人，试着在小事上分享你真实的感受——不是你的分析，而是你的感受。这可能是你重新连接内在世界最重要的一步。" }
+        ]
+      }
+    };
+
+    const PART_KEYS = ["exiled", "critic", "firefighter", "protector"];
+    const LETTER_MAP = { A: "exiled", B: "critic", C: "firefighter", D: "protector" };
+    // State
+    let state = { answers: [], currentQuestion: 0, startedAt: null };
+
+    function saveState() {
+      localStorage.setItem("quiz_progress", JSON.stringify(state));
+    }
+
+    function loadState() {
+      try {
+        return JSON.parse(localStorage.getItem("quiz_progress") || "null");
+      } catch { return null; }
+    }
+
+    function clearState() {
+      localStorage.removeItem("quiz_progress");
+    }
+
+    function showScreen(id) {
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+
+    function buildProcessingCircles() {
+      const container = document.getElementById("processing-circles");
+      container.innerHTML = "";
+      const colors = ["#D4C5E2", "#E8D5C4", "#C9A96E", "#E07A5F", "#5A7A6B", "#5B6B8A"];
+      const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (prefersReduced) return;
+      for (let i = 0; i < 7; i++) {
+        const c = document.createElement("div");
+        c.className = "p-circle";
+        const size = 12 + Math.random() * 24;
+        c.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;bottom:${Math.random()*30}%;background:${colors[i%colors.length]};opacity:${0.2+Math.random()*0.3};animation-duration:${3+Math.random()*2}s;animation-delay:${Math.random()*2}s`;
+        container.appendChild(c);
+      }
+    }
+
+    function renderQuestion(idx) {
+      const q = QUESTIONS[idx];
+      document.getElementById("question-text").textContent = q.text;
+      const list = document.getElementById("options-list");
+      list.innerHTML = "";
+      q.options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        if (state.answers[idx] === opt.letter) btn.classList.add("selected");
+        btn.setAttribute("role", "radio");
+        btn.setAttribute("aria-checked", state.answers[idx] === opt.letter ? "true" : "false");
+        btn.setAttribute("tabindex", "0");
+        btn.innerHTML = `<span class="option-letter">${opt.letter}</span><span class="option-text">${opt.text}</span>`;
+        btn.addEventListener("click", () => selectAnswer(idx, opt.letter));
+        list.appendChild(btn);
+      });
+
+      const progress = Math.round((idx / 12) * 100);
+      document.getElementById("progress-fill").style.width = progress + "%";
+      document.getElementById("progress-bar").setAttribute("aria-valuenow", progress);
+      document.getElementById("progress-text").textContent = progress + "%";
+      document.getElementById("question-counter").textContent = (idx + 1) + " / 12";
+      document.getElementById("btn-prev").classList.toggle("visible", idx > 0);
+    }
+
+    function selectAnswer(idx, letter) {
+      state.answers[idx] = letter;
+      saveState();
+      document.querySelectorAll(".option-btn").forEach(b => {
+        b.classList.remove("selected");
+        b.setAttribute("aria-checked", "false");
+      });
+      const btns = document.querySelectorAll(".option-btn");
+      btns.forEach(b => {
+        if (b.querySelector(".option-letter").textContent === letter) {
+          b.classList.add("selected");
+          b.setAttribute("aria-checked", "true");
+        }
+      });
+
+      const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!prefersReduced) {
+        setTimeout(() => advanceQuestion(), 350);
+      } else {
+        const nextBtn = document.createElement("button");
+        nextBtn.textContent = "继续";
+        nextBtn.className = "btn-start";
+        nextBtn.style.cssText = "margin-top:16px;animation:none;opacity:1;width:100%;justify-content:center";
+        nextBtn.addEventListener("click", () => advanceQuestion());
+        document.querySelector(".question-card").appendChild(nextBtn);
+      }
+    }
+
+    function advanceQuestion() {
+      if (state.currentQuestion < 11) {
+        state.currentQuestion++;
+        saveState();
+        renderQuestion(state.currentQuestion);
+      } else {
+        showProcessing();
+      }
+    }
+
+    function showProcessing() {
+      buildProcessingCircles();
+      showScreen("processing-screen");
+      setTimeout(() => {
+        calculateAndShowResult();
+      }, 2500);
+    }
+
+    function calculateAndShowResult() {
+      const scores = { exiled: 0, critic: 0, firefighter: 0, protector: 0 };
+      state.answers.forEach(a => {
+        if (a && LETTER_MAP[a]) scores[LETTER_MAP[a]] += 2;
+      });
+
+      // Tie-break: Q4 (index 3) wins if tied
+      const maxScore = Math.max(...Object.values(scores));
+      let dominant = null;
+      let tied = [];
+      PART_KEYS.forEach(k => { if (scores[k] === maxScore) tied.push(k); });
+      if (tied.length === 1) {
+        dominant = tied[0];
+      } else {
+        // Q4 is most introspective - A is highest weight for tie-break
+        if (tied.includes("exiled")) dominant = "exiled";
+        else dominant = "protector";
+      }
+
+      // Secondary: 2nd highest >= dominant * 0.7
+      const sorted = PART_KEYS.slice().sort((a, b) => scores[b] - scores[a]);
+      const secondKey = sorted[1];
+      const secondScore = scores[secondKey];
+      let secondary = null;
+      if (secondScore >= maxScore * 0.7) secondary = secondKey;
+
+      renderResult(dominant, secondary);
+    }
+
+    function renderResult(dominant, secondary) {
+      const data = PART_DATA[dominant];
+      document.getElementById("result-part-name").textContent = data.name;
+      document.getElementById("result-part-name-en").textContent = data.nameEn;
+      document.getElementById("result-tagline").textContent = data.tagline;
+
+      const traitList = document.getElementById("trait-list");
+      traitList.innerHTML = "";
+      data.traits.forEach(t => {
+        const li = document.createElement("li");
+        li.className = "trait-item";
+        li.textContent = t;
+        traitList.appendChild(li);
+      });
+
+      const reharmonizeList = document.getElementById("reharmonize-list");
+      reharmonizeList.innerHTML = "";
+      data.steps.forEach((step, i) => {
+        const li = document.createElement("li");
+        li.className = "reharmonize-item";
+        li.innerHTML = `<div class="reharmonize-num">${i+1}</div><div class="reharmonize-content"><h4>${step.title}</h4><p>${step.desc}</p></div>`;
+        reharmonizeList.appendChild(li);
+      });
+
+      if (secondary) {
+        const badge = document.getElementById("secondary-badge");
+        badge.style.display = "inline-block";
+        badge.textContent = "也属于：" + PART_DATA[secondary].name;
+      }
+
+      if (dominant === "exiled") {
+        document.getElementById("support-note").style.display = "block";
+      } else {
+        document.getElementById("support-note").style.display = "none";
+      }
+
+      // Share button handlers
+      const shareText = `我刚做了一个IFS子人格测验，发现我的主导人格是"${data.name}"。${data.tagline} 点击链接测试你的内在：`;
+      const encodedText = encodeURIComponent(shareText);
+
+      document.getElementById("share-telegram").onclick = () => {
+        window.open("https://t.me/share/url?url=https://psychomaster.app/quizzes/ifs-parts-quiz.html&text=" + encodedText, "_blank");
+      };
+      document.getElementById("share-whatsapp").onclick = () => {
+        window.open("https://wa.me/?text=" + encodedText.substring(0, 300), "_blank");
+      };
+      document.getElementById("share-copy").onclick = async () => {
+        try {
+          await navigator.clipboard.writeText(shareText + " https://psychomaster.app/quizzes/ifs-parts-quiz.html");
+          const btn = document.getElementById("share-copy");
+          btn.textContent = "已复制!";
+          setTimeout(() => { btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制'; }, 2000);
+        } catch {}
+      };
+      document.getElementById("share-download").onclick = () => downloadShareCard(dominant, secondary);
+
+      showScreen("result-screen");
+    }
+
+    function downloadShareCard(dominant, secondary) {
+      const canvas = document.createElement("canvas");
+      canvas.width = 1080; canvas.height = 1350;
+      const ctx = canvas.getContext("2d");
+      const data = PART_DATA[dominant];
+      const partColor = { exiled: "#D4C5E2", critic: "#5B6B8A", firefighter: "#E07A5F", protector: "#5A7A6B" }[dominant];
+
+      // Top gradient
+      const grad = ctx.createLinearGradient(0, 0, 0, 810);
+      grad.addColorStop(0, partColor + "E6");
+      grad.addColorStop(1, partColor + "4D");
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 1080, 810);
+
+      // Bottom ivory
+      ctx.fillStyle = "#FDF8F3";
+      ctx.fillRect(0, 810, 1080, 540);
+
+      // Abstract circle icon in top
+      ctx.save();
+      ctx.fillStyle = "rgba(255,255,255,0.25)";
+      ctx.beginPath();
+      ctx.arc(540, 320, 140, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "rgba(255,255,255,0.15)";
+      ctx.beginPath();
+      ctx.arc(540, 320, 100, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // Title
+      ctx.fillStyle = "#FFFFFF";
+      ctx.font = "bold 36px '"'"'Noto Serif SC'"'"', serif";
+      ctx.textAlign = "center";
+      ctx.fillText("你的内在家族图谱", 540, 530);
+
+      // Part name
+      ctx.font = "bold 56px '"'"'Noto Serif SC'"'"', serif";
+      ctx.fillText(data.name, 540, 620);
+      ctx.font = "italic 28px '"'"'Cormorant Garamond'"'"', serif";
+      ctx.fillStyle = "rgba(255,255,255,0.85)";
+      ctx.fillText(data.nameEn, 540, 670);
+
+      // Tagline
+      ctx.fillStyle = "#5C574E";
+      ctx.font = "18px '"'"'Nunito Sans'"'"', sans-serif";
+      const taglineLines = wrapText(ctx, data.tagline, 760, 18);
+      taglineLines.forEach((line, i) => ctx.fillText(line, 540, 730 + i * 26));
+
+      // Secondary badge
+      if (secondary) {
+        ctx.fillStyle = "rgba(255,255,255,0.2)";
+        roundRect(ctx, 310, 780, 460, 36, 18);
+        ctx.fill();
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = "14px '"'"'Nunito Sans'"'"', sans-serif";
+        ctx.fillText("也属于：" + PART_DATA[secondary].name, 540, 804);
+      }
+
+      // Branding
+      ctx.fillStyle = "#9A9488";
+      ctx.font = "14px '"'"'Nunito Sans'"'"', sans-serif";
+      ctx.fillText("by PsychoMaster", 540, 1300);
+
+      canvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "inner-family-map-" + dominant + "-" + new Date().toISOString().slice(0,10) + ".png";
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+    }
+
+    function wrapText(ctx, text, maxWidth, fontSize) {
+      ctx.font = fontSize + "px '"'"'Nunito Sans'"'"', sans-serif";
+      const words = text.split(""");
+      const lines = [];
+      let line = "";
+      for (const char of words) {
+        const test = line + char;
+        if (ctx.measureText(test).width > maxWidth && line) {
+          lines.push(line); line = char;
+        } else { line = test; }
+      }
+      if (line) lines.push(line);
+      return lines;
+    }
+
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    // Resume modal
+    function checkResume() {
+      const saved = loadState();
+      if (saved && saved.currentQuestion > 0 && saved.answers && saved.answers.length > 0) {
+        state = saved;
+        document.getElementById("resume-subtitle").textContent = "你已经完成了 " + state.currentQuestion + " 道题";
+        document.getElementById("resume-modal").classList.add("active");
+        return true;
+      }
+      return false;
+    }
+
+    // Init
+    document.getElementById("btn-start").addEventListener("click", () => {
+      if (!checkResume()) {
+        state = { answers: [], currentQuestion: 0, startedAt: Date.now() };
+        saveState();
+        renderQuestion(0);
+        showScreen("question-screen");
+      }
+    });
+
+    document.getElementById("btn-resume").addEventListener("click", () => {
+      document.getElementById("resume-modal").classList.remove("active");
+      renderQuestion(state.currentQuestion);
+      showScreen("question-screen");
+    });
+
+    document.getElementById("btn-restart").addEventListener("click", () => {
+      clearState();
+      document.getElementById("resume-modal").classList.remove("active");
+      state = { answers: [], currentQuestion: 0, startedAt: Date.now() };
+      saveState();
+      renderQuestion(0);
+      showScreen("question-screen");
+    });
+
+    document.getElementById("btn-prev").addEventListener("click", () => {
+      if (state.currentQuestion > 0) {
+        state.currentQuestion--;
+        saveState();
+        renderQuestion(state.currentQuestion);
+      }
+    });
+
+    document.getElementById("retake-btn").addEventListener("click", () => {
+      clearState();
+      state = { answers: [], currentQuestion: 0, startedAt: null };
+      showScreen("welcome-screen");
+    });
+
+    // Keyboard nav for options
+    document.addEventListener("keydown", e => {
+      if (!document.getElementById("question-screen").classList.contains("active")) return;
+      const opts = document.querySelectorAll(".option-btn");
+      const focused = document.activeElement;
+      const idx = Array.from(opts).indexOf(focused);
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        const next = e.key === "ArrowDown" ? Math.min(idx + 1, opts.length - 1) : Math.max(idx - 1, 0);
+        opts[next] && opts[next].focus();
+      }
+    });
+  <\/script>
+</body>
+</html>
